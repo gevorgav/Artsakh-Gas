@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html >
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:jsfcore="http://java.sun.com/jsf/core"
+      xmlns:ut="http://java.sun.com/jsf/composite/util">
+<h:head>
+    <link href="../images/favicon.png" rel="shortcut icon"
+          type="image/x-icon" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</h:head>
+<h:body>
+    <h:form id="form" prependId="false">
+        <ut:dropdownControl map="#{projectEditForm.map}" startIndex="1" endIndex="1"></ut:dropdownControl>
+    </h:form>
+
+</h:body>
+</html>

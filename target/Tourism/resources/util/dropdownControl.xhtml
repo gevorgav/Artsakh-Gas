@@ -1,0 +1,29 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:composition="http://java.sun.com/jsf/composite"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <composition:interface>
+        <composition:attribute name="map" required="true" type="java.util.Map" />
+        <composition:attribute name="startIndex" required="true" type="java.lang.Integer" />
+        <composition:attribute name="endIndex" required="true" type="java.lang.Integer" />
+    </composition:interface>
+    <composition:implementation>
+        <p:panel header="Select" style="margin-bottom:10px;">
+            <h:panelGrid columns="1" cellpadding="5">
+                <ui:repeat value="#{cc.attrs.map.entrySet().toArray()}" var="map" varStatus="varIndex" size="3">
+
+                    <h:panelGroup id="panelLevel1" rendered="#{cc.attrs.endIndex >= varIndex.index and cc.attrs.startIndex le varIndex.index}">
+                        <p:selectOneMenu id="level1" value="#{projectEditForm.selectedMap[map.key]}" style="width:250px">
+                            <p:ajax listener="#{rojectEditForm.displayLocation}"  />
+                            <f:selectItem itemLabel="Select" itemValue="" />
+                            <f:selectItems value="#{cc.attrs.map[map.key]}" var="var" itemValue="#{var}" itemLabel="#{var.name}"/>
+                        </p:selectOneMenu>
+                    </h:panelGroup>
+
+                </ui:repeat>
+            </h:panelGrid>
+
+            <p:separator />
+        </p:panel>
+
+    </composition:implementation>
+</ui:composition>
