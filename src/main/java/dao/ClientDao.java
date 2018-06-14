@@ -1,12 +1,10 @@
 package dao;
 
 import Models.Client;
-import Models.GRP;
 import com.sun.istack.internal.NotNull;
 import dao.mapper.ClientMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
@@ -22,6 +20,15 @@ public class ClientDao extends Dao<Client>{
     @Autowired
     private ClientHistoryDao clientHistoryDao;
 
+    @Autowired
+    private CityDao cityDao;
+
+    @Autowired
+    private StreetDao streetDao;
+
+    @Autowired
+    private GRPDao grpDao;
+
     /**
      * Load ALl Clients
      *
@@ -30,7 +37,7 @@ public class ClientDao extends Dao<Client>{
     public List<Client> loadAll() {
         try {
             String sql = "SELECT * FROM clients;";
-            return jdbcTemplate.query(sql, new ClientMapper(clientHistoryDao));
+            return jdbcTemplate.query(sql, new ClientMapper(clientHistoryDao, cityDao, streetDao, grpDao));
         } catch (EmptyResultDataAccessException e) {
             return Collections.emptyList();
         }
@@ -45,7 +52,7 @@ public class ClientDao extends Dao<Client>{
     public Client loadById(@NotNull Integer id) {
         Objects.requireNonNull(id);
         String sql = "SELECT * FROM clients WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, new ClientMapper(clientHistoryDao), id);
+        return jdbcTemplate.queryForObject(sql, new ClientMapper(clientHistoryDao, cityDao, streetDao, grpDao), id);
     }
 
     /**
@@ -58,8 +65,8 @@ public class ClientDao extends Dao<Client>{
         String sql = "INSERT INTO clients(id, currentVersionId, firstName, lastName, middleName, phoneNumber, counterNumber, regionId, cityId, streetId, homeNumber, apartmentNumber, ashtId, grpId)\n" +
                 "    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         int result = jdbcTemplate.update(sql, client.getId(), client.getFirstName(), client.getLastName(), client.getMiddleName(),
-                client.getPhoneNumber(), client.getCounterNumber(), client.getRegionId(), client.getCityId(), client.getStreetId(), client.getHomeNumber(),
-                client.getApartmentNumber(), client.getAshtId(), client.getGrpId());
+                client.getPhoneNumber(), client.getCounterNumber(), client.getCity().getRegion().getId(), client.getCity().getId(), client.getStreet().getId(), client.getHomeNumber(),
+                client.getApartmentNumber(), client.getAshtId(), client.getGrp().getId());
         return result == 1;
     }
 
@@ -74,8 +81,8 @@ public class ClientDao extends Dao<Client>{
                 "SET id = ?, currentVersionId = ?, firstName = ?, lastName = ?, middleName = ?, phoneNumber = ?, counterNumber = ?, regionId = ?, cityId = ?, streetId = ?, homeNumber = ?, apartmentNumber = ?, ashtId = ?, grpId = ?\n" +
                 "WHERE id = ?";
         int result = jdbcTemplate.update(sql, client.getId(), client.getFirstName(), client.getLastName(), client.getMiddleName(),
-                client.getPhoneNumber(), client.getCounterNumber(), client.getRegionId(), client.getCityId(), client.getStreetId(), client.getHomeNumber(),
-                client.getApartmentNumber(), client.getAshtId(), client.getGrpId(), client.getId());
+                client.getPhoneNumber(), client.getCounterNumber(), client.getCity().getRegion().getId(), client.getCity().getId(), client.getStreet().getId(), client.getHomeNumber(),
+                client.getApartmentNumber(), client.getAshtId(), client.getGrp().getId(), client.getId());
         return result == 1;
     }
 

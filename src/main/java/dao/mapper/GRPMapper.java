@@ -15,7 +15,7 @@ public class GRPMapper implements RowMapper<GRP> {
         GRP grp = new GRP();
         grp.setId(rs.getInt("id"));
         grp.setName(rs.getString("name"));
-        grp.setCityId(rs.getInt("cityId"));
+        grp.setCityId(rs.getObject("cityId") != null ? rs.getInt("cityId") : null);
         return grp;
     }
 }

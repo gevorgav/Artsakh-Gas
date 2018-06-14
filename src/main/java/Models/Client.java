@@ -21,11 +21,9 @@ public class Client {
 
     private String counterNumber;
 
-    private Integer regionId;
+    private City city;
 
-    private Integer cityId;
-
-    private Integer streetId;
+    private Street street;
 
     private Integer homeNumber;
 
@@ -33,27 +31,11 @@ public class Client {
 
     private Integer ashtId;
 
-    private Integer grpId;
+    private GRP grp;
 
     private ClientHistory clientHistory;
 
     public Client() {
-    }
-
-    public Client(Integer id, String firstName, String lastName, String middleName, String phoneNumber, String counterNumber, Integer regionId, Integer cityId, Integer streetId, Integer homeNumber, Integer apartmentNumber, Integer ashtId, Integer grpId) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.middleName = middleName;
-        this.phoneNumber = phoneNumber;
-        this.counterNumber = counterNumber;
-        this.regionId = regionId;
-        this.cityId = cityId;
-        this.streetId = streetId;
-        this.homeNumber = homeNumber;
-        this.apartmentNumber = apartmentNumber;
-        this.ashtId = ashtId;
-        this.grpId = grpId;
     }
 
     public Integer getId() {
@@ -104,28 +86,20 @@ public class Client {
         this.counterNumber = counterNumber;
     }
 
-    public Integer getRegionId() {
-        return regionId;
+    public City getCity() {
+        return city;
     }
 
-    public void setRegionId(Integer regionId) {
-        this.regionId = regionId;
+    public void setCity(City city) {
+        this.city = city;
     }
 
-    public Integer getCityId() {
-        return cityId;
+    public Street getStreet() {
+        return street;
     }
 
-    public void setCityId(Integer cityId) {
-        this.cityId = cityId;
-    }
-
-    public Integer getStreetId() {
-        return streetId;
-    }
-
-    public void setStreetId(Integer streetId) {
-        this.streetId = streetId;
+    public void setStreet(Street street) {
+        this.street = street;
     }
 
     public Integer getHomeNumber() {
@@ -152,16 +126,15 @@ public class Client {
         this.ashtId = ashtId;
     }
 
-    public Integer getGrpId() {
-        return grpId;
+    public GRP getGrp() {
+        return grp;
     }
 
-    public void setGrpId(Integer grpId) {
-        this.grpId = grpId;
+    public void setGrp(GRP grp) {
+        this.grp = grp;
     }
 
     public ClientHistory getClientHistory() {
-
         return clientHistory;
     }
 
@@ -171,7 +144,7 @@ public class Client {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, middleName, phoneNumber, counterNumber, regionId, cityId, streetId, homeNumber, apartmentNumber, ashtId, grpId);
+        return Objects.hash(id, firstName, lastName, middleName, phoneNumber, counterNumber, city, street, homeNumber, apartmentNumber, ashtId, grp, clientHistory);
     }
 
     @Override
@@ -184,10 +157,10 @@ public class Client {
         return Objects.equals(client.id, this.id)
                 && Objects.equals(client.firstName, this.firstName) && Objects.equals(client.lastName, this.lastName)
                 && Objects.equals(client.middleName, this.middleName) && Objects.equals(client.phoneNumber, this.phoneNumber)
-                && Objects.equals(client.counterNumber, this.counterNumber) && Objects.equals(client.regionId, this.regionId)
-                && Objects.equals(client.cityId, this.cityId) && Objects.equals(client.streetId, this.streetId)
-                && Objects.equals(client.homeNumber, this.homeNumber) && Objects.equals(client.apartmentNumber, this.apartmentNumber)
-                && Objects.equals(client.ashtId, this.ashtId) && Objects.equals(client.grpId, this.grpId);
+                && Objects.equals(client.counterNumber, this.counterNumber) && Objects.equals(client.city, this.city)
+                && Objects.equals(client.street, this.street) && Objects.equals(client.homeNumber, this.homeNumber)
+                && Objects.equals(client.apartmentNumber, this.apartmentNumber) && Objects.equals(client.ashtId, this.ashtId)
+                && Objects.equals(client.grp, this.grp) && Objects.equals(client.clientHistory, this.clientHistory);
     }
 
     @Override

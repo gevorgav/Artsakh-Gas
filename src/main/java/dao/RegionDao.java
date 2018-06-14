@@ -15,7 +15,7 @@ public class RegionDao extends Dao<Region>{
     @Override
     public List<Region> loadAll() {
         try {
-            String sql = "SELECT * FROM region;";
+            String sql = "SELECT * FROM region";
             return jdbcTemplate.query(
                     sql, new RegionMapper());
         } catch (EmptyResultDataAccessException e) {

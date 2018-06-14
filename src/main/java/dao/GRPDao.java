@@ -45,7 +45,7 @@ public class GRPDao extends Dao<GRP> {
     }
 
     @Override
-    boolean delete(Integer id) {
+    public boolean delete(Integer id) {
         Objects.requireNonNull(id);
         String sql = "DELETE FROM grp WHERE id = ?";
         int result = jdbcTemplate.update(sql, id);

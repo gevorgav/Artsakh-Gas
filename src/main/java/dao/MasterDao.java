@@ -29,7 +29,7 @@ public class MasterDao extends Dao<Master> {
     }
 
     @Override
-    boolean insert(Master master) {
+    public boolean insert(Master master) {
         Objects.requireNonNull(master);
         String sql = "INSERT INTO master(firstName, lastName, ashtId) VALUES (?, ?, ?)";
         int result = jdbcTemplate.update(sql, master.getFirstName(), master.getLastName(), master.getAshtId());
@@ -37,7 +37,7 @@ public class MasterDao extends Dao<Master> {
     }
 
     @Override
-    boolean update(Master master) {
+    public boolean update(Master master) {
         Objects.requireNonNull(master);
         String sql = "UPDATE master SET firstName = ?, lastName = ?, ashtId = ? WHERE id = ?";
         int result = jdbcTemplate.update(sql, master.getFirstName(), master.getLastName(), master.getAshtId(), master.getId());
@@ -45,7 +45,7 @@ public class MasterDao extends Dao<Master> {
     }
 
     @Override
-    boolean delete(Integer id) {
+    public boolean delete(Integer id) {
         Objects.requireNonNull(id);
         String sql = "DELETE FROM master WHERE id = ?";
         int result = jdbcTemplate.update(sql, id);

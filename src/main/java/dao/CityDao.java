@@ -4,7 +4,6 @@ import Core.Models.City;
 import dao.mapper.CityMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
@@ -17,10 +16,13 @@ import java.util.Objects;
 @Repository
 public class CityDao extends Dao<City>{
 
+    @Autowired
+    private RegionDao regionDao;
+
     public List<City> loadAll() {
         try {
             String sql = "SELECT * FROM city;";
-            return jdbcTemplate.query(sql, new CityMapper());
+            return jdbcTemplate.query(sql, new CityMapper(regionDao));
         } catch (EmptyResultDataAccessException e) {
             return Collections.emptyList();
         }
@@ -29,7 +31,7 @@ public class CityDao extends Dao<City>{
     public City loadById(Integer id) {
         Objects.requireNonNull(id);
         String sql = "SELECT * FROM city WHERE id = ?;";
-        return jdbcTemplate.queryForObject(sql, new CityMapper(), id);
+        return jdbcTemplate.queryForObject(sql, new CityMapper(regionDao), id);
     }
 
     @Override

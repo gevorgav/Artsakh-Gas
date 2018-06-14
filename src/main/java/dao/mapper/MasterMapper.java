@@ -16,7 +16,7 @@ public class MasterMapper  implements RowMapper<Master> {
         master.setId(rs.getInt("id"));
         master.setFirstName(rs.getString("firstName"));
         master.setLastName(rs.getString("lastName"));
-        master.setAshtId(rs.getInt("ashtId"));
+        master.setAshtId(rs.getObject("ashtId") != null ? rs.getInt("ashtId") : null);
         return master;
     }
 }

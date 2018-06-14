@@ -21,7 +21,7 @@ public class TestForm {
 
     public List<Region> getRegionList() {
         if(regionList == null){
-            regionList = this.regionDao.findAll();
+            regionList = this.regionDao.loadAll();
         }
         return regionList;
     }
@@ -42,11 +42,9 @@ public class TestForm {
     }
 
     public void create() {
-        clientDao.insert(new Client(5555, "AAA", "BBB", "CCC", "66666", "7777", 1, 1, 1, 69, 99, null, null));
     }
 
     public void update() {
-        clientDao.update(new Client(5555, "DDDDDDDD", "BBB", "CCC", "66666", "7777", 1, 1, 1, 69, 99, null, null));
         clients = null;
     }
 
