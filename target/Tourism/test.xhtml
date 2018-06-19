@@ -10,13 +10,9 @@
 <body>
 <h:form>
     <span>Test page</span>
-    #{testForm.regionList}
     <h:dataTable value="#{testForm.clients}" var="o">
         <h:column>
             #{o.id}
-        </h:column>
-        <h:column>
-            #{o.currentVersionId}
         </h:column>
         <h:column>
             #{o.firstName}
@@ -32,9 +28,6 @@
         </h:column>
         <h:column>
             #{o.counterNumber}
-        </h:column>
-        <h:column>
-            #{o.regionId}
         </h:column>
         <h:column>
             #{o.cityId}
@@ -55,9 +48,10 @@
         <h:column>
             #{o.grpId}
         </h:column>
+        <h:column>
+            #{o.clientHistory.violationActNumber}
+        </h:column>
     </h:dataTable>
-    <h:commandButton value="Delete" action="#{testForm.delete}">
-    </h:commandButton>
 </h:form>
 </body>
 </html>

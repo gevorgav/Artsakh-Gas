@@ -41,11 +41,9 @@
     </bean>
 
     <bean id="dashboardForm" class="dashboard.DashboardForm" scope="session" >
-        <property name="root" ref="root"/>
     </bean>
 
-    <bean id="portfolioForm" class="portfolio.PortfolioForm" scope="session" init-method="init">
-        <property name="root" ref="root"/>
+    <bean id="portfolioForm" class="portfolio.PortfolioForm" scope="session">
     </bean>
 
     <!--HOTEL BEANS-->

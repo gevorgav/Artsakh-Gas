@@ -9,7 +9,7 @@ public class ClientHistory {
 
     private Integer id;
 
-    private Client client;
+    private Integer clientId;
 
     private Integer violationActNumber;
 
@@ -19,7 +19,7 @@ public class ClientHistory {
 
     private Date nextVisitDate;
 
-    private ViolationCode violationCode;
+    private Integer violationCodeId;
 
     private String stampNumbers;
 
@@ -54,13 +54,6 @@ public class ClientHistory {
         this.id = id;
     }
 
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
 
     public Integer getViolationActNumber() {
         return violationActNumber;
@@ -94,12 +87,12 @@ public class ClientHistory {
         this.nextVisitDate = nextVisitDate;
     }
 
-    public ViolationCode getViolationCode() {
-        return violationCode;
+    public Integer getViolationCodeId() {
+        return violationCodeId;
     }
 
-    public void setViolationCode(ViolationCode violationCode) {
-        this.violationCode = violationCode;
+    public void setViolationCodeId(Integer violationCodeId) {
+        this.violationCodeId = violationCodeId;
     }
 
     public String getStampNumbers() {
@@ -190,6 +183,14 @@ public class ClientHistory {
         this.risk = risk;
     }
 
+    public Integer getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -198,15 +199,13 @@ public class ClientHistory {
         ClientHistory that = (ClientHistory) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (client != null ? !client.equals(that.client) : that.client != null) return false;
+        if (clientId != null ? !clientId.equals(that.clientId) : that.clientId != null) return false;
         if (violationActNumber != null ? !violationActNumber.equals(that.violationActNumber) : that.violationActNumber != null)
             return false;
         if (updateDate != null ? !updateDate.equals(that.updateDate) : that.updateDate != null) return false;
         if (previousVisitDate != null ? !previousVisitDate.equals(that.previousVisitDate) : that.previousVisitDate != null)
             return false;
         if (nextVisitDate != null ? !nextVisitDate.equals(that.nextVisitDate) : that.nextVisitDate != null)
-            return false;
-        if (violationCode != null ? !violationCode.equals(that.violationCode) : that.violationCode != null)
             return false;
         if (stampNumbers != null ? !stampNumbers.equals(that.stampNumbers) : that.stampNumbers != null) return false;
         if (go != null ? !go.equals(that.go) : that.go != null) return false;
@@ -224,12 +223,11 @@ public class ClientHistory {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (client != null ? client.hashCode() : 0);
+        result = 31 * result + (clientId != null ? clientId.hashCode() : 0);
         result = 31 * result + (violationActNumber != null ? violationActNumber.hashCode() : 0);
         result = 31 * result + (updateDate != null ? updateDate.hashCode() : 0);
         result = 31 * result + (previousVisitDate != null ? previousVisitDate.hashCode() : 0);
         result = 31 * result + (nextVisitDate != null ? nextVisitDate.hashCode() : 0);
-        result = 31 * result + (violationCode != null ? violationCode.hashCode() : 0);
         result = 31 * result + (stampNumbers != null ? stampNumbers.hashCode() : 0);
         result = 31 * result + (go != null ? go.hashCode() : 0);
         result = 31 * result + (jth != null ? jth.hashCode() : 0);

@@ -21,9 +21,9 @@ public class Client {
 
     private String counterNumber;
 
-    private City city;
+    private Integer cityId;
 
-    private Street street;
+    private Integer streetId;
 
     private Integer homeNumber;
 
@@ -31,7 +31,7 @@ public class Client {
 
     private Integer ashtId;
 
-    private GRP grp;
+    private Integer grpId;
 
     private ClientHistory clientHistory;
 
@@ -86,20 +86,20 @@ public class Client {
         this.counterNumber = counterNumber;
     }
 
-    public City getCity() {
-        return city;
+    public Integer getCityId() {
+        return cityId;
     }
 
-    public void setCity(City city) {
-        this.city = city;
+    public void setCityId(Integer cityId) {
+        this.cityId = cityId;
     }
 
-    public Street getStreet() {
-        return street;
+    public Integer getStreetId() {
+        return streetId;
     }
 
-    public void setStreet(Street street) {
-        this.street = street;
+    public void setStreetId(Integer streetId) {
+        this.streetId = streetId;
     }
 
     public Integer getHomeNumber() {
@@ -126,12 +126,12 @@ public class Client {
         this.ashtId = ashtId;
     }
 
-    public GRP getGrp() {
-        return grp;
+    public Integer getGrpId() {
+        return grpId;
     }
 
-    public void setGrp(GRP grp) {
-        this.grp = grp;
+    public void setGrpId(Integer grpId) {
+        this.grpId = grpId;
     }
 
     public ClientHistory getClientHistory() {
@@ -143,24 +143,45 @@ public class Client {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(id, firstName, lastName, middleName, phoneNumber, counterNumber, city, street, homeNumber, apartmentNumber, ashtId, grp, clientHistory);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Client client = (Client) o;
+
+        if (id != null ? !id.equals(client.id) : client.id != null) return false;
+        if (firstName != null ? !firstName.equals(client.firstName) : client.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(client.lastName) : client.lastName != null) return false;
+        if (middleName != null ? !middleName.equals(client.middleName) : client.middleName != null) return false;
+        if (phoneNumber != null ? !phoneNumber.equals(client.phoneNumber) : client.phoneNumber != null) return false;
+        if (counterNumber != null ? !counterNumber.equals(client.counterNumber) : client.counterNumber != null)
+            return false;
+        if (cityId != null ? !cityId.equals(client.cityId) : client.cityId != null) return false;
+        if (streetId != null ? !streetId.equals(client.streetId) : client.streetId != null) return false;
+        if (homeNumber != null ? !homeNumber.equals(client.homeNumber) : client.homeNumber != null) return false;
+        if (apartmentNumber != null ? !apartmentNumber.equals(client.apartmentNumber) : client.apartmentNumber != null)
+            return false;
+        if (ashtId != null ? !ashtId.equals(client.ashtId) : client.ashtId != null) return false;
+        if (grpId != null ? !grpId.equals(client.grpId) : client.grpId != null) return false;
+        return clientHistory != null ? clientHistory.equals(client.clientHistory) : client.clientHistory == null;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (!(obj instanceof Client)) return false;
-
-        Client client = (Client) obj;
-
-        return Objects.equals(client.id, this.id)
-                && Objects.equals(client.firstName, this.firstName) && Objects.equals(client.lastName, this.lastName)
-                && Objects.equals(client.middleName, this.middleName) && Objects.equals(client.phoneNumber, this.phoneNumber)
-                && Objects.equals(client.counterNumber, this.counterNumber) && Objects.equals(client.city, this.city)
-                && Objects.equals(client.street, this.street) && Objects.equals(client.homeNumber, this.homeNumber)
-                && Objects.equals(client.apartmentNumber, this.apartmentNumber) && Objects.equals(client.ashtId, this.ashtId)
-                && Objects.equals(client.grp, this.grp) && Objects.equals(client.clientHistory, this.clientHistory);
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (middleName != null ? middleName.hashCode() : 0);
+        result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
+        result = 31 * result + (counterNumber != null ? counterNumber.hashCode() : 0);
+        result = 31 * result + (cityId != null ? cityId.hashCode() : 0);
+        result = 31 * result + (streetId != null ? streetId.hashCode() : 0);
+        result = 31 * result + (homeNumber != null ? homeNumber.hashCode() : 0);
+        result = 31 * result + (apartmentNumber != null ? apartmentNumber.hashCode() : 0);
+        result = 31 * result + (ashtId != null ? ashtId.hashCode() : 0);
+        result = 31 * result + (grpId != null ? grpId.hashCode() : 0);
+        result = 31 * result + (clientHistory != null ? clientHistory.hashCode() : 0);
+        return result;
     }
 
     @Override

@@ -29,7 +29,7 @@ public class ClientHistoryDao extends Dao<ClientHistory>{
     public List<ClientHistory> loadAll() {
         try {
             String sql = "SELECT * FROM clientsHistory";
-            return jdbcTemplate.query(sql, new ClientHistoryMapper(clientDao, violationCodeDao));
+            return jdbcTemplate.query(sql, new ClientHistoryMapper());
         } catch (EmptyResultDataAccessException e) {
             return Collections.emptyList();
         }
@@ -42,7 +42,7 @@ public class ClientHistoryDao extends Dao<ClientHistory>{
         Objects.requireNonNull(clientId);
         try {
             String sql = "SELECT * FROM clientsHistory WHERE clientId = ?";
-            return jdbcTemplate.query(sql, new ClientHistoryMapper(clientDao, violationCodeDao), clientId);
+            return jdbcTemplate.query(sql, new ClientHistoryMapper(), clientId);
         } catch (EmptyResultDataAccessException e) {
             return Collections.emptyList();
         }
@@ -57,7 +57,7 @@ public class ClientHistoryDao extends Dao<ClientHistory>{
     public ClientHistory loadById(@NotNull Integer id) {
         Objects.requireNonNull(id);
         String sql = "SELECT * FROM clientsHistory WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, new ClientHistoryMapper(clientDao, violationCodeDao), id);
+        return jdbcTemplate.queryForObject(sql, new ClientHistoryMapper(), id);
     }
 
     /**
@@ -66,7 +66,7 @@ public class ClientHistoryDao extends Dao<ClientHistory>{
     public ClientHistory loadLastClientHistory(Integer clientId) {
         Objects.requireNonNull(clientId);
         String sql = "SELECT * FROM clientsHistory WHERE clientId = ? ORDER BY id DESC LIMIT 1";
-        return jdbcTemplate.queryForObject(sql, new ClientHistoryMapper(clientDao, violationCodeDao), clientId);
+        return jdbcTemplate.queryForObject(sql, new ClientHistoryMapper(), clientId);
     }
 
     /**
@@ -76,8 +76,8 @@ public class ClientHistoryDao extends Dao<ClientHistory>{
         Objects.requireNonNull(clientHistory);
         String sql = "INSERT INTO clientsHistory(clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, codeViolation, stampNumbers, go, jth, jtt, ket, jah, jk, jv, go3, go2, risk)\n" +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        int result = jdbcTemplate.update(sql, clientHistory.getClient().getId(), clientHistory.getViolationActNumber(), clientHistory.getUpdateDate(),
-                clientHistory.getPreviousVisitDate(), clientHistory.getNextVisitDate(), clientHistory.getViolationCode().getId(),
+        int result = jdbcTemplate.update(sql, clientHistory.getClientId(), clientHistory.getViolationActNumber(), clientHistory.getUpdateDate(),
+                clientHistory.getPreviousVisitDate(), clientHistory.getNextVisitDate(), clientHistory.getViolationCodeId(),
                 clientHistory.getStampNumbers(), clientHistory.getGo(), clientHistory.getJth(), clientHistory.getJtt(),
                 clientHistory.getKet(), clientHistory.getJah(), clientHistory.getJk(), clientHistory.getJv(),
                 clientHistory.getGo3(), clientHistory.getGo2(), clientHistory.getRisk());

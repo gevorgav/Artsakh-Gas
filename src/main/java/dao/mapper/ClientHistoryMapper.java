@@ -13,20 +13,19 @@ import java.sql.SQLException;
  */
 public class ClientHistoryMapper  implements RowMapper<ClientHistory> {
 
-    private ClientDao clientDao;
-
-    private ViolationCodeDao violationCodeDao;
+    public ClientHistoryMapper() {
+    }
 
     @Override
     public ClientHistory mapRow(ResultSet rs, int rowNum) throws SQLException {
         ClientHistory clientHistory = new ClientHistory();
         clientHistory.setId(rs.getInt("id"));
-        clientHistory.setClient(clientDao != null ? clientDao.loadById(rs.getInt("clientId")) : null);
+        clientHistory.setClientId(rs.getInt("clientId"));
         clientHistory.setViolationActNumber(rs.getObject("violationActNumber") != null ? rs.getInt("violationActNumber") : null);
         clientHistory.setUpdateDate(rs.getDate("updateDate"));
         clientHistory.setPreviousVisitDate(rs.getDate("previousVisitDate"));
         clientHistory.setNextVisitDate(rs.getDate("nextVisitDate"));
-        clientHistory.setViolationCode(violationCodeDao != null && rs.getObject("codeViolation") != null ? violationCodeDao.loadById(rs.getInt("codeViolation")) : null);
+        clientHistory.setViolationCodeId(rs.getInt("codeViolation"));
         clientHistory.setStampNumbers(rs.getString("stampNumbers"));
         clientHistory.setGo(rs.getObject("go") != null ? rs.getInt("go") : null);
         clientHistory.setJth(rs.getObject("jth") != null ? rs.getInt("jth") : null);
@@ -41,8 +40,4 @@ public class ClientHistoryMapper  implements RowMapper<ClientHistory> {
         return clientHistory;
     }
 
-    public ClientHistoryMapper(ClientDao clientDao, ViolationCodeDao violationCodeDao) {
-        this.clientDao = clientDao;
-        this.violationCodeDao = violationCodeDao;
-    }
 }

@@ -1,6 +1,8 @@
 package login;
 
 import Core.Root;
+import dao.UserDao;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -16,6 +18,8 @@ public class LoginForm {
     private Root root;
     private User user;
     private List<User> users;
+    @Autowired
+    private UserDao userDao;
 
     public Root getRoot() {
         return root;
@@ -27,7 +31,7 @@ public class LoginForm {
 
     public List<User> getUsers() {
         if (this.users == null) {
-            this.users = getRoot().getUserDao().getAll();
+            this.users = userDao.loadAll();
         }
         return users;
     }

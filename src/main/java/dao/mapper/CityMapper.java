@@ -19,7 +19,7 @@ public class CityMapper  implements RowMapper<City> {
         City city = new City();
         city.setId(resultSet.getInt("id"));
         city.setName(resultSet.getString("name"));
-        city.setRegion(regionDao != null && resultSet.getObject("regionid") != null? regionDao.loadById(resultSet.getInt("regionid")) : null);
+        city.setRegion(regionDao != null && resultSet.getObject("regionid") != null ? regionDao.loadById(resultSet.getInt("regionid")) : null);
         return city;
     }
 

@@ -50,6 +50,5 @@ public class TestForm {
 
     public void delete() {
         clientDao.delete(4);
-        clients = null;
     }
 }

@@ -36,8 +36,8 @@ public class ClientDao extends Dao<Client>{
      */
     public List<Client> loadAll() {
         try {
-            String sql = "SELECT * FROM clients;";
-            return jdbcTemplate.query(sql, new ClientMapper(clientHistoryDao, cityDao, streetDao, grpDao));
+            String sql = "SELECT *  FROM clients LEFT JOIN clientsHistory On clients.id = clientsHistory.clientId ORDER BY clientsHistory.id DESC LIMIT 1";
+            return jdbcTemplate.query(sql, new ClientMapper(clientHistoryDao));
         } catch (EmptyResultDataAccessException e) {
             return Collections.emptyList();
         }
@@ -51,8 +51,8 @@ public class ClientDao extends Dao<Client>{
      */
     public Client loadById(@NotNull Integer id) {
         Objects.requireNonNull(id);
-        String sql = "SELECT * FROM clients WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, new ClientMapper(clientHistoryDao, cityDao, streetDao, grpDao), id);
+        String sql = "SELECT *  FROM clients LEFT JOIN clientsHistory On clients.id = clientsHistory.clientId  WHERE clients.id = ? ORDER BY clientsHistory.id DESC LIMIT 1";
+        return jdbcTemplate.queryForObject(sql, new ClientMapper(clientHistoryDao), id);
     }
 
     /**
@@ -65,8 +65,8 @@ public class ClientDao extends Dao<Client>{
         String sql = "INSERT INTO clients(id, currentVersionId, firstName, lastName, middleName, phoneNumber, counterNumber, regionId, cityId, streetId, homeNumber, apartmentNumber, ashtId, grpId)\n" +
                 "    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         int result = jdbcTemplate.update(sql, client.getId(), client.getFirstName(), client.getLastName(), client.getMiddleName(),
-                client.getPhoneNumber(), client.getCounterNumber(), client.getCity().getRegion().getId(), client.getCity().getId(), client.getStreet().getId(), client.getHomeNumber(),
-                client.getApartmentNumber(), client.getAshtId(), client.getGrp().getId());
+                client.getPhoneNumber(), client.getCounterNumber(), client.getCityId(), client.getCityId(), client.getStreetId(), client.getHomeNumber(),
+                client.getApartmentNumber(), client.getAshtId(), client.getGrpId());
         return result == 1;
     }
 
@@ -81,8 +81,8 @@ public class ClientDao extends Dao<Client>{
                 "SET id = ?, currentVersionId = ?, firstName = ?, lastName = ?, middleName = ?, phoneNumber = ?, counterNumber = ?, regionId = ?, cityId = ?, streetId = ?, homeNumber = ?, apartmentNumber = ?, ashtId = ?, grpId = ?\n" +
                 "WHERE id = ?";
         int result = jdbcTemplate.update(sql, client.getId(), client.getFirstName(), client.getLastName(), client.getMiddleName(),
-                client.getPhoneNumber(), client.getCounterNumber(), client.getCity().getRegion().getId(), client.getCity().getId(), client.getStreet().getId(), client.getHomeNumber(),
-                client.getApartmentNumber(), client.getAshtId(), client.getGrp().getId(), client.getId());
+                client.getPhoneNumber(), client.getCounterNumber(), client.getCityId(), client.getCityId(), client.getStreetId(), client.getHomeNumber(),
+                client.getApartmentNumber(), client.getAshtId(), client.getGrpId(), client.getId());
         return result == 1;
     }
 
