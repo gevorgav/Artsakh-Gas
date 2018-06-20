@@ -272,6 +272,10 @@
                                                 <p:column filterBy="#{client.phoneNumber}" headerText="Phone Number" footerText="contains" filterMatchMode="contains">
                                                     <h:outputText value="#{client.phoneNumber}" />
                                                 </p:column>
+                                                <p:column>
+                                                    <p:commandLink styleClass="fa fa-pencil-square-o" actionListener="#{portfolioForm.editClient(client)}"
+                                                                   update="@form" icon="" title="Խմբագրել"/>
+                                                </p:column>
 
                                                 <!--<p:column filterBy="#{client.brand}" headerText="Brand" footerText="exact" filterMatchMode="exact">-->
                                                     <!--<f:facet name="filter">-->
@@ -345,6 +349,11 @@
                     </div>
                 </div>
             </h:form>
+
+
+
+           <ui:include src="dialogs/clientEdit.xhtml" />
+
         </div>
         <!-- ############ PAGE END-->
         <!-- / -->
