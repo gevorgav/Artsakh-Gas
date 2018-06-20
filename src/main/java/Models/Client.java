@@ -1,6 +1,7 @@
 package Models;
 
 import Core.Models.City;
+import Core.Models.Region;
 
 import java.util.Objects;
 
@@ -23,6 +24,8 @@ public class Client {
 
     private Integer cityId;
 
+    private Integer regionId;
+
     private Integer streetId;
 
     private Integer homeNumber;
@@ -34,6 +37,8 @@ public class Client {
     private Integer grpId;
 
     private ClientHistory clientHistory;
+
+    private Region region;
 
     public Client() {
     }
@@ -142,6 +147,22 @@ public class Client {
         this.clientHistory = clientHistory;
     }
 
+    public Integer getRegionId() {
+        return regionId;
+    }
+
+    public void setRegionId(Integer regionId) {
+        this.regionId = regionId;
+    }
+
+    public Region getRegion() {
+        return region;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -157,6 +178,7 @@ public class Client {
         if (counterNumber != null ? !counterNumber.equals(client.counterNumber) : client.counterNumber != null)
             return false;
         if (cityId != null ? !cityId.equals(client.cityId) : client.cityId != null) return false;
+        if (regionId != null ? !regionId.equals(client.regionId) : client.regionId != null) return false;
         if (streetId != null ? !streetId.equals(client.streetId) : client.streetId != null) return false;
         if (homeNumber != null ? !homeNumber.equals(client.homeNumber) : client.homeNumber != null) return false;
         if (apartmentNumber != null ? !apartmentNumber.equals(client.apartmentNumber) : client.apartmentNumber != null)
@@ -175,6 +197,7 @@ public class Client {
         result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
         result = 31 * result + (counterNumber != null ? counterNumber.hashCode() : 0);
         result = 31 * result + (cityId != null ? cityId.hashCode() : 0);
+        result = 31 * result + (regionId != null ? regionId.hashCode() : 0);
         result = 31 * result + (streetId != null ? streetId.hashCode() : 0);
         result = 31 * result + (homeNumber != null ? homeNumber.hashCode() : 0);
         result = 31 * result + (apartmentNumber != null ? apartmentNumber.hashCode() : 0);
@@ -182,10 +205,5 @@ public class Client {
         result = 31 * result + (grpId != null ? grpId.hashCode() : 0);
         result = 31 * result + (clientHistory != null ? clientHistory.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return this.firstName + " " + this.lastName + " " + this.middleName;
     }
 }

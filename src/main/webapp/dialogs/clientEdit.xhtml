@@ -1,0 +1,45 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog dynamic="true" header="Edit Client" id="clientDialogId" modal="true"
+              resizable="false" widgetVar="clientDialog" width="100%" style="max-width: 1200px; height: 80%">
+        <h:form>
+            <p:outputLabel for="firstNameId" value="Անուն"/>
+            <p:inputText id="firstNameId" value="#{portfolioForm.client.firstName}" styleClass="form-control"
+                         required="true"
+                         requiredMessage="Անունը պարտադիր դաշտ է" placeholder="Անուն"/>
+
+            <p:outputLabel for="lastNameId" value="Ազգանուն"/>
+            <p:inputText id="lastNameId" value="#{portfolioForm.client.lastName}" styleClass="form-control"
+                         required="true"
+                         requiredMessage="Ազգանունը պարտադիր դաշտ է" placeholder="Ազգանուն"/>
+
+            <p:outputLabel for="middleNameId" value="Հայրանուն"/>
+            <p:inputText id="middleNameId" value="#{portfolioForm.client.middleName}" styleClass="form-control"
+                         required="true"
+                         requiredMessage="Հայրանունը պարտադիր դաշտ է" placeholder="Հայրանուն"/>
+
+            <p:outputLabel for="phoneNumberId" value="Հեռախոս"/>
+            <p:inputMask id="phoneNumberId" value="#{portfolioForm.client.phoneNumber}" styleClass="form-control"
+                         required="true" requiredMessage="Հեռախոսը պարտադիր դաշտ է" placeholder="Հեռախոս"
+                         mask="(374) 99 999-999"/>
+
+            <p:outputLabel for="counterNumberId" value="Հաշվիչի համար"/>
+            <p:inputText id="counterNumberId" value="#{portfolioForm.client.counterNumber}" styleClass="form-control"
+                         required="true"
+                         requiredMessage="Հաշվիչի համարը պարտադիր դաշտ է" placeholder="Հաշվիչի համար"/>
+
+            <p:outputLabel for="regionId" value="Region"/>
+            <p:selectOneMenu id="regionId" value="#{portfolioForm.client.id}" styleClass="form-control input-c"
+                             converter="javax.faces.Integer" required="true" requiredMessage="Region պարտադիր դաշտ է">
+                <f:selectItem id="regionSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                <f:selectItems id="regionsId"
+                               itemLabel="#{region.name}"
+                               itemValue="#{region.id}"
+                               value="#{portfolioForm.cache.regions}" var="region"/>
+            </p:selectOneMenu>
+        </h:form>
+    </p:dialog>
+</ui:composition>
