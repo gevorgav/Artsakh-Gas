@@ -24,6 +24,7 @@
         <property name="password" value="passwordforgaz" />
     </bean>
 
+    <bean id="cache" class="Core.CacheForm" scope="singleton" />
 
     <bean id="root" class="Core.Root" scope="singleton" />
 
@@ -44,6 +45,7 @@
     </bean>
 
     <bean id="portfolioForm" class="portfolio.PortfolioForm" scope="session">
+        <property name="cache" ref="cache" />
     </bean>
 
     <!--HOTEL BEANS-->

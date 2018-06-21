@@ -3,7 +3,7 @@ package Core.Models;
 public class City {
   private Integer id;
   private String name;
-  private Region region;
+  private Integer regionId;
 
   public Integer getId() {
     return id;
@@ -21,12 +21,12 @@ public class City {
     this.name = name;
   }
 
-  public Region getRegion() {
-    return region;
+  public Integer getRegionId() {
+    return regionId;
   }
 
-  public void setRegion(Region region) {
-    this.region = region;
+  public void setRegionId(Integer regionId) {
+    this.regionId = regionId;
   }
 
   @Override
@@ -38,14 +38,14 @@ public class City {
 
     if (id != null ? !id.equals(city.id) : city.id != null) return false;
     if (name != null ? !name.equals(city.name) : city.name != null) return false;
-    return region != null ? region.equals(city.region) : city.region == null;
+    return regionId != null ? regionId.equals(city.regionId) : city.regionId == null;
   }
 
   @Override
   public int hashCode() {
     int result = id != null ? id.hashCode() : 0;
     result = 31 * result + (name != null ? name.hashCode() : 0);
-    result = 31 * result + (region != null ? region.hashCode() : 0);
+    result = 31 * result + (regionId != null ? regionId.hashCode() : 0);
     return result;
   }
 }

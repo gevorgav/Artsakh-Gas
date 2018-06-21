@@ -16,13 +16,10 @@ import java.util.Objects;
 @Repository
 public class CityDao extends Dao<City>{
 
-    @Autowired
-    private RegionDao regionDao;
-
     public List<City> loadAll() {
         try {
             String sql = "SELECT * FROM city;";
-            return jdbcTemplate.query(sql, new CityMapper(regionDao));
+            return jdbcTemplate.query(sql, new CityMapper());
         } catch (EmptyResultDataAccessException e) {
             return Collections.emptyList();
         }
@@ -31,7 +28,7 @@ public class CityDao extends Dao<City>{
     public City loadById(Integer id) {
         Objects.requireNonNull(id);
         String sql = "SELECT * FROM city WHERE id = ?;";
-        return jdbcTemplate.queryForObject(sql, new CityMapper(regionDao), id);
+        return jdbcTemplate.queryForObject(sql, new CityMapper(), id);
     }
 
     @Override

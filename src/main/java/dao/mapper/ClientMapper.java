@@ -31,12 +31,13 @@ public class ClientMapper  implements RowMapper<Client> {
         client.setMiddleName(resultSet.getString("middleName"));
         client.setPhoneNumber(resultSet.getString("phoneNumber"));
         client.setCounterNumber(resultSet.getString("counterNumber"));
+        client.setRegionId(resultSet.getInt("regionId"));
         client.setCityId(resultSet.getInt("cityId"));
         client.setStreetId(resultSet.getInt("streetId"));
         client.setHomeNumber(resultSet.getObject("homeNumber") != null ? resultSet.getInt("homeNumber") : null);
         client.setApartmentNumber(resultSet.getObject("apartmentNumber") != null ? resultSet.getInt("apartmentNumber") : null);
         client.setAshtId(resultSet.getObject("ashtId") != null ? resultSet.getInt("ashtId") : null);
-        client.setGrpId(resultSet.getInt("grpId"));
+        client.setGrpId(resultSet.getObject("grpId") != null ? resultSet.getInt("grpId") : null);
         client.setClientHistory(new ClientHistoryMapper().mapRow(resultSet, i));
         return client;
     }

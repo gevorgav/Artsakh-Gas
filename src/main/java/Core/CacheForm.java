@@ -10,6 +10,7 @@ import dao.*;
 import login.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class CacheForm {
@@ -52,6 +53,12 @@ public class CacheForm {
     public List<Region> getRegions() {
         if(this.regions == null){
             this.regions = regionDao.loadAll();
+            this.regions.sort(new Comparator<Region>() {
+                @Override
+                public int compare(Region o1, Region o2) {
+                    return o1.getName().compareTo(o2.getName());
+                }
+            });
         }
         return regions;
     }

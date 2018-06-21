@@ -12,18 +12,12 @@ import java.sql.SQLException;
  */
 public class CityMapper  implements RowMapper<City> {
 
-    private RegionDao regionDao;
-
     @Override
     public City mapRow(ResultSet resultSet, int i) throws SQLException {
         City city = new City();
         city.setId(resultSet.getInt("id"));
         city.setName(resultSet.getString("name"));
-        city.setRegion(regionDao != null && resultSet.getObject("regionid") != null ? regionDao.loadById(resultSet.getInt("regionid")) : null);
+        city.setRegionId(resultSet.getInt("regionid"));
         return city;
-    }
-
-    public CityMapper(RegionDao regionDao) {
-        this.regionDao = regionDao;
     }
 }

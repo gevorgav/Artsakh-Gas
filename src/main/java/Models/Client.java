@@ -40,6 +40,8 @@ public class Client {
 
     private Region region;
 
+    private boolean isNew;
+
     public Client() {
     }
 
@@ -163,6 +165,14 @@ public class Client {
         this.region = region;
     }
 
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public void setNew(boolean aNew) {
+        isNew = aNew;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -205,5 +215,24 @@ public class Client {
         result = 31 * result + (grpId != null ? grpId.hashCode() : 0);
         result = 31 * result + (clientHistory != null ? clientHistory.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        Client client = new Client();
+        client.setId(this.id);
+        client.setFirstName(this.firstName);
+        client.setLastName(this.lastName);
+        client.setMiddleName(this.middleName);
+        client.setPhoneNumber(this.phoneNumber);
+        client.setCounterNumber(this.counterNumber);
+        client.setRegionId(this.regionId);
+        client.setCityId(this.cityId);
+        client.setStreetId(this.streetId);
+        client.setHomeNumber(this.homeNumber);
+        client.setApartmentNumber(this.apartmentNumber);
+        client.setAshtId(this.ashtId);
+        client.setGrpId(this.grpId);
+        return client;
     }
 }

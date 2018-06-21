@@ -2,10 +2,15 @@
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions"
                 xmlns:p="http://primefaces.org/ui">
-    <p:dialog dynamic="true" header="Edit Client" id="clientDialogId" modal="true"
+    <p:dialog dynamic="true" header="Edit Client" id="clientDialogId" modal="true" onShow=""
               resizable="false" widgetVar="clientDialog" width="100%" style="max-width: 1200px; height: 80%">
         <h:form>
+            <p:outputLabel for="id" value="ID"/>
+            <p:inputNumber id="id" maxlength="11" maxValue="9999999999" minValue="0"
+                           value="#{portfolioForm.client.id}">
+            </p:inputNumber>
             <p:outputLabel for="firstNameId" value="Անուն"/>
             <p:inputText id="firstNameId" value="#{portfolioForm.client.firstName}" styleClass="form-control"
                          required="true"
@@ -32,14 +37,67 @@
                          requiredMessage="Հաշվիչի համարը պարտադիր դաշտ է" placeholder="Հաշվիչի համար"/>
 
             <p:outputLabel for="regionId" value="Region"/>
-            <p:selectOneMenu id="regionId" value="#{portfolioForm.client.id}" styleClass="form-control input-c"
-                             converter="javax.faces.Integer" required="true" requiredMessage="Region պարտադիր դաշտ է">
+            <p:selectOneMenu id="regionId" value="#{portfolioForm.client.regionId}" styleClass="form-control input-c"
+                             requiredMessage="Region պարտադիր դաշտ է">
                 <f:selectItem id="regionSelectOneId" itemLabel="Ընտրիր մեկը"/>
                 <f:selectItems id="regionsId"
                                itemLabel="#{region.name}"
                                itemValue="#{region.id}"
                                value="#{portfolioForm.cache.regions}" var="region"/>
+                <p:ajax event="change" process="@this" update="@this location1" listener="#{portfolioForm.resetCity}"/>
             </p:selectOneMenu>
+
+            <h:panelGroup id="location1">
+                <p:outputLabel for="cityId" value="City"/>
+                <p:selectOneMenu id="cityId" value="#{portfolioForm.client.cityId}" styleClass="form-control input-c"
+                                 requiredMessage="City պարտադիր դաշտ է">
+                    <f:selectItem id="citySelectOneId" itemLabel="Ընտրիր մեկը"/>
+                    <f:selectItems id="citysId"
+                                   itemLabel="#{city.name}"
+                                   itemValue="#{city.id}"
+                                   value="#{portfolioForm.citiesByRegionId(portfolioForm.client.regionId)}" var="city"/>
+                    <p:ajax event="change" process="@this" update="@this streetId"
+                            listener="#{portfolioForm.resetStreet}"/>
+                </p:selectOneMenu>
+
+                <p:outputLabel for="streetId" value="Street"/>
+                <p:selectOneMenu id="streetId" value="#{portfolioForm.client.streetId}"
+                                 styleClass="form-control input-c">
+                    <f:selectItem id="streetSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                    <f:selectItems id="streetsId"
+                                   itemLabel="#{street.name}"
+                                   itemValue="#{street.id}"
+                                   value="#{portfolioForm.streetsByCityId(portfolioForm.client.cityId)}"
+                                   var="street"/>
+                </p:selectOneMenu>
+
+                <p:outputLabel for="homeNumberId" value="Շենք"/>
+                <p:inputNumber id="homeNumberId" maxlength="11" maxValue="9999999999" minValue="0"
+                               value="#{portfolioForm.client.homeNumber}">
+                </p:inputNumber>
+
+                <p:outputLabel for="appartmentNumberId" value="Տուն"/>
+                <p:inputNumber id="appartmentNumberId" maxlength="11" maxValue="9999999999" minValue="0"
+                               value="#{portfolioForm.client.apartmentNumber}">
+                </p:inputNumber>
+
+                <p:outputLabel for="ashtId" value="Asht"/>
+                <p:inputNumber id="ashtId" maxlength="11" maxValue="9999999999" minValue="0"
+                               value="#{portfolioForm.client.ashtId}">
+                </p:inputNumber>
+
+                <p:outputLabel for="grpId" value="GRP"/>
+                <p:inputNumber id="grpId" maxlength="11" maxValue="9999999999" minValue="0"
+                               value="#{portfolioForm.client.grpId}">
+                </p:inputNumber>
+            </h:panelGroup>
+
+            <div class="col s5 input-field">
+                <p:commandButton value="Պահպանել" styleClass="dark"  action="#{portfolioForm.saveClient}"/>
+            </div>
+            <div class="col s5 input-field">
+                <p:commandButton value="Չեղարկել" styleClass="dark" immediate="true" action="#{portfolioForm.cancelClientDialog}"/>
+            </div>
         </h:form>
     </p:dialog>
 </ui:composition>

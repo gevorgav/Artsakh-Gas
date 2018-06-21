@@ -3,6 +3,7 @@ package dao;
 import Models.Master;
 import dao.mapper.MasterMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Objects;
 /**
  * Created by astghik.mamunc on 6/13/2018.
  */
+@Repository
 public class MasterDao extends Dao<Master> {
 
     public List<Master> loadAll() {
