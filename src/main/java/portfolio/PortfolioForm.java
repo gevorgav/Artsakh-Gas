@@ -2,32 +2,14 @@ package portfolio;
 
 import Core.CacheForm;
 import Core.Models.City;
-import Core.Models.Country;
-import Core.Models.Month;
-import Core.Models.Year;
-import Core.Root;
-import Core.Util;
 import Models.Client;
-import Models.Sights;
 import Models.Street;
-import Models.Transport;
 import dao.ClientDao;
-import home.HomeForm;
-import hotel.Hotel;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.RowEditEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.*;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by arshak.askaryan on 1/25/2017.
@@ -72,16 +54,23 @@ public class PortfolioForm {
     }
 
     public void editClient(Client client) {
+        this.clientSnapshot = client;
         try {
             this.client = (Client) client.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
+        showClientEditDialog();
+    }
+
+    public void showClientEditDialog(){
         RequestContext requestContext = RequestContext.getCurrentInstance();
         requestContext.execute("PF('clientDialog').show()");
     }
 
     // Client Form
+
+    private Client clientSnapshot;
 
     private Client client;
 
@@ -95,6 +84,14 @@ public class PortfolioForm {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public Client getClientSnapshot() {
+        return clientSnapshot;
+    }
+
+    public void setClientSnapshot(Client clientSnapshot) {
+        this.clientSnapshot = clientSnapshot;
     }
 
     public List<City> citiesByRegionId(Integer regionId) {
@@ -147,16 +144,16 @@ public class PortfolioForm {
                 clientDao.insert(this.client);
             } else {
                 clientDao.update(this.client);
+                this.clients.remove(this.clientSnapshot);
             }
+            this.clients.add(this.client);
             closeClientDialog();
-            this.clients = null;
         }
     }
 
     public void cancelClientDialog() {
         resetClientEditForm();
         closeClientDialog();
-
     }
 
     public void closeClientDialog() {
@@ -171,5 +168,11 @@ public class PortfolioForm {
 
     public boolean validate(Client client) {
         return true;
+    }
+
+    public void addNewClient(){
+        this.client = new Client();
+        client.setNew(true);
+        showClientEditDialog();
     }
 }

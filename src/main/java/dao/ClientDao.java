@@ -51,7 +51,7 @@ public class ClientDao extends Dao<Client>{
      */
     public Client loadById(@NotNull Integer id) {
         Objects.requireNonNull(id);
-        String sql = "SELECT *  FROM clients LEFT JOIN clientsHistory On clients.id = clientsHistory.clientId  WHERE clients.id = ? ORDER BY clientsHistory.id DESC LIMIT 1";
+        String sql = "SELECT *  FROM clients WHERE clients.id = ?";
         return jdbcTemplate.queryForObject(sql, new ClientMapper(clientHistoryDao), id);
     }
 
@@ -63,7 +63,7 @@ public class ClientDao extends Dao<Client>{
     public boolean insert(Client client) {
         Objects.requireNonNull(client);
         String sql = "INSERT INTO clients(id, firstName, lastName, middleName, phoneNumber, counterNumber, regionId, cityId, streetId, homeNumber, apartmentNumber, ashtId, grpId)\n" +
-                "    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         int result = jdbcTemplate.update(sql, client.getId(), client.getFirstName(), client.getLastName(), client.getMiddleName(),
                 client.getPhoneNumber(), client.getCounterNumber(), client.getCityId(), client.getCityId(), client.getStreetId(), client.getHomeNumber(),
                 client.getApartmentNumber(), client.getAshtId(), client.getGrpId());

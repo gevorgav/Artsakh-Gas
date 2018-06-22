@@ -25,7 +25,6 @@ public class ClientHistoryMapper  implements RowMapper<ClientHistory> {
         clientHistory.setUpdateDate(rs.getDate("updateDate"));
         clientHistory.setPreviousVisitDate(rs.getDate("previousVisitDate"));
         clientHistory.setNextVisitDate(rs.getDate("nextVisitDate"));
-        clientHistory.setViolationCodeId(rs.getInt("codeViolation"));
         clientHistory.setStampNumbers(rs.getString("stampNumbers"));
         clientHistory.setGo(rs.getObject("go") != null ? rs.getInt("go") : null);
         clientHistory.setJth(rs.getObject("jth") != null ? rs.getInt("jth") : null);
