@@ -3,13 +3,18 @@ package portfolio;
 import Core.CacheForm;
 import Core.Models.City;
 import Models.Client;
+import Models.ClientHistory;
 import Models.Street;
 import dao.ClientDao;
+import dao.ClientHistoryDao;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by arshak.askaryan on 1/25/2017.
@@ -17,6 +22,10 @@ import java.util.List;
 public class PortfolioForm {
     private List<Client> clients;
     private List<Client> filteredClients;
+    private Date date9;
+    private ClientHistory clientHistory;
+    private Integer clientId;
+    private List<String> stamps;
 
     private CacheForm cache;
 
@@ -25,6 +34,9 @@ public class PortfolioForm {
 
     @Autowired
     private ClientDao clientDao;
+
+    @Autowired
+    private ClientHistoryDao clientHistoryDao;
 
     public List<Client> getClients() {
         if (clients == null) {
@@ -43,6 +55,30 @@ public class PortfolioForm {
 
     public void setCache(CacheForm cache) {
         this.cache = cache;
+    }
+
+    public Date getDate9() {
+        return date9;
+    }
+
+    public void setDate9(Date date9) {
+        this.date9 = date9;
+    }
+
+    public ClientHistory getClientHistory() {
+        return clientHistory;
+    }
+
+    public void setClientHistory(ClientHistory clientHistory) {
+        this.clientHistory = clientHistory;
+    }
+
+    public Integer getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
     }
 
     public List<Client> getFilteredClients() {
@@ -175,4 +211,51 @@ public class PortfolioForm {
         client.setNew(true);
         showClientEditDialog();
     }
+
+    //Client History
+
+    public void searchClientHistory(){
+        if (!Objects.isNull(clientId)){
+            clientHistory = clientHistoryDao.loadLastClientHistory(clientId);
+        }else {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            FacesMessage facesMessage = new FacesMessage("Incorrect clientID.");
+            facesContext.addMessage(null, facesMessage);
+
+        }
+
+    }
+
+    public void cancelHistoryDialog(){
+        clientId = null;
+        clientHistory = null;
+        RequestContext.getCurrentInstance().execute("PF('historyDialog').hide()");
+    }
+
+    public void onDateSelect(SelectEvent event) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected", format.format(event.getObject())));
+    }
+
+    public List<String> getStamps() {
+        this.stamps = Arrays.asList(clientHistory.getStampNumbers().split("\\s*,\\s*"));
+        return stamps;
+    }
+
+    public void setStamps(List<String> stamps) {
+        StringBuilder listString = new StringBuilder();
+        for (String s : stamps)
+        {
+            listString.append(s).append(",");
+        }
+        clientHistory.setStampNumbers(listString.toString());
+        this.stamps = stamps;
+    }
+
+    public void saveHistory(){
+
+    }
+
+
 }

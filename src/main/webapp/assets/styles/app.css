@@ -628,7 +628,7 @@ a.list-group-item {
 
 .modal > .left {
   position: fixed;
-  z-index: 1055;
+  z-index: 1002;
   top: 0;
   left: 0;
   right: auto;
@@ -636,7 +636,7 @@ a.list-group-item {
 
 .modal > .right {
   position: fixed;
-  z-index: 1055;
+  z-index: 1002;
   top: 0;
   left: auto;
   right: 0;
@@ -644,7 +644,7 @@ a.list-group-item {
 
 .modal > .top {
   position: fixed;
-  z-index: 1055;
+  z-index: 1002;
   top: 0;
   left: 0;
   right: 0;
@@ -652,7 +652,7 @@ a.list-group-item {
 
 .modal > .bottom {
   position: fixed;
-  z-index: 1055;
+  z-index: 1002;
   top: auto;
   left: 0;
   right: 0;
@@ -1714,7 +1714,7 @@ body {
 
 .app-aside {
   position: fixed !important;
-  z-index: 1030;
+  z-index: 1002;
   float: left;
   height: 100%; }
 
@@ -1731,7 +1731,7 @@ body {
   left: 0;
   right: 0;
   margin: inherit;
-  z-index: 1009;
+  z-index: 1001;
 }
   .app-header ~ .app-body {
     padding-top: 3.5rem; }

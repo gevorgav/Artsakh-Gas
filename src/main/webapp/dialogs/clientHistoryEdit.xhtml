@@ -1,0 +1,138 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog dynamic="true" header="Այցելություն" widgetVar="historyDialog" modal="true" position="top"
+              height="550" width="80%" closable="false" resizable="false">
+        <h:form id="searchFormId" onsubmit="return false;">
+            <div class="row-body">
+                <div class="form-group row">
+                    <div class="col-sm-8 col-md-8">
+                        <p:inputNumber styleClass="form-control" id="id" maxlength="11" maxValue="9999999999"
+                                       minValue="0"
+                                       value="#{portfolioForm.clientId}" placeholder="ClientID">
+                        </p:inputNumber>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <h:commandLink styleClass="btn btn-fw success"> Գտնել
+                            <f:ajax listener="#{portfolioForm.searchClientHistory}" event="click"
+                                    execute="@form" render=":clientHistoryForm"/>
+                        </h:commandLink>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+        <div class="clear"></div>
+
+        <h:panelGroup layout="block" class="padding" style="max-width: 80%; margin: 0 auto;">
+            <h:form id="clientHistoryForm">
+                <c:if test="#{not empty portfolioForm.clientHistory}">
+                    <div class="row-col h-auto">
+                        <div class="form-horizontal">
+                            <div class="form-group row">
+                                <div class="col-sm-5">
+                                    <p:outputLabel for="previewDate" value="Preview Date:" class="form-control-label"/>
+                                    <p:calendar styleClass="form-control" id="previewDate"
+                                                value="#{portfolioForm.clientHistory.previousVisitDate}"
+                                                pattern="dd-MM-yyyy" mask="true"/>
+                                </div>
+                                <div class="col-sm-5">
+                                    <p:outputLabel for="previewDate" value="Next visit Date:"
+                                                   class="form-control-label"/>
+                                    <p:calendar styleClass="form-control" id="nextDate"
+                                                value="#{portfolioForm.clientHistory.nextVisitDate}"
+                                                pattern="dd-MM-yyyy" mask="true"/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <h:outputLabel class="form-control-label">go</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   styleClass="form-control" value="#{portfolioForm.clientHistory.go}"
+                                                   id="goId"/>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h:outputLabel class="form-control-label">jth</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   styleClass="form-control" value="#{portfolioForm.clientHistory.jth}"
+                                                   id="jthId"/>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h:outputLabel class="form-control-label">jtt</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   styleClass="form-control" value="#{portfolioForm.clientHistory.jtt}"
+                                                   id="jttId"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <h:outputLabel class="form-control-label">ket</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   styleClass="form-control" value="#{portfolioForm.clientHistory.ket}"
+                                                   id="ketId"/>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h:outputLabel class="form-control-label">jah</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   styleClass="form-control" value="#{portfolioForm.clientHistory.jah}"
+                                                   id="jahId"/>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h:outputLabel class="form-control-label">jk</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   styleClass="form-control" value="#{portfolioForm.clientHistory.jk}"
+                                                   id="jkId"/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <h:outputLabel class="form-control-label">jv</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   styleClass="form-control" value="#{portfolioForm.clientHistory.jv}"
+                                                   id="jvId"/>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h:outputLabel class="form-control-label">go2</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   styleClass="form-control" value="#{portfolioForm.clientHistory.go2}"
+                                                   id="go2Id"/>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h:outputLabel class="form-control-label">go3</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   styleClass="form-control" value="#{portfolioForm.clientHistory.go3}"
+                                                   id="go3Id"/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <h:outputLabel class="form-control-label">Stamp</h:outputLabel>
+                                    <p:chips id="stampNumbersId"  value="#{portfolioForm.stamps}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </c:if>
+
+                <div class="modal-footer">
+                    <h:commandLink value="Չեղարկել" styleClass="btn btn-default" data-dismiss="modal">
+                        <f:ajax listener="#{portfolioForm.cancelHistoryDialog}" event="click"
+                                execute="@form" />
+                    </h:commandLink>
+                    <c:if test="#{not empty portfolioForm.clientHistory}">
+                        <h:commandLink value="Պահպանել" styleClass="btn btn-primary">
+                            <f:ajax listener="#{portfolioForm.cancelHistoryDialog}" event="click"
+                                    execute="@form" />
+                        </h:commandLink>
+                    </c:if>
+                </div>
+            </h:form>
+        </h:panelGroup>
+        <!--<h:outputText value="This is a Modal Dialog." />-->
+
+    </p:dialog>
+</ui:composition>

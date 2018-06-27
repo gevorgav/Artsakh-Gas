@@ -253,6 +253,13 @@
                                         </div>
                                         <div class="col-xs-12 col-sm-6 col-md-3 form-group">
                                         </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-3 form-group">
+                                            <h:panelGrid columns="1" cellpadding="5">
+                                                <p:commandButton value="Ավելացնել այցելություն" type="button" onclick="PF('historyDialog').show();">
+                                                    <f:ajax  render=":searchFormId :clientHistoryForm"/>
+                                                </p:commandButton>
+                                            </h:panelGrid>
+                                        </div>
                                         <div class="clear"></div>
 
                                         <div class="clear"></div>
@@ -339,9 +346,8 @@
                 </div>
             </h:form>
 
-
-
-           <ui:include src="dialogs/clientEdit.xhtml" />
+            <ui:include src="dialogs/clientHistoryEdit.xhtml" />
+            <ui:include src="dialogs/clientEdit.xhtml" />
 
         </div>
         <!-- ############ PAGE END-->

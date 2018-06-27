@@ -1696,7 +1696,7 @@ body {
 
 .app-aside {
   position: fixed !important;
-  z-index: 1030;
+  z-index: 1004;
   float: left;
   height: 100%; }
 
@@ -1713,7 +1713,7 @@ body {
   left: 0;
   right: 0;
   margin: inherit;
-  z-index: 1020; }
+  z-index: 1001; }
   .app-header ~ .app-body {
     padding-top: 3.5rem; }
   .app-header.navbar-md ~ .app-body {
@@ -1791,7 +1791,7 @@ body {
   .app-aside.modal {
     width: 100%;
     position: fixed;
-    z-index: 1050; }
+    z-index: 1004; }
   .app-aside .left {
     position: fixed;
     width: 304px; } }
