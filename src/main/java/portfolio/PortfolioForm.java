@@ -188,7 +188,7 @@ public class PortfolioForm {
     }
 
     public void cancelClientDialog() {
-        resetClientEditForm();
+//        resetClientEditForm();
         closeClientDialog();
     }
 
@@ -239,17 +239,23 @@ public class PortfolioForm {
     }
 
     public List<String> getStamps() {
+        if(Objects.isNull(clientHistory.getStampNumbers())){
+            return Collections.emptyList();
+        }
         this.stamps = Arrays.asList(clientHistory.getStampNumbers().split("\\s*,\\s*"));
         return stamps;
     }
 
     public void setStamps(List<String> stamps) {
-        StringBuilder listString = new StringBuilder();
-        for (String s : stamps)
-        {
-            listString.append(s).append(",");
+        if (Objects.nonNull(stamps)){
+            StringBuilder listString = new StringBuilder();
+            for (String s : stamps)
+            {
+                listString.append(s).append(",");
+            }
+            clientHistory.setStampNumbers(listString.toString());
         }
-        clientHistory.setStampNumbers(listString.toString());
+
         this.stamps = stamps;
     }
 

@@ -3,6 +3,7 @@ package dao;
 import Models.GRP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,6 +15,9 @@ import java.util.List;
 public abstract class Dao<T> {
     @Autowired
     protected JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    protected NamedParameterJdbcTemplate namedJdbc;
 
     abstract List<T> loadAll();
 

@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class ClientHistory {
 
-    private Integer id;
+    private String id;
 
     private Integer clientId;
 
@@ -46,14 +46,13 @@ public class ClientHistory {
     public ClientHistory() {
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
-
 
     public Integer getViolationActNumber() {
         return violationActNumber;

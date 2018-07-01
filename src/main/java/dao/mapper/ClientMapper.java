@@ -25,7 +25,7 @@ public class ClientMapper  implements RowMapper<Client> {
     @Override
     public Client mapRow(ResultSet resultSet, int i) throws SQLException {
         Client client = new Client();
-        client.setId(resultSet.getInt("id"));
+        client.setId(resultSet.getString("id"));
         client.setFirstName(resultSet.getString("firstName"));
         client.setLastName(resultSet.getString("lastName"));
         client.setMiddleName(resultSet.getString("middleName"));

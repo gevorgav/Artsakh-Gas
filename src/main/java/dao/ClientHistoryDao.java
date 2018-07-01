@@ -5,6 +5,7 @@ import com.sun.istack.internal.NotNull;
 import dao.mapper.ClientHistoryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
@@ -66,7 +67,11 @@ public class ClientHistoryDao extends Dao<ClientHistory>{
     public ClientHistory loadLastClientHistory(Integer clientId) {
         Objects.requireNonNull(clientId);
         String sql = "SELECT * FROM clientsHistory WHERE clientId = ? ORDER BY id DESC LIMIT 1";
-        return jdbcTemplate.queryForObject(sql, new ClientHistoryMapper(), clientId);
+        List<ClientHistory> clientHistoryList = jdbcTemplate.query(sql, new ClientHistoryMapper(), clientId);
+        if(clientHistoryList.size() < 1){
+            return new ClientHistory();
+        }
+        return clientHistoryList.get(0);
     }
 
     /**

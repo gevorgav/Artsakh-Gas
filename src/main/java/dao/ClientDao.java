@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Created by astghik.mamunc on 6/13/2018.
@@ -36,7 +34,7 @@ public class ClientDao extends Dao<Client>{
      */
     public List<Client> loadAll() {
         try {
-            String sql = "SELECT *  FROM clients LEFT JOIN clientsHistory On clients.id = clientsHistory.clientId ORDER BY clientsHistory.id DESC LIMIT 1";
+            String sql = "SELECT *  FROM clients LEFT JOIN clientsHistory On clients.id = clientsHistory.clientId ORDER BY clientsHistory.id DESC";
             return jdbcTemplate.query(sql, new ClientMapper(clientHistoryDao));
         } catch (EmptyResultDataAccessException e) {
             return Collections.emptyList();
@@ -77,13 +75,22 @@ public class ClientDao extends Dao<Client>{
      */
     public boolean update(Client client){
         Objects.requireNonNull(client);
-        String sql = "UPDATE clients\n" +
-                "SET firstName = ?, lastName = ?, middleName = ?, phoneNumber = ?, counterNumber = ?, regionId = ?, cityId = ?, streetId = ?, homeNumber = ?, apartmentNumber = ?, ashtId = ?, grpId = ?\n" +
-                "WHERE id = ?";
-        int result = jdbcTemplate.update(sql,client.getFirstName(), client.getLastName(), client.getMiddleName(),
-                client.getPhoneNumber(), client.getCounterNumber(), client.getCityId(), client.getCityId(), client.getStreetId(), client.getHomeNumber(),
-                client.getApartmentNumber(), client.getAshtId(), client.getGrpId(), client.getId());
-        return result == 1;
+        Map namedParameters = new HashMap();
+        namedParameters.put("id", client.getId());
+        namedParameters.put("firstName", client.getFirstName());
+        namedParameters.put("lastName", client.getLastName());
+        namedParameters.put("middleName", client.getMiddleName());
+        namedParameters.put("phoneNumber", client.getPhoneNumber());
+        namedParameters.put("counterNumber", client.getCounterNumber());
+        namedParameters.put("regionId", client.getRegionId());
+        namedParameters.put("cityId", client.getCityId());
+        namedParameters.put("streetId", client.getStreetId());
+        namedParameters.put("homeNumber", client.getHomeNumber());
+        namedParameters.put("apartmentNumber",client.getApartmentNumber());
+        namedParameters.put("ashtId", client.getAshtId());
+        namedParameters.put("grpId", client.getGrpId());
+        int sql = namedJdbc.update("UPDATE clients SET firstName = :firstName, lastName = :lastName, middleName = :middleName, phoneNumber = :phoneNumber, counterNumber = :counterNumber, regionId = :regionId, cityId = :cityId, streetId = :streetId, homeNumber = :homeNumber, apartmentNumber = :apartmentNumber, ashtId = :ashtId, grpId = :grpId WHERE id = :id", namedParameters);
+        return sql == 1;
     }
 
     /**

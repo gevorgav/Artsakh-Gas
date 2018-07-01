@@ -69,7 +69,7 @@
                     <a class="navbar-brand">
                         <div ui-include="'assets/images/logo.svg'"></div>
                         <img src="assets/images/logo.png" alt="." class="hide"></img>
-                        <span class="hidden-folded inline">Տուրիզմ</span>
+                        <span class="hidden-folded inline">Արցախ Գազ</span>
                     </a>
                     <!-- / brand -->
                 </div>
@@ -143,7 +143,7 @@
                         <span ui-include="'assets/images/i_3.svg'"></span>
                       </i>
                     </span>
-                                    <span class="nav-text">Շտեմարան</span>
+                                    <span class="nav-text">Կարգավորումներ</span>
                                 </a>
                                 <ul class="nav-sub">
                                     <li>
@@ -247,26 +247,26 @@
                             <div class="box form-border">
                                 <div class="box-body">
                                     <h:panelGroup id="yearlyPanelId">
-
-                                        <div class="col-xs-12">
-                                            <h2 class="de-title">Տարվա տվյալներ</h2>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-6 col-md-3 form-group">
-                                        </div>
-                                        <div class="col-xs-12 col-sm-6 col-md-3 form-group">
-                                            <h:panelGrid columns="1" cellpadding="5">
-                                                <p:commandButton value="Ավելացնել այցելություն" type="button" onclick="PF('historyDialog').show();">
-                                                    <f:ajax  render=":searchFormId :clientHistoryForm"/>
-                                                </p:commandButton>
-                                            </h:panelGrid>
-                                        </div>
+                                        <h:panelGrid columns="1" cellpadding="5">
+                                            <p:commandButton value="Ավելացնել այցելություն" type="button" onclick="PF('historyDialog').show();">
+                                                <f:ajax  render=":searchFormId :clientHistoryForm"/>
+                                            </p:commandButton>
+                                        </h:panelGrid>
                                         <div class="clear"></div>
 
                                         <div class="clear"></div>
                                         <h:panelGroup layout="block" class="de-table-block" id="table2">
                                             <h2 class="de-title">Բաժնի անուն</h2>
-                                            <p:dataTable var="client" value="#{portfolioForm.clients}" widgetVar="clientTable" styleClass="table table-hover b-t de-table"
-                                                         emptyMessage="No cars found with given criteria" filteredValue="#{portfolioForm.filteredClients}">
+                                            <p:dataTable var="client"
+                                                         value="#{portfolioForm.clients}"
+                                                         widgetVar="clientTable"
+                                                         styleClass="table table-hover b-t de-table"
+                                                         emptyMessage="No cars found with given criteria"
+                                                         filteredValue="#{portfolioForm.filteredClients}"
+                                                         paginator="true"
+                                                         rows="30"
+                                                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                                         rowsPerPageTemplate="10,30,50" >
 
                                                 <f:facet name="header">
                                                     <p:outputPanel>
@@ -289,8 +289,8 @@
                                                     <h:outputText value="#{client.phoneNumber}" />
                                                 </p:column>
                                                 <p:column>
-                                                    <p:commandLink styleClass="fa fa-pencil-square-o" actionListener="#{portfolioForm.editClient(client)}"
-                                                                   update="clientDialogId" icon="" title="Խմբագրել"/>
+                                                    <p:commandLink styleClass="fa fa-pencil-square-o" action="#{portfolioForm.editClient(client)}"
+                                                                   update="clientDialogId table2" icon="" title="Խմբագրել"/>
                                                 </p:column>
 
                                                 <!--<p:column filterBy="#{client.brand}" headerText="Brand" footerText="exact" filterMatchMode="exact">-->

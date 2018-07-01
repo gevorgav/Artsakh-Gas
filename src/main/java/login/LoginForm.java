@@ -55,7 +55,7 @@ public class LoginForm {
                     this.user.setId(us.getId());
                     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
                     try {
-                        FacesContext.getCurrentInstance().getExternalContext().redirect(request.getContextPath() + "/index.xhtml");
+                        FacesContext.getCurrentInstance().getExternalContext().redirect(request.getContextPath() + "/portfolio.xhtml");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -70,7 +70,7 @@ public class LoginForm {
     public void toHomePage(){
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         try {
-            FacesContext.getCurrentInstance().getExternalContext().redirect(request.getContextPath() + "/index.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect(request.getContextPath() + "/portfolio.xhtml");
         } catch (IOException e) {
             e.printStackTrace();
         }
