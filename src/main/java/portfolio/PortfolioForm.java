@@ -5,11 +5,13 @@ import Core.Models.City;
 import Models.Client;
 import Models.ClientHistory;
 import Models.Street;
+import Models.SubSection;
 import dao.ClientDao;
 import dao.ClientHistoryDao;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import Models.Section;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -114,6 +116,8 @@ public class PortfolioForm {
 
     private List<Street> streets;
 
+    private List<SubSection> subSections;
+
     public Client getClient() {
         return client;
     }
@@ -144,6 +148,20 @@ public class PortfolioForm {
         return cities;
     }
 
+    public List<SubSection> subSectionsBySectionId(Integer sectionId) {
+        if (subSections == null) {
+            subSections = new ArrayList<>();
+            if (sectionId != null) {
+                for (SubSection subSection : cache.getSubSections()) {
+                    if (subSection.getSectionId().equals(sectionId)) {
+                        subSections.add(subSection);
+                    }
+                }
+            }
+        }
+        return subSections;
+    }
+
     public void resetCity() {
         if (client != null) {
             client.setCityId(null);
@@ -171,6 +189,13 @@ public class PortfolioForm {
         if (client != null) {
             client.setStreetId(null);
             streets = null;
+        }
+    }
+
+    public void resetSubSection() {
+        if (client != null) {
+            client.setSubSectionId(null);
+             subSections = null;
         }
     }
 

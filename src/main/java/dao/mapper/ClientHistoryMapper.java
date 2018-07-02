@@ -19,8 +19,8 @@ public class ClientHistoryMapper  implements RowMapper<ClientHistory> {
     @Override
     public ClientHistory mapRow(ResultSet rs, int rowNum) throws SQLException {
         ClientHistory clientHistory = new ClientHistory();
-        clientHistory.setId(rs.getString("id"));
-        clientHistory.setClientId(rs.getInt("clientId"));
+        clientHistory.setId(rs.getInt("id"));
+        clientHistory.setClientId(rs.getString("clientId"));
         clientHistory.setViolationActNumber(rs.getObject("violationActNumber") != null ? rs.getInt("violationActNumber") : null);
         clientHistory.setUpdateDate(rs.getDate("updateDate"));
         clientHistory.setPreviousVisitDate(rs.getDate("previousVisitDate"));

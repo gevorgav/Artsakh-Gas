@@ -18,15 +18,6 @@ public class ClientDao extends Dao<Client>{
     @Autowired
     private ClientHistoryDao clientHistoryDao;
 
-    @Autowired
-    private CityDao cityDao;
-
-    @Autowired
-    private StreetDao streetDao;
-
-    @Autowired
-    private GRPDao grpDao;
-
     /**
      * Load ALl Clients
      *
@@ -47,10 +38,15 @@ public class ClientDao extends Dao<Client>{
      * @param id Id of Client
      * @return Client by given id
      */
-    public Client loadById(@NotNull Integer id) {
+    public Client loadById(@NotNull String id) {
         Objects.requireNonNull(id);
         String sql = "SELECT *  FROM clients WHERE clients.id = ?";
         return jdbcTemplate.queryForObject(sql, new ClientMapper(clientHistoryDao), id);
+    }
+
+    @Override
+    Client loadById(Integer id) {
+        return null;
     }
 
     /**
@@ -98,10 +94,15 @@ public class ClientDao extends Dao<Client>{
      * @param id Id of Client to be deleted
      * @return true if client is deleted
      */
-    public boolean delete(Integer id){
+    public boolean delete(String id){
         Objects.requireNonNull(id);
         String sql = "DELETE FROM clients WHERE id = ?";
         int result = jdbcTemplate.update(sql, id);
         return result == 1;
+    }
+
+    @Override
+    boolean delete(Integer id) {
+        return false;
     }
 }

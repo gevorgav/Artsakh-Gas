@@ -7,9 +7,9 @@ import java.util.Date;
  */
 public class ClientHistory {
 
-    private String id;
+    private Integer id;
 
-    private Integer clientId;
+    private String clientId;
 
     private Integer violationActNumber;
 
@@ -46,11 +46,11 @@ public class ClientHistory {
     public ClientHistory() {
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -182,11 +182,11 @@ public class ClientHistory {
         this.risk = risk;
     }
 
-    public Integer getClientId() {
+    public String getClientId() {
         return clientId;
     }
 
-    public void setClientId(Integer clientId) {
+    public void setClientId(String clientId) {
         this.clientId = clientId;
     }
 

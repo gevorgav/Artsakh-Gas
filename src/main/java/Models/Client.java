@@ -36,6 +36,12 @@ public class Client {
 
     private Integer grpId;
 
+    private Integer sectionId;
+
+    private Integer subSectionId;
+
+    private Integer typeId;
+
     private ClientHistory clientHistory;
 
     private Region region;
@@ -173,6 +179,30 @@ public class Client {
         isNew = aNew;
     }
 
+    public Integer getSectionId() {
+        return sectionId;
+    }
+
+    public void setSectionId(Integer sectionId) {
+        this.sectionId = sectionId;
+    }
+
+    public Integer getSubSectionId() {
+        return subSectionId;
+    }
+
+    public void setSubSectionId(Integer subSectionId) {
+        this.subSectionId = subSectionId;
+    }
+
+    public Integer getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(Integer typeId) {
+        this.typeId = typeId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -190,11 +220,14 @@ public class Client {
         if (cityId != null ? !cityId.equals(client.cityId) : client.cityId != null) return false;
         if (regionId != null ? !regionId.equals(client.regionId) : client.regionId != null) return false;
         if (streetId != null ? !streetId.equals(client.streetId) : client.streetId != null) return false;
+        if (sectionId != null ? !sectionId.equals(client.sectionId) : client.sectionId != null) return false;
+        if (subSectionId != null ? !subSectionId.equals(client.subSectionId) : client.subSectionId != null) return false;
         if (homeNumber != null ? !homeNumber.equals(client.homeNumber) : client.homeNumber != null) return false;
         if (apartmentNumber != null ? !apartmentNumber.equals(client.apartmentNumber) : client.apartmentNumber != null)
             return false;
         if (ashtId != null ? !ashtId.equals(client.ashtId) : client.ashtId != null) return false;
         if (grpId != null ? !grpId.equals(client.grpId) : client.grpId != null) return false;
+        if (typeId != null ? !typeId.equals(client.typeId) : client.typeId != null) return false;
         return clientHistory != null ? clientHistory.equals(client.clientHistory) : client.clientHistory == null;
     }
 
@@ -213,6 +246,9 @@ public class Client {
         result = 31 * result + (apartmentNumber != null ? apartmentNumber.hashCode() : 0);
         result = 31 * result + (ashtId != null ? ashtId.hashCode() : 0);
         result = 31 * result + (grpId != null ? grpId.hashCode() : 0);
+        result = 31 * result + (sectionId != null ? sectionId.hashCode() : 0);
+        result = 31 * result + (subSectionId != null ? subSectionId.hashCode() : 0);
+        result = 31 * result + (typeId != null ? typeId.hashCode() : 0);
         result = 31 * result + (clientHistory != null ? clientHistory.hashCode() : 0);
         return result;
     }
@@ -233,6 +269,9 @@ public class Client {
         client.setApartmentNumber(this.apartmentNumber);
         client.setAshtId(this.ashtId);
         client.setGrpId(this.grpId);
+        client.setSectionId(this.sectionId);
+        client.setSubSectionId(this.subSectionId);
+        client.setTypeId(this.typeId);
         return client;
     }
 }

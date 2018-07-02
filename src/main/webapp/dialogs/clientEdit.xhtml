@@ -123,6 +123,46 @@
                                      required="true"
                                      requiredMessage="Հաշվիչի համարը պարտադիր դաշտ է" placeholder="Հաշվիչի համար"/>
                     </div>
+                    <div class="col-sm-4 col-md-4">
+                        <p:outputLabel for="typeId" value="Գ/Հ Տիպը"/>
+                        <p:selectOneMenu id="typeId" value="#{portfolioForm.client.typeId}"
+                                         styleClass="form-control input-c">
+                            <f:selectItem id="typeSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                            <f:selectItems id="typesId"
+                                           itemLabel="#{type.name}"
+                                           itemValue="#{type.id}"
+                                           value="#{portfolioForm.cache.types}"
+                                           var="type"/>
+                        </p:selectOneMenu>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 col-md-4">
+                        <p:outputLabel for="sectionId" value="Մաս"/>
+                        <p:selectOneMenu id="sectionId" value="#{portfolioForm.client.sectionId}"
+                                         styleClass="form-control input-c">
+                            <f:selectItem id="sectionSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                            <f:selectItems id="sectionsId"
+                                           itemLabel="#{section.name}"
+                                           itemValue="#{section.id}"
+                                           value="#{portfolioForm.cache.sections}"
+                                           var="section"/>
+                            <p:ajax event="change" process="@this" update="@this subSectionId"
+                                    listener="#{portfolioForm.resetSubSection}"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <p:outputLabel for="subSectionId" value="Ենթատեղամաս"/>
+                        <p:selectOneMenu id="subSectionId" value="#{portfolioForm.client.subSectionId}"
+                                         styleClass="form-control input-c">
+                            <f:selectItem id="subSectionSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                            <f:selectItems id="subSectionsId"
+                                           itemLabel="#{subSection.name}"
+                                           itemValue="#{subSection.id}"
+                                           value="#{portfolioForm.subSectionsBySectionId(portfolioForm.client.sectionId)}"
+                                           var="subSection"/>
+                        </p:selectOneMenu>
+                    </div>
                 </div>
 
             </h:panelGroup>

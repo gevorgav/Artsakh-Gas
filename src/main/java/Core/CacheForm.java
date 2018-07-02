@@ -2,10 +2,7 @@ package Core;
 
 import Core.Models.City;
 import Core.Models.Region;
-import Models.GRP;
-import Models.Master;
-import Models.Street;
-import Models.ViolationCode;
+import Models.*;
 import dao.*;
 import login.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +30,15 @@ public class CacheForm {
     private MasterDao masterDao;
 
     @Autowired
+    private SectionDao sectionDao;
+
+    @Autowired
+    private SubSectionDao subSectionDao;
+
+    @Autowired
+    private TypeDao typeDao;
+
+    @Autowired
     private ViolationCodeDao violationCodeDao;
 
     private List<City> cities;
@@ -42,6 +48,9 @@ public class CacheForm {
     private List<GRP> grps;
     private List<Master> masters;
     private List<ViolationCode> violationCodes;
+    private List<Section> sections;
+    private List<SubSection> subSections;
+    private List<Type> types;
 
     public List<City> getCities() {
         if(this.cities == null){
@@ -96,5 +105,45 @@ public class CacheForm {
             this.violationCodes = violationCodeDao.loadAll();
         }
         return violationCodes;
+    }
+
+
+    public List<Section> getSections() {
+        if(this.sections == null){
+            this.sections = sectionDao.loadAll();
+            this.sections.sort(new Comparator<Section>() {
+                @Override
+                public int compare(Section o1, Section o2) {
+                    return o1.getName().compareTo(o2.getName());
+                }
+            });
+        }
+        return this.sections;
+    }
+
+    public List<SubSection> getSubSections() {
+        if(this.subSections == null){
+            this.subSections = subSectionDao.loadAll();
+            this.subSections.sort(new Comparator<SubSection>() {
+                @Override
+                public int compare(SubSection o1, SubSection o2) {
+                    return o1.getName().compareTo(o2.getName());
+                }
+            });
+        }
+        return this.subSections;
+    }
+
+    public List<Type> getTypes() {
+        if(this.types == null){
+            this.types = typeDao.loadAll();
+            this.types.sort(new Comparator<Type>() {
+                @Override
+                public int compare(Type o1, Type o2) {
+                    return o1.getName().compareTo(o2.getName());
+                }
+            });
+        }
+        return this.types;
     }
 }
