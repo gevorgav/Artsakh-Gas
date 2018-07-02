@@ -56,11 +56,11 @@ public class ClientDao extends Dao<Client>{
      */
     public boolean insert(Client client) {
         Objects.requireNonNull(client);
-        String sql = "INSERT INTO clients(id, firstName, lastName, middleName, phoneNumber, counterNumber, regionId, cityId, streetId, homeNumber, apartmentNumber, ashtId, grpId)\n" +
-                "    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO clients(id, firstName, lastName, middleName, phoneNumber, counterNumber, regionId, cityId, streetId, homeNumber, apartmentNumber, ashtId, grpId, typeId, typeNumber, sectionId, subSectionId)\n" +
+                "    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         int result = jdbcTemplate.update(sql, client.getId(), client.getFirstName(), client.getLastName(), client.getMiddleName(),
                 client.getPhoneNumber(), client.getCounterNumber(), client.getCityId(), client.getCityId(), client.getStreetId(), client.getHomeNumber(),
-                client.getApartmentNumber(), client.getAshtId(), client.getGrpId());
+                client.getApartmentNumber(), client.getAshtId(), client.getGrpId(), client.getTypeId(), client.getTypeNumber(), client.getSectionId(), client.getSubSectionId());
         return result == 1;
     }
 
@@ -85,7 +85,11 @@ public class ClientDao extends Dao<Client>{
         namedParameters.put("apartmentNumber",client.getApartmentNumber());
         namedParameters.put("ashtId", client.getAshtId());
         namedParameters.put("grpId", client.getGrpId());
-        int sql = namedJdbc.update("UPDATE clients SET firstName = :firstName, lastName = :lastName, middleName = :middleName, phoneNumber = :phoneNumber, counterNumber = :counterNumber, regionId = :regionId, cityId = :cityId, streetId = :streetId, homeNumber = :homeNumber, apartmentNumber = :apartmentNumber, ashtId = :ashtId, grpId = :grpId WHERE id = :id", namedParameters);
+        namedParameters.put("typeId", client.getTypeId());
+        namedParameters.put("sectionId", client.getSectionId());
+        namedParameters.put("subSectionId", client.getSubSectionId());
+        namedParameters.put("typeNumber", client.getTypeNumber());
+        int sql = namedJdbc.update("UPDATE clients SET firstName = :firstName, lastName = :lastName, middleName = :middleName, phoneNumber = :phoneNumber, counterNumber = :counterNumber, regionId = :regionId, cityId = :cityId, streetId = :streetId, homeNumber = :homeNumber, apartmentNumber = :apartmentNumber, ashtId = :ashtId, grpId = :grpId , typeId = :typeId, typeNumber = :typeNumber, sectionId = :sectionId, subSectionId = :subSectionId  WHERE id = :id", namedParameters);
         return sql == 1;
     }
 

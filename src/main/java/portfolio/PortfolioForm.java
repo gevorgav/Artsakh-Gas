@@ -102,6 +102,7 @@ public class PortfolioForm {
     }
 
     public void showClientEditDialog(){
+        resetClientEditForm();
         RequestContext requestContext = RequestContext.getCurrentInstance();
         requestContext.execute("PF('clientDialog').show()");
     }
@@ -117,6 +118,8 @@ public class PortfolioForm {
     private List<Street> streets;
 
     private List<SubSection> subSections;
+
+    private List<Section> sections;
 
     public Client getClient() {
         return client;
@@ -162,6 +165,20 @@ public class PortfolioForm {
         return subSections;
     }
 
+    public List<Section> sectionsByCityId(Integer cityId) {
+        if (sections == null) {
+            sections = new ArrayList<>();
+            if (cityId != null) {
+                for (Section section : cache.getSections()) {
+                    if (section.getCityId().equals(cityId)) {
+                        sections.add(section);
+                    }
+                }
+            }
+        }
+        return sections;
+    }
+
     public void resetCity() {
         if (client != null) {
             client.setCityId(null);
@@ -189,6 +206,10 @@ public class PortfolioForm {
         if (client != null) {
             client.setStreetId(null);
             streets = null;
+            client.setSectionId(null);
+            client.setSubSectionId(null);
+            resetSubSection();
+            sections = null;
         }
     }
 
@@ -222,9 +243,11 @@ public class PortfolioForm {
     }
 
     public void resetClientEditForm() {
-        this.client = null;
+//        this.client = null;
         this.cities = null;
         this.streets = null;
+        this.sections = null;
+        this.subSections = null;
     }
 
     public boolean validate(Client client) {

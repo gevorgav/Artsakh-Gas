@@ -3,7 +3,7 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui">
-    <p:dialog dynamic="true" header="Edit Client" id="clientDialogId" modal="true"
+    <p:dialog dynamic="true" header="Edit Client" id="clientDialogId" modal="true" onShow="showDialog()" onHide="hideDialog()"
               resizable="false" widgetVar="clientDialog" width="100%" height="90%" style="max-width: 1200px; z-index: 100">
         <p:ajax event="close" listener="#{portfolioForm.cancelClientDialog}" update="clientEditFormId:resetId" resetValues="true"/>
         <h:form id="clientEditFormId">
@@ -11,9 +11,8 @@
                 <div class="row">
                     <div class="col-sm-4 col-md-4">
                         <p:outputLabel for="id" value="Բաժանորդի համար"/>
-                        <p:inputNumber id="id" maxlength="11" maxValue="9999999999" minValue="0" thousandSeparator=""
-                                       value="#{portfolioForm.client.id}"  disabled="#{not portfolioForm.client.isNew()}">
-                        </p:inputNumber>
+                        <p:inputText id="id" maxlength="11" value="#{portfolioForm.client.id}"  disabled="#{not portfolioForm.client.isNew()}">
+                        </p:inputText>
                     </div>
                 </div>
                 <div class="row">
@@ -58,7 +57,7 @@
                                            itemLabel="#{city.name}"
                                            itemValue="#{city.id}"
                                            value="#{portfolioForm.citiesByRegionId(portfolioForm.client.regionId)}" var="city"/>
-                            <p:ajax event="change" process="@this" update="@this streetId"
+                            <p:ajax event="change" process="@this" update="@this streetId sectionId subSectionId"
                                     listener="#{portfolioForm.resetStreet}"/>
                         </p:selectOneMenu>
                     </h:panelGroup>
@@ -123,18 +122,6 @@
                                      required="true"
                                      requiredMessage="Հաշվիչի համարը պարտադիր դաշտ է" placeholder="Հաշվիչի համար"/>
                     </div>
-                    <div class="col-sm-4 col-md-4">
-                        <p:outputLabel for="typeId" value="Գ/Հ Տիպը"/>
-                        <p:selectOneMenu id="typeId" value="#{portfolioForm.client.typeId}"
-                                         styleClass="form-control input-c">
-                            <f:selectItem id="typeSelectOneId" itemLabel="Ընտրիր մեկը"/>
-                            <f:selectItems id="typesId"
-                                           itemLabel="#{type.name}"
-                                           itemValue="#{type.id}"
-                                           value="#{portfolioForm.cache.types}"
-                                           var="type"/>
-                        </p:selectOneMenu>
-                    </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-4 col-md-4">
@@ -145,7 +132,7 @@
                             <f:selectItems id="sectionsId"
                                            itemLabel="#{section.name}"
                                            itemValue="#{section.id}"
-                                           value="#{portfolioForm.cache.sections}"
+                                           value="#{portfolioForm.sectionsByCityId(portfolioForm.client.cityId)}"
                                            var="section"/>
                             <p:ajax event="change" process="@this" update="@this subSectionId"
                                     listener="#{portfolioForm.resetSubSection}"/>
@@ -164,10 +151,29 @@
                         </p:selectOneMenu>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-sm-4 col-md-4">
+                        <p:outputLabel for="typeId" value="Գ/Հ Տիպը"/>
+                        <p:selectOneMenu id="typeId" value="#{portfolioForm.client.typeId}"
+                                         styleClass="form-control input-c">
+                            <f:selectItem id="typeSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                            <f:selectItems id="typesId"
+                                           itemLabel="#{type.name}"
+                                           itemValue="#{type.id}"
+                                           value="#{portfolioForm.cache.types}"
+                                           var="type"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <p:outputLabel for="typeNumberId" value="Գ/Հ համար"/>
+                        <p:inputText id="typeNumberId" maxlength="11" value="#{portfolioForm.client.typeNumber}">
+                        </p:inputText>
+                    </div>
+                </div>
 
             </h:panelGroup>
             <div class="modal-footer m-t-3">
-                <p:commandButton value="Պահպանել" styleClass="dark"  actionListener="#{portfolioForm.saveClient}" update="@form"/>
+                <p:commandButton value="Պահպանել" styleClass="dark"  actionListener="#{portfolioForm.saveClient}" update="clientEditFormId:resetId" oncomplete="PF('clientTable').filter()"/>
                 <p:commandButton id="cancelClientDialogId"  value="Չեղարկել" styleClass="dark" actionListener="#{portfolioForm.cancelClientDialog}" update="clientEditFormId:resetId" process="@this">
                     <p:resetInput target="clientEditFormId:resetId" />
                 </p:commandButton>

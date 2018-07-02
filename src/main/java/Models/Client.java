@@ -42,6 +42,8 @@ public class Client {
 
     private Integer typeId;
 
+    private String typeNumber;
+
     private ClientHistory clientHistory;
 
     private Region region;
@@ -203,6 +205,14 @@ public class Client {
         this.typeId = typeId;
     }
 
+    public String getTypeNumber() {
+        return typeNumber;
+    }
+
+    public void setTypeNumber(String typeNumber) {
+        this.typeNumber = typeNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -228,6 +238,7 @@ public class Client {
         if (ashtId != null ? !ashtId.equals(client.ashtId) : client.ashtId != null) return false;
         if (grpId != null ? !grpId.equals(client.grpId) : client.grpId != null) return false;
         if (typeId != null ? !typeId.equals(client.typeId) : client.typeId != null) return false;
+        if (typeNumber != null ? !typeNumber.equals(client.typeNumber) : client.typeNumber != null) return false;
         return clientHistory != null ? clientHistory.equals(client.clientHistory) : client.clientHistory == null;
     }
 
@@ -250,6 +261,7 @@ public class Client {
         result = 31 * result + (subSectionId != null ? subSectionId.hashCode() : 0);
         result = 31 * result + (typeId != null ? typeId.hashCode() : 0);
         result = 31 * result + (clientHistory != null ? clientHistory.hashCode() : 0);
+        result = 31 * result + (typeNumber != null ? typeNumber.hashCode() : 0);
         return result;
     }
 
@@ -272,6 +284,8 @@ public class Client {
         client.setSectionId(this.sectionId);
         client.setSubSectionId(this.subSectionId);
         client.setTypeId(this.typeId);
+        client.setTypeNumber(this.typeNumber);
+        client.setClientHistory(this.clientHistory);
         return client;
     }
 }

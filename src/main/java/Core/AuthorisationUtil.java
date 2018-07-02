@@ -2,6 +2,7 @@ package Core;
 
 import login.LoginForm;
 import login.User;
+import portfolio.PortfolioForm;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,7 @@ public class AuthorisationUtil {
 
     public void signout(){
         Util.getBean("loginForm", LoginForm.class).getUser().setId(null);
+        Util.getBean("portfolioForm", PortfolioForm.class).setClients(null);
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         try {
             FacesContext.getCurrentInstance().getExternalContext().redirect(request.getContextPath()+"/login.xhtml");

@@ -5,7 +5,7 @@
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:p="http://primefaces.org/ui">
     <p:dialog dynamic="true" header="Այցելություն" widgetVar="historyDialog" modal="true" position="top"
-              height="550" width="80%" closable="false" resizable="false">
+              height="550" width="80%" closable="false" resizable="false"  onShow="showDialog()" onHide="hideDialog()">
         <h:form id="searchFormId" onsubmit="return false;">
             <div class="row-body">
                 <div class="form-group row">

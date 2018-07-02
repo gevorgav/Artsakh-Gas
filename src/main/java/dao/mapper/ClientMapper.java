@@ -38,6 +38,10 @@ public class ClientMapper  implements RowMapper<Client> {
         client.setApartmentNumber(resultSet.getObject("apartmentNumber") != null ? resultSet.getInt("apartmentNumber") : null);
         client.setAshtId(resultSet.getObject("ashtId") != null ? resultSet.getInt("ashtId") : null);
         client.setGrpId(resultSet.getObject("grpId") != null ? resultSet.getInt("grpId") : null);
+        client.setTypeId(resultSet.getObject("typeId") != null ? resultSet.getInt("typeId") : null);
+        client.setSectionId(resultSet.getObject("sectionId") != null ? resultSet.getInt("sectionId") : null);
+        client.setSubSectionId(resultSet.getObject("subSectionId") != null ? resultSet.getInt("subSectionId") : null);
+        client.setTypeNumber(resultSet.getObject("typeNumber") != null ? resultSet.getString("typeNumber") : null);
         client.setClientHistory(new ClientHistoryMapper().mapRow(resultSet, i));
         return client;
     }
