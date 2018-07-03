@@ -6315,3 +6315,8 @@ textarea.md-input {
 body.ui-dialog {
   overflow: hidden !important;
 }
+
+.ui-inputfield, .ui-widget-content .ui-inputfield, .ui-widget-header .ui-inputfield {
+  -webkit-box-shadow: inset 0 0 0 #8f8f8f;
+  box-shadow: inset 0 0 0 #8f8f8f;
+}

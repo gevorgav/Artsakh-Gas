@@ -4,7 +4,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui">
     <p:dialog dynamic="true" header="Edit Client" id="clientDialogId" modal="true" onShow="showDialog()" onHide="hideDialog()"
-              resizable="false" widgetVar="clientDialog" width="100%" height="90%" style="max-width: 1200px; z-index: 100">
+              resizable="false" widgetVar="clientDialog" width="70%" height="100%" style="z-index: 100" maximizable="true">
         <p:ajax event="close" listener="#{portfolioForm.cancelClientDialog}" update="clientEditFormId:resetId" resetValues="true"/>
         <h:form id="clientEditFormId">
             <h:panelGroup id="resetId" layout="block">

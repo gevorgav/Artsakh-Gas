@@ -264,7 +264,7 @@
                                                          emptyMessage="No cars found with given criteria"
                                                          filteredValue="#{portfolioForm.filteredClients}"
                                                          paginator="true"
-                                                         rows="30"
+                                                         rows="10"
                                                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                                                          rowsPerPageTemplate="10,30,50" >
 
@@ -275,17 +275,17 @@
                                                     </p:outputPanel>
                                                 </f:facet>
 
-                                                <p:column filterBy="#{client.id}" headerText="Id" footerText="contains" filterMatchMode="contains">
+                                                <p:column filterBy="#{client.id}" headerText="ՀՀ" footerText="contains" filterMatchMode="contains">
                                                     <h:outputText value="#{client.id}" />
                                                 </p:column>
 
-                                                <p:column filterBy="#{client.firstName}" headerText="First Name" footerText="contains" filterMatchMode="contains">
+                                                <p:column filterBy="#{client.firstName}" headerText="Անուն" footerText="contains" filterMatchMode="contains">
                                                     <h:outputText value="#{client.firstName}" />
                                                 </p:column>
-                                                <p:column filterBy="#{client.lastName}" headerText="Last Name" footerText="contains" filterMatchMode="contains">
+                                                <p:column filterBy="#{client.lastName}" headerText="Ազգանուն" footerText="contains" filterMatchMode="contains">
                                                     <h:outputText value="#{client.lastName}" />
                                                 </p:column>
-                                                <p:column filterBy="#{client.phoneNumber}" headerText="Phone Number" footerText="contains" filterMatchMode="contains">
+                                                <p:column filterBy="#{client.phoneNumber}" headerText="Հեռախոսի համար" footerText="contains" filterMatchMode="contains">
                                                     <h:outputText value="#{client.phoneNumber}" />
                                                 </p:column>
                                                 <p:column>
