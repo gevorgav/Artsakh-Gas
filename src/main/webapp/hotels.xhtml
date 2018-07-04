@@ -261,12 +261,12 @@
                                     <div class="row-inner">
                                         <div class="list inset">
                                             <h:form id="categoriesListForm">
-                                                <div class="list-item pointer">
+                                                <div class="list-group list-item pointer">
                                                     <!--Asht-->
                                                     <c:if test="#{settingsForm.categoryTypeId eq 1}">
                                                         <c:forEach var="asht" items="#{settingsForm.cache.ashts}">
                                                             <p:commandLink actionListener="#{settingsForm.editAsht(asht)}" immediate="true" update=":editFormId">
-                                                                <div class="list-body">
+                                                                <div class="list-body list-group-item">
                                                                     <h:outputText value="#{asht.name}"/>
                                                                     <div style="float: right">
                                                                         <c:if test="#{authorisationUtil.authorisedUser}">
