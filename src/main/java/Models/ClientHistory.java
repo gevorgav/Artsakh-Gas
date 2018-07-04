@@ -23,23 +23,57 @@ public class ClientHistory {
 
     private String stampNumbers;
 
-    private Integer go;
+    private Integer go1;
 
-    private Integer jth;
+    private Integer bacakaGo1;
 
-    private Integer jtt;
+    private Integer go2;
 
-    private Integer ket;
-
-    private Integer jah;
-
-    private Integer jk;
-
-    private Integer jv;
+    private Integer bacakaGo2;
 
     private Integer go3;
 
-    private Integer go2;
+    private Integer bacakaGo3;
+
+    private Integer go4;
+
+    private Integer bacakaGo4;
+
+    private Integer go5;
+
+    private Integer bacakaGo5;
+
+    private Integer go6;
+
+    private Integer bacakaGo6;
+
+    private Integer jth;
+
+    private Integer bacakaJth;
+
+    private Integer jtt;
+
+    private Integer bacakaJtt;
+
+    private Integer ket;
+
+    private Integer bacakaKet;
+
+    private Integer jk;
+
+    private Integer bacakaJk;
+
+    private Integer jv;
+
+    private Integer bacakaJv;
+
+    private Integer jah;
+
+    private Integer bacakaJah;
+
+    private Integer pakan;
+
+    private Integer bacakaPakan;
 
     private Integer risk;
 
@@ -52,6 +86,14 @@ public class ClientHistory {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 
     public Integer getViolationActNumber() {
@@ -102,68 +144,20 @@ public class ClientHistory {
         this.stampNumbers = stampNumbers;
     }
 
-    public Integer getGo() {
-        return go;
+    public Integer getGo1() {
+        return go1;
     }
 
-    public void setGo(Integer go) {
-        this.go = go;
+    public void setGo1(Integer go1) {
+        this.go1 = go1;
     }
 
-    public Integer getJth() {
-        return jth;
+    public Integer getBacakaGo1() {
+        return bacakaGo1;
     }
 
-    public void setJth(Integer jth) {
-        this.jth = jth;
-    }
-
-    public Integer getJtt() {
-        return jtt;
-    }
-
-    public void setJtt(Integer jtt) {
-        this.jtt = jtt;
-    }
-
-    public Integer getKet() {
-        return ket;
-    }
-
-    public void setKet(Integer ket) {
-        this.ket = ket;
-    }
-
-    public Integer getJah() {
-        return jah;
-    }
-
-    public void setJah(Integer jah) {
-        this.jah = jah;
-    }
-
-    public Integer getJk() {
-        return jk;
-    }
-
-    public void setJk(Integer jk) {
-        this.jk = jk;
-    }
-
-    public Integer getJv() {
-        return jv;
-    }
-
-    public void setJv(Integer jv) {
-        this.jv = jv;
-    }
-
-    public Integer getGo3() {
-        return go3;
-    }
-
-    public void setGo3(Integer go3) {
-        this.go3 = go3;
+    public void setBacakaGo1(Integer bacakaGo1) {
+        this.bacakaGo1 = bacakaGo1;
     }
 
     public Integer getGo2() {
@@ -174,20 +168,196 @@ public class ClientHistory {
         this.go2 = go2;
     }
 
+    public Integer getBacakaGo2() {
+        return bacakaGo2;
+    }
+
+    public void setBacakaGo2(Integer bacakaGo2) {
+        this.bacakaGo2 = bacakaGo2;
+    }
+
+    public Integer getGo3() {
+        return go3;
+    }
+
+    public void setGo3(Integer go3) {
+        this.go3 = go3;
+    }
+
+    public Integer getBacakaGo3() {
+        return bacakaGo3;
+    }
+
+    public void setBacakaGo3(Integer bacakaGo3) {
+        this.bacakaGo3 = bacakaGo3;
+    }
+
+    public Integer getGo4() {
+        return go4;
+    }
+
+    public void setGo4(Integer go4) {
+        this.go4 = go4;
+    }
+
+    public Integer getBacakaGo4() {
+        return bacakaGo4;
+    }
+
+    public void setBacakaGo4(Integer bacakaGo4) {
+        this.bacakaGo4 = bacakaGo4;
+    }
+
+    public Integer getGo5() {
+        return go5;
+    }
+
+    public void setGo5(Integer go5) {
+        this.go5 = go5;
+    }
+
+    public Integer getBacakaGo5() {
+        return bacakaGo5;
+    }
+
+    public void setBacakaGo5(Integer bacakaGo5) {
+        this.bacakaGo5 = bacakaGo5;
+    }
+
+    public Integer getGo6() {
+        return go6;
+    }
+
+    public void setGo6(Integer go6) {
+        this.go6 = go6;
+    }
+
+    public Integer getBacakaGo6() {
+        return bacakaGo6;
+    }
+
+    public void setBacakaGo6(Integer bacakaGo6) {
+        this.bacakaGo6 = bacakaGo6;
+    }
+
+    public Integer getJth() {
+        return jth;
+    }
+
+    public void setJth(Integer jth) {
+        this.jth = jth;
+    }
+
+    public Integer getBacakaJth() {
+        return bacakaJth;
+    }
+
+    public void setBacakaJth(Integer bacakaJth) {
+        this.bacakaJth = bacakaJth;
+    }
+
+    public Integer getJtt() {
+        return jtt;
+    }
+
+    public void setJtt(Integer jtt) {
+        this.jtt = jtt;
+    }
+
+    public Integer getBacakaJtt() {
+        return bacakaJtt;
+    }
+
+    public void setBacakaJtt(Integer bacakaJtt) {
+        this.bacakaJtt = bacakaJtt;
+    }
+
+    public Integer getKet() {
+        return ket;
+    }
+
+    public void setKet(Integer ket) {
+        this.ket = ket;
+    }
+
+    public Integer getBacakaKet() {
+        return bacakaKet;
+    }
+
+    public void setBacakaKet(Integer bacakaKet) {
+        this.bacakaKet = bacakaKet;
+    }
+
+    public Integer getJk() {
+        return jk;
+    }
+
+    public void setJk(Integer jk) {
+        this.jk = jk;
+    }
+
+    public Integer getBacakaJk() {
+        return bacakaJk;
+    }
+
+    public void setBacakaJk(Integer bacakaJk) {
+        this.bacakaJk = bacakaJk;
+    }
+
+    public Integer getJv() {
+        return jv;
+    }
+
+    public void setJv(Integer jv) {
+        this.jv = jv;
+    }
+
+    public Integer getBacakaJv() {
+        return bacakaJv;
+    }
+
+    public void setBacakaJv(Integer bacakaJv) {
+        this.bacakaJv = bacakaJv;
+    }
+
+    public Integer getJah() {
+        return jah;
+    }
+
+    public void setJah(Integer jah) {
+        this.jah = jah;
+    }
+
+    public Integer getBacakaJah() {
+        return bacakaJah;
+    }
+
+    public void setBacakaJah(Integer bacakaJah) {
+        this.bacakaJah = bacakaJah;
+    }
+
+    public Integer getPakan() {
+        return pakan;
+    }
+
+    public void setPakan(Integer pakan) {
+        this.pakan = pakan;
+    }
+
+    public Integer getBacakaPakan() {
+        return bacakaPakan;
+    }
+
+    public void setBacakaPakan(Integer bacakaPakan) {
+        this.bacakaPakan = bacakaPakan;
+    }
+
     public Integer getRisk() {
         return risk;
     }
 
     public void setRisk(Integer risk) {
         this.risk = risk;
-    }
-
-    public String getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
     }
 
     @Override
@@ -207,7 +377,7 @@ public class ClientHistory {
         if (nextVisitDate != null ? !nextVisitDate.equals(that.nextVisitDate) : that.nextVisitDate != null)
             return false;
         if (stampNumbers != null ? !stampNumbers.equals(that.stampNumbers) : that.stampNumbers != null) return false;
-        if (go != null ? !go.equals(that.go) : that.go != null) return false;
+        if (go1 != null ? !go1.equals(that.go1) : that.go1 != null) return false;
         if (jth != null ? !jth.equals(that.jth) : that.jth != null) return false;
         if (jtt != null ? !jtt.equals(that.jtt) : that.jtt != null) return false;
         if (ket != null ? !ket.equals(that.ket) : that.ket != null) return false;
@@ -228,7 +398,7 @@ public class ClientHistory {
         result = 31 * result + (previousVisitDate != null ? previousVisitDate.hashCode() : 0);
         result = 31 * result + (nextVisitDate != null ? nextVisitDate.hashCode() : 0);
         result = 31 * result + (stampNumbers != null ? stampNumbers.hashCode() : 0);
-        result = 31 * result + (go != null ? go.hashCode() : 0);
+        result = 31 * result + (go1 != null ? go1.hashCode() : 0);
         result = 31 * result + (jth != null ? jth.hashCode() : 0);
         result = 31 * result + (jtt != null ? jtt.hashCode() : 0);
         result = 31 * result + (ket != null ? ket.hashCode() : 0);
