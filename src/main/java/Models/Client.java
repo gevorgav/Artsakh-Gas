@@ -44,6 +44,8 @@ public class Client {
 
     private String typeNumber;
 
+    private Integer grsId;
+
     private ClientHistory clientHistory;
 
     private Region region;
@@ -213,6 +215,14 @@ public class Client {
         this.typeNumber = typeNumber;
     }
 
+    public Integer getGrsId() {
+        return grsId;
+    }
+
+    public void setGrsId(Integer grsId) {
+        this.grsId = grsId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -237,6 +247,7 @@ public class Client {
             return false;
         if (ashtId != null ? !ashtId.equals(client.ashtId) : client.ashtId != null) return false;
         if (grpId != null ? !grpId.equals(client.grpId) : client.grpId != null) return false;
+        if (grsId != null ? !grsId.equals(client.grsId) : client.grsId != null) return false;
         if (typeId != null ? !typeId.equals(client.typeId) : client.typeId != null) return false;
         if (typeNumber != null ? !typeNumber.equals(client.typeNumber) : client.typeNumber != null) return false;
         return clientHistory != null ? clientHistory.equals(client.clientHistory) : client.clientHistory == null;
@@ -262,6 +273,7 @@ public class Client {
         result = 31 * result + (typeId != null ? typeId.hashCode() : 0);
         result = 31 * result + (clientHistory != null ? clientHistory.hashCode() : 0);
         result = 31 * result + (typeNumber != null ? typeNumber.hashCode() : 0);
+        result = 31 * result + (grsId != null ? grsId.hashCode() : 0);
         return result;
     }
 
@@ -281,6 +293,7 @@ public class Client {
         client.setApartmentNumber(this.apartmentNumber);
         client.setAshtId(this.ashtId);
         client.setGrpId(this.grpId);
+        client.setGrsId(this.grsId);
         client.setSectionId(this.sectionId);
         client.setSubSectionId(this.subSectionId);
         client.setTypeId(this.typeId);

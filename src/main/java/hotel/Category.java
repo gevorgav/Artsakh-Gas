@@ -1,18 +1,18 @@
-package Models;
+package hotel;
 
 /**
- * Created by astghik.mamunc on 6/28/2018.
+ * Created by astghik.mamunc on 7/3/2018.
  */
-public class Type {
+public class Category {
 
     private Integer id;
 
     private String name;
 
-    public Type() {
+    public Category() {
     }
 
-    public Type(Integer id, String name) {
+    public Category(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -38,10 +38,10 @@ public class Type {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Type type = (Type) o;
+        Category category = (Category) o;
 
-        if (id != null ? !id.equals(type.id) : type.id != null) return false;
-        return name != null ? name.equals(type.name) : type.name == null;
+        if (id != null ? !id.equals(category.id) : category.id != null) return false;
+        return name != null ? name.equals(category.name) : category.name == null;
     }
 
     @Override
@@ -49,13 +49,5 @@ public class Type {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        Type type = new Type();
-        type.setId(this.id);
-        type.setName(this.name);
-        return type;
     }
 }

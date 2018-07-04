@@ -1,23 +1,20 @@
 package Models;
 
 /**
- * Created by astghik.mamunc on 6/13/2018.
+ * Created by astghik.mamunc on 7/4/2018.
  */
-public class GRP {
+public class GRS {
 
     private Integer id;
 
     private String name;
 
-    private Integer cityId;
-
-    public GRP() {
+    public GRS() {
     }
 
-    public GRP(Integer id, String name, Integer cityId) {
+    public GRS(Integer id, String name) {
         this.id = id;
         this.name = name;
-        this.cityId = cityId;
     }
 
     public Integer getId() {
@@ -36,40 +33,29 @@ public class GRP {
         this.name = name;
     }
 
-    public Integer getCityId() {
-        return cityId;
-    }
-
-    public void setCityId(Integer cityId) {
-        this.cityId = cityId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        GRP grp = (GRP) o;
+        GRS grs = (GRS) o;
 
-        if (id != null ? !id.equals(grp.id) : grp.id != null) return false;
-        if (name != null ? !name.equals(grp.name) : grp.name != null) return false;
-        return cityId != null ? cityId.equals(grp.cityId) : grp.cityId == null;
+        if (id != null ? !id.equals(grs.id) : grs.id != null) return false;
+        return name != null ? name.equals(grs.name) : grs.name == null;
     }
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (cityId != null ? cityId.hashCode() : 0);
         return result;
     }
 
     @Override
     public Object clone() throws CloneNotSupportedException {
-        GRP grp = new GRP();
-        grp.setId(this.id);
-        grp.setName(this.name);
-        grp.setCityId(this.cityId);
-        return grp;
+        GRS grs = new GRS();
+        grs.setId(this.id);
+        grs.setName(this.name);
+        return grs;
     }
 }

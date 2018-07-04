@@ -12,14 +12,14 @@
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 <h:head>
     <link href="images/favicon.png" rel="shortcut icon"
-          type="image/x-icon" />
+          type="image/x-icon"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Անալիտիկ</title>
-    <meta name="description" content="Admin, Dashboard, Bootstrap, Bootstrap 4, Angular, AngularJS" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui" />
+    <meta name="description" content="Admin, Dashboard, Bootstrap, Bootstrap 4, Angular, AngularJS"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <!--file upload imports-->
-    <link rel="stylesheet" href="assets/styles/fileUpload.css" type="text/css" />
+    <link rel="stylesheet" href="assets/styles/fileUpload.css" type="text/css"/>
 
     <!-- for ios 7 style, multi-resolution icon of 152x152 -->
     <meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -31,57 +31,56 @@
     <link rel="shortcut icon" sizes="196x196" href="assets/images/logo.png"/>
 
     <!-- style -->
-    <link rel="stylesheet" href="assets/animate.css/animate.min.css" type="text/css" />
-    <link rel="stylesheet" href="assets/glyphicons/glyphicons.css" type="text/css" />
-    <link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css" type="text/css" />
-    <link rel="stylesheet" href="assets/material-design-icons/material-design-icons.css" type="text/css" />
+    <link rel="stylesheet" href="assets/animate.css/animate.min.css" type="text/css"/>
+    <link rel="stylesheet" href="assets/glyphicons/glyphicons.css" type="text/css"/>
+    <link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="assets/material-design-icons/material-design-icons.css" type="text/css"/>
 
-    <link rel="stylesheet" href="assets/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="assets/bootstrap/dist/css/bootstrap.min.css" type="text/css"/>
     <!-- build:css assets/styles/app.min.css -->
-    <link rel="stylesheet" href="assets/styles/app.css" type="text/css" />
+    <link rel="stylesheet" href="assets/styles/app.css" type="text/css"/>
     <!-- endbuild -->
-    <link rel="stylesheet" href="assets/styles/font.css" type="text/css" />
+    <link rel="stylesheet" href="assets/styles/font.css" type="text/css"/>
 
 </h:head>
 <body>
 
 
+<div class="app" id="app">
 
-    <div class="app" id="app">
 
+    <!-- ############ LAYOUT START-->
 
-        <!-- ############ LAYOUT START-->
+    <!-- aside -->
+    <div id="aside" class="app-aside modal fade folded md show-text nav-dropdown">
+        <div class="left navside black dk" layout="column">
+            <div class="navbar no-radius">
+                <!-- brand -->
+                <a class="navbar-brand">
+                    <div ui-include="'assets/images/logo.svg'"></div>
+                    <img src="assets/images/logo.png" alt="." class="hide"></img>
+                    <span class="hidden-folded inline">Տուրիզմ</span>
+                </a>
+                <!-- / brand -->
+            </div>
+            <div flex="" class="hide-scroll">
+                <nav class="scroll nav-active-primary">
 
-        <!-- aside -->
-        <div id="aside" class="app-aside modal fade folded md show-text nav-dropdown">
-            <div class="left navside black dk" layout="column">
-                <div class="navbar no-radius">
-                    <!-- brand -->
-                    <a class="navbar-brand">
-                        <div ui-include="'assets/images/logo.svg'"></div>
-                        <img src="assets/images/logo.png" alt="." class="hide"></img>
-                        <span class="hidden-folded inline">Տուրիզմ</span>
-                    </a>
-                    <!-- / brand -->
-                </div>
-                <div flex="" class="hide-scroll">
-                    <nav class="scroll nav-active-primary">
+                    <ul class="nav" ui-nav="">
 
-                        <ul class="nav" ui-nav="">
-
-                            <li>
-                                <a href="index.xhtml" >
+                        <li>
+                            <a href="index.xhtml">
                     <span class="nav-icon">
                       <i class="material-icons">&#xe3fc;
                         <span ui-include="'assets/images/i_0.svg'"></span>
                       </i>
                     </span>
-                                    <span class="nav-text">Վահանակ</span>
-                                </a>
-                            </li>
+                                <span class="nav-text">Վահանակ</span>
+                            </a>
+                        </li>
 
-                            <h:panelGroup rendered="#{dashboardForm.admin}">
-                                <c:if test="#{authorisationUtil.authorisedUser}">
+                        <h:panelGroup rendered="#{dashboardForm.admin}">
+                            <c:if test="#{authorisationUtil.authorisedUser}">
                                 <li>
                                     <a href="portfolio.xhtml">
                             <span class="nav-icon">
@@ -92,443 +91,812 @@
                                         <span class="nav-text">Թղթապանակ</span>
                                     </a>
                                 </li>
-                                </c:if>
-                            </h:panelGroup>
+                            </c:if>
+                        </h:panelGroup>
 
-                            <li>
-                                <a>
+                        <li>
+                            <a>
                     <span class="nav-caret">
                       <i class="fa fa-caret-down"></i>
                     </span>
-                    <span class="nav-icon">
+                                <span class="nav-icon">
                       <i class="material-icons">&#xe1b8;
                         <span ui-include="'assets/images/i_8.svg'"></span>
                       </i>
                     </span>
-                                    <span class="nav-text">Վերլուծություն</span>
-                                </a>
-                                <ul class="nav-sub">
-                                    <li>
-                                        <a href="map.xhtml" >
-                                            <span class="nav-text">Քարտեզ </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="financialChart.xhtml" >
-                                            <span class="nav-text">ֆինանսական դիագրամ</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="touristChart.xhtml" >
-                                            <span class="nav-text">Զբոսաշրջիկների թվի դիագրամ</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                                <span class="nav-text">Վերլուծություն</span>
+                            </a>
+                            <ul class="nav-sub">
+                                <li>
+                                    <a href="map.xhtml">
+                                        <span class="nav-text">Քարտեզ </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="financialChart.xhtml">
+                                        <span class="nav-text">ֆինանսական դիագրամ</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="touristChart.xhtml">
+                                        <span class="nav-text">Զբոսաշրջիկների թվի դիագրամ</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
 
-                            <li>
-                                <a>
+                        <li>
+                            <a>
                     <span class="nav-caret">
                       <i class="fa fa-caret-down"></i>
                     </span>
-                    <span class="nav-icon">
+                                <span class="nav-icon">
                        <i class="material-icons">&#xE865;
                         <span ui-include="'assets/images/i_3.svg'"></span>
                       </i>
                     </span>
-                                    <span class="nav-text">Շտեմարան</span>
-                                </a>
-                                <ul class="nav-sub">
-                                    <li>
-                                        <a href="hotels.xhtml">
-                                            <span class="nav-text">Հյուրանոցներ</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="restaurant.xhtml">
-                                            <span class="nav-text">Ռեստորաններ</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="museum.xhtml">
-                                            <span class="nav-text">Թանգարան</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="tourOperator.xhtml">
-                                            <span class="nav-text">Տուր օպերատորներ</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="touristSight.xhtml">
-                                            <span class="nav-text">Տեսարժան վայրեր</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                                <span class="nav-text">Շտեմարան</span>
+                            </a>
+                            <ul class="nav-sub">
+                                <li>
+                                    <a href="hotels.xhtml">
+                                        <span class="nav-text">Հյուրանոցներ</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="restaurant.xhtml">
+                                        <span class="nav-text">Ռեստորաններ</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="museum.xhtml">
+                                        <span class="nav-text">Թանգարան</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="tourOperator.xhtml">
+                                        <span class="nav-text">Տուր օպերատորներ</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="touristSight.xhtml">
+                                        <span class="nav-text">Տեսարժան վայրեր</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
 
 
-                            <li>
-                                <a href="#" >
+                        <li>
+                            <a href="#">
                     <span class="nav-icon">
                       <i class="material-icons">&#xE88F;
                         <span ui-include="'assets/images/info.svg'"></span>
                       </i>
                     </span>
-                                    <span class="nav-text">Օգնություն</span>
-                                </a>
-                            </li>
+                                <span class="nav-text">Օգնություն</span>
+                            </a>
+                        </li>
 
-                        </ul>
-                    </nav>
+                    </ul>
+                </nav>
+            </div>
+            <!--<div flex-no-shrink="">-->
+            <!--<div ui-include="'views/blocks/aside.top.1.html'"></div>-->
+            <!--</div>-->
+        </div>
+    </div>
+    <!-- / -->
+
+    <!-- content -->
+    <!-- content -->
+    <div id="content" class="app-content box-shadow-z0" role="main">
+        <div class="app-header white box-shadow">
+            <div class="navbar">
+                <!-- Open side - Naviation on mobile -->
+                <a data-toggle="modal" data-target="#aside" class="navbar-item pull-left hidden-lg-up">
+                    <i class="material-icons">&#xe5d2;</i>
+                </a>
+                <!-- / -->
+
+                <!-- Page title - Bind to $state's title -->
+                <div class="navbar-item pull-left h5" ng-bind="$state.current.data.title" id="pageTitle"></div>
+
+                <!-- navbar collapse -->
+                <div class="collapse navbar-toggleable-sm" id="collapse">
+                    <div ui-include="'views/blocks/navbar.form.right.html'"></div>
+                    <!-- link and dropdown -->
+                    <!--<ul class="nav navbar-nav">-->
+                    <!--<li class="nav-item dropdown">-->
+                    <!--<a class="nav-link" href="" data-toggle="dropdown">-->
+                    <!--<i class="fa fa-fw fa-plus text-muted"></i>-->
+                    <!---->
+                    <!--<span>Ավելացնել նոր հյուրանոց</span>-->
+                    <!--</a>-->
+                    <!--<div ui-include="'views/blocks/dropdown.new.html'"></div>-->
+                    <!--</li>-->
+                    <!--</ul>-->
+                    <!-- / -->
                 </div>
-                <!--<div flex-no-shrink="">-->
-                    <!--<div ui-include="'views/blocks/aside.top.1.html'"></div>-->
-                <!--</div>-->
+                <!-- / navbar collapse -->
             </div>
         </div>
-        <!-- / -->
-
-        <!-- content -->
-        <!-- content -->
-        <div id="content" class="app-content box-shadow-z0" role="main">
-            <div class="app-header white box-shadow">
-                <div class="navbar">
-                    <!-- Open side - Naviation on mobile -->
-                    <a data-toggle="modal" data-target="#aside" class="navbar-item pull-left hidden-lg-up">
-                        <i class="material-icons">&#xe5d2;</i>
-                    </a>
-                    <!-- / -->
-
-                    <!-- Page title - Bind to $state's title -->
-                    <div class="navbar-item pull-left h5" ng-bind="$state.current.data.title" id="pageTitle"></div>
-
-                    <!-- navbar collapse -->
-                    <div class="collapse navbar-toggleable-sm" id="collapse">
-                        <div ui-include="'views/blocks/navbar.form.right.html'"></div>
-                        <!-- link and dropdown -->
-                        <!--<ul class="nav navbar-nav">-->
-                            <!--<li class="nav-item dropdown">-->
-                                <!--<a class="nav-link" href="" data-toggle="dropdown">-->
-                                    <!--<i class="fa fa-fw fa-plus text-muted"></i>-->
-                                    <!---->
-                                    <!--<span>Ավելացնել նոր հյուրանոց</span>-->
-                                <!--</a>-->
-                                <!--<div ui-include="'views/blocks/dropdown.new.html'"></div>-->
-                            <!--</li>-->
-                        <!--</ul>-->
-                        <!-- / -->
-                    </div>
-                    <!-- / navbar collapse -->
-                </div>
-            </div>
-            <div class="app-footer">
-                <div class="p-a text-xs">
-                    <div class="pull-right text-muted">
-                        Պատճերաշնորհ <strong>Տուրիզմ</strong>
-                        <a ui-scroll-to="content"><i class="fa fa-long-arrow-up p-x-sm"></i></a>
-                    </div>
-                    <div class="nav">
-                        <a class="nav-link" href=""></a>
-                    </div>
-                </div>
-            </div>
-            <div ui-view="" class="app-body" id="view">
-
-                <!-- ############ PAGE START-->
-                <div class="app-body-inner">
-                    <div class="row-col row-col-xs b-b">
-                        <!-- /column -->
-                        <!-- column -->
-                        <div class="col-sm-4 col-md-3 light bg b-r">
-                            <div class="row-col">
-                                <div class="p-a-xs b-b">
-                                    <div class="input-group">
-                                        <h:form>
-                                            <span class="input-group-addon no-border no-bg"><i class="fa fa-search"></i></span>
-                                            <h:selectOneMenu value="#{hotelForm.hotelTypeIdForFind}" styleClass="form-control" id="hotelTypeSelectId">
-                                                <f:selectItems value="#{hotelForm.hotelTypes}" var="hType" itemLabel="#{hType.name}" itemValue="#{hType.id}"/>
-                                                <f:ajax listener="#{hotelForm.changeHotelType}" render=":hotelsListForm" />
-                                            </h:selectOneMenu>
-                                        </h:form>
-                                    </div>
+        <!--<div class="app-footer">-->
+        <!--<div class="p-a text-xs">-->
+        <!--<div class="pull-right text-muted">-->
+        <!--Պատճերաշնորհ <strong>Տուրիզմ</strong>-->
+        <!--<a ui-scroll-to="content"><i class="fa fa-long-arrow-up p-x-sm"></i></a>-->
+        <!--</div>-->
+        <!--<div class="nav">-->
+        <!--<a class="nav-link" href=""></a>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <div ui-view="" class="app-body" id="view">
+            <!-- ############ PAGE START-->
+            <div class="app-body-inner">
+                <div class="row-col row-col-xs b-b">
+                    <!-- /column -->
+                    <!-- column -->
+                    <div class="col-sm-4 col-md-3 light bg b-r">
+                        <div class="row-col">
+                            <div class="p-a-xs b-b">
+                                <div class="input-group">
+                                    <h:form>
+                                        <span class="input-group-addon no-border no-bg"><i
+                                                class="fa fa-search"></i></span>
+                                        <h:selectOneMenu value="#{settingsForm.categoryTypeId}" styleClass="form-control"
+                                                         id="categoryTypeSelectId">
+                                            <f:selectItem id="ashtSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                                            <f:selectItems value="#{settingsForm.categories}" var="category"
+                                                           itemLabel="#{category.name}" itemValue="#{category.id}"/>
+                                            <f:ajax event="change" listener="#{settingsForm.changeCategoryType}" render="@this :categoriesListForm :editFormId :addNewFormId"/>
+                                        </h:selectOneMenu>
+                                    </h:form>
                                 </div>
+                            </div>
 
-                                <div class="row-row">
-                                    <div class="row-body scrollable hover">
-                                        <div class="row-inner">
-                                            <div class="list inset">
-                                                <h:form id="hotelsListForm">
-                                                    <div class="list-item pointer">
-                                                        <c:forEach var="hotel" items="#{hotelForm.hotelsWithType}">
-                                                                <p:commandLink actionListener="#{hotelForm.edit(hotel.id)}" immediate="true" update=":formId">
-                                                                        <div class="list-left" >
-                                                                            <span class="w-40 avatar">
-                                                                                <c:if test="#{not empty hotel.photoWay}">
-                                                                                    <h:graphicImage url="upload/#{hotel.photoWay}"/>
-                                                                                </c:if>
-                                                                                <c:if test="#{empty hotel.photoWay}">
-                                                                                    <img src="assets/images/p0.svg" class="img-circle"></img>
-                                                                                </c:if>
-                                                                            </span>
-                                                                        </div>
-                                                                        <div class="list-body">
-                                                                            <h:outputText value="#{hotel.name}"/>
-                                                                            <div style="float: right">
-                                                                                <c:if test="#{authorisationUtil.authorisedUser}">
-                                                                                    <h:commandLink styleClass="glyphicon glyphicon-trash" immediate="true" onclick="return confirm('Ջնջել');">
-                                                                                        <f:ajax listener="#{hotelForm.delete(hotel.id)}" event="click" render="@this :hotelsListForm :formId"/>
-                                                                                    </h:commandLink>
-                                                                                </c:if>
-                                                                            </div>
-                                                                            <small class="block"><i class="fa fa-phone m-r-sm text-muted"></i><h:outputText value="#{hotel.mobilePhoneNumber}"/> </small>
-                                                                        </div>
-                                                                </p:commandLink>
+                            <div class="row-row">
+                                <div class="row-body scrollable hover">
+                                    <div class="row-inner">
+                                        <div class="list inset">
+                                            <h:form id="categoriesListForm">
+                                                <div class="list-item pointer">
+                                                    <!--Asht-->
+                                                    <c:if test="#{settingsForm.categoryTypeId eq 1}">
+                                                        <c:forEach var="asht" items="#{settingsForm.cache.ashts}">
+                                                            <p:commandLink actionListener="#{settingsForm.editAsht(asht)}" immediate="true" update=":editFormId">
+                                                                <div class="list-body">
+                                                                    <h:outputText value="#{asht.name}"/>
+                                                                    <div style="float: right">
+                                                                        <c:if test="#{authorisationUtil.authorisedUser}">
+                                                                            <h:commandLink styleClass="glyphicon glyphicon-trash" immediate="true" onclick="return confirm('Ջնջել');">
+                                                                                <f:ajax listener="#{settingsForm.deleteAsht(asht)}" event="click" render="@this :categoriesListForm :editFormId"/>
+                                                                            </h:commandLink>
+                                                                        </c:if>
+                                                                    </div>
+                                                                </div>
+                                                            </p:commandLink>
                                                         </c:forEach>
-                                                    </div>
-                                                </h:form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="p-a b-t text-center" >
-                                    <c:if test="#{authorisationUtil.authorisedUser}">
-                                        <div class="de-btn-top" style="margin-right: 230px; margin-top: 2px; ">
-                                            <h:form>
-                                                <p:commandButton  value="Ավելացնել նորը" styleClass="btn btn-fw primary" action="#{hotelForm.addNew}" update=":formId"/>
+                                                    </c:if>
+                                                    <!--City-->
+                                                    <c:if test="#{settingsForm.categoryTypeId eq 2}">
+                                                        <c:forEach var="city" items="#{settingsForm.cache.cities}">
+                                                            <p:commandLink actionListener="#{settingsForm.editCity(city)}" immediate="true" update=":editFormId">
+                                                                    <div class="list-body">
+                                                                        <h:outputText value="#{city.name}"/>
+                                                                        <div style="float: right">
+                                                                            <c:if test="#{authorisationUtil.authorisedUser}">
+                                                                                <h:commandLink styleClass="glyphicon glyphicon-trash" immediate="true" onclick="return confirm('Ջնջել');">
+                                                                                    <f:ajax listener="#{settingsForm.deleteCity(city)}" event="click" render="@this :categoriesListForm :editFormId"/>
+                                                                                </h:commandLink>
+                                                                            </c:if>
+                                                                        </div>
+                                                                    </div>
+                                                            </p:commandLink>
+                                                        </c:forEach>
+                                                    </c:if>
+                                                    <!--GRP-->
+                                                    <c:if test="#{settingsForm.categoryTypeId eq 3}">
+                                                        <c:forEach var="grp" items="#{settingsForm.cache.grps}">
+                                                            <p:commandLink actionListener="#{settingsForm.editGrp(grp)}" immediate="true" update=":editFormId">
+                                                                <div class="list-body">
+                                                                    <h:outputText value="#{grp.name}"/>
+                                                                    <div style="float: right">
+                                                                        <c:if test="#{authorisationUtil.authorisedUser}">
+                                                                            <h:commandLink styleClass="glyphicon glyphicon-trash" immediate="true" onclick="return confirm('Ջնջել');">
+                                                                                <f:ajax listener="#{settingsForm.deleteGrp(grp)}" event="click" render="@this :categoriesListForm :editFormId"/>
+                                                                            </h:commandLink>
+                                                                        </c:if>
+                                                                    </div>
+                                                                </div>
+                                                            </p:commandLink>
+                                                        </c:forEach>
+                                                    </c:if>
+                                                    <!--GRS-->
+                                                    <c:if test="#{settingsForm.categoryTypeId eq 4}">
+                                                        <c:forEach var="grs" items="#{settingsForm.cache.grss}">
+                                                            <p:commandLink actionListener="#{settingsForm.editGrs(grs)}" immediate="true" update=":editFormId">
+                                                                <div class="list-body">
+                                                                    <h:outputText value="#{grs.name}"/>
+                                                                    <div style="float: right">
+                                                                        <c:if test="#{authorisationUtil.authorisedUser}">
+                                                                            <h:commandLink styleClass="glyphicon glyphicon-trash" immediate="true" onclick="return confirm('Ջնջել');">
+                                                                                <f:ajax listener="#{settingsForm.deleteGrs(grs)}" event="click" render="@this :categoriesListForm :editFormId"/>
+                                                                            </h:commandLink>
+                                                                        </c:if>
+                                                                    </div>
+                                                                </div>
+                                                            </p:commandLink>
+                                                        </c:forEach>
+                                                    </c:if>
+                                                    <!--Region-->
+                                                    <c:if test="#{settingsForm.categoryTypeId eq 6}">
+                                                        <c:forEach var="region" items="#{settingsForm.cache.regions}">
+                                                            <p:commandLink actionListener="#{settingsForm.editRegion(region)}" immediate="true" update=":editFormId">
+                                                                <div class="list-body">
+                                                                    <h:outputText value="#{region.name}"/>
+                                                                    <div style="float: right">
+                                                                        <c:if test="#{authorisationUtil.authorisedUser}">
+                                                                            <h:commandLink styleClass="glyphicon glyphicon-trash" immediate="true" onclick="return confirm('Ջնջել');">
+                                                                                <f:ajax listener="#{settingsForm.deleteRegion(region)}" event="click" render="@this :categoriesListForm :editFormId"/>
+                                                                            </h:commandLink>
+                                                                        </c:if>
+                                                                    </div>
+                                                                </div>
+                                                            </p:commandLink>
+                                                        </c:forEach>
+                                                    </c:if>
+                                                    <!--Section-->
+                                                    <c:if test="#{settingsForm.categoryTypeId eq 7}">
+                                                        <c:forEach var="section" items="#{settingsForm.cache.sections}">
+                                                            <p:commandLink actionListener="#{settingsForm.editSection(section)}" immediate="true" update=":editFormId">
+                                                                <div class="list-body">
+                                                                    <h:outputText value="#{section.name}"/>
+                                                                    <div style="float: right">
+                                                                        <c:if test="#{authorisationUtil.authorisedUser}">
+                                                                            <h:commandLink styleClass="glyphicon glyphicon-trash" immediate="true" onclick="return confirm('Ջնջել');">
+                                                                                <f:ajax listener="#{settingsForm.deleteSection(section)}" event="click" render="@this :categoriesListForm :editFormId"/>
+                                                                            </h:commandLink>
+                                                                        </c:if>
+                                                                    </div>
+                                                                </div>
+                                                            </p:commandLink>
+                                                        </c:forEach>
+                                                    </c:if>
+                                                    <!--SubSection-->
+                                                    <c:if test="#{settingsForm.categoryTypeId eq 8}">
+                                                        <c:forEach var="subSection" items="#{settingsForm.cache.subSections}">
+                                                            <p:commandLink actionListener="#{settingsForm.editSubSection(subSection)}" immediate="true" update=":editFormId">
+                                                                <div class="list-body">
+                                                                    <h:outputText value="#{subSection.name}"/>
+                                                                    <div style="float: right">
+                                                                        <c:if test="#{authorisationUtil.authorisedUser}">
+                                                                            <h:commandLink styleClass="glyphicon glyphicon-trash" immediate="true" onclick="return confirm('Ջնջել');">
+                                                                                <f:ajax listener="#{settingsForm.deleteSubSection(subSection)}" event="click" render="@this :categoriesListForm :editFormId"/>
+                                                                            </h:commandLink>
+                                                                        </c:if>
+                                                                    </div>
+                                                                </div>
+                                                            </p:commandLink>
+                                                        </c:forEach>
+                                                    </c:if>
+                                                    <!--Street-->
+                                                    <c:if test="#{settingsForm.categoryTypeId eq 9}">
+                                                        <c:forEach var="street" items="#{settingsForm.cache.streets}">
+                                                            <p:commandLink actionListener="#{settingsForm.editStreet(street)}" immediate="true" update=":editFormId">
+                                                                <div class="list-body">
+                                                                    <h:outputText value="#{street.name}"/>
+                                                                    <div style="float: right">
+                                                                        <c:if test="#{authorisationUtil.authorisedUser}">
+                                                                            <h:commandLink styleClass="glyphicon glyphicon-trash" immediate="true" onclick="return confirm('Ջնջել');">
+                                                                                <f:ajax listener="#{settingsForm.deleteStreet(street)}" event="click" render="@this :categoriesListForm :editFormId"/>
+                                                                            </h:commandLink>
+                                                                        </c:if>
+                                                                    </div>
+                                                                </div>
+                                                            </p:commandLink>
+                                                        </c:forEach>
+                                                    </c:if>
+                                                    <!--Type-->
+                                                    <c:if test="#{settingsForm.categoryTypeId eq 10}">
+                                                        <c:forEach var="type" items="#{settingsForm.cache.types}">
+                                                            <p:commandLink actionListener="#{settingsForm.editType(type)}" immediate="true" update=":editFormId">
+                                                                <div class="list-body">
+                                                                    <h:outputText value="#{type.name}"/>
+                                                                    <div style="float: right">
+                                                                        <c:if test="#{authorisationUtil.authorisedUser}">
+                                                                            <h:commandLink styleClass="glyphicon glyphicon-trash" immediate="true" onclick="return confirm('Ջնջել');">
+                                                                                <f:ajax listener="#{settingsForm.deleteType(type)}" event="click" render="@this :categoriesListForm :editFormId"/>
+                                                                            </h:commandLink>
+                                                                        </c:if>
+                                                                    </div>
+                                                                </div>
+                                                            </p:commandLink>
+                                                        </c:forEach>
+                                                    </c:if>
+                                                    <!--Violation Code-->
+                                                    <c:if test="#{settingsForm.categoryTypeId eq 11}">
+                                                        <c:forEach var="violationCode" items="#{settingsForm.cache.violationCodes}">
+                                                            <p:commandLink actionListener="#{settingsForm.editViolationCode(violationCode)}" immediate="true" update=":editFormId">
+                                                                <div class="list-body">
+                                                                    <h:outputText value="#{violationCode.name}"/>
+                                                                    <div style="float: right">
+                                                                        <c:if test="#{authorisationUtil.authorisedUser}">
+                                                                            <h:commandLink styleClass="glyphicon glyphicon-trash" immediate="true" onclick="return confirm('Ջնջել');">
+                                                                                <f:ajax listener="#{settingsForm.deleteViolationCode(violationCode)}" event="click" render="@this :categoriesListForm :editFormId"/>
+                                                                            </h:commandLink>
+                                                                        </c:if>
+                                                                    </div>
+                                                                </div>
+                                                            </p:commandLink>
+                                                        </c:forEach>
+                                                    </c:if>
+                                                </div>
                                             </h:form>
                                         </div>
-                                    </c:if>
-                                    <h:panelGroup layout="block" id="hotelTotalId">
-                                        <span>Ընդամենը : #{hotelForm.total()}</span><br/>
-                                        <span>Ընդանուր մահճակալների քանակը : #{hotelForm.totalBadCount()}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-a b-t text-center">
+                                <c:if test="#{authorisationUtil.authorisedUser}">
+                                    <div class="de-btn-top" style="margin-right: 230px; margin-top: 2px; ">
+                                        <h:panelGroup id="addNewFormId" >
+                                            <h:form>
+                                                <!--Asht-->
+                                                <p:commandButton value="Ավելացնել նորը" styleClass="btn btn-fw primary" rendered="#{settingsForm.categoryTypeId eq 1}"
+                                                                 action="#{settingsForm.addNewAsht}" update=":editFormId"/>
+                                                <!--City-->
+                                                <p:commandButton value="Ավելացնել նորը" styleClass="btn btn-fw primary"  rendered="#{settingsForm.categoryTypeId eq 2}"
+                                                                 action="#{settingsForm.addNewCity}" update=":editFormId"/>
+                                                <!--GRP-->
+                                                <p:commandButton value="Ավելացնել նորը" styleClass="btn btn-fw primary" rendered="#{settingsForm.categoryTypeId eq 3}"
+                                                                 action="#{settingsForm.addNewGrp}" update=":editFormId"/>
+                                                <!--GRS-->
+                                                <p:commandButton value="Ավելացնել նորը" styleClass="btn btn-fw primary" rendered="#{settingsForm.categoryTypeId eq 4}"
+                                                                 action="#{settingsForm.addNewGrs}" update=":editFormId"/>
+                                                <!--Region-->
+                                                <p:commandButton value="Ավելացնել նորը" styleClass="btn btn-fw primary" rendered="#{settingsForm.categoryTypeId eq 6}"
+                                                                 action="#{settingsForm.addNewRegion}" update=":editFormId"/>
+                                                <!--Section-->
+                                                <p:commandButton value="Ավելացնել նորը" styleClass="btn btn-fw primary" rendered="#{settingsForm.categoryTypeId eq 7}"
+                                                                 action="#{settingsForm.addNewSection}" update=":editFormId"/>
+                                                <!--SubSection-->
+                                                <p:commandButton value="Ավելացնել նորը" styleClass="btn btn-fw primary" rendered="#{settingsForm.categoryTypeId eq 8}"
+                                                                 action="#{settingsForm.addNewSubSection}" update=":editFormId"/>
+                                                <!--Street-->
+                                                <p:commandButton value="Ավելացնել նորը" styleClass="btn btn-fw primary" rendered="#{settingsForm.categoryTypeId eq 9}"
+                                                                 action="#{settingsForm.addNewStreet}" update=":editFormId"/>
+                                                <!--Type-->
+                                                <p:commandButton value="Ավելացնել նորը" styleClass="btn btn-fw primary" rendered="#{settingsForm.categoryTypeId eq 10}"
+                                                                 action="#{settingsForm.addNewType}" update=":editFormId"/>
+                                                <!--ViolationCode-->
+                                                <p:commandButton value="Ավելացնել նորը" styleClass="btn btn-fw primary" rendered="#{settingsForm.categoryTypeId eq 11}"
+                                                                 action="#{settingsForm.addNewViolationCode}" update=":editFormId"/>
+                                            </h:form>
+                                        </h:panelGroup>
+                                    </div>
+                                </c:if>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /column -->
+
+                    <!-- column -->
+                    <div class="col-sm-6 col-md-7">
+                        <div class="row-col">
+                            <div class="row-row">
+                                <div class="row-body">
+                                    <h:panelGroup id="contentId" styleClass="row-inner" layout="block">
+                                        <h:panelGroup layout="block" class="padding" id="editFormId"
+                                                      style="max-width: 800px; margin: 0 auto;">
+                                            <!--Asht-->
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 1}">
+                                                <h:panelGroup layout="block">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="ashtNameId" value="ԱՇՏ"/>
+                                                            <p:inputText id="ashtNameId" value="#{settingsForm.editedAsht.name}" styleClass="form-control"
+                                                                         required="true"
+                                                                         requiredMessage="ԱՇՏը պարտադիր դաշտ է" placeholder="ԱՇՏ"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="ashtRegionId" value="Շրջան"/>
+                                                            <p:selectOneMenu id="ashtRegionId" value="#{settingsForm.editedAsht.regionId}" styleClass="form-control input-c"
+                                                                             requiredMessage="Շրջան պարտադիր դաշտ է">
+                                                                <f:selectItem id="ashtRegionSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                                                                <f:selectItems id="ashtRegionsId"
+                                                                               itemLabel="#{region.name}"
+                                                                               itemValue="#{region.id}"
+                                                                               value="#{settingsForm.cache.regions}" var="region"/>
+                                                            </p:selectOneMenu>
+                                                        </div>
+                                                    </div>
+                                                </h:panelGroup>
+
+                                                <c:if test="#{authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <p:commandButton ajax="false" value="Պահպանել" styleClass="btn btn-fw primary"  actionListener="#{settingsForm.saveAsht}" update=":categoriesListForm" >
+                                                        </p:commandButton>
+                                                        <h:commandLink immediate="true" value="Դուրս գալ" styleClass="btn " actionListener="#{authorisationUtil.signout}"/>
+                                                    </div>
+                                                </c:if>
+                                                <c:if test="#{!authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <h:commandLink immediate="true" value="Մուտք" styleClass="btn " actionListener="#{authorisationUtil.signIn}"/>
+                                                    </div>
+                                                </c:if>
+                                            </h:form>
+                                            <!--City-->
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 2}">
+                                                <h:panelGroup layout="block">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="nameId" value="Քաղաք"/>
+                                                            <p:inputText id="nameId" value="#{settingsForm.editedCity.name}" styleClass="form-control"
+                                                                         required="true"
+                                                                         requiredMessage="Քաղաքը պարտադիր դաշտ է" placeholder="Քաղաք"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="regionId" value="Շրջան"/>
+                                                            <p:selectOneMenu id="regionId" value="#{settingsForm.editedCity.regionId}" styleClass="form-control input-c"
+                                                                             requiredMessage="Շրջան պարտադիր դաշտ է">
+                                                                <f:selectItem id="regionSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                                                                <f:selectItems id="regionsId"
+                                                                               itemLabel="#{region.name}"
+                                                                               itemValue="#{region.id}"
+                                                                               value="#{settingsForm.cache.regions}" var="region"/>
+                                                            </p:selectOneMenu>
+                                                        </div>
+                                                    </div>
+                                                </h:panelGroup>
+
+                                                <c:if test="#{authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <p:commandButton ajax="false" value="Պահպանել" styleClass="btn btn-fw primary"  actionListener="#{settingsForm.saveCity}" update=":categoriesListForm" >
+                                                        </p:commandButton>
+                                                        <h:commandLink immediate="true" value="Դուրս գալ" styleClass="btn " actionListener="#{authorisationUtil.signout}"/>
+                                                    </div>
+                                                </c:if>
+                                                <c:if test="#{!authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <h:commandLink immediate="true" value="Մուտք" styleClass="btn " actionListener="#{authorisationUtil.signIn}"/>
+                                                    </div>
+                                                </c:if>
+                                            </h:form>
+                                            <!--GRP-->
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 3}">
+                                                <h:panelGroup layout="block">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="grpNameId" value="ԳԿԿ"/>
+                                                            <p:inputText id="grpNameId" value="#{settingsForm.editedGrp.name}" styleClass="form-control"
+                                                                         required="true"
+                                                                         requiredMessage="ԳԿԿն պարտադիր դաշտ է" placeholder="ԳԿԿ"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="cityId" value="Քաղաք/Գյուղ"/>
+                                                            <p:selectOneMenu id="cityId" value="#{settingsForm.editedGrp.cityId}" styleClass="form-control input-c"
+                                                                             requiredMessage="Քաղաք/Գյուղը պարտադիր դաշտ է">
+                                                                <f:selectItem id="citySelectOneId" itemLabel="Ընտրիր մեկը"/>
+                                                                <f:selectItems id="citiesId"
+                                                                               itemLabel="#{city.name}"
+                                                                               itemValue="#{city.id}"
+                                                                               value="#{settingsForm.cache.cities}" var="city"/>
+                                                            </p:selectOneMenu>
+                                                        </div>
+                                                    </div>
+                                                </h:panelGroup>
+
+                                                <c:if test="#{authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <p:commandButton ajax="false" value="Պահպանել" styleClass="btn btn-fw primary"  actionListener="#{settingsForm.saveGrp}" update=":categoriesListForm" >
+                                                        </p:commandButton>
+                                                        <h:commandLink immediate="true" value="Դուրս գալ" styleClass="btn " actionListener="#{authorisationUtil.signout}"/>
+                                                    </div>
+                                                </c:if>
+                                                <c:if test="#{!authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <h:commandLink immediate="true" value="Մուտք" styleClass="btn " actionListener="#{authorisationUtil.signIn}"/>
+                                                    </div>
+                                                </c:if>
+                                            </h:form>
+                                            <!--GRS-->
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 4}">
+                                                <h:panelGroup layout="block">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="grsNameId" value="ԳԲԿ"/>
+                                                            <p:inputText id="grsNameId" value="#{settingsForm.editedGrs.name}" styleClass="form-control"
+                                                                         required="true"
+                                                                         requiredMessage="ԳԲԿն պարտադիր դաշտ է" placeholder="ԳԲԿ"/>
+                                                        </div>
+                                                    </div>
+                                                </h:panelGroup>
+
+                                                <c:if test="#{authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <p:commandButton ajax="false" value="Պահպանել" styleClass="btn btn-fw primary"  actionListener="#{settingsForm.saveGrs}" update=":categoriesListForm" >
+                                                        </p:commandButton>
+                                                        <h:commandLink immediate="true" value="Դուրս գալ" styleClass="btn " actionListener="#{authorisationUtil.signout}"/>
+                                                    </div>
+                                                </c:if>
+                                                <c:if test="#{!authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <h:commandLink immediate="true" value="Մուտք" styleClass="btn " actionListener="#{authorisationUtil.signIn}"/>
+                                                    </div>
+                                                </c:if>
+                                            </h:form>
+                                            <!--Region-->
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 6}">
+                                                <h:panelGroup layout="block">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="regionNameId" value="Շրջան"/>
+                                                            <p:inputText id="regionNameId" value="#{settingsForm.editedRegion.name}" styleClass="form-control"
+                                                                         required="true"
+                                                                         requiredMessage="Շրջանը պարտադիր դաշտ է" placeholder="Շրջան"/>
+                                                        </div>
+                                                    </div>
+                                                </h:panelGroup>
+
+                                                <c:if test="#{authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <p:commandButton ajax="false" value="Պահպանել" styleClass="btn btn-fw primary"  actionListener="#{settingsForm.saveRegion}" update=":categoriesListForm" >
+                                                        </p:commandButton>
+                                                        <h:commandLink immediate="true" value="Դուրս գալ" styleClass="btn " actionListener="#{authorisationUtil.signout}"/>
+                                                    </div>
+                                                </c:if>
+                                                <c:if test="#{!authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <h:commandLink immediate="true" value="Մուտք" styleClass="btn " actionListener="#{authorisationUtil.signIn}"/>
+                                                    </div>
+                                                </c:if>
+                                            </h:form>
+                                            <!--Section-->
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 7}">
+                                                <h:panelGroup layout="block">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="sectionNameId" value="Մաս"/>
+                                                            <p:inputText id="sectionNameId" value="#{settingsForm.editedSection.name}" styleClass="form-control"
+                                                                         required="true"
+                                                                         requiredMessage="Մասը պարտադիր դաշտ է" placeholder="Մաս"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="sectionCityId" value="Քաղաք/Գյուղ"/>
+                                                            <p:selectOneMenu id="sectionCityId" value="#{settingsForm.editedSection.cityId}" styleClass="form-control input-c"
+                                                                             requiredMessage="Քաղաք/Գյուղը պարտադիր դաշտ է">
+                                                                <f:selectItem id="sectionCitySelectOneId" itemLabel="Ընտրիր մեկը"/>
+                                                                <f:selectItems id="sectionCitiesId"
+                                                                               itemLabel="#{city.name}"
+                                                                               itemValue="#{city.id}"
+                                                                               value="#{settingsForm.cache.cities}" var="city"/>
+                                                            </p:selectOneMenu>
+                                                        </div>
+                                                    </div>
+                                                </h:panelGroup>
+
+                                                <c:if test="#{authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <p:commandButton ajax="false" value="Պահպանել" styleClass="btn btn-fw primary"  actionListener="#{settingsForm.saveSection}" update=":categoriesListForm" >
+                                                        </p:commandButton>
+                                                        <h:commandLink immediate="true" value="Դուրս գալ" styleClass="btn " actionListener="#{authorisationUtil.signout}"/>
+                                                    </div>
+                                                </c:if>
+                                                <c:if test="#{!authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <h:commandLink immediate="true" value="Մուտք" styleClass="btn " actionListener="#{authorisationUtil.signIn}"/>
+                                                    </div>
+                                                </c:if>
+                                            </h:form>
+                                            <!--SubSection-->
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 8}">
+                                                <h:panelGroup layout="block">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="subSectionNameId" value="Ենթատեղամաս"/>
+                                                            <p:inputText id="subSectionNameId" value="#{settingsForm.editedSubSection.name}" styleClass="form-control"
+                                                                         required="true"
+                                                                         requiredMessage="Ենթատեղամասը պարտադիր դաշտ է" placeholder="Ենթատեղամաս"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="subSectionSectionId" value="Մաս"/>
+                                                            <p:selectOneMenu id="subSectionSectionId" value="#{settingsForm.editedSubSection.sectionId}" styleClass="form-control input-c"
+                                                                             requiredMessage="Մասը պարտադիր դաշտ է">
+                                                                <f:selectItem id="subSectionSectionSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                                                                <f:selectItems id="subSectionSectionsId"
+                                                                               itemLabel="#{section.name}"
+                                                                               itemValue="#{section.id}"
+                                                                               value="#{settingsForm.cache.sections}" var="section"/>
+                                                            </p:selectOneMenu>
+                                                        </div>
+                                                    </div>
+                                                </h:panelGroup>
+
+                                                <c:if test="#{authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <p:commandButton ajax="false" value="Պահպանել" styleClass="btn btn-fw primary"  actionListener="#{settingsForm.saveSubSection}" update=":categoriesListForm" >
+                                                        </p:commandButton>
+                                                        <h:commandLink immediate="true" value="Դուրս գալ" styleClass="btn " actionListener="#{authorisationUtil.signout}"/>
+                                                    </div>
+                                                </c:if>
+                                                <c:if test="#{!authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <h:commandLink immediate="true" value="Մուտք" styleClass="btn " actionListener="#{authorisationUtil.signIn}"/>
+                                                    </div>
+                                                </c:if>
+                                            </h:form>
+                                            <!--Street-->
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 9}">
+                                                <h:panelGroup layout="block">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="streetNameId" value="Փողոց"/>
+                                                            <p:inputText id="streetNameId" value="#{settingsForm.editedStreet.name}" styleClass="form-control"
+                                                                         required="true"
+                                                                         requiredMessage="Փողոցը պարտադիր դաշտ է" placeholder="Փողոց"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="streetCityId" value="Քաղաք/Գյուղ"/>
+                                                            <p:selectOneMenu id="streetCityId" value="#{settingsForm.editedStreet.cityId}" styleClass="form-control input-c"
+                                                                             requiredMessage="Քաղաք/Գյուղը պարտադիր դաշտ է">
+                                                                <f:selectItem id="streetCitySelectOneId" itemLabel="Ընտրիր մեկը"/>
+                                                                <f:selectItems id="streetCitiesId"
+                                                                               itemLabel="#{city.name}"
+                                                                               itemValue="#{city.id}"
+                                                                               value="#{settingsForm.cache.cities}" var="city"/>
+                                                            </p:selectOneMenu>
+                                                        </div>
+                                                    </div>
+                                                </h:panelGroup>
+
+                                                <c:if test="#{authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <p:commandButton ajax="false" value="Պահպանել" styleClass="btn btn-fw primary"  actionListener="#{settingsForm.saveStreet}" update=":categoriesListForm" >
+                                                        </p:commandButton>
+                                                        <h:commandLink immediate="true" value="Դուրս գալ" styleClass="btn " actionListener="#{authorisationUtil.signout}"/>
+                                                    </div>
+                                                </c:if>
+                                                <c:if test="#{!authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <h:commandLink immediate="true" value="Մուտք" styleClass="btn " actionListener="#{authorisationUtil.signIn}"/>
+                                                    </div>
+                                                </c:if>
+                                            </h:form>
+                                            <!--Type-->
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 10}">
+                                                <h:panelGroup layout="block">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="typeNameId" value="Գ/Հ համար"/>
+                                                            <p:inputText id="typeNameId" value="#{settingsForm.editedType.name}" styleClass="form-control"
+                                                                         required="true"
+                                                                         requiredMessage="Գ/Հ համարն պարտադիր դաշտ է" placeholder="Գ/Հ համար"/>
+                                                        </div>
+                                                    </div>
+                                                </h:panelGroup>
+
+                                                <c:if test="#{authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <p:commandButton ajax="false" value="Պահպանել" styleClass="btn btn-fw primary"  actionListener="#{settingsForm.saveType}" update=":categoriesListForm" >
+                                                        </p:commandButton>
+                                                        <h:commandLink immediate="true" value="Դուրս գալ" styleClass="btn " actionListener="#{authorisationUtil.signout}"/>
+                                                    </div>
+                                                </c:if>
+                                                <c:if test="#{!authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <h:commandLink immediate="true" value="Մուտք" styleClass="btn " actionListener="#{authorisationUtil.signIn}"/>
+                                                    </div>
+                                                </c:if>
+                                            </h:form>
+                                            <!--ViolationCode-->
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 11}">
+                                                <h:panelGroup layout="block">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="violationCodeNameId" value="Violation Code"/>
+                                                            <p:inputText id="violationCodeNameId" value="#{settingsForm.editedViolationCode.name}" styleClass="form-control"
+                                                                         required="true"
+                                                                         requiredMessage="ViolationCodeն պարտադիր դաշտ է" placeholder="Violation Code"/>
+                                                        </div>
+                                                    </div>
+                                                </h:panelGroup>
+                                                <h:panelGroup layout="block">
+                                                    <div class="row">
+                                                        <h:inputTextarea class="form-control no-border" rows="3" placeholder="Type something..." value="#{settingsForm.editedViolationCode.description}"></h:inputTextarea>
+                                                    </div>
+                                                </h:panelGroup>
+                                                <c:if test="#{authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <p:commandButton ajax="false" value="Պահպանել" styleClass="btn btn-fw primary"  actionListener="#{settingsForm.saveViolationCode}" update=":categoriesListForm" >
+                                                        </p:commandButton>
+                                                        <h:commandLink immediate="true" value="Դուրս գալ" styleClass="btn " actionListener="#{authorisationUtil.signout}"/>
+                                                    </div>
+                                                </c:if>
+                                                <c:if test="#{!authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <h:commandLink immediate="true" value="Մուտք" styleClass="btn " actionListener="#{authorisationUtil.signIn}"/>
+                                                    </div>
+                                                </c:if>
+                                            </h:form>
+                                        </h:panelGroup>
+                                        <!-- / fields -->
                                     </h:panelGroup>
                                 </div>
                             </div>
                         </div>
-                        <!-- /column -->
-
-                        <!-- column -->
-                        <div class="col-sm-6 col-md-7">
-                            <div class="row-col">
-                                <div class="row-row">
-                                    <div class="row-body">
-                                        <h:panelGroup id="contentId" styleClass="row-inner" layout="block">
-                                            <h:panelGroup layout="block" class="padding" style="max-width: 800px; margin: 0 auto;">
-                                                <h:form id="formId" enctype="multipart/form-data" prependId="false" onreset="return false">
-                                                    <div class="row-col h-auto">
-                                                        <div class="form-horizontal">
-                                                            <h:messages  infoStyle="color:darkgreen" errorStyle="color:red" globalOnly="true"/>
-                                                            <div class="form-group row">
-                                                                <div class="col-sm-5">
-                                                                    <!--<div class="avatar w-80 inline">-->
-                                                                        <!--<c:if test="#{not empty hotelForm.hotel.photoWay}">-->
-                                                                            <!--<h:graphicImage url="upload/#{hotelForm.hotel.photoWay}"/>-->
-                                                                        <!--</c:if>-->
-                                                                    <!--</div>-->
-                                                                        <!--<div id="image-preview" style="display: block">-->
-                                                                            <label for="image-upload" id="image-label" style="margin-bottom: 20px">Ընտրել Նկարը</label>
-                                                                            <h:inputFile name="image" value="#{hotelForm.file}" id="image-upload" mode="simple" skinSimple="false" >
-                                                                                <f:validator validatorId="FileUploadValidator"/>
-                                                                            </h:inputFile><br/>
-
-                                                                        <h:message for="image-upload" id="messages" style="color: red;"/>
-
-                                                                </div>
-                                                                <div class="col-sm-2">
-                                                                    <h:outputLabel class="form-control-label">1-5 աստղ</h:outputLabel>
-                                                                    <!--<h:inputText id="rateId" styleClass="form-control" value="#{hotelForm.hotel.rate}" validatorMessage="1-5 միջակայքում" converterMessage="1-5 միջակայքում">-->
-                                                                        <!--<f:validateLength maximum="1"/>-->
-                                                                    <!--</h:inputText>-->
-                                                                    <p:rating value="#{hotelForm.hotel.rate}" readonly="false" />
-                                                                    <h:message for="rateId" style="color: red;" showDetail="false" showSummary="true"/>
-                                                                </div>
-                                                                <div class="col-sm-5">
-                                                                    <h:outputLabel class="form-control-label">Տիպ *</h:outputLabel>
-                                                                    <h:selectOneMenu value="#{hotelForm.hotel.hotelType}" styleClass="form-control" id="hotelTypeId"
-                                                                                     required="true" requiredMessage="Տիպը անպայման դաշտ է">
-                                                                        <f:validateRequired />
-                                                                        <f:selectItem itemValue="" itemLabel="Ընտրել տիպը" />
-                                                                        <f:selectItems value="#{hotelForm.hotelTypes}" var="hType" itemLabel="#{hType.name}" itemValue="#{hType.id}"/>
-                                                                    </h:selectOneMenu>
-                                                                    <h:message for="hotelTypeId" id="typeMessage" style="color: red;" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <div class="col-sm-12">
-                                                                <h:outputLabel class="form-control-label">Անվանում *</h:outputLabel>
-                                                                <h:inputText styleClass="form-control" value="#{hotelForm.hotel.name}"
-                                                                             required="true" requiredMessage="Անվանում անպայման դաշտ է" id="nameId" >
-                                                                    <f:validateRequired />
-                                                                    <f:validator validatorId="HotelNameUniqueValidator"/>
-                                                                </h:inputText>
-                                                                <h:message for="nameId" id="nameMessage" style="color: red;" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- fields -->
-                                                    <div class="form-horizontal">
-
-                                                        <div class="form-group row">
-                                                            <div class="col-sm-6">
-                                                                <h:outputLabel class="form-control-label">Տնօրենի ԱԱՀ</h:outputLabel>
-                                                                <h:inputText styleClass="form-control" value="#{hotelForm.hotel.directorFullName}"/>
-                                                            </div>
-                                                            <div class="col-sm-6">
-                                                                <h:outputLabel class="form-control-label">Իրավաբանական անվանում</h:outputLabel>
-                                                                <h:inputText styleClass="form-control" value="#{hotelForm.hotel.legalName}"/>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group row">
-                                                            <div class="col-sm-6">
-                                                                <h:outputLabel class="form-control-label">Էլեկրոնային փոստ</h:outputLabel>
-                                                                <h:inputText styleClass="form-control" value="#{hotelForm.hotel.email}"/>
-                                                            </div>
-                                                            <div class="col-sm-6">
-                                                                <h:outputLabel class="form-control-label">Կայք</h:outputLabel>
-                                                                <h:inputText styleClass="form-control" value="#{hotelForm.hotel.site}"/>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group row">
-                                                            <div class="col-sm-12">
-                                                                <h:outputLabel class="form-control-label">Հասցե</h:outputLabel>
-                                                                <h:inputText styleClass="form-control" value="#{hotelForm.hotel.address}"/>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group row">
-                                                            <div class="col-sm-6">
-                                                                <h:outputLabel class="form-control-label">Հեռախոս</h:outputLabel>
-                                                                <p:inputMask styleClass="form-control" style="box-shadow: none; border:1px solid rgba(120, 130, 140, 0.2) !important;" maxlength="10" mask="(999)99-99-99" value="#{hotelForm.hotel.phoneNumber}"/>
-                                                            </div>
-                                                            <div class="col-sm-6">
-                                                                <h:outputLabel class="form-control-label">Բջջային հեռախոս</h:outputLabel>
-                                                                <p:inputMask styleClass="form-control" style="box-shadow: none; border:1px solid rgba(120, 130, 140, 0.2) !important;" maxlength="10" mask="(999)99-99-99" value="#{hotelForm.hotel.mobilePhoneNumber}"/>
-
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group row">
-                                                            <div class="col-sm-6">
-                                                                <h:outputLabel class="form-control-label">Մեկ տեղ</h:outputLabel>
-                                                                <h:inputText styleClass="form-control" value="#{hotelForm.hotel.singleRoom}" id="singleRoomId" converterMessage="*թիվ"/>
-                                                                <h:message for="singleRoomId" style="color: red;" showDetail="false" showSummary="true"/>
-                                                            </div>
-                                                            <div class="col-sm-6">
-                                                                <h:outputLabel class="form-control-label">Երկու տեղ</h:outputLabel>
-                                                                <h:inputText id="doubleRoomId" styleClass="form-control" value="#{hotelForm.hotel.doubleRoom}" converterMessage="*թիվ"/>
-                                                                <h:message for="doubleRoomId" style="color: red;" showDetail="false" showSummary="true"/>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group row">
-                                                            <div class="col-sm-6">
-                                                                <h:outputLabel class="form-control-label">Երեք տեղ</h:outputLabel>
-                                                                <h:inputText id="tripleRoomId" styleClass="form-control" value="#{hotelForm.hotel.tripleRoom}" converterMessage="*թիվ"/>
-                                                                <h:message for="tripleRoomId" style="color: red;" showDetail="false" showSummary="true"/>
-                                                            </div>
-                                                            <div class="col-sm-6">
-                                                                <h:outputLabel class="form-control-label">Այլ համարներ</h:outputLabel>
-                                                                <h:inputText id="otherRoomId" styleClass="form-control" value="#{hotelForm.hotel.otherRoom}" converterMessage="*թիվ"/>
-                                                                <h:message for="otherRoomId" style="color: red;" showDetail="false" showSummary="true"/>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group row">
-                                                            <div class="col-sm-6">
-                                                                <h:outputLabel class="form-control-label">Համարների քանակ</h:outputLabel>
-                                                                <h:inputText id="roomCountId" styleClass="form-control" value="#{hotelForm.hotel.roomCount}" converterMessage="*թիվ"/>
-                                                                <h:message for="roomCountId" style="color: red;" showDetail="false" showSummary="true"/>
-                                                            </div>
-                                                            <div class="col-sm-6">
-                                                                <h:outputLabel class="form-control-label">Մահճակալների քանակ</h:outputLabel>
-                                                                <h:inputText id="bedCountId" styleClass="form-control" value="#{hotelForm.hotel.bedCount}" converterMessage="*թիվ"/>
-                                                                <h:message for="bedCountId" style="color: red;" showDetail="false" showSummary="true"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <c:if test="#{authorisationUtil.authorisedUser}">
-                                                        <div class="de-btn-top">
-                                                            <p:commandButton ajax="false" value="Պահպանել" styleClass="btn btn-fw primary"  actionListener="#{hotelForm.save}" update="@form :hotelsListForm" >
-                                                            </p:commandButton>
-                                                            <h:commandLink immediate="true" value="Դուրս գալ" styleClass="btn " actionListener="#{authorisationUtil.signout}"/>
-                                                        </div>
-                                                    </c:if>
-                                                    <c:if test="#{!authorisationUtil.authorisedUser}">
-                                                        <div class="de-btn-top">
-                                                            <h:commandLink immediate="true" value="Մուտք" styleClass="btn " actionListener="#{authorisationUtil.signIn}"/>
-                                                        </div>
-                                                    </c:if>
-                                                </h:form>
-                                            </h:panelGroup>
-                                                <!-- / fields -->
-                                        </h:panelGroup>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /column -->
                     </div>
+                    <!-- /column -->
                 </div>
-
-                <!-- ############ PAGE END-->
-
             </div>
+
+            <!-- ############ PAGE END-->
+
         </div>
-        <!-- / -->
-
     </div>
+    <!-- / -->
+
+</div>
 
 
+<!-- build:js scripts/app.html.js -->
+<!-- jQuery -->
+<script type="text/javascript" src="javax.faces.resource/jquery/jquery.js.xhtml?ln=primefaces&amp;v=6.0"></script>
+<script type="text/javascript"
+        src="javax.faces.resource/jquery/jquery-plugins.js.xhtml?ln=primefaces&amp;v=6.0"></script>
+<script type="text/javascript" src="javax.faces.resource/core.js.xhtml?ln=primefaces&amp;v=6.0"></script>
+<script type="text/javascript" src="javax.faces.resource/components.js.xhtml?ln=primefaces&amp;v=6.0"></script>
+<!-- Bootstrap -->
+<script src="libs/jquery/tether/dist/js/tether.min.js"></script>
+<script src="libs/jquery/bootstrap/dist/js/bootstrap.js"></script>
+<!-- core -->
+<script src="libs/jquery/underscore/underscore-min.js"></script>
+<script src="libs/jquery/jQuery-Storage-API/jquery.storageapi.min.js"></script>
+<script src="libs/jquery/PACE/pace.min.js"></script>
 
-    <!-- build:js scripts/app.html.js -->
-    <!-- jQuery -->
-    <script type="text/javascript" src="javax.faces.resource/jquery/jquery.js.xhtml?ln=primefaces&amp;v=6.0"></script>
-    <script type="text/javascript" src="javax.faces.resource/jquery/jquery-plugins.js.xhtml?ln=primefaces&amp;v=6.0"></script>
-    <script type="text/javascript" src="javax.faces.resource/core.js.xhtml?ln=primefaces&amp;v=6.0"></script>
-    <script type="text/javascript" src="javax.faces.resource/components.js.xhtml?ln=primefaces&amp;v=6.0"></script>
-    <!-- Bootstrap -->
-    <script src="libs/jquery/tether/dist/js/tether.min.js"></script>
-    <script src="libs/jquery/bootstrap/dist/js/bootstrap.js"></script>
-    <!-- core -->
-    <script src="libs/jquery/underscore/underscore-min.js"></script>
-    <script src="libs/jquery/jQuery-Storage-API/jquery.storageapi.min.js"></script>
-    <script src="libs/jquery/PACE/pace.min.js"></script>
+<script src="scripts/config.lazyload.js"></script>
 
-    <script src="scripts/config.lazyload.js"></script>
+<script src="scripts/palette.js"></script>
+<script src="scripts/ui-load.js"></script>
+<script src="scripts/ui-jp.js"></script>
+<script src="scripts/ui-include.js"></script>
+<script src="scripts/ui-device.js"></script>
+<script src="scripts/ui-form.js"></script>
+<script src="scripts/ui-nav.js"></script>
+<script src="scripts/ui-screenfull.js"></script>
+<script src="scripts/ui-scroll-to.js"></script>
+<script src="scripts/ui-toggle-class.js"></script>
 
-    <script src="scripts/palette.js"></script>
-    <script src="scripts/ui-load.js"></script>
-    <script src="scripts/ui-jp.js"></script>
-    <script src="scripts/ui-include.js"></script>
-    <script src="scripts/ui-device.js"></script>
-    <script src="scripts/ui-form.js"></script>
-    <script src="scripts/ui-nav.js"></script>
-    <script src="scripts/ui-screenfull.js"></script>
-    <script src="scripts/ui-scroll-to.js"></script>
-    <script src="scripts/ui-toggle-class.js"></script>
+<script src="scripts/app.js"></script>
+<!--file upload JS-->
+<script type="text/javascript" src="scripts/jquery.uploadPreview.js"></script>
+<script type="text/javascript">
+    //        $(document).ready(function() {
+    //            $.uploadPreview({
+    //                input_field: "#image-upload",
+    //                preview_box: "#image-preview",
+    //                label_field: "#image-label"
+    //            });
+    //        });
+</script>
 
-    <script src="scripts/app.js"></script>
-    <!--file upload JS-->
-    <script type="text/javascript" src="scripts/jquery.uploadPreview.js"></script>
-    <script type="text/javascript">
-//        $(document).ready(function() {
-//            $.uploadPreview({
-//                input_field: "#image-upload",
-//                preview_box: "#image-preview",
-//                label_field: "#image-label"
-//            });
-//        });
-    </script>
-
-    <!-- ajax -->
-    <!--<script src="libs/jquery/jquery-pjax/jquery.pjax.js"></script>-->
-    <!--<script src="scripts/ajax.js"></script>-->
-    <!-- endbuild -->
+<!-- ajax -->
+<!--<script src="libs/jquery/jquery-pjax/jquery.pjax.js"></script>-->
+<!--<script src="scripts/ajax.js"></script>-->
+<!-- endbuild -->
 
 </body>
 </html>

@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog dynamic="true" header="Edit City" id="cityDialogId" modal="true" onShow="showDialog()" onHide="hideDialog()"
+              resizable="false" widgetVar="clientDialog" width="100%" height="90%" style="max-width: 1200px; z-index: 100">
+        <p:ajax event="close" listener="#{settingsForm.cancelCityDialog}" update="cityEditFormId:resetId" resetValues="true"/>
+        <h:form id="cityEditFormId">
+            <h:panelGroup id="resetId" layout="block">
+                <div class="row">
+                    <div class="col-sm-4 col-md-4">
+                        <p:outputLabel for="nameId" value="Քաղաք"/>
+                        <p:inputText id="nameId" value="#{settingsForm.editedCity.name}" styleClass="form-control"
+                                     required="true"
+                                     requiredMessage="Քաղաքը պարտադիր դաշտ է" placeholder="Քաղաք"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 col-md-4">
+                        <p:outputLabel for="regionId" value="Շրջան"/>
+                        <p:selectOneMenu id="regionId" value="#{settingsForm.editedCity.regionId}" styleClass="form-control input-c"
+                                         requiredMessage="Շրջան պարտադիր դաշտ է">
+                            <f:selectItem id="regionSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                            <f:selectItems id="regionsId"
+                                           itemLabel="#{region.name}"
+                                           itemValue="#{region.id}"
+                                           value="#{settingsForm.cache.regions}" var="region"/>
+                        </p:selectOneMenu>
+                    </div>
+                </div>
+            </h:panelGroup>
+            <div class="modal-footer m-t-3">
+                <p:commandButton value="Պահպանել" styleClass="dark"  actionListener="#{portfolioForm.saveClient}" update="clientEditFormId:resetId" oncomplete="PF('clientTable').filter()"/>
+                <p:commandButton id="cancelClientDialogId"  value="Չեղարկել" styleClass="dark" actionListener="#{portfolioForm.cancelClientDialog}" update="clientEditFormId:resetId" process="@this">
+                    <p:resetInput target="clientEditFormId:resetId" />
+                </p:commandButton>
+            </div>
+        </h:form>
+    </p:dialog>
+</ui:composition>

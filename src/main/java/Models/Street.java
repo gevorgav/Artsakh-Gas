@@ -63,4 +63,13 @@ public class Street {
         result = 31 * result + (cityId != null ? cityId.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        Street street = new Street();
+        street.setId(this.id);
+        street.setName(this.name);
+        street.setCityId(this.cityId);
+        return street;
+    }
 }

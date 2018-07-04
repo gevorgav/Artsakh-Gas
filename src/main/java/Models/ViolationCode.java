@@ -63,4 +63,13 @@ public class ViolationCode {
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        ViolationCode violationCode = new ViolationCode();
+        violationCode.setId(this.id);
+        violationCode.setName(this.name);
+        violationCode.setDescription(this.description);
+        return violationCode;
+    }
 }

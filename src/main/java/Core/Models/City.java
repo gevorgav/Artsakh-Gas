@@ -48,4 +48,13 @@ public class City {
     result = 31 * result + (regionId != null ? regionId.hashCode() : 0);
     return result;
   }
+
+  @Override
+  public Object clone() throws CloneNotSupportedException {
+    City city = new City();
+    city.setId(this.id);
+    city.setName(this.name);
+    city.setRegionId(this.regionId);
+    return city;
+  }
 }

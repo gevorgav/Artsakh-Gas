@@ -2,16 +2,12 @@ package portfolio;
 
 import Core.CacheForm;
 import Core.Models.City;
-import Models.Client;
-import Models.ClientHistory;
-import Models.Street;
-import Models.SubSection;
+import Models.*;
 import dao.ClientDao;
 import dao.ClientHistoryDao;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
-import Models.Section;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -121,6 +117,8 @@ public class PortfolioForm {
 
     private List<Section> sections;
 
+    private List<Asht> ashts;
+
     public Client getClient() {
         return client;
     }
@@ -149,6 +147,20 @@ public class PortfolioForm {
             }
         }
         return cities;
+    }
+
+    public List<Asht> ashtsByRegionId(Integer regionId) {
+        if (ashts == null) {
+            ashts = new ArrayList<>();
+            if (regionId != null) {
+                for (Asht asht : cache.getAshts()) {
+                    if (asht.getRegionId().equals(regionId)) {
+                        ashts.add(asht);
+                    }
+                }
+            }
+        }
+        return ashts;
     }
 
     public List<SubSection> subSectionsBySectionId(Integer sectionId) {
@@ -183,8 +195,10 @@ public class PortfolioForm {
         if (client != null) {
             client.setCityId(null);
             client.setStreetId(null);
+            client.setAshtId(null);
             streets = null;
             cities = null;
+            ashts = null;
         }
     }
 

@@ -12,34 +12,40 @@ import java.util.List;
 
 public class CacheForm {
     @Autowired
-    private CityDao cityDao;
+    public CityDao cityDao;
 
     @Autowired
-    private RegionDao regionDao;
+    public RegionDao regionDao;
 
     @Autowired
-    private StreetDao streetDao;
+    public StreetDao streetDao;
 
     @Autowired
     private UserDao userDao;
 
     @Autowired
-    private GRPDao grpDao;
+    public GRPDao grpDao;
 
     @Autowired
     private MasterDao masterDao;
 
     @Autowired
-    private SectionDao sectionDao;
+    public SectionDao sectionDao;
 
     @Autowired
-    private SubSectionDao subSectionDao;
+    public SubSectionDao subSectionDao;
 
     @Autowired
-    private TypeDao typeDao;
+    public TypeDao typeDao;
 
     @Autowired
-    private ViolationCodeDao violationCodeDao;
+    public AshtDao ashtDao;
+
+    @Autowired
+    public GRSDao grsDao;
+
+    @Autowired
+    public ViolationCodeDao violationCodeDao;
 
     private List<City> cities;
     private List<Region> regions;
@@ -51,6 +57,8 @@ public class CacheForm {
     private List<Section> sections;
     private List<SubSection> subSections;
     private List<Type> types;
+    private List<Asht> ashts;
+    private List<GRS> grss;
 
     public List<City> getCities() {
         if(this.cities == null){
@@ -146,4 +154,70 @@ public class CacheForm {
         }
         return this.types;
     }
+
+    public List<Asht> getAshts() {
+        if(this.ashts == null){
+            this.ashts = ashtDao.loadAll();
+            this.ashts.sort(new Comparator<Asht>() {
+                @Override
+                public int compare(Asht o1, Asht o2) {
+                    return o1.getName().compareTo(o2.getName());
+                }
+            });
+        }
+        return this.ashts;
+    }
+
+    public List<GRS> getGrss() {
+        if(this.grss == null){
+            this.grss = grsDao.loadAll();
+            this.grss.sort(new Comparator<GRS>() {
+                @Override
+                public int compare(GRS o1, GRS o2) {
+                    return o1.getName().compareTo(o2.getName());
+                }
+            });
+        }
+        return this.grss;
+    }
+
+    public void resetCities(){
+        this.cities = null;
+    }
+
+    public void resetAshts(){
+        this.ashts = null;
+    }
+
+    public void resetGrps(){
+        this.grps = null;
+    }
+
+    public void resetGrss(){
+        this.grss = null;
+    }
+
+    public void resetRegions(){
+        this.regions = null;
+    }
+
+    public void resetSections(){
+        this.sections = null;
+    }
+
+    public void resetStreets(){
+        this.streets = null;
+    }
+
+    public void resetSubSections(){
+        this.subSections = null;
+    }
+
+    public void resetTypes(){
+        this.types = null;
+    }
+    public void resetViolationCodes(){
+        this.violationCodes = null;
+    }
+
 }

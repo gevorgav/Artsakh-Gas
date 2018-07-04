@@ -63,4 +63,13 @@ public class SubSection {
         result = 31 * result + (sectionId != null ? sectionId.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        SubSection subSection = new SubSection();
+        subSection.setId(this.id);
+        subSection.setName(this.name);
+        subSection.setSectionId(this.sectionId);
+        return subSection;
+    }
 }

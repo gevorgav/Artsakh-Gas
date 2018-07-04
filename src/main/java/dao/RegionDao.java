@@ -30,18 +30,27 @@ public class RegionDao extends Dao<Region>{
     }
 
     @Override
-    boolean insert(Region region) {
-        return false;
+    public boolean insert(Region region) {
+        Objects.requireNonNull(region);
+        String sql = "INSERT INTO region(name) VALUES (?)";
+        int result = jdbcTemplate.update(sql, region.getName());
+        return result == 1;
     }
 
     @Override
-    boolean update(Region region) {
-        return false;
+    public boolean update(Region region) {
+        Objects.requireNonNull(region);
+        String sql = "UPDATE region SET name = ? WHERE id = ?";
+        int result = jdbcTemplate.update(sql, region.getName(), region.getId());
+        return result == 1;
     }
 
     @Override
-    boolean delete(Integer id) {
-        return false;
+    public boolean delete(Integer id) {
+        Objects.requireNonNull(id);
+        String sql = "DELETE FROM region WHERE id = ?";
+        int result = jdbcTemplate.update(sql, id);
+        return result == 1;
     }
 
 }

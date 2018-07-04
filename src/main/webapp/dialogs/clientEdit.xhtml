@@ -45,7 +45,7 @@
                                            itemLabel="#{region.name}"
                                            itemValue="#{region.id}"
                                            value="#{portfolioForm.cache.regions}" var="region"/>
-                            <p:ajax event="change" process="@this" update="@this cityPanelId streetPanelId location1 location2" listener="#{portfolioForm.resetCity}"/>
+                            <p:ajax event="change" process="@this" update="@this cityPanelId streetPanelId location1 location2 ashtId" listener="#{portfolioForm.resetCity}"/>
                         </p:selectOneMenu>
                     </div>
                     <h:panelGroup class="col-sm-4 col-md-4" id="cityPanelId">
@@ -89,15 +89,19 @@
                     </div>
                 </h:panelGroup>
                 <h:panelGroup class="row" id="location2" layout="block">
-                    <div class="col-sm-4 col-md-4">
+                    <h:panelGroup class="col-sm-4 col-md-4" id="ashtPanelId">
                         <p:outputLabel for="ashtId" value="ԱՇՏ"/>
-                        <p:inputNumber id="ashtId" maxlength="11" maxValue="9999999999" minValue="0"
-                                       value="#{portfolioForm.client.ashtId}">
-                        </p:inputNumber>
-
-                    </div>
+                        <p:selectOneMenu id="ashtId" value="#{portfolioForm.client.ashtId}" styleClass="form-control input-c"
+                                         requiredMessage="Աշտը պարտադիր դաշտ է">
+                            <f:selectItem id="ashtSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                            <f:selectItems id="ashtsId"
+                                           itemLabel="#{asht.name}"
+                                           itemValue="#{asht.id}"
+                                           value="#{portfolioForm.ashtsByRegionId(portfolioForm.client.regionId)}" var="asht"/>
+                        </p:selectOneMenu>
+                    </h:panelGroup>
                     <div class="col-sm-4 col-md-4">
-                        <p:outputLabel for="grpId" value="ԳԲԿ"/>
+                        <p:outputLabel for="grpId" value="ԳԿԿ"/>
                         <p:selectOneMenu id="grpId" value="#{portfolioForm.client.grpId}"
                                          styleClass="form-control input-c">
                             <f:selectItem id="grpSelectOneId" itemLabel="Ընտրիր մեկը"/>
@@ -108,6 +112,17 @@
                                            var="grp"/>
                         </p:selectOneMenu>
                     </div>
+                    <h:panelGroup class="col-sm-4 col-md-4" id="grpPanelId">
+                        <p:outputLabel for="grsId" value="ԳԲԿ"/>
+                        <p:selectOneMenu id="grsId" value="#{portfolioForm.client.grsId}" styleClass="form-control input-c"
+                                         requiredMessage="ԳԲԿը պարտադիր դաշտ է">
+                            <f:selectItem id="grsSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                            <f:selectItems id="grssId"
+                                           itemLabel="#{grs.name}"
+                                           itemValue="#{grs.id}"
+                                           value="#{portfolioForm.cache.grss}" var="grs"/>
+                        </p:selectOneMenu>
+                    </h:panelGroup>
                 </h:panelGroup>
                 <div class="row">
                     <div class="col-sm-4 col-md-4">

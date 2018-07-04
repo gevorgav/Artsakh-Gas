@@ -63,4 +63,13 @@ public class Section {
         result = 31 * result + (cityId != null ? cityId.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        Section section = new Section();
+        section.setId(this.id);
+        section.setName(this.name);
+        section.setCityId(this.cityId);
+        return section;
+    }
 }

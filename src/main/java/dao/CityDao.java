@@ -32,18 +32,27 @@ public class CityDao extends Dao<City>{
     }
 
     @Override
-    boolean insert(City city) {
-        return false;
+    public boolean insert(City city) {
+        Objects.requireNonNull(city);
+        String sql = "INSERT INTO city(name, regionId) VALUES (?, ?)";
+        int result = jdbcTemplate.update(sql, city.getName(), city.getRegionId());
+        return result == 1;
     }
 
     @Override
-    boolean update(City city) {
-        return false;
+    public boolean update(City city) {
+        Objects.requireNonNull(city);
+        String sql = "UPDATE city SET name = ?, regionId = ? WHERE id = ?";
+        int result = jdbcTemplate.update(sql, city.getName(), city.getRegionId(), city.getId());
+        return result == 1;
     }
 
     @Override
-    boolean delete(Integer id) {
-        return false;
+    public boolean delete(Integer id) {
+        Objects.requireNonNull(id);
+        String sql = "DELETE FROM city WHERE id = ?";
+        int result = jdbcTemplate.update(sql, id);
+        return result == 1;
     }
 
 }

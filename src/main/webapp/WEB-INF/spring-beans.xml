@@ -52,9 +52,8 @@
 
     <bean id="hotel" class="hotel.Hotel" scope="session"/>
 
-    <bean id="hotelForm" class="hotel.HotelForm" scope="session" >
-        <property name="root" ref="root"/>
-        <property name="hotel" ref="hotel"/>
+    <bean id="settingsForm" class="hotel.SettingsForm" scope="session" >
+        <property name="cache" ref="cache" />
     </bean>
 
     <!--Map form-->
