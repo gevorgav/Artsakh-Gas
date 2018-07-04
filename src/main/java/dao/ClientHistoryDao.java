@@ -79,7 +79,7 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
     public boolean insert(ClientHistory clientHistory) {
         Objects.requireNonNull(clientHistory);
         String sql = "INSERT INTO clientsHistory(clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, codeViolation, stampNumbers, go1, go2, go3,go4,go5,go6," +
-                " bacakaGo1, bacakaGo2, bacakaGo3,bacakaGo4,bacakaGo5,bacakaGo6, jth, jtt, ket, jah, jk, jv,pakan ,bacakaJht, bacakaJtt, bacakaKet, bacakaJah, bacakaJk,bacakaPakan, bacakaJv, risk)\n" +
+                " bacakaGo1, bacakaGo2, bacakaGo3,bacakaGo4,bacakaGo5,bacakaGo6, jth, jtt, ket, jah, jk, jv,pakan ,bacakaJth, bacakaJtt, bacakaKet, bacakaJah, bacakaJk,bacakaPakan, bacakaJv, risk)\n" +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         int result = jdbcTemplate.update(sql, clientHistory.getClientId(), clientHistory.getViolationActNumber(), clientHistory.getUpdateDate(),
                 clientHistory.getPreviousVisitDate(), clientHistory.getNextVisitDate(), clientHistory.getViolationCodeId(), clientHistory.getStampNumbers(),

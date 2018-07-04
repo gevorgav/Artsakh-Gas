@@ -29,23 +29,35 @@
         <h:panelGroup layout="block" class="padding" style="max-width: 80%; margin: 0 auto;">
             <h:form id="clientHistoryForm">
                 <c:if test="#{not empty portfolioForm.clientHistory}">
+                    <div class="row">
+                        <div class="col-sm-4 col-md-4">
+                            <p:outputLabel for="previewDate" value="Preview Date:" class="form-control-label"/>
+                            <p:calendar styleClass="form-control" id="previewDate"
+                                        value="#{portfolioForm.clientHistory.previousVisitDate}"
+                                        pattern="dd-MM-yyyy" mask="true"/>
+                        </div>
+                        <div class="col-sm-4 col-md-4">
+                            <p:outputLabel for="previewDate" value="Next visit Date:"
+                                           class="form-control-label"/>
+                            <p:calendar styleClass="form-control" id="nextDate"
+                                        value="#{portfolioForm.clientHistory.nextVisitDate}"
+                                        pattern="dd-MM-yyyy" mask="true"/>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4 col-md-4">
+                            //...
+                        </div>
+                        <div class="col-sm-4 col-md-4">
+                            //...
+                        </div>
+                    </div>
+
+
                     <div class="row-col h-auto">
                         <div class="form-horizontal">
-                            <div class="form-group row">
-                                <div class="col-sm-5">
-                                    <p:outputLabel for="previewDate" value="Preview Date:" class="form-control-label"/>
-                                    <p:calendar styleClass="form-control" id="previewDate"
-                                                value="#{portfolioForm.clientHistory.previousVisitDate}"
-                                                pattern="dd-MM-yyyy" mask="true"/>
-                                </div>
-                                <div class="col-sm-5">
-                                    <p:outputLabel for="previewDate" value="Next visit Date:"
-                                                   class="form-control-label"/>
-                                    <p:calendar styleClass="form-control" id="nextDate"
-                                                value="#{portfolioForm.clientHistory.nextVisitDate}"
-                                                pattern="dd-MM-yyyy" mask="true"/>
-                                </div>
-                            </div>
+
                             <div class="form-group row">
                                 <div class="col-sm-4">
                                     <h:outputLabel class="form-control-label">ԳՕ</h:outputLabel>
