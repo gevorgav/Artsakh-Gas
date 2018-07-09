@@ -5,6 +5,8 @@ import Core.Models.City;
 import Models.*;
 import dao.ClientDao;
 import dao.ClientHistoryDao;
+import dao.ViolationClientHistoryDao;
+import dao.ViolationCodeDao;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ public class PortfolioForm {
     private ClientHistory clientHistory;
     private Integer clientId;
     private List<String> stamps;
+    private List<String> violationActNumber;
+    private String[] violationCodes;
 
     private CacheForm cache;
 
@@ -35,6 +39,12 @@ public class PortfolioForm {
 
     @Autowired
     private ClientHistoryDao clientHistoryDao;
+
+    @Autowired
+    private ViolationCodeDao violationCodeDao;
+
+    @Autowired
+    private ViolationClientHistoryDao violationClientHistoryDao;
 
     public List<Client> getClients() {
         if (clients == null) {
@@ -277,15 +287,25 @@ public class PortfolioForm {
     //Client History
 
     public void searchClientHistory(){
-        if (!Objects.isNull(clientId)){
+        if (!Objects.isNull(clientId) && !Objects.isNull(clientHistoryDao.loadLastClientHistory(clientId))){
             clientHistory = clientHistoryDao.loadLastClientHistory(clientId);
+            loadClientViolationCode(clientHistory.getId());
         }else {
+            clientHistory = null;
             FacesContext facesContext = FacesContext.getCurrentInstance();
             FacesMessage facesMessage = new FacesMessage("Incorrect clientID.");
             facesContext.addMessage(null, facesMessage);
-
         }
+    }
 
+    private void loadClientViolationCode(Integer clientId) {
+        List<ViolationCode> violationCodes = violationCodeDao.loadByClientId(clientId);
+        int i = 0;
+        this.violationCodes = new String[violationCodes.size()];
+        for (ViolationCode violationCode:violationCodes) {
+            this.violationCodes[i]=violationCode.getName();
+            i++;
+        }
     }
 
     public void cancelHistoryDialog(){
@@ -298,6 +318,27 @@ public class PortfolioForm {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected", format.format(event.getObject())));
+    }
+
+    public List<String> getViolationActNumber() {
+        if(Objects.isNull(clientHistory.getViolationActNumber())){
+            return Collections.emptyList();
+        }
+        this.violationActNumber = Arrays.asList(clientHistory.getViolationActNumber().split("\\s*,\\s*"));
+        return violationActNumber;
+    }
+
+    public void setViolationActNumber(List<String> violationActNumber) {
+        if (Objects.nonNull(violationActNumber)){
+            StringBuilder listString = new StringBuilder();
+            for (String s : violationActNumber)
+            {
+                listString.append(s).append(",");
+            }
+            clientHistory.setViolationActNumber(listString.toString());
+        }
+
+        this.violationActNumber = violationActNumber;
     }
 
     public List<String> getStamps() {
@@ -322,7 +363,46 @@ public class PortfolioForm {
     }
 
     public void saveHistory(){
+        Integer historyId = clientHistoryDao.insertAndReturnId(clientHistory);
+        saveViolationCodes(historyId);
+        cancelHistoryDialog();
+    }
 
+    private void saveViolationCodes(Integer historyId) {
+        for (ViolationCode violationCode:cache.getViolationCodes()) {
+            if (Arrays.asList(violationCodes).indexOf(violationCode.getName()) != -1){
+                violationClientHistoryDao.insert(new ViolationClientHistory(violationCode.getId(), historyId));
+            }
+        }
+    }
+
+    public void editHistory(){
+        clientHistoryDao.update(clientHistory);
+        editViolationCode(clientHistory.getId());
+    }
+
+    private void editViolationCode(Integer historyId) {
+        List<ViolationCode> violationCodesOld = violationCodeDao.loadByClientId(historyId);
+        for (ViolationCode violationCode:violationCodesOld) {
+            violationClientHistoryDao.delete(violationCode.getId(), historyId);
+        }
+        saveViolationCodes(historyId);
+    }
+
+    public String[] getViolationCodes() {
+        return violationCodes;
+    }
+
+    public void setViolationCodes(String[] violationCodes) {
+        this.violationCodes = violationCodes;
+    }
+
+    public ViolationCodeDao getViolationCodeDao() {
+        return violationCodeDao;
+    }
+
+    public void setViolationCodeDao(ViolationCodeDao violationCodeDao) {
+        this.violationCodeDao = violationCodeDao;
     }
 
 

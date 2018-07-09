@@ -11,15 +11,17 @@ public class ClientHistory {
 
     private String clientId;
 
-    private Integer violationActNumber;
+    private String violationActNumber;
+
+    private Integer visitType;
+
+    private String visitDescription;
 
     private Date updateDate;
 
     private Date previousVisitDate;
 
     private Date nextVisitDate;
-
-    private Integer violationCodeId;
 
     private String stampNumbers;
 
@@ -77,6 +79,8 @@ public class ClientHistory {
 
     private Integer risk;
 
+    private Integer masterId;
+
     public ClientHistory() {
     }
 
@@ -96,12 +100,28 @@ public class ClientHistory {
         this.clientId = clientId;
     }
 
-    public Integer getViolationActNumber() {
+    public String getViolationActNumber() {
         return violationActNumber;
     }
 
-    public void setViolationActNumber(Integer violationActNumber) {
+    public void setViolationActNumber(String violationActNumber) {
         this.violationActNumber = violationActNumber;
+    }
+
+    public Integer getVisitType() {
+        return visitType;
+    }
+
+    public void setVisitType(Integer visitType) {
+        this.visitType = visitType;
+    }
+
+    public String getVisitDescription() {
+        return visitDescription;
+    }
+
+    public void setVisitDescription(String visitDescription) {
+        this.visitDescription = visitDescription;
     }
 
     public Date getUpdateDate() {
@@ -126,14 +146,6 @@ public class ClientHistory {
 
     public void setNextVisitDate(Date nextVisitDate) {
         this.nextVisitDate = nextVisitDate;
-    }
-
-    public Integer getViolationCodeId() {
-        return violationCodeId;
-    }
-
-    public void setViolationCodeId(Integer violationCodeId) {
-        this.violationCodeId = violationCodeId;
     }
 
     public String getStampNumbers() {
@@ -358,6 +370,14 @@ public class ClientHistory {
 
     public void setRisk(Integer risk) {
         this.risk = risk;
+    }
+
+    public Integer getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(Integer masterId) {
+        this.masterId = masterId;
     }
 
     @Override

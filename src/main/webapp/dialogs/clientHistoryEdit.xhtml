@@ -5,15 +5,15 @@
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:p="http://primefaces.org/ui">
     <p:dialog dynamic="true" header="Այցելություն" widgetVar="historyDialog" modal="true" position="top"
-              height="550" width="80%" closable="false" resizable="false"  onShow="showDialog()" onHide="hideDialog()">
+              maximizable="true"
+              height="550" width="80%" closable="false" resizable="false" onShow="showDialog()" onHide="hideDialog()">
         <h:form id="searchFormId" onsubmit="return false;">
             <div class="row-body">
                 <div class="form-group row">
                     <div class="col-sm-8 col-md-8">
-                        <p:inputNumber styleClass="form-control" id="id" maxlength="11" maxValue="9999999999" decimalSeparator=""
-                                       minValue="0"
-                                       value="#{portfolioForm.clientId}" placeholder="ClientID">
-                        </p:inputNumber>
+                        <p:inputText id="id" maxlength="5"
+                                     value="#{portfolioForm.clientId}" placeholder="ClientID">
+                        </p:inputText>
                     </div>
                     <div class="col-sm-4 col-md-4">
                         <h:commandLink styleClass="btn btn-fw success"> Գտնել
@@ -32,97 +32,312 @@
                     <div class="row">
                         <div class="col-sm-4 col-md-4">
                             <p:outputLabel for="previewDate" value="Preview Date:" class="form-control-label"/>
-                            <p:calendar styleClass="form-control" id="previewDate"
+                            <p:calendar id="previewDate" styleClass="form-control"
                                         value="#{portfolioForm.clientHistory.previousVisitDate}"
                                         pattern="dd-MM-yyyy" mask="true"/>
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <p:outputLabel for="previewDate" value="Next visit Date:"
                                            class="form-control-label"/>
-                            <p:calendar styleClass="form-control" id="nextDate"
+                            <p:calendar id="nextDate" styleClass="form-control"
                                         value="#{portfolioForm.clientHistory.nextVisitDate}"
                                         pattern="dd-MM-yyyy" mask="true"/>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-sm-4 col-md-4">
-                            //...
-                        </div>
-                        <div class="col-sm-4 col-md-4">
-                            //...
-                        </div>
-                    </div>
-
-
                     <div class="row-col h-auto">
                         <div class="form-horizontal">
 
                             <div class="form-group row">
-                                <div class="col-sm-4">
-                                    <h:outputLabel class="form-control-label">ԳՕ</h:outputLabel>
-                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
-                                                   styleClass="form-control" value="#{portfolioForm.clientHistory.go1}"
-                                                   id="goId"/>
+                                <div class="col-sm-4 col-md-4">
+                                    <p:outputLabel for="masterId" value="Վարպետ"/>
+                                    <p:selectOneMenu id="masterId" value="#{portfolioForm.clientHistory.masterId}"
+                                                     styleClass="form-control input-c"
+                                                     requiredMessage="Պարտադիր դաշտ է">
+                                        <f:selectItem id="masterSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                                        <f:selectItems id="mastersId"
+                                                       itemLabel="#{master.firstName.concat(' ').concat(master.lastName)}"
+                                                       itemValue="#{master.id}"
+                                                       value="#{portfolioForm.cache.masters}"
+                                                       var="master"/>
+                                    </p:selectOneMenu>
                                 </div>
-                                <div class="col-sm-4">
-                                    <h:outputLabel class="form-control-label">jth</h:outputLabel>
-                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
-                                                   styleClass="form-control" value="#{portfolioForm.clientHistory.jth}"
-                                                   id="jthId"/>
+                                <div class="col-sm-4 col-md-4">
+                                    <p:outputLabel for="visitId" value="Այցելություն"/>
+                                    <p:selectOneMenu id="visitId" value="#{portfolioForm.clientHistory.visitType}"
+                                                     styleClass="form-control input-c"
+                                                     requiredMessage="Պարտադիր դաշտ է">
+                                        <f:ajax event="change" render=":clientHistoryForm"/>
+                                        <f:selectItems id="visitsId"
+                                                       itemLabel="#{visitType.name}"
+                                                       itemValue="#{visitType.id}"
+                                                       value="#{portfolioForm.cache.visitTypes}"
+                                                       var="visitType"/>
+                                    </p:selectOneMenu>
                                 </div>
-                                <div class="col-sm-4">
-                                    <h:outputLabel class="form-control-label">jtt</h:outputLabel>
+                                <div class="col-sm-4 col-md-4">
+                                    <p:outputLabel for="visitDescriptionId" value="Նկարագրություն"/>
+                                    <p:inputTextarea rows="4" cols="50" counter="display" maxlength="500"
+                                                     id="visitDescriptionId"
+                                                     counterTemplate="{0} characters remaining."
+                                                     value="#{portfolioForm.clientHistory.visitDescription}"/>
+                                    <h:outputText id="display"/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+
+                                <div class="col-sm-4 col-md-4">
+                                    <p:outputLabel for="violationCodeId" value="Խախտման կոդ"/><br/>
+                                    <p:selectCheckboxMenu id="violationCodeId" value="#{portfolioForm.violationCodes}"
+                                                          label="Cities" multiple="true"
+                                                          filter="true" filterMatchMode="startsWith"
+                                                          panelStyle="width:250px">
+                                        <f:selectItems value="#{portfolioForm.cache.violationCodes}"/>
+                                    </p:selectCheckboxMenu>
+                                </div>
+
+                                <div class="col-sm-4 col-md-4">
+                                    <h:outputLabel class="form-control-label">Ակտի համարը</h:outputLabel>
+                                    <p:chips id="violationActNumberId" value="#{portfolioForm.violationActNumber}"
+                                             disabled="#{(portfolioForm.clientHistory.visitType != 1)}"
+                                             styleClass="form-control"/>
+                                </div>
+
+                                <div class="col-sm-4 col-md-4">
+                                    <h:outputLabel class="form-control-label">Կնիք</h:outputLabel>
+                                    <p:chips id="stampNumbersId" value="#{portfolioForm.stamps}"
+                                             disabled="#{(portfolioForm.clientHistory.visitType != 1)}"
+                                             styleClass="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">ԳՕ 1</h:outputLabel>
                                     <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
-                                                   styleClass="form-control" value="#{portfolioForm.clientHistory.jtt}"
-                                                   id="jttId"/>
+                                                   value="#{portfolioForm.clientHistory.go1}"
+                                                   id="go1Id"
+                                                   disabled="#{(portfolioForm.clientHistory.visitType != 1)}">
+                                        <f:ajax event="valueChange" render=":clientHistoryForm"/>
+                                    </p:inputNumber>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">Բացակա ԳՕ 1</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   value="#{portfolioForm.clientHistory.bacakaGo1}"
+                                                   disabled="#{(empty portfolioForm.clientHistory.go1 or portfolioForm.clientHistory.visitType != 1)}"
+                                                   id="bacakaGo1Id"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">ՋՀ</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   value="#{portfolioForm.clientHistory.jth}"
+                                                   id="jthId"
+                                                   disabled="#{(portfolioForm.clientHistory.visitType != 1)}">
+                                        <f:ajax event="valueChange" render=":clientHistoryForm"/>
+                                    </p:inputNumber>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">Բացակա ՋՀ</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   value="#{portfolioForm.clientHistory.bacakaJth}"
+                                                   disabled="#{(empty portfolioForm.clientHistory.jth or portfolioForm.clientHistory.visitType != 1)}"
+                                                   id="bacakaJthId"/>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <div class="col-sm-4">
-                                    <h:outputLabel class="form-control-label">ket</h:outputLabel>
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">ԳՕ 2</h:outputLabel>
                                     <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
-                                                   styleClass="form-control" value="#{portfolioForm.clientHistory.ket}"
-                                                   id="ketId"/>
+                                                   value="#{portfolioForm.clientHistory.go2}"
+                                                   id="go2Id"
+                                                   disabled="#{(portfolioForm.clientHistory.visitType != 1)}">
+                                        <f:ajax event="valueChange" render=":clientHistoryForm"/>
+                                    </p:inputNumber>
                                 </div>
-                                <div class="col-sm-4">
-                                    <h:outputLabel class="form-control-label">jah</h:outputLabel>
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">Բացակա ԳՕ 2</h:outputLabel>
                                     <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
-                                                   styleClass="form-control" value="#{portfolioForm.clientHistory.jah}"
-                                                   id="jahId"/>
+                                                   value="#{portfolioForm.clientHistory.bacakaGo2}"
+                                                   disabled="#{(empty portfolioForm.clientHistory.go2 or portfolioForm.clientHistory.visitType != 1)}"
+                                                   id="bacakaGo2Id"/>
                                 </div>
-                                <div class="col-sm-4">
-                                    <h:outputLabel class="form-control-label">jk</h:outputLabel>
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">ՋԾ</h:outputLabel>
                                     <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
-                                                   styleClass="form-control" value="#{portfolioForm.clientHistory.jk}"
-                                                   id="jkId"/>
+                                                   value="#{portfolioForm.clientHistory.jtt}"
+                                                   id="jttId"
+                                                   disabled="#{(portfolioForm.clientHistory.visitType != 1)}">
+                                        <f:ajax event="valueChange" render=":clientHistoryForm"/>
+                                    </p:inputNumber>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">Բացակա ՋԾ</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   value="#{portfolioForm.clientHistory.bacakaJtt}"
+                                                   disabled="#{(empty portfolioForm.clientHistory.jtt or portfolioForm.clientHistory.visitType != 1)}"
+                                                   id="bacakaJttId"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">ԳՕ 3</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   value="#{portfolioForm.clientHistory.go3}"
+                                                   id="go3Id"
+                                                   disabled="#{(portfolioForm.clientHistory.visitType != 1)}">
+                                        <f:ajax event="valueChange" render=":clientHistoryForm"/>
+                                    </p:inputNumber>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">Բացակա ԳՕ 3</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   value="#{portfolioForm.clientHistory.bacakaGo3}"
+                                                   disabled="#{(empty portfolioForm.clientHistory.go3 or portfolioForm.clientHistory.visitType != 1)}"
+                                                   id="bacakaGo3Id"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">Կաթսա</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   value="#{portfolioForm.clientHistory.jk}"
+                                                   id="jkId" disabled="#{(portfolioForm.clientHistory.visitType != 1)}">
+                                        <f:ajax event="valueChange" render=":clientHistoryForm"/>
+                                    </p:inputNumber>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">Բացակա Կաթսա</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   value="#{portfolioForm.clientHistory.bacakaJk}"
+                                                   disabled="#{(empty portfolioForm.clientHistory.jk or portfolioForm.clientHistory.visitType != 1)}"
+                                                   id="bacakaJkId"/>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-sm-4">
-                                    <h:outputLabel class="form-control-label">jv</h:outputLabel>
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">ԳՕ 4</h:outputLabel>
                                     <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
-                                                   styleClass="form-control" value="#{portfolioForm.clientHistory.jv}"
-                                                   id="jvId"/>
+                                                   value="#{portfolioForm.clientHistory.go4}"
+                                                   id="go4Id"
+                                                   disabled="#{(portfolioForm.clientHistory.visitType != 1)}">
+                                        <f:ajax event="valueChange" render=":clientHistoryForm"/>
+                                    </p:inputNumber>
                                 </div>
-                                <div class="col-sm-4">
-                                    <h:outputLabel class="form-control-label">go2</h:outputLabel>
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">Բացակա ԳՕ 4</h:outputLabel>
                                     <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
-                                                   styleClass="form-control" value="#{portfolioForm.clientHistory.go2}"
-                                                   id="go2Id"/>
+                                                   value="#{portfolioForm.clientHistory.bacakaGo4}"
+                                                   disabled="#{(empty portfolioForm.clientHistory.go4 or portfolioForm.clientHistory.visitType != 1)}"
+                                                   id="bacakaGo4Id"/>
                                 </div>
-                                <div class="col-sm-4">
-                                    <h:outputLabel class="form-control-label">go3</h:outputLabel>
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">Վառարան</h:outputLabel>
                                     <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
-                                                   styleClass="form-control" value="#{portfolioForm.clientHistory.go3}"
-                                                   id="go3Id"/>
+                                                   value="#{portfolioForm.clientHistory.jv}"
+                                                   id="jvId" disabled="#{(portfolioForm.clientHistory.visitType != 1)}">
+                                        <f:ajax event="valueChange" render=":clientHistoryForm"/>
+                                    </p:inputNumber>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">Բացակա Վառարան</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   value="#{portfolioForm.clientHistory.bacakaJv}"
+                                                   disabled="#{(empty portfolioForm.clientHistory.jv or portfolioForm.clientHistory.visitType != 1)}"
+                                                   id="bacakaJvId"/>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-sm-4">
-                                    <h:outputLabel class="form-control-label">Stamp</h:outputLabel>
-                                    <p:chips id="stampNumbersId"  value="#{portfolioForm.stamps}"/>
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">ԳՕ 5</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   value="#{portfolioForm.clientHistory.go5}"
+                                                   id="go5Id"
+                                                   disabled="#{(portfolioForm.clientHistory.visitType != 1)}">
+                                        <f:ajax event="valueChange" render=":clientHistoryForm"/>
+                                    </p:inputNumber>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">Բացակա ԳՕ 5</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   disabled="#{(empty portfolioForm.clientHistory.go5 or portfolioForm.clientHistory.visitType != 1)}"
+                                                   value="#{portfolioForm.clientHistory.bacakaGo5}"
+                                                   id="bacakaGo5Id"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">Կետ</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   value="#{portfolioForm.clientHistory.ket}"
+                                                   id="ketId"
+                                                   disabled="#{(portfolioForm.clientHistory.visitType != 1)}">
+                                        <f:ajax event="valueChange" render=":clientHistoryForm"/>
+                                    </p:inputNumber>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">Բացակա Կետ</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   value="#{portfolioForm.clientHistory.bacakaKet}"
+                                                   disabled="#{(empty portfolioForm.clientHistory.ket or portfolioForm.clientHistory.visitType != 1)}"
+                                                   id="bacakaKetId"/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">ԳՕ 6</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   value="#{portfolioForm.clientHistory.go6}"
+                                                   id="go6Id"
+                                                   disabled="#{(portfolioForm.clientHistory.visitType != 1)}">
+                                        <f:ajax event="valueChange" render=":clientHistoryForm"/>
+                                    </p:inputNumber>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">Բացակա ԳՕ 6</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   value="#{portfolioForm.clientHistory.bacakaGo6}"
+                                                   disabled="#{(empty portfolioForm.clientHistory.go6 or portfolioForm.clientHistory.visitType != 1)}"
+                                                   id="bacakaGo6Id"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">ՋԱՀ</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   value="#{portfolioForm.clientHistory.jah}"
+                                                   id="jahId"
+                                                   disabled="#{(portfolioForm.clientHistory.visitType != 1)}">
+                                        <f:ajax event="valueChange" render=":clientHistoryForm"/>
+                                    </p:inputNumber>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">Բացակա ՋԱՀ</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   value="#{portfolioForm.clientHistory.bacakaJah}"
+                                                   disabled="#{(empty portfolioForm.clientHistory.jah or portfolioForm.clientHistory.visitType != 1)}"
+                                                   id="bacakaJahId"/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">Փական</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   value="#{portfolioForm.clientHistory.pakan}"
+                                                   id="pakanId"
+                                                   disabled="#{(portfolioForm.clientHistory.visitType != 1)}">
+                                        <f:ajax event="valueChange" render=":clientHistoryForm"/>
+                                    </p:inputNumber>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h:outputLabel class="form-control-label">Բացակա Փական</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   value="#{portfolioForm.clientHistory.bacakaPakan}"
+                                                   disabled="#{(empty portfolioForm.clientHistory.pakan or portfolioForm.clientHistory.visitType != 1)}"
+                                                   id="bacakaPakanId"/>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h:outputLabel class="form-control-label">Ռիսկ</h:outputLabel>
+                                    <p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                   value="#{portfolioForm.clientHistory.risk}"
+                                                   disabled="#{(portfolioForm.clientHistory.visitType != 1)}"
+                                                   id="riskId">
+                                    </p:inputNumber>
                                 </div>
                             </div>
                         </div>
@@ -133,12 +348,16 @@
                 <div class="modal-footer">
                     <h:commandLink value="Չեղարկել" styleClass="btn btn-default" data-dismiss="modal">
                         <f:ajax listener="#{portfolioForm.cancelHistoryDialog}" event="click"
-                                execute="@form" />
+                                execute="@form"/>
                     </h:commandLink>
                     <c:if test="#{not empty portfolioForm.clientHistory}">
-                        <h:commandLink value="Պահպանել" styleClass="btn btn-primary">
-                            <f:ajax listener="#{portfolioForm.cancelHistoryDialog}" event="click"
-                                    execute="@form" />
+                        <h:commandLink value="Փոփոխել" styleClass="btn btn-primary">
+                            <f:ajax listener="#{portfolioForm.editHistory}" event="click"
+                                    execute="@form"/>
+                        </h:commandLink>
+                        <h:commandLink value="Ավելացնել նոր այցելություն" styleClass="btn btn-fw success">
+                            <f:ajax listener="#{portfolioForm.saveHistory}" event="click"
+                                    execute="@form"/>
                         </h:commandLink>
                     </c:if>
                 </div>

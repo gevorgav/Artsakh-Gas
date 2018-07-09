@@ -7,6 +7,7 @@ import dao.*;
 import login.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -59,6 +60,18 @@ public class CacheForm {
     private List<Type> types;
     private List<Asht> ashts;
     private List<GRS> grss;
+    private List<VisitType> visitTypes;
+
+    public List<VisitType> getVisitTypes() {
+        if (this.visitTypes == null){
+            this.visitTypes = new ArrayList<>();
+            visitTypes.add(new VisitType(1, "Այցելել է"));
+            visitTypes.add(new VisitType(2, "Չի այցելել"));
+            visitTypes.add(new VisitType(3, "Փակ դուռ"));
+        }
+
+        return visitTypes;
+    }
 
     public List<City> getCities() {
         if(this.cities == null){

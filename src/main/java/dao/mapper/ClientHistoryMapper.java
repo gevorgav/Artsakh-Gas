@@ -19,7 +19,9 @@ public class ClientHistoryMapper  implements RowMapper<ClientHistory> {
         ClientHistory clientHistory = new ClientHistory();
         clientHistory.setId(rs.getInt("id"));
         clientHistory.setClientId(rs.getString("clientId"));
-        clientHistory.setViolationActNumber(rs.getObject("violationActNumber") != null ? rs.getInt("violationActNumber") : null);
+        clientHistory.setViolationActNumber(rs.getString("violationActNumber"));
+        clientHistory.setVisitType(rs.getObject("visitType") != null ? rs.getInt("visitType") : null);
+        clientHistory.setVisitDescription(rs.getString("visitDescription"));
         clientHistory.setUpdateDate(rs.getDate("updateDate"));
         clientHistory.setPreviousVisitDate(rs.getDate("previousVisitDate"));
         clientHistory.setNextVisitDate(rs.getDate("nextVisitDate"));
@@ -51,6 +53,7 @@ public class ClientHistoryMapper  implements RowMapper<ClientHistory> {
         clientHistory.setBacakaJv(rs.getObject("bacakaJv") != null ? rs.getInt("bacakaJv") : null);
         clientHistory.setBacakaPakan(rs.getObject("bacakaPakan") != null ? rs.getInt("bacakaPakan") : null);
         clientHistory.setRisk(rs.getObject("risk") != null ? rs.getInt("risk") : null);
+        clientHistory.setMasterId(rs.getObject("masterId") != null ? rs.getInt("masterId") : null);
         return clientHistory;
     }
 

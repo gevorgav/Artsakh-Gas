@@ -31,6 +31,15 @@ public class ViolationCodeDao extends Dao<ViolationCode> {
         return jdbcTemplate.queryForObject(sql, new ViolationCodeMapper(), id);
     }
 
+    public List<ViolationCode> loadByClientId(Integer clientHistoryId) {
+        Objects.requireNonNull(clientHistoryId);
+        String sql =    "SELECT violationCodes.id, violationCodes.name, violationCodes.description\n" +
+                        "FROM violationCodes\n" +
+                        "INNER JOIN violationClientHistory ON violationClientHistory.violationId=violationCodes.id " +
+                        "WHERE violationClientHistory.clientHistoryId = ?;";
+        return jdbcTemplate.query(sql, new ViolationCodeMapper(), clientHistoryId);
+    }
+
     @Override
     public boolean insert(ViolationCode violationCode) {
         Objects.requireNonNull(violationCode);

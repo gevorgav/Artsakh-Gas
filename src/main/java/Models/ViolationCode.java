@@ -72,4 +72,9 @@ public class ViolationCode {
         violationCode.setDescription(this.description);
         return violationCode;
     }
+
+    @Override
+    public String toString() {
+        return  name;
+    }
 }
