@@ -28,7 +28,7 @@ public class PortfolioForm {
     private List<String> stamps;
     private List<String> violationActNumber;
     private String[] violationCodes;
-
+    private List<Client> selectedClients;
     private CacheForm cache;
 
     public PortfolioForm() {
@@ -405,5 +405,11 @@ public class PortfolioForm {
         this.violationCodeDao = violationCodeDao;
     }
 
+    public List<Client> getSelectedClients() {
+        return selectedClients;
+    }
 
+    public void setSelectedClients(List<Client> selectedClients) {
+        this.selectedClients = selectedClients;
+    }
 }

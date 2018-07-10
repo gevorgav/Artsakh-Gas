@@ -25,7 +25,7 @@ public class ClientDao extends Dao<Client>{
      */
     public List<Client> loadAll() {
         try {
-            String sql = "SELECT *  FROM clients LEFT JOIN clientsHistory On clients.id = clientsHistory.clientId ORDER BY clientsHistory.id DESC";
+            String sql = "SELECT *  FROM clients LEFT JOIN clientsHistory On clients.id = clientsHistory.clientId WHERE clientsHistory.id IN (SELECT MAX(clientsHistory.id) FROM clientsHistory GROUP BY clientsHistory.clientId)";
             return jdbcTemplate.query(sql, new ClientMapper(clientHistoryDao));
         } catch (EmptyResultDataAccessException e) {
             return Collections.emptyList();

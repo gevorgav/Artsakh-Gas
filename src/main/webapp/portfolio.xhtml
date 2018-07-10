@@ -258,6 +258,7 @@
                                         <h:panelGroup layout="block" class="de-table-block" id="table2">
                                             <h2 class="de-title">Բաժնի անուն</h2>
                                             <p:dataTable var="client"
+                                                         id="clientTableId"
                                                          value="#{portfolioForm.clients}"
                                                          widgetVar="clientTable"
                                                          styleClass="table table-hover b-t de-table"
@@ -265,8 +266,11 @@
                                                          filteredValue="#{portfolioForm.filteredClients}"
                                                          paginator="true"
                                                          rows="10"
+                                                         selection="#{portfolioForm.selectedClients}"
+                                                         rowKey="#{client.id}"
                                                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                                                         rowsPerPageTemplate="10,30,50" >
+                                                         rowsPerPageTemplate="10,30,50"
+                                                         style="margin-bottom:0">
 
                                                 <f:facet name="header">
                                                     <p:outputPanel>
@@ -274,6 +278,8 @@
                                                         <p:inputText id="globalFilter" onkeyup="PF('clientTable').filter()" style="width:150px" placeholder="Enter keyword"/>
                                                     </p:outputPanel>
                                                 </f:facet>
+
+                                                <p:column selectionMode="multiple" style="width:35px;text-align:center"/>
 
                                                 <p:column filterBy="#{client.id}" headerText="ՀՀ" footerText="contains" filterMatchMode="contains">
                                                     <h:outputText value="#{client.id}" />
@@ -293,42 +299,9 @@
                                                                    update="clientDialogId table2" icon="" title="Խմբագրել"/>
                                                 </p:column>
 
-                                                <!--<p:column filterBy="#{client.brand}" headerText="Brand" footerText="exact" filterMatchMode="exact">-->
-                                                    <!--<f:facet name="filter">-->
-                                                        <!--<p:selectOneMenu onchange="PF('clientTable').filter()" >-->
-                                                            <!--<f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true" />-->
-                                                            <!--<f:selectItems value="#{dtFilterView.brands}" />-->
-                                                        <!--</p:selectOneMenu>-->
-                                                    <!--</f:facet>-->
-                                                    <!--<h:outputText value="#{car.brand}" />-->
-                                                <!--</p:column>-->
-
-                                                <!--<p:column filterBy="#{car.color}" headerText="Color" footerText="in" filterMatchMode="in">-->
-                                                    <!--<f:facet name="filter">-->
-                                                        <!--<p:selectCheckboxMenu label="Colors" onchange="PF('clientTable').filter()" panelStyle="width:125px" scrollHeight="150">-->
-                                                            <!--<f:selectItems value="#{dtFilterView.colors}" />-->
-                                                        <!--</p:selectCheckboxMenu>-->
-                                                    <!--</f:facet>-->
-                                                    <!--<h:outputText value="#{car.color}" />-->
-                                                <!--</p:column>-->
-
-                                                <!--<p:column filterBy="#{car.sold}" headerText="Status" footerText="equals" filterMatchMode="equals">-->
-                                                    <!--<f:facet name="filter">-->
-                                                        <!--<p:selectOneButton onchange="PF('clientTable').filter()">-->
-                                                            <!--<f:converter converterId="javax.faces.Boolean" />-->
-                                                            <!--<f:selectItem itemLabel="All" itemValue="" />-->
-                                                            <!--<f:selectItem itemLabel="Sold" itemValue="true" />-->
-                                                            <!--<f:selectItem itemLabel="Sale" itemValue="false" />-->
-                                                        <!--</p:selectOneButton>-->
-                                                    <!--</f:facet>-->
-                                                    <!--<h:outputText value="#{car.sold ? 'Sold': 'Sale'}" />-->
-                                                <!--</p:column>-->
-
-                                                <!--<p:column filterBy="#{car.price}" headerText="Price" footerText="custom (min)" filterFunction="#{dtFilterView.filterByPrice}">-->
-                                                    <!--<h:outputText value="#{car.price}">-->
-                                                        <!--<f:convertNumber currencySymbol="$" type="currency"/>-->
-                                                    <!--</h:outputText>-->
-                                                <!--</p:column>-->
+                                                <f:facet name="footer">
+                                                    <p:commandButton process="clientTableId" icon="ui-icon-search" value="View" />
+                                                </f:facet>
                                             </p:dataTable>
                                             <div class="col s5 input-field">
                                                 <p:commandButton value="Ավելացնել" styleClass="dark" action="#{portfolioForm.addNewClient}" process="@this" update="clientDialogId"/>
