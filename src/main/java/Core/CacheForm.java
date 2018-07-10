@@ -48,6 +48,9 @@ public class CacheForm {
     @Autowired
     public ViolationCodeDao violationCodeDao;
 
+    @Autowired
+    public PriceListDao priceListDao;
+
     private List<City> cities;
     private List<Region> regions;
     private List<Street> streets;
@@ -61,6 +64,7 @@ public class CacheForm {
     private List<Asht> ashts;
     private List<GRS> grss;
     private List<VisitType> visitTypes;
+    private List<PriceList> priceLists;
 
     public List<VisitType> getVisitTypes() {
         if (this.visitTypes == null){
@@ -194,6 +198,19 @@ public class CacheForm {
         return this.grss;
     }
 
+    public List<PriceList> getPriceLists() {
+        if(this.priceLists == null){
+            this.priceLists = priceListDao.loadAll();
+            this.priceLists.sort(new Comparator<PriceList>() {
+                @Override
+                public int compare(PriceList o1, PriceList o2) {
+                    return o1.getName().compareTo(o2.getName());
+                }
+            });
+        }
+        return this.priceLists;
+    }
+
     public void resetCities(){
         this.cities = null;
     }
@@ -231,6 +248,10 @@ public class CacheForm {
     }
     public void resetViolationCodes(){
         this.violationCodes = null;
+    }
+
+    public void resetPriceList(){
+        this.priceLists = null;
     }
 
 }

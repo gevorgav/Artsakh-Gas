@@ -258,65 +258,62 @@
                             <div class="box form-border">
                                 <div class="box-body">
                                     <h:panelGroup id="yearlyPanelId">
-                                        <h:panelGrid columns="1" cellpadding="5">
-                                            <p:commandButton value="Ավելացնել այցելություն" type="button" onclick="PF('historyDialog').show();">
-                                                <f:ajax  render=":searchFormId :clientHistoryForm"/>
-                                            </p:commandButton>
-                                        </h:panelGrid>
-                                        <div class="clear"></div>
-
                                         <div class="clear"></div>
                                         <h:panelGroup layout="block" class="de-table-block" id="table2">
-                                            <h2 class="de-title">Բաժնի անուն</h2>
                                             <p:dataTable var="client"
                                                          id="clientTableId"
                                                          value="#{portfolioForm.clients}"
                                                          widgetVar="clientTable"
                                                          styleClass="table table-hover b-t de-table"
-                                                         emptyMessage="No cars found with given criteria"
+                                                         emptyMessage="Չկա տվյալններ"
                                                          filteredValue="#{portfolioForm.filteredClients}"
                                                          paginator="true"
-                                                         rows="10"
+                                                         rows="20"
                                                          selection="#{portfolioForm.selectedClients}"
                                                          rowKey="#{client.id}"
                                                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                                                         rowsPerPageTemplate="10,30,50"
+                                                         rowsPerPageTemplate="10,20,50"
                                                          style="margin-bottom:0">
-
-                                                <f:facet name="header">
-                                                    <p:outputPanel>
-                                                        <h:outputText value="Search all fields:" />
-                                                        <p:inputText id="globalFilter" onkeyup="PF('clientTable').filter()" style="width:150px" placeholder="Enter keyword"/>
-                                                    </p:outputPanel>
-                                                </f:facet>
 
                                                 <p:column selectionMode="multiple" style="width:35px;text-align:center"/>
 
-                                                <p:column filterBy="#{client.id}" headerText="ՀՀ" footerText="contains" filterMatchMode="contains">
+                                                <p:column filterBy="#{client.id}" headerText="ՀՀ" filterMatchMode="contains">
                                                     <h:outputText value="#{client.id}" />
                                                 </p:column>
 
-                                                <p:column filterBy="#{client.firstName}" headerText="Անուն" footerText="contains" filterMatchMode="contains">
+                                                <p:column filterBy="#{client.firstName}" headerText="Անուն" filterMatchMode="contains">
                                                     <h:outputText value="#{client.firstName}" />
                                                 </p:column>
-                                                <p:column filterBy="#{client.lastName}" headerText="Ազգանուն" footerText="contains" filterMatchMode="contains">
+                                                <p:column filterBy="#{client.lastName}" headerText="Ազգանուն" filterMatchMode="contains">
                                                     <h:outputText value="#{client.lastName}" />
                                                 </p:column>
-                                                <p:column filterBy="#{client.phoneNumber}" headerText="Հեռախոսի համար" footerText="contains" filterMatchMode="contains">
-                                                    <h:outputText value="#{client.phoneNumber}" />
+                                                <p:column filterBy="#{client.clientHistory.paid}" style="width: 20%" headerText="Վճառման վիճակ" filterMatchMode="equals">
+                                                    <f:facet name="filter">
+                                                        <p:selectOneMenu  label="Colors" onchange="PF('clientTable').filter()"  panelStyle="width:125px" scrollHeight="150">
+                                                            <f:converter converterId="javax.faces.Boolean" />
+                                                            <f:selectItem itemLabel="Բոլոր" itemValue="" />
+                                                            <f:selectItem itemLabel="Վճառված" itemValue="true" />
+                                                            <f:selectItem itemLabel="Չվժառված" itemValue="false" />
+                                                        </p:selectOneMenu>
+                                                    </f:facet>
+                                                    <h:outputText value="#{client.clientHistory.paid ? 'Վճառված': 'Չվժառված'}" />
                                                 </p:column>
-                                                <p:column>
-                                                    <p:commandLink styleClass="fa fa-pencil-square-o" action="#{portfolioForm.editClient(client)}"
-                                                                   update="clientDialogId table2" icon="" title="Խմբագրել"/>
+
+                                                <p:column filterBy="#{client.ashtId}" style="width: 20%" headerText="ԱՇՏ" filterMatchMode="equals">
+                                                    <f:facet name="filter">
+                                                        <p:selectOneMenu  label="ԱՇՏ" onchange="PF('clientTable').filter()"  panelStyle="width:125px" scrollHeight="150">
+                                                            <f:converter converterId="javax.faces.Integer" />
+                                                            <f:selectItem itemLabel="Բոլոր" itemValue="" />
+                                                            <f:selectItems value="#{portfolioForm.cache.ashts}" var="asht" itemLabel="#{asht.name}" itemValue="#{asht.id}"/>
+                                                        </p:selectOneMenu>
+                                                    </f:facet>
+                                                    <h:outputText value="#{client.ashtId}"></h:outputText>
                                                 </p:column>
 
                                                 <f:facet name="footer">
                                                     <p:commandButton process="clientTableId" icon="ui-icon-search" value="View" />
                                                 </f:facet>
                                             </p:dataTable>
-                                            <div class="col s5 input-field">
-                                                <p:commandButton value="Ավելացնել" styleClass="dark" action="#{portfolioForm.addNewClient}" process="@this" update="clientDialogId"/>
-                                            </div>
                                         </h:panelGroup>
                                     </h:panelGroup>
 

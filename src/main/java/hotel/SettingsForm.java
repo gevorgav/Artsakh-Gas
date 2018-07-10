@@ -42,7 +42,7 @@ public class SettingsForm implements Serializable {
         categories.add(new Category(8, "Ենթատեղամաս"));
         categories.add(new Category(9, "Փողոց"));
         categories.add(new Category(10, "Գ/Հ տիպ"));
-        categories.add(new Category(11, "Violation code"));
+        categories.add(new Category(11, "Խախտման կոդեր"));
     }
 
     private Integer categoryTypeId;
@@ -365,6 +365,53 @@ public class SettingsForm implements Serializable {
         }
         cache.resetGrss(); // TODO load anel kam jnjel u avelacnel mej@
         this.editedGrs = new GRS();
+        this.reloadPage();
+    }
+
+    // --------- Price List Form
+
+    private PriceList editedPrice;
+
+    private PriceList priceSnapshot;
+
+    public PriceList getEditedPrice() {
+        if(this.editedPrice == null){
+            this.editedPrice = new PriceList();
+        }
+        return this.editedPrice;
+    }
+
+    public void setEditedPrice(PriceList editedGrs) {
+        this.editedPrice = editedPrice;
+    }
+
+    public void editPrice(PriceList editedPrice) {
+        try {
+            this.editedPrice = (PriceList) editedPrice.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        this.priceSnapshot = editedPrice;
+    }
+
+
+
+    public void savePrice(){
+        if (this.editedPrice.getId() != null) {
+            if (cache.priceListDao.update(this.editedPrice)) {
+                FacesContext facesContext = FacesContext.getCurrentInstance();
+                FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
+                facesContext.addMessage(null, facesMessage);
+            }
+        } else {
+            if (cache.priceListDao.insert(this.editedPrice)) {
+                FacesContext facesContext = FacesContext.getCurrentInstance();
+                FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
+                facesContext.addMessage(null, facesMessage);
+            }
+        }
+        cache.resetPriceList(); // TODO load anel kam jnjel u avelacnel mej@
+        this.editedPrice = new PriceList();
         this.reloadPage();
     }
 

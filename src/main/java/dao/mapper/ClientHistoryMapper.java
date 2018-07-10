@@ -54,6 +54,7 @@ public class ClientHistoryMapper  implements RowMapper<ClientHistory> {
         clientHistory.setBacakaPakan(rs.getObject("bacakaPakan") != null ? rs.getInt("bacakaPakan") : null);
         clientHistory.setRisk(rs.getObject("risk") != null ? rs.getInt("risk") : null);
         clientHistory.setMasterId(rs.getObject("masterId") != null ? rs.getInt("masterId") : null);
+        clientHistory.setPaid(rs.getBoolean("isPaid"));
         return clientHistory;
     }
 

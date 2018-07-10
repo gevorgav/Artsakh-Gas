@@ -1,6 +1,7 @@
 package Models;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Created by astghik.mamunc on 6/13/2018.
@@ -80,6 +81,8 @@ public class ClientHistory {
     private Integer risk;
 
     private Integer masterId;
+
+    private boolean isPaid;
 
     public ClientHistory() {
     }
@@ -380,54 +383,62 @@ public class ClientHistory {
         this.masterId = masterId;
     }
 
+    public boolean isPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(boolean paid) {
+        isPaid = paid;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         ClientHistory that = (ClientHistory) o;
-
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (clientId != null ? !clientId.equals(that.clientId) : that.clientId != null) return false;
-        if (violationActNumber != null ? !violationActNumber.equals(that.violationActNumber) : that.violationActNumber != null)
-            return false;
-        if (updateDate != null ? !updateDate.equals(that.updateDate) : that.updateDate != null) return false;
-        if (previousVisitDate != null ? !previousVisitDate.equals(that.previousVisitDate) : that.previousVisitDate != null)
-            return false;
-        if (nextVisitDate != null ? !nextVisitDate.equals(that.nextVisitDate) : that.nextVisitDate != null)
-            return false;
-        if (stampNumbers != null ? !stampNumbers.equals(that.stampNumbers) : that.stampNumbers != null) return false;
-        if (go1 != null ? !go1.equals(that.go1) : that.go1 != null) return false;
-        if (jth != null ? !jth.equals(that.jth) : that.jth != null) return false;
-        if (jtt != null ? !jtt.equals(that.jtt) : that.jtt != null) return false;
-        if (ket != null ? !ket.equals(that.ket) : that.ket != null) return false;
-        if (jah != null ? !jah.equals(that.jah) : that.jah != null) return false;
-        if (jk != null ? !jk.equals(that.jk) : that.jk != null) return false;
-        if (jv != null ? !jv.equals(that.jv) : that.jv != null) return false;
-        if (go3 != null ? !go3.equals(that.go3) : that.go3 != null) return false;
-        if (go2 != null ? !go2.equals(that.go2) : that.go2 != null) return false;
-        return risk != null ? risk.equals(that.risk) : that.risk == null;
+        return isPaid == that.isPaid &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(clientId, that.clientId) &&
+                Objects.equals(violationActNumber, that.violationActNumber) &&
+                Objects.equals(visitType, that.visitType) &&
+                Objects.equals(visitDescription, that.visitDescription) &&
+                Objects.equals(updateDate, that.updateDate) &&
+                Objects.equals(previousVisitDate, that.previousVisitDate) &&
+                Objects.equals(nextVisitDate, that.nextVisitDate) &&
+                Objects.equals(stampNumbers, that.stampNumbers) &&
+                Objects.equals(go1, that.go1) &&
+                Objects.equals(bacakaGo1, that.bacakaGo1) &&
+                Objects.equals(go2, that.go2) &&
+                Objects.equals(bacakaGo2, that.bacakaGo2) &&
+                Objects.equals(go3, that.go3) &&
+                Objects.equals(bacakaGo3, that.bacakaGo3) &&
+                Objects.equals(go4, that.go4) &&
+                Objects.equals(bacakaGo4, that.bacakaGo4) &&
+                Objects.equals(go5, that.go5) &&
+                Objects.equals(bacakaGo5, that.bacakaGo5) &&
+                Objects.equals(go6, that.go6) &&
+                Objects.equals(bacakaGo6, that.bacakaGo6) &&
+                Objects.equals(jth, that.jth) &&
+                Objects.equals(bacakaJth, that.bacakaJth) &&
+                Objects.equals(jtt, that.jtt) &&
+                Objects.equals(bacakaJtt, that.bacakaJtt) &&
+                Objects.equals(ket, that.ket) &&
+                Objects.equals(bacakaKet, that.bacakaKet) &&
+                Objects.equals(jk, that.jk) &&
+                Objects.equals(bacakaJk, that.bacakaJk) &&
+                Objects.equals(jv, that.jv) &&
+                Objects.equals(bacakaJv, that.bacakaJv) &&
+                Objects.equals(jah, that.jah) &&
+                Objects.equals(bacakaJah, that.bacakaJah) &&
+                Objects.equals(pakan, that.pakan) &&
+                Objects.equals(bacakaPakan, that.bacakaPakan) &&
+                Objects.equals(risk, that.risk) &&
+                Objects.equals(masterId, that.masterId);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (clientId != null ? clientId.hashCode() : 0);
-        result = 31 * result + (violationActNumber != null ? violationActNumber.hashCode() : 0);
-        result = 31 * result + (updateDate != null ? updateDate.hashCode() : 0);
-        result = 31 * result + (previousVisitDate != null ? previousVisitDate.hashCode() : 0);
-        result = 31 * result + (nextVisitDate != null ? nextVisitDate.hashCode() : 0);
-        result = 31 * result + (stampNumbers != null ? stampNumbers.hashCode() : 0);
-        result = 31 * result + (go1 != null ? go1.hashCode() : 0);
-        result = 31 * result + (jth != null ? jth.hashCode() : 0);
-        result = 31 * result + (jtt != null ? jtt.hashCode() : 0);
-        result = 31 * result + (ket != null ? ket.hashCode() : 0);
-        result = 31 * result + (jah != null ? jah.hashCode() : 0);
-        result = 31 * result + (jk != null ? jk.hashCode() : 0);
-        result = 31 * result + (jv != null ? jv.hashCode() : 0);
-        result = 31 * result + (go3 != null ? go3.hashCode() : 0);
-        result = 31 * result + (go2 != null ? go2.hashCode() : 0);
-        result = 31 * result + (risk != null ? risk.hashCode() : 0);
-        return result;
+
+        return Objects.hash(id, clientId, violationActNumber, visitType, visitDescription, updateDate, previousVisitDate, nextVisitDate, stampNumbers, go1, bacakaGo1, go2, bacakaGo2, go3, bacakaGo3, go4, bacakaGo4, go5, bacakaGo5, go6, bacakaGo6, jth, bacakaJth, jtt, bacakaJtt, ket, bacakaKet, jk, bacakaJk, jv, bacakaJv, jah, bacakaJah, pakan, bacakaPakan, risk, masterId, isPaid);
     }
 }

@@ -3,13 +3,9 @@
 <html dir="ltr" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
-      xmlns:jsfcore="http://java.sun.com/jsf/core"
-      xmlns:ut="http://java.sun.com/jsf/composite/util"
-      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+>
 <h:head>
     <link href="images/favicon.png" rel="shortcut icon"
           type="image/x-icon"/>
@@ -59,7 +55,7 @@
                 <a class="navbar-brand">
                     <div ui-include="'assets/images/logo.svg'"></div>
                     <img src="assets/images/logo.png" alt="." class="hide"></img>
-                    <span class="hidden-folded inline">Տուրիզմ</span>
+                    <span class="hidden-folded inline">Արցախ Գազ</span>
                 </a>
                 <!-- / brand -->
             </div>
@@ -68,30 +64,28 @@
 
                     <ul class="nav" ui-nav="">
 
-                        <li>
-                            <a href="index.xhtml">
-                    <span class="nav-icon">
-                      <i class="material-icons">&#xe3fc;
-                        <span ui-include="'assets/images/i_0.svg'"></span>
-                      </i>
-                    </span>
-                                <span class="nav-text">Վահանակ</span>
-                            </a>
-                        </li>
+                        <!--<li>-->
+                        <!--<a href="index.xhtml">-->
+                        <!--<span class="nav-icon">-->
+                        <!--<i class="material-icons">&#xe3fc;-->
+                        <!--<span ui-include="'assets/images/i_0.svg'"></span>-->
+                        <!--</i>-->
+                        <!--</span>-->
+                        <!--<span class="nav-text">Վահանակ</span>-->
+                        <!--</a>-->
+                        <!--</li>-->
 
                         <h:panelGroup rendered="#{dashboardForm.admin}">
-                            <c:if test="#{authorisationUtil.authorisedUser}">
-                                <li>
-                                    <a href="portfolio.xhtml">
+                            <li>
+                                <a href="portfolio.xhtml">
                             <span class="nav-icon">
                               <i class="material-icons">&#xe896;
                                 <span ui-include="'assets/images/i_7.svg'"></span>
                               </i>
                             </span>
-                                        <span class="nav-text">Թղթապանակ</span>
-                                    </a>
-                                </li>
-                            </c:if>
+                                    <span class="nav-text">Թղթապանակ</span>
+                                </a>
+                            </li>
                         </h:panelGroup>
 
                         <li>
@@ -104,68 +98,79 @@
                         <span ui-include="'assets/images/i_8.svg'"></span>
                       </i>
                     </span>
-                                <span class="nav-text">Վերլուծություն</span>
+                                <span class="nav-text">Հաշվետվություն</span>
                             </a>
                             <ul class="nav-sub">
                                 <li>
-                                    <a href="map.xhtml">
-                                        <span class="nav-text">Քարտեզ </span>
+                                    <a href="report.xhtml">
+                                        <span class="nav-text">Մուծման </span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="financialChart.xhtml">
-                                        <span class="nav-text">ֆինանսական դիագրամ</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="touristChart.xhtml">
-                                        <span class="nav-text">Զբոսաշրջիկների թվի դիագրամ</span>
-                                    </a>
-                                </li>
+                                <!--<li>-->
+                                <!--<a href="financialChart.xhtml">-->
+                                <!--<span class="nav-text">ֆինանսական դիագրամ</span>-->
+                                <!--</a>-->
+                                <!--</li>-->
+                                <!--<li>-->
+                                <!--<a href="touristChart.xhtml">-->
+                                <!--<span class="nav-text">Զբոսաշրջիկների թվի դիագրամ</span>-->
+                                <!--</a>-->
+                                <!--</li>-->
                             </ul>
                         </li>
 
-                        <li>
-                            <a>
-                    <span class="nav-caret">
-                      <i class="fa fa-caret-down"></i>
-                    </span>
-                                <span class="nav-icon">
-                       <i class="material-icons">&#xE865;
-                        <span ui-include="'assets/images/i_3.svg'"></span>
-                      </i>
-                    </span>
-                                <span class="nav-text">Շտեմարան</span>
-                            </a>
-                            <ul class="nav-sub">
-                                <li>
-                                    <a href="hotels.xhtml">
-                                        <span class="nav-text">Հյուրանոցներ</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="restaurant.xhtml">
-                                        <span class="nav-text">Ռեստորաններ</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="museum.xhtml">
-                                        <span class="nav-text">Թանգարան</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="tourOperator.xhtml">
-                                        <span class="nav-text">Տուր օպերատորներ</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="touristSight.xhtml">
-                                        <span class="nav-text">Տեսարժան վայրեր</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
+                        <!--<li>-->
+                        <!--<a>-->
+                        <!--<span class="nav-caret">-->
+                        <!--<i class="fa fa-caret-down"></i>-->
+                        <!--</span>-->
+                        <!--<span class="nav-icon">-->
+                        <!--<i class="material-icons">&#xE865;-->
+                        <!--<span ui-include="'assets/images/i_3.svg'"></span>-->
+                        <!--</i>-->
+                        <!--</span>-->
+                        <!--<span class="nav-text">Կարգավորումներ</span>-->
+                        <!--</a>-->
+                        <!--<ul class="nav-sub">-->
+                        <!--<li>-->
+                        <!--<a href="hotels.xhtml">-->
+                        <!--<span class="nav-text">Հյուրանոցներ</span>-->
+                        <!--</a>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                        <!--<a href="restaurant.xhtml">-->
+                        <!--<span class="nav-text">Ռեստորաններ</span>-->
+                        <!--</a>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                        <!--<a href="museum.xhtml">-->
+                        <!--<span class="nav-text">Թանգարան</span>-->
+                        <!--</a>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                        <!--<a href="tourOperator.xhtml">-->
+                        <!--<span class="nav-text">Տուր օպերատորներ</span>-->
+                        <!--</a>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                        <!--<a href="touristSight.xhtml">-->
+                        <!--<span class="nav-text">Տեսարժան վայրեր</span>-->
+                        <!--</a>-->
+                        <!--</li>-->
+                        <!--</ul>-->
+                        <!--</li>-->
+                        <h:panelGroup rendered="#{dashboardForm.admin}">
+                            <li>
+                                <a href="settings.xhtml">
+                            <span class="nav-icon">
+                              <i class="material-icons">&#xe896;
+                                <span ui-include="'assets/images/i_7.svg'"></span>
+                              </i>
+                            </span>
+                                    <span class="nav-text">Կարգավորումներ</span>
+                                </a>
+                            </li>
+                        </h:panelGroup>
 
                         <li>
                             <a href="#">
@@ -181,9 +186,6 @@
                     </ul>
                 </nav>
             </div>
-            <!--<div flex-no-shrink="">-->
-            <!--<div ui-include="'views/blocks/aside.top.1.html'"></div>-->
-            <!--</div>-->
         </div>
     </div>
     <!-- / -->
@@ -326,6 +328,16 @@
                                                                             </h:commandLink>
                                                                         </c:if>
                                                                     </div>
+                                                                </div>
+                                                            </p:commandLink>
+                                                        </c:forEach>
+                                                    </c:if>
+                                                    <!--Price-->
+                                                    <c:if test="#{settingsForm.categoryTypeId eq 5}">
+                                                        <c:forEach var="priceList" items="#{settingsForm.cache.priceLists}">
+                                                            <p:commandLink actionListener="#{settingsForm.editPrice(priceList)}" immediate="true" update=":editFormId">
+                                                                <div class="list-body">
+                                                                    <h:outputText value="#{priceList.name}"/>
                                                                 </div>
                                                             </p:commandLink>
                                                         </c:forEach>
@@ -633,6 +645,32 @@
                                                     </div>
                                                 </c:if>
                                             </h:form>
+                                            <!--Price-->
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 5}">
+                                                <h:panelGroup layout="block">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <h:outputLabel class="form-control-label">Գինը ${settingsForm.editedPrice.name} համար</h:outputLabel>
+                                                            <p:inputText  value="#{settingsForm.editedPrice.price}"
+                                                                           id="editedPriceId">
+                                                            </p:inputText>
+                                                        </div>
+                                                    </div>
+                                                </h:panelGroup>
+
+                                                <c:if test="#{authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <p:commandButton ajax="false" value="Պահպանել" styleClass="btn btn-fw primary"  actionListener="#{settingsForm.savePrice}" update=":categoriesListForm" >
+                                                        </p:commandButton>
+                                                        <h:commandLink immediate="true" value="Դուրս գալ" styleClass="btn " actionListener="#{authorisationUtil.signout}"/>
+                                                    </div>
+                                                </c:if>
+                                                <c:if test="#{!authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <h:commandLink immediate="true" value="Մուտք" styleClass="btn " actionListener="#{authorisationUtil.signIn}"/>
+                                                    </div>
+                                                </c:if>
+                                            </h:form>
                                             <!--Region-->
                                             <h:form rendered="#{settingsForm.categoryTypeId eq 6}">
                                                 <h:panelGroup layout="block">
@@ -807,16 +845,15 @@
                                                 <h:panelGroup layout="block">
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="violationCodeNameId" value="Violation Code"/>
+                                                            <p:outputLabel for="violationCodeNameId" value="Խախտման կոդ"/>
                                                             <p:inputText id="violationCodeNameId" value="#{settingsForm.editedViolationCode.name}" styleClass="form-control"
                                                                          required="true"
-                                                                         requiredMessage="ViolationCodeն պարտադիր դաշտ է" placeholder="Violation Code"/>
+                                                                         requiredMessage="Խախտման կոդն պարտադիր դաշտ է" placeholder="Խախտման կոդ"/>
                                                         </div>
-                                                    </div>
-                                                </h:panelGroup>
-                                                <h:panelGroup layout="block">
-                                                    <div class="row">
-                                                        <h:inputTextarea class="form-control no-border" rows="3" placeholder="Type something..." value="#{settingsForm.editedViolationCode.description}"></h:inputTextarea>
+                                                        <div class="col-sm-8 col-md-8">
+                                                            <p:outputLabel for="violationCodeNameId" value="Նկարագրություն"/>
+                                                            <h:inputTextarea class="form-control no-border" rows="3" placeholder="Type something..." value="#{settingsForm.editedViolationCode.description}"></h:inputTextarea>
+                                                        </div>
                                                     </div>
                                                 </h:panelGroup>
                                                 <c:if test="#{authorisationUtil.authorisedUser}">

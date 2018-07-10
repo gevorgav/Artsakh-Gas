@@ -42,7 +42,7 @@ public class SubSectionDao extends Dao<SubSection> {
     @Override
     public boolean update(SubSection subSection) {
         Objects.requireNonNull(subSection);
-        String sql = "UPDATE street SET name = ?, sectionId = ? WHERE id = ?";
+        String sql = "UPDATE subSection SET name = ?, sectionId = ? WHERE id = ?";
         int result = jdbcTemplate.update(sql, subSection.getName(), subSection.getSectionId(), subSection.getId());
         return result == 1;
     }

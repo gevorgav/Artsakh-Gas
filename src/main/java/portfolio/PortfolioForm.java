@@ -30,7 +30,7 @@ public class PortfolioForm {
     private String[] violationCodes;
     private List<Client> selectedClients;
     private CacheForm cache;
-
+    private String[] paidStatus;
     public PortfolioForm() {
     }
 
@@ -411,5 +411,13 @@ public class PortfolioForm {
 
     public void setSelectedClients(List<Client> selectedClients) {
         this.selectedClients = selectedClients;
+    }
+
+    public String[] getPaidStatus() {
+        return paidStatus;
+    }
+
+    public void setPaidStatus(String[] paidStatus) {
+        this.paidStatus = paidStatus;
     }
 }
