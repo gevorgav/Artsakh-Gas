@@ -26,6 +26,8 @@
 
     <bean id="cache" class="Core.CacheForm" scope="singleton" />
 
+    <bean id="exportForm" class="Beans.ExportForm" scope="singleton" />
+
     <bean id="root" class="Core.Root" scope="singleton" />
 
     <bean id="fileUpload" class="Core.FileUpload" scope="session"/>
