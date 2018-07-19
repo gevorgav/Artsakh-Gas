@@ -38,13 +38,13 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
     }
 
     /**
-     * Method to load all clients history by given client id
+     * Method to load all clients history by given client id & region id
      */
-    public List<ClientHistory> loadAllByClientId(Integer clientId) {
+    public List<ClientHistory> loadAllByClientId(Integer clientId, Integer regionId) {
         Objects.requireNonNull(clientId);
         try {
-            String sql = "SELECT * FROM clientsHistory WHERE clientId = ?";
-            return jdbcTemplate.query(sql, new ClientHistoryMapper(), clientId);
+            String sql = "SELECT * FROM clientsHistory WHERE clientId = ? AND regionId = ?";
+            return jdbcTemplate.query(sql, new ClientHistoryMapper(), clientId, regionId);
         } catch (EmptyResultDataAccessException e) {
             return Collections.emptyList();
         }
@@ -65,10 +65,10 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
     /**
      * Method to load client's last clientHistory
      */
-    public ClientHistory loadLastClientHistory(Integer clientId) {
+    public ClientHistory loadLastClientHistory(Integer clientId, Integer regionId) {
         Objects.requireNonNull(clientId);
-        String sql = "SELECT * FROM clientsHistory WHERE clientId = ? ORDER BY id DESC LIMIT 1";
-        List<ClientHistory> clientHistoryList = jdbcTemplate.query(sql, new ClientHistoryMapper(), clientId);
+        String sql = "SELECT * FROM clientsHistory WHERE clientId = ? AND regionId = ? ORDER BY id DESC LIMIT 1";
+        List<ClientHistory> clientHistoryList = jdbcTemplate.query(sql, new ClientHistoryMapper(), clientId ,regionId);
         if (clientHistoryList.size() < 1) {
             return null;
         }
@@ -81,24 +81,24 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
     public boolean insert(ClientHistory clientHistory) {
         Objects.requireNonNull(clientHistory);
         String sql = "INSERT INTO clientsHistory(clientId, violationActNumber, visitType, visitDescription, updateDate, previousVisitDate, nextVisitDate, stampNumbers, go1, go2, go3,go4,go5,go6," +
-                " bacakaGo1, bacakaGo2, bacakaGo3,bacakaGo4,bacakaGo5,bacakaGo6, jth, jtt, ket, jah, jk, jv,pakan ,bacakaJth, bacakaJtt, bacakaKet, bacakaJah, bacakaJk,bacakaPakan, bacakaJv, risk, masterId)\n" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                " bacakaGo1, bacakaGo2, bacakaGo3,bacakaGo4,bacakaGo5,bacakaGo6, jth, jtt, ket, jah, jk, jv,pakan ,bacakaJth, bacakaJtt, bacakaKet, bacakaJah, bacakaJk,bacakaPakan, bacakaJv, JTLog, risk, masterId, regionId)\n" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         int result = jdbcTemplate.update(sql, clientHistory.getClientId(), clientHistory.getViolationActNumber(), clientHistory.getVisitType(), clientHistory.getVisitDescription(), new Date(),
                 clientHistory.getPreviousVisitDate(), clientHistory.getNextVisitDate(), clientHistory.getStampNumbers(),
                 clientHistory.getGo1(),clientHistory.getGo2(),clientHistory.getGo3(),clientHistory.getGo4(),clientHistory.getGo5(),clientHistory.getGo6(),
                 clientHistory.getBacakaGo1(),clientHistory.getBacakaGo2(),clientHistory.getBacakaGo3(),clientHistory.getBacakaGo4(),clientHistory.getBacakaGo5(),clientHistory.getBacakaGo6(),
                 clientHistory.getJth(), clientHistory.getJtt(), clientHistory.getKet(), clientHistory.getJah(), clientHistory.getJk(), clientHistory.getJv(),clientHistory.getPakan(),
                 clientHistory.getBacakaJth(), clientHistory.getBacakaJtt(), clientHistory.getBacakaKet(), clientHistory.getBacakaJah(), clientHistory.getBacakaJk(), clientHistory.getBacakaJv(),clientHistory.getBacakaPakan(),
-                clientHistory.getRisk(), clientHistory.getMasterId());
+                clientHistory.getJTLog(), clientHistory.getRisk(), clientHistory.getMasterId(), clientHistory.getRegionId());
         return result == 1;
     }
 
     public Integer insertAndReturnId(ClientHistory clientHistory) {
         Objects.requireNonNull(clientHistory);
         String sql = "INSERT INTO clientsHistory(clientId, violationActNumber, visitType, visitDescription, updateDate, previousVisitDate, nextVisitDate, stampNumbers, go1, go2, go3,go4,go5,go6," +
-                " bacakaGo1, bacakaGo2, bacakaGo3,bacakaGo4,bacakaGo5,bacakaGo6, jth, jtt, ket, jah, jk, jv,pakan ,bacakaJth, bacakaJtt, bacakaKet, bacakaJah, bacakaJk,bacakaPakan, bacakaJv, risk, masterId)\n" +
+                " bacakaGo1, bacakaGo2, bacakaGo3,bacakaGo4,bacakaGo5,bacakaGo6, jth, jtt, ket, jah, jk, jv,pakan ,bacakaJth, bacakaJtt, bacakaKet, bacakaJah, bacakaJk,bacakaPakan, bacakaJv, JTLog, risk, masterId, regionId)\n" +
                 "VALUES (:clientId, :violationActNumber, :visitType, :visitDescription, :updateDate, :previousVisitDate, :nextVisitDate, :stampNumbers, :go1, :go2, :go3,:go4,:go5,:go6, :bacakaGo1," +
-                ":bacakaGo2, :bacakaGo3,:bacakaGo4,:bacakaGo5,:bacakaGo6, :jth, :jtt, :ket, :jah, :jk, :jv,:pakan ,:bacakaJth, :bacakaJtt, :bacakaKet, :bacakaJah, :bacakaJk,:bacakaPakan, :bacakaJv, :risk, :masterId)";
+                ":bacakaGo2, :bacakaGo3,:bacakaGo4,:bacakaGo5,:bacakaGo6, :jth, :jtt, :ket, :jah, :jk, :jv,:pakan ,:bacakaJth, :bacakaJtt, :bacakaKet, :bacakaJah, :bacakaJk,:bacakaPakan, :bacakaJv,:JTLog, :risk, :masterId, :regionId)";
         SqlParameterSource fileParameters = new BeanPropertySqlParameterSource(clientHistory);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int result = namedJdbc.update(sql, fileParameters, keyHolder);
@@ -143,8 +143,10 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
         namedParameters.put("bacakaJk", clientHistory.getBacakaJk());
         namedParameters.put("bacakaPakan", clientHistory.getBacakaPakan());
         namedParameters.put("bacakaJv", clientHistory.getBacakaJv());
+        namedParameters.put("JTLog", clientHistory.getJTLog());
         namedParameters.put("risk", clientHistory.getRisk());
         namedParameters.put("masterId", clientHistory.getMasterId());
+        namedParameters.put("regionId", clientHistory.getRegionId());
 
         String sql = "UPDATE clientsHistory SET violationActNumber = :violationActNumber, updateDate = :updateDate," +
                 " previousVisitDate = :previousVisitDate, nextVisitDate = :nextVisitDate , " +
@@ -152,8 +154,8 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
                 " bacakaGo1 = :bacakaGo1, bacakaGo2 = :bacakaGo2, bacakaGo3 = :bacakaGo3,bacakaGo4 = :bacakaGo4,bacakaGo5 = :bacakaGo5, " +
                 "bacakaGo6 = :bacakaGo6, jth = :jth, jtt = :jtt, ket = :ket, jah = :jah, jk = :jk, jv = :jv,pakan = :pakan ," +
                 "bacakaJth = :bacakaJth, bacakaJtt = :bacakaJtt, bacakaKet = :bacakaKet, bacakaJah = :bacakaJah, bacakaJk = :bacakaJk," +
-                "bacakaPakan =:bacakaPakan, bacakaJv = :bacakaJv, risk = :risk, masterId = :masterId\n" +
-                "WHERE id = :id";
+                "bacakaPakan =:bacakaPakan, bacakaJv = :bacakaJv, JTLog = :JTLog, risk = :risk, masterId = :masterId\n" +
+                "WHERE id = :id AND regionId = :regionId";
 
         int updateCount = namedJdbc.update(sql, namedParameters);
         return updateCount == 1;

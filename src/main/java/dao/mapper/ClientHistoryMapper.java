@@ -52,8 +52,10 @@ public class ClientHistoryMapper  implements RowMapper<ClientHistory> {
         clientHistory.setBacakaJk(rs.getObject("bacakaJk") != null ? rs.getInt("bacakaJk") : null);
         clientHistory.setBacakaJv(rs.getObject("bacakaJv") != null ? rs.getInt("bacakaJv") : null);
         clientHistory.setBacakaPakan(rs.getObject("bacakaPakan") != null ? rs.getInt("bacakaPakan") : null);
+        clientHistory.setJTLog(rs.getString("JTLog"));
         clientHistory.setRisk(rs.getObject("risk") != null ? rs.getInt("risk") : null);
         clientHistory.setMasterId(rs.getObject("masterId") != null ? rs.getInt("masterId") : null);
+        clientHistory.setRegionId(rs.getObject("regionId") != null ? rs.getInt("regionId") : null);
         clientHistory.setPaid(rs.getBoolean("isPaid"));
         return clientHistory;
     }

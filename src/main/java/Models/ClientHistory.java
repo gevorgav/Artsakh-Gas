@@ -78,11 +78,15 @@ public class ClientHistory {
 
     private Integer bacakaPakan;
 
+    private String JTLog;
+
     private Integer risk;
 
     private Integer masterId;
 
     private boolean isPaid;
+
+    private Integer regionId;
 
     public ClientHistory() {
     }
@@ -389,6 +393,22 @@ public class ClientHistory {
 
     public void setPaid(boolean paid) {
         isPaid = paid;
+    }
+
+    public Integer getRegionId() {
+        return regionId;
+    }
+
+    public void setRegionId(Integer regionId) {
+        this.regionId = regionId;
+    }
+
+    public String getJTLog() {
+        return JTLog;
+    }
+
+    public void setJTLog(String JTLog) {
+        this.JTLog = JTLog;
     }
 
     @Override

@@ -286,10 +286,36 @@ public class PortfolioForm {
 
     //Client History
 
+    private Boolean jtlog;
+
+    private Integer historyRegionId;
+
+    public Integer getHistoryRegionId() {
+        return historyRegionId;
+    }
+
+    public void setHistoryRegionId(Integer historyRegionId) {
+        this.historyRegionId = historyRegionId;
+    }
+
+    public Boolean getJtlog() {
+        return Objects.equals(clientHistory.getJTLog(),"+");
+    }
+
+    public void setJtlog(Boolean jtlog) {
+        this.jtlog = jtlog;
+        if (jtlog) {
+            clientHistory.setJTLog("+");
+        } else {
+            clientHistory.setJTLog("-");
+        }
+    }
+
     public void searchClientHistory(){
-        if (!Objects.isNull(clientId) && !Objects.isNull(clientHistoryDao.loadLastClientHistory(clientId))){
-            clientHistory = clientHistoryDao.loadLastClientHistory(clientId);
+        if (!Objects.isNull(clientId) && !Objects.isNull(historyRegionId) && !Objects.isNull(clientHistoryDao.loadLastClientHistory(clientId, historyRegionId))){
+            clientHistory = clientHistoryDao.loadLastClientHistory(clientId, historyRegionId);
             loadClientViolationCode(clientHistory.getId());
+            clientHistory.setRegionId(historyRegionId);
         }else {
             clientHistory = null;
             FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -311,6 +337,7 @@ public class PortfolioForm {
     public void cancelHistoryDialog(){
         clientId = null;
         clientHistory = null;
+        historyRegionId = null;
         RequestContext.getCurrentInstance().execute("PF('historyDialog').hide()");
     }
 
@@ -364,8 +391,17 @@ public class PortfolioForm {
 
     public void saveHistory(){
         Integer historyId = clientHistoryDao.insertAndReturnId(clientHistory);
+        updateClientHistory();
         saveViolationCodes(historyId);
         cancelHistoryDialog();
+    }
+
+    private void updateClientHistory(){
+        for (Client client : clients){
+            if (Objects.equals(client.getClientHistory().getId(), clientHistory.getId())){
+                client.setClientHistory(clientHistory);
+            }
+        }
     }
 
     private void saveViolationCodes(Integer historyId) {
