@@ -7,12 +7,18 @@ import dao.ClientDao;
 import dao.ClientHistoryDao;
 import dao.ViolationClientHistoryDao;
 import dao.ViolationCodeDao;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.*;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import java.io.*;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -381,7 +387,7 @@ public class PortfolioForm {
             StringBuilder listString = new StringBuilder();
             for (String s : stamps)
             {
-                listString.append(s).append(",");
+                listString.append(s).append(", ");
             }
             clientHistory.setStampNumbers(listString.toString());
         }
@@ -455,5 +461,92 @@ public class PortfolioForm {
 
     public void setPaidStatus(String[] paidStatus) {
         this.paidStatus = paidStatus;
+    }
+
+
+
+    private StreamedContent file;
+
+    public StreamedContent getFile() throws IOException, InvalidFormatException {
+        export();
+        InputStream stream = new FileInputStream("C:/Users/arsha/Desktop/Projects/Artsakh-Gas/src/main/resources/testFile2.xlsx");
+        file = new DefaultStreamedContent(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8", "downloaded_boromir.xlsx");
+        return file;
+    }
+
+    public void export() throws IOException, InvalidFormatException {
+
+
+
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("template.xlsx").getFile());
+
+
+        String data = "Test data";
+        FileOutputStream out = new FileOutputStream("C:/Users/arsha/Desktop/Projects/Artsakh-Gas/src/main/resources/testFile2.xlsx");
+
+        Workbook workbook = WorkbookFactory.create(new FileInputStream(file));
+
+        // Get Sheet at index 0
+        Sheet sheet = workbook.getSheetAt(0);
+
+        // Get Row at index 1
+        Row row = sheet.getRow(3);
+//        for(int i=4; i<35;){
+//            row = sheet.getRow(i);
+//        }
+
+        for(int i=0; i< getSelectedClients().size();i++){
+            Client client = getSelectedClients().get(i);
+            row = sheet.getRow(i*2+5);
+            row.getCell(1).setCellValue(client.getId());
+            row.getCell(2).setCellValue(client.getStreetId());
+            row.getCell(3).setCellValue(client.getLastName()+" " +client.getFirstName() + " " + (Objects.isNull(client.getMiddleName()) ? "" : client.getMiddleName()));
+            row.getCell(4).setCellValue(client.getPhoneNumber());
+            row.getCell(6).setCellValue(Objects.isNull(client.getClientHistory().getGo1()) ? "": client.getClientHistory().getGo1().toString());
+            row.getCell(7).setCellValue(Objects.isNull(client.getClientHistory().getGo2()) ? "": client.getClientHistory().getGo2().toString());
+            row.getCell(8).setCellValue(Objects.isNull(client.getClientHistory().getGo3()) ? "": client.getClientHistory().getGo3().toString());
+            row.getCell(9).setCellValue(Objects.isNull(client.getClientHistory().getGo4()) ? "": client.getClientHistory().getGo4().toString());
+            row.getCell(10).setCellValue(Objects.isNull(client.getClientHistory().getJth()) ? "": client.getClientHistory().getJth().toString());
+            row.getCell(11).setCellValue(Objects.isNull(client.getClientHistory().getJtt()) ? "": client.getClientHistory().getJtt().toString());
+            row.getCell(12).setCellValue(Objects.isNull(client.getClientHistory().getJv()) ? "": client.getClientHistory().getJv().toString());
+            row.getCell(13).setCellValue(Objects.isNull(client.getClientHistory().getJk()) ? "": client.getClientHistory().getJk().toString());
+            row.getCell(14).setCellValue(Objects.isNull(client.getClientHistory().getKet()) ? "": client.getClientHistory().getKet().toString());
+            row.getCell(16).setCellValue(client.getClientHistory().getPreviousVisitDate());
+            row.getCell(17).setCellValue(client.getClientHistory().getNextVisitDate());
+            row.getCell(19).setCellValue(client.getClientHistory().getStampNumbers());
+
+        }
+        // Get the Cell at index 2 from the above row
+        Cell cell = row.getCell(10);
+
+        // Create the cell if it doesn't exist
+        if (cell == null)
+            cell = row.createCell(10);
+
+
+        cell = sheet.getRow(6).getCell(1);
+        // Update the cell's value
+        cell.setCellType(CellType.STRING);
+        cell.setCellValue("Updated Value");
+
+
+        // Write the output to the file
+        FileOutputStream fileOut = new FileOutputStream("template.xlsx");
+        workbook.write(out);
+        out.close();
+
+        // Closing the workbook
+        workbook.close();
+    }
+
+    private final Charset UTF8_CHARSET = Charset.forName("UTF-8");
+
+    String decodeUTF8(byte[] bytes) {
+        return new String(bytes, UTF8_CHARSET);
+    }
+
+    byte[] encodeUTF8(String string) {
+        return string.getBytes(UTF8_CHARSET);
     }
 }

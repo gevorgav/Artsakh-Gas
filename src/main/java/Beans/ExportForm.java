@@ -1,20 +1,23 @@
 package Beans;
 
+import Models.Client;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.springframework.core.io.ClassPathResource;
+import org.apache.poi.ss.usermodel.*;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.util.List;
 
 public class ExportForm {
+
+    private StreamedContent file;
+
+    public StreamedContent getFile(List<Client> selectedClients) throws FileNotFoundException {
+        InputStream stream = new FileInputStream("C:/Users/arsha/Desktop/Projects/Artsakh-Gas/src/main/resources/testFile2.xlsx");
+        file = new DefaultStreamedContent(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8", "downloaded_boromir.xlsx");
+        return file;
+    }
 
     public void export() throws IOException, InvalidFormatException {
 

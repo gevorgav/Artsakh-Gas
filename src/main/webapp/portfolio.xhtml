@@ -260,6 +260,9 @@
                                     <h:panelGroup id="yearlyPanelId">
                                         <h:panelGrid columns="1" cellpadding="5">
                                             <p:commandButton actionListener="#{exportForm.export}"></p:commandButton>
+                                            <p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s">
+                                                <p:fileDownload value="#{portfolioForm.file}" />
+                                            </p:commandButton>
                                             <p:commandButton value="Ավելացնել այցելություն" type="button" onclick="PF('historyDialog').show();">
                                                 <f:ajax  render=":searchFormId :clientHistoryForm"/>
                                             </p:commandButton>
