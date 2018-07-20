@@ -102,6 +102,7 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
         SqlParameterSource fileParameters = new BeanPropertySqlParameterSource(clientHistory);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int result = namedJdbc.update(sql, fileParameters, keyHolder);
+        clientHistory.setId(keyHolder.getKey().intValue());
         return keyHolder.getKey().intValue();
     }
 

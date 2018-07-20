@@ -2,6 +2,7 @@ package portfolio;
 
 import Core.CacheForm;
 import Core.Models.City;
+import Core.Models.Region;
 import Models.*;
 import dao.ClientDao;
 import dao.ClientHistoryDao;
@@ -21,6 +22,7 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by arshak.askaryan on 1/25/2017.
@@ -344,6 +346,7 @@ public class PortfolioForm {
         clientId = null;
         clientHistory = null;
         historyRegionId = null;
+        RequestContext.getCurrentInstance().update("clientTableId");
         RequestContext.getCurrentInstance().execute("PF('historyDialog').hide()");
     }
 
@@ -404,7 +407,7 @@ public class PortfolioForm {
 
     private void updateClientHistory(){
         for (Client client : clients){
-            if (Objects.equals(client.getClientHistory().getId(), clientHistory.getId())){
+            if (Objects.equals(client.getId(), clientHistory.getClientId()) && Objects.equals(client.getRegionId(), clientHistory.getRegionId())){
                 client.setClientHistory(clientHistory);
             }
         }
@@ -421,6 +424,7 @@ public class PortfolioForm {
     public void editHistory(){
         clientHistoryDao.update(clientHistory);
         editViolationCode(clientHistory.getId());
+        updateClientHistory();
     }
 
     private void editViolationCode(Integer historyId) {
@@ -469,7 +473,7 @@ public class PortfolioForm {
 
     public StreamedContent getFile() throws IOException, InvalidFormatException {
         export();
-        InputStream stream = new FileInputStream("C:/Users/arsha/Desktop/Projects/Artsakh-Gas/src/main/resources/testFile2.xlsx");
+        InputStream stream = new FileInputStream("C:/Users/arshak.askaryan/Desktop/GIT/Artsakh-Gas/src/main/resources/testFile2.xlsx");
         file = new DefaultStreamedContent(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8", "downloaded_boromir.xlsx");
         return file;
     }
@@ -483,7 +487,7 @@ public class PortfolioForm {
 
 
         String data = "Test data";
-        FileOutputStream out = new FileOutputStream("C:/Users/arsha/Desktop/Projects/Artsakh-Gas/src/main/resources/testFile2.xlsx");
+        FileOutputStream out = new FileOutputStream("C:/Users/arshak.askaryan/Desktop/GIT/Artsakh-Gas/src/main/resources/testFile2.xlsx");
 
         Workbook workbook = WorkbookFactory.create(new FileInputStream(file));
 
@@ -500,9 +504,10 @@ public class PortfolioForm {
             Client client = getSelectedClients().get(i);
             row = sheet.getRow(i*2+5);
             row.getCell(1).setCellValue(client.getId());
-            row.getCell(2).setCellValue(client.getStreetId());
+            row.getCell(2).setCellValue(getStreetMap().get(client.getStreetId()).getName() + " " + client.getHomeNumber() + " " + nullToEmptyString(client.getApartmentNumber()));
             row.getCell(3).setCellValue(client.getLastName()+" " +client.getFirstName() + " " + (Objects.isNull(client.getMiddleName()) ? "" : client.getMiddleName()));
             row.getCell(4).setCellValue(client.getPhoneNumber());
+            row.getCell(5).setCellValue(client.getClientHistory().getJTLog());
             row.getCell(6).setCellValue(Objects.isNull(client.getClientHistory().getGo1()) ? "": client.getClientHistory().getGo1().toString());
             row.getCell(7).setCellValue(Objects.isNull(client.getClientHistory().getGo2()) ? "": client.getClientHistory().getGo2().toString());
             row.getCell(8).setCellValue(Objects.isNull(client.getClientHistory().getGo3()) ? "": client.getClientHistory().getGo3().toString());
@@ -512,6 +517,7 @@ public class PortfolioForm {
             row.getCell(12).setCellValue(Objects.isNull(client.getClientHistory().getJv()) ? "": client.getClientHistory().getJv().toString());
             row.getCell(13).setCellValue(Objects.isNull(client.getClientHistory().getJk()) ? "": client.getClientHistory().getJk().toString());
             row.getCell(14).setCellValue(Objects.isNull(client.getClientHistory().getKet()) ? "": client.getClientHistory().getKet().toString());
+            row.getCell(15).setCellValue(nullToEmptyString("ս -" +client.getClientHistory().getJah()));
             row.getCell(16).setCellValue(client.getClientHistory().getPreviousVisitDate());
             row.getCell(17).setCellValue(client.getClientHistory().getNextVisitDate());
             row.getCell(19).setCellValue(client.getClientHistory().getStampNumbers());
@@ -548,5 +554,15 @@ public class PortfolioForm {
 
     byte[] encodeUTF8(String string) {
         return string.getBytes(UTF8_CHARSET);
+    }
+
+    public Map<Integer, Street> getStreetMap(){
+        return cache.getStreets().stream()
+                .collect(Collectors.toMap(street -> street.getId(), street -> street));
+    }
+
+
+    public String nullToEmptyString(Object o){
+        return Objects.isNull(o) ? "": o.toString();
     }
 }
