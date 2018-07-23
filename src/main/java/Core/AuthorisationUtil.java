@@ -30,7 +30,7 @@ public class AuthorisationUtil {
     }
 
     public void signout(){
-        Util.getBean("loginForm", LoginForm.class).getUser().setId(null);
+        Util.getBean("loginForm", LoginForm.class).setUser(new User());
         Util.getBean("portfolioForm", PortfolioForm.class).setClients(null);
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         try {

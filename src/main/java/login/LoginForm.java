@@ -52,7 +52,7 @@ public class LoginForm {
         if (this.getUsers()!= null) {
             for (User us : this.getUsers()) {
                 if (Objects.equals(us.getUsername(), user.getUsername()) && Objects.equals(us.getPassword(), user.getPassword())) {
-                    this.user.setId(us.getId());
+                    this.setUser(us);
                     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
                     try {
                         FacesContext.getCurrentInstance().getExternalContext().redirect(request.getContextPath() + "/portfolio.xhtml");

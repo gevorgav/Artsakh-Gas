@@ -13,7 +13,7 @@ public class User {
     private Integer id;
     private String username;
     private String password;
-    private long regionId;
+    private Integer regionId;
     private Role role;
 
 
@@ -41,11 +41,11 @@ public class User {
         this.password = password;
     }
 
-    public long getRegionId() {
+    public Integer getRegionId() {
         return regionId;
     }
 
-    public void setRegionId(long regionId) {
+    public void setRegionId(Integer regionId) {
         this.regionId = regionId;
     }
 

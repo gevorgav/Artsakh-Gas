@@ -48,6 +48,7 @@
 
     <bean id="portfolioForm" class="portfolio.PortfolioForm" scope="session">
         <property name="cache" ref="cache" />
+        <property name="loginForm" ref="loginForm"/>
     </bean>
 
     <!--HOTEL BEANS-->

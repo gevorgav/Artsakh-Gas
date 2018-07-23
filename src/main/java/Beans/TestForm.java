@@ -32,7 +32,7 @@ public class TestForm {
 
     public List<Client> getClients() {
         if(clients == null){
-            clients = this.clientDao.loadAll();
+            clients = this.clientDao.loadAll(null);
         }
         return clients;
     }

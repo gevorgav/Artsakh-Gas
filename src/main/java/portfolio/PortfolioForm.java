@@ -6,8 +6,11 @@ import Core.Models.Region;
 import Models.*;
 import dao.ClientDao;
 import dao.ClientHistoryDao;
+import dao.UserDao;
 import dao.ViolationClientHistoryDao;
 import dao.ViolationCodeDao;
+import login.LoginForm;
+import login.User;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.primefaces.context.RequestContext;
@@ -39,6 +42,8 @@ public class PortfolioForm {
     private List<Client> selectedClients;
     private CacheForm cache;
     private String[] paidStatus;
+    private LoginForm loginForm;
+
     public PortfolioForm() {
     }
 
@@ -56,7 +61,7 @@ public class PortfolioForm {
 
     public List<Client> getClients() {
         if (clients == null) {
-            this.clients = clientDao.loadAll();
+            this.clients = clientDao.loadAll(getLoginForm().getUser().getRole().equals(User.Role.ADMIN) ? null : getLoginForm().getUser().getRegionId());
         }
         return clients;
     }
@@ -517,7 +522,7 @@ public class PortfolioForm {
             row.getCell(12).setCellValue(Objects.isNull(client.getClientHistory().getJv()) ? "": client.getClientHistory().getJv().toString());
             row.getCell(13).setCellValue(Objects.isNull(client.getClientHistory().getJk()) ? "": client.getClientHistory().getJk().toString());
             row.getCell(14).setCellValue(Objects.isNull(client.getClientHistory().getKet()) ? "": client.getClientHistory().getKet().toString());
-            row.getCell(15).setCellValue(nullToEmptyString("ս -" +client.getClientHistory().getJah()));
+            row.getCell(15).setCellValue(nullToEmptyString("ս - " + nullToEmptyInteger(client.getClientHistory().getJah())));
             row.getCell(16).setCellValue(client.getClientHistory().getPreviousVisitDate());
             row.getCell(17).setCellValue(client.getClientHistory().getNextVisitDate());
             row.getCell(19).setCellValue(client.getClientHistory().getStampNumbers());
@@ -564,5 +569,18 @@ public class PortfolioForm {
 
     public String nullToEmptyString(Object o){
         return Objects.isNull(o) ? "": o.toString();
+    }
+
+    public Integer nullToEmptyInteger(Object o){
+        return Objects.isNull(o) ? 0: Integer.valueOf(o.toString());
+    }
+
+
+    public void setLoginForm(LoginForm loginForm) {
+        this.loginForm = loginForm;
+    }
+
+    public LoginForm getLoginForm() {
+        return loginForm;
     }
 }

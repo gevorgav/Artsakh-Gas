@@ -23,9 +23,15 @@ public class ClientDao extends Dao<Client>{
      *
      * @return List of Client
      */
-    public List<Client> loadAll() {
+    public List<Client> loadAll(Integer regionId) {
         try {
-            String sql = "SELECT *  FROM clients LEFT JOIN clientsHistory On clients.id = clientsHistory.clientId WHERE clientsHistory.id IN (SELECT MAX(clientsHistory.id) FROM clientsHistory GROUP BY clientsHistory.clientId)";
+            String sql = null;
+            if(Objects.isNull(regionId)){
+                sql = "SELECT *  FROM clients LEFT JOIN clientsHistory On clients.id = clientsHistory.clientId WHERE clientsHistory.id IN (SELECT MAX(clientsHistory.id) FROM clientsHistory GROUP BY clientsHistory.clientId)";
+            }else {
+                sql = "SELECT *  FROM clients LEFT JOIN clientsHistory On clients.id = clientsHistory.clientId WHERE clients.regionId = "+ regionId +" AND clientsHistory.id IN (SELECT MAX(clientsHistory.id) FROM clientsHistory GROUP BY clientsHistory.clientId)";
+            }
+
             return jdbcTemplate.query(sql, new ClientMapper(clientHistoryDao));
         } catch (EmptyResultDataAccessException e) {
             return Collections.emptyList();
@@ -42,6 +48,11 @@ public class ClientDao extends Dao<Client>{
         Objects.requireNonNull(id);
         String sql = "SELECT *  FROM clients WHERE clients.id = ?";
         return jdbcTemplate.queryForObject(sql, new ClientMapper(clientHistoryDao), id);
+    }
+
+    @Override
+    List<Client> loadAll() {
+        return Collections.emptyList();
     }
 
     @Override
