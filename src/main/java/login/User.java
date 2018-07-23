@@ -56,4 +56,8 @@ public class User {
     public void setRole(Role role) {
         this.role = role;
     }
+
+    public boolean isAdmin(){
+        return this.role.equals(Role.ADMIN);
+    }
 }

@@ -47,6 +47,11 @@ public class PortfolioForm {
     public PortfolioForm() {
     }
 
+    public void initClientHistory(){
+        if(!getLoginForm().getUser().getRole().equals(User.Role.ADMIN)){
+            this.historyRegionId = getLoginForm().getUser().getRegionId();
+        }
+    }
     @Autowired
     private ClientDao clientDao;
 
@@ -477,22 +482,26 @@ public class PortfolioForm {
     private StreamedContent file;
 
     public StreamedContent getFile() throws IOException, InvalidFormatException {
+        if(getSelectedClients().isEmpty() || getSelectedClients().size() >15){
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Սխալ", "Տվյալները սխալ են մուտքագրված"));
+            return null;
+        }
         export();
-        InputStream stream = new FileInputStream("C:/Users/arshak.askaryan/Desktop/GIT/Artsakh-Gas/src/main/resources/testFile2.xlsx");
+        InputStream stream = new FileInputStream("C:/Users/arsha/Desktop/Projects/Artsakh-Gas/src/main/resources/testFile2.xlsx");
         file = new DefaultStreamedContent(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8", "downloaded_boromir.xlsx");
         return file;
     }
 
     public void export() throws IOException, InvalidFormatException {
-
-
-
+        if(getSelectedClients().isEmpty() || getSelectedClients().size() >15){
+            return;
+        }
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource("template.xlsx").getFile());
 
 
-        String data = "Test data";
-        FileOutputStream out = new FileOutputStream("C:/Users/arshak.askaryan/Desktop/GIT/Artsakh-Gas/src/main/resources/testFile2.xlsx");
+        FileOutputStream out = new FileOutputStream("C:/Users/arsha/Desktop/Projects/Artsakh-Gas/src/main/resources/testFile2.xlsx");
 
         Workbook workbook = WorkbookFactory.create(new FileInputStream(file));
 
@@ -500,47 +509,58 @@ public class PortfolioForm {
         Sheet sheet = workbook.getSheetAt(0);
 
         // Get Row at index 1
-        Row row = sheet.getRow(3);
-//        for(int i=4; i<35;){
-//            row = sheet.getRow(i);
-//        }
+        Row row = null;
 
         for(int i=0; i< getSelectedClients().size();i++){
             Client client = getSelectedClients().get(i);
-            row = sheet.getRow(i*2+5);
-            row.getCell(1).setCellValue(client.getId());
-            row.getCell(2).setCellValue(getStreetMap().get(client.getStreetId()).getName() + " " + client.getHomeNumber() + " " + nullToEmptyString(client.getApartmentNumber()));
-            row.getCell(3).setCellValue(client.getLastName()+" " +client.getFirstName() + " " + (Objects.isNull(client.getMiddleName()) ? "" : client.getMiddleName()));
-            row.getCell(4).setCellValue(client.getPhoneNumber());
-            row.getCell(5).setCellValue(client.getClientHistory().getJTLog());
-            row.getCell(6).setCellValue(Objects.isNull(client.getClientHistory().getGo1()) ? "": client.getClientHistory().getGo1().toString());
-            row.getCell(7).setCellValue(Objects.isNull(client.getClientHistory().getGo2()) ? "": client.getClientHistory().getGo2().toString());
-            row.getCell(8).setCellValue(Objects.isNull(client.getClientHistory().getGo3()) ? "": client.getClientHistory().getGo3().toString());
-            row.getCell(9).setCellValue(Objects.isNull(client.getClientHistory().getGo4()) ? "": client.getClientHistory().getGo4().toString());
-            row.getCell(10).setCellValue(Objects.isNull(client.getClientHistory().getJth()) ? "": client.getClientHistory().getJth().toString());
-            row.getCell(11).setCellValue(Objects.isNull(client.getClientHistory().getJtt()) ? "": client.getClientHistory().getJtt().toString());
-            row.getCell(12).setCellValue(Objects.isNull(client.getClientHistory().getJv()) ? "": client.getClientHistory().getJv().toString());
-            row.getCell(13).setCellValue(Objects.isNull(client.getClientHistory().getJk()) ? "": client.getClientHistory().getJk().toString());
-            row.getCell(14).setCellValue(Objects.isNull(client.getClientHistory().getKet()) ? "": client.getClientHistory().getKet().toString());
-            row.getCell(15).setCellValue(nullToEmptyString("ս - " + nullToEmptyInteger(client.getClientHistory().getJah())));
-            row.getCell(16).setCellValue(client.getClientHistory().getPreviousVisitDate());
-            row.getCell(17).setCellValue(client.getClientHistory().getNextVisitDate());
-            row.getCell(19).setCellValue(client.getClientHistory().getStampNumbers());
+            if(client != null ){
+                List<ViolationCode> violationCodes = loadViolationClientHistory(client.getClientHistory().getId());
+                row = sheet.getRow(i*2+5);
+                row.getCell(1).setCellValue(nullToEmptyString(client.getId(), false));
+                row.getCell(2).setCellValue((Objects.nonNull(getStreetMap().get(client.getStreetId())) ? getStreetMap().get(client.getStreetId()).getName() : "") + " " + nullToEmptyString(client.getHomeNumber(), false) + " " + nullToEmptyString(client.getApartmentNumber(), false));
+                row.getCell(3).setCellValue(client.getLastName()+" " +client.getFirstName() + " " + (Objects.isNull(client.getMiddleName()) ? "" : client.getMiddleName()));
+                row.getCell(4).setCellValue(client.getPhoneNumber());
+                row.getCell(5).setCellValue(client.getClientHistory().getJTLog());
+                row.getCell(6).setCellValue(nullToEmptyString(client.getClientHistory().getGo1(), false));
+                row.getCell(7).setCellValue(nullToEmptyString(client.getClientHistory().getGo2(), false));
+                row.getCell(8).setCellValue(nullToEmptyString(client.getClientHistory().getGo3(), false));
+                row.getCell(9).setCellValue(nullToEmptyString(client.getClientHistory().getGo4(), false));
+                row.getCell(10).setCellValue(nullToEmptyString(client.getClientHistory().getJth(), false));
+                row.getCell(11).setCellValue(nullToEmptyString(client.getClientHistory().getJtt(), false));
+                row.getCell(12).setCellValue(nullToEmptyString(client.getClientHistory().getJv(), false));
+                row.getCell(13).setCellValue(nullToEmptyString(client.getClientHistory().getJk(), false));
+                row.getCell(14).setCellValue(nullToEmptyString(client.getClientHistory().getKet(), false));
+                row.getCell(15).setCellValue(nullToEmptyString("ս - " + nullToEmptyInteger(client.getClientHistory().getJah()), false));
+                row.getCell(16).setCellValue(client.getClientHistory().getPreviousVisitDate());
+                row.getCell(17).setCellValue(client.getClientHistory().getNextVisitDate());
+                StringBuilder listString = new StringBuilder();
+                if (!violationCodes.isEmpty()) {
+                    for (ViolationCode s : violationCodes) {
+                        listString.append(s.getName()).append(", ");
+                    }
+                    listString.deleteCharAt(listString.length() - 2);
+                }
+                row.getCell(18).setCellValue(listString.toString());
+                row.getCell(19).setCellValue(client.getClientHistory().getStampNumbers());
+                row.getCell(20).setCellValue(nullToEmptyString(client.getClientHistory().getRisk(), false));
+
+                //Second row
+                row = sheet.getRow(i*2+6);
+                row.getCell(1).setCellValue(nullToEmptyString(client.getTypeNumber(), false));
+                row.getCell(2).setCellValue(nullToEmptyString(client.getCounterNumber(), false));
+                row.getCell(6).setCellValue(nullToEmptyString(client.getClientHistory().getBacakaGo1(), true));
+                row.getCell(7).setCellValue(nullToEmptyString(client.getClientHistory().getBacakaGo2(), true));
+                row.getCell(8).setCellValue(nullToEmptyString(client.getClientHistory().getBacakaGo3(), true));
+                row.getCell(9).setCellValue(nullToEmptyString(client.getClientHistory().getBacakaGo4(), true));
+                row.getCell(10).setCellValue(nullToEmptyString(client.getClientHistory().getBacakaJth(), true));
+                row.getCell(11).setCellValue(nullToEmptyString(client.getClientHistory().getBacakaJtt(), true));
+                row.getCell(12).setCellValue(nullToEmptyString(client.getClientHistory().getBacakaJv(), true));
+                row.getCell(13).setCellValue(nullToEmptyString(client.getClientHistory().getBacakaJk(), true));
+                row.getCell(15).setCellValue("փ - " + nullToEmptyInteger(client.getClientHistory().getJah()));
+                row.getCell(18).setCellValue(client.getClientHistory().getViolationActNumber());
+            }
 
         }
-        // Get the Cell at index 2 from the above row
-        Cell cell = row.getCell(10);
-
-        // Create the cell if it doesn't exist
-        if (cell == null)
-            cell = row.createCell(10);
-
-
-        cell = sheet.getRow(6).getCell(1);
-        // Update the cell's value
-        cell.setCellType(CellType.STRING);
-        cell.setCellValue("Updated Value");
-
 
         // Write the output to the file
         FileOutputStream fileOut = new FileOutputStream("template.xlsx");
@@ -567,8 +587,8 @@ public class PortfolioForm {
     }
 
 
-    public String nullToEmptyString(Object o){
-        return Objects.isNull(o) ? "": o.toString();
+    public String nullToEmptyString(Object o, boolean isAbsent){
+        return Objects.isNull(o) ? "": isAbsent ? "բ" + o.toString() :o.toString();
     }
 
     public Integer nullToEmptyInteger(Object o){
@@ -582,5 +602,9 @@ public class PortfolioForm {
 
     public LoginForm getLoginForm() {
         return loginForm;
+    }
+
+    public List<ViolationCode> loadViolationClientHistory(Integer clientHistoryId){
+        return violationCodeDao.loadByClientId(clientHistoryId);
     }
 }

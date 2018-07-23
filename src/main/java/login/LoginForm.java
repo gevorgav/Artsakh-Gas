@@ -63,7 +63,7 @@ public class LoginForm {
             }
         }
         FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Տվյալները սխալ են մուտքագրված"));
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Սխալ", "Տվյալները սխալ են մուտքագրված"));
 
     }
 

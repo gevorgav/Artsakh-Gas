@@ -259,11 +259,7 @@
                                 <div class="box-body">
                                     <h:panelGroup id="yearlyPanelId">
                                         <h:panelGrid columns="1" cellpadding="5">
-                                            <p:commandButton actionListener="#{exportForm.export}"></p:commandButton>
-                                            <p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s">
-                                                <p:fileDownload value="#{portfolioForm.file}" />
-                                            </p:commandButton>
-                                            <p:commandButton value="Ավելացնել այցելություն" type="button" onclick="PF('historyDialog').show();">
+                                            <p:commandButton value="Ավելացնել այցելություն"  actionListener="#{portfolioForm.initClientHistory}" type="button" onclick="PF('historyDialog').show();">
                                                 <f:ajax  render=":searchFormId :clientHistoryForm"/>
                                             </p:commandButton>
                                         </h:panelGrid>
@@ -281,20 +277,10 @@
                                                          filteredValue="#{portfolioForm.filteredClients}"
                                                          paginator="true"
                                                          rows="10"
-                                                         selection="#{portfolioForm.selectedClients}"
                                                          rowKey="#{client.id}"
                                                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                                                          rowsPerPageTemplate="10,30,50"
                                                          style="margin-bottom:0">
-
-                                                <f:facet name="header">
-                                                    <p:outputPanel>
-                                                        <h:outputText value="Search all fields:" />
-                                                        <p:inputText id="globalFilter" onkeyup="PF('clientTable').filter()" style="width:150px" placeholder="Enter keyword"/>
-                                                    </p:outputPanel>
-                                                </f:facet>
-
-                                                <p:column selectionMode="multiple" style="width:35px;text-align:center"/>
 
                                                 <p:column filterBy="#{client.id}" headerText="ՀՀ" footerText="contains" filterMatchMode="contains">
                                                     <h:outputText value="#{client.id}" />

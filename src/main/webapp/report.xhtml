@@ -258,6 +258,12 @@
                             <div class="box form-border">
                                 <div class="box-body">
                                     <h:panelGroup id="yearlyPanelId">
+
+                                        <h:panelGrid columns="1" cellpadding="5">
+                                            <p:commandButton value="Ստեղծել Գրաֆիկը" ajax="false" icon="ui-icon-arrowthick-1-s" update="@form">
+                                                <p:fileDownload value="#{portfolioForm.file}" />
+                                            </p:commandButton>
+                                        </h:panelGrid>
                                         <div class="clear"></div>
                                         <h:panelGroup layout="block" class="de-table-block" id="table2">
                                             <p:dataTable var="client"
