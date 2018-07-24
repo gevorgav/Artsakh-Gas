@@ -18,6 +18,7 @@ public class ClientHistoryMapper  implements RowMapper<ClientHistory> {
     public ClientHistory mapRow(ResultSet rs, int rowNum) throws SQLException {
         ClientHistory clientHistory = new ClientHistory();
         clientHistory.setId(rs.getInt("clientsHistory.id"));
+        clientHistory.setSemiAnnualId(rs.getObject("semiAnnualId") != null ? rs.getInt("semiAnnualId") : null);
         clientHistory.setClientId(rs.getString("clientId"));
         clientHistory.setViolationActNumber(rs.getString("violationActNumber"));
         clientHistory.setVisitType(rs.getObject("visitType") != null ? rs.getInt("visitType") : null);
@@ -48,12 +49,10 @@ public class ClientHistoryMapper  implements RowMapper<ClientHistory> {
         clientHistory.setBacakaJth(rs.getObject("bacakaJth") != null ? rs.getInt("bacakaJth") : null);
         clientHistory.setBacakaJtt(rs.getObject("bacakaJtt") != null ? rs.getInt("bacakaJtt") : null);
         clientHistory.setBacakaKet(rs.getObject("bacakaKet") != null ? rs.getInt("bacakaKet") : null);
-        clientHistory.setBacakaJah(rs.getObject("bacakaJah") != null ? rs.getInt("bacakaJah") : null);
         clientHistory.setBacakaJk(rs.getObject("bacakaJk") != null ? rs.getInt("bacakaJk") : null);
         clientHistory.setBacakaJv(rs.getObject("bacakaJv") != null ? rs.getInt("bacakaJv") : null);
-        clientHistory.setBacakaPakan(rs.getObject("bacakaPakan") != null ? rs.getInt("bacakaPakan") : null);
         clientHistory.setJTLog(rs.getString("JTLog"));
-        clientHistory.setRisk(rs.getObject("risk") != null ? rs.getInt("risk") : null);
+        clientHistory.setRisk(rs.getString("risk"));
         clientHistory.setMasterId(rs.getObject("masterId") != null ? rs.getInt("masterId") : null);
         clientHistory.setRegionId(rs.getObject("regionId") != null ? rs.getInt("regionId") : null);
         clientHistory.setPaid(rs.getBoolean("isPaid"));

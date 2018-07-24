@@ -81,24 +81,24 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
     public boolean insert(ClientHistory clientHistory) {
         Objects.requireNonNull(clientHistory);
         String sql = "INSERT INTO clientsHistory(clientId, violationActNumber, visitType, visitDescription, updateDate, previousVisitDate, nextVisitDate, stampNumbers, go1, go2, go3,go4,go5,go6," +
-                " bacakaGo1, bacakaGo2, bacakaGo3,bacakaGo4,bacakaGo5,bacakaGo6, jth, jtt, ket, jah, jk, jv,pakan ,bacakaJth, bacakaJtt, bacakaKet, bacakaJah, bacakaJk,bacakaPakan, bacakaJv, JTLog, risk, masterId, regionId)\n" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                " bacakaGo1, bacakaGo2, bacakaGo3,bacakaGo4,bacakaGo5,bacakaGo6, jth, jtt, ket, jah, jk, jv,pakan ,bacakaJth, bacakaJtt, bacakaKet, bacakaJk, bacakaJv, JTLog, risk, masterId, regionId, semiAnnualId)\n" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         int result = jdbcTemplate.update(sql, clientHistory.getClientId(), clientHistory.getViolationActNumber(), clientHistory.getVisitType(), clientHistory.getVisitDescription(), new Date(),
                 clientHistory.getPreviousVisitDate(), clientHistory.getNextVisitDate(), clientHistory.getStampNumbers(),
                 clientHistory.getGo1(),clientHistory.getGo2(),clientHistory.getGo3(),clientHistory.getGo4(),clientHistory.getGo5(),clientHistory.getGo6(),
                 clientHistory.getBacakaGo1(),clientHistory.getBacakaGo2(),clientHistory.getBacakaGo3(),clientHistory.getBacakaGo4(),clientHistory.getBacakaGo5(),clientHistory.getBacakaGo6(),
                 clientHistory.getJth(), clientHistory.getJtt(), clientHistory.getKet(), clientHistory.getJah(), clientHistory.getJk(), clientHistory.getJv(),clientHistory.getPakan(),
-                clientHistory.getBacakaJth(), clientHistory.getBacakaJtt(), clientHistory.getBacakaKet(), clientHistory.getBacakaJah(), clientHistory.getBacakaJk(), clientHistory.getBacakaJv(),clientHistory.getBacakaPakan(),
-                clientHistory.getJTLog(), clientHistory.getRisk(), clientHistory.getMasterId(), clientHistory.getRegionId());
+                clientHistory.getBacakaJth(), clientHistory.getBacakaJtt(), clientHistory.getBacakaKet(), clientHistory.getBacakaJk(), clientHistory.getBacakaJv(),
+                clientHistory.getJTLog(), clientHistory.getRisk(), clientHistory.getMasterId(), clientHistory.getRegionId(), clientHistory.getSemiAnnualId());
         return result == 1;
     }
 
     public Integer insertAndReturnId(ClientHistory clientHistory) {
         Objects.requireNonNull(clientHistory);
         String sql = "INSERT INTO clientsHistory(clientId, violationActNumber, visitType, visitDescription, updateDate, previousVisitDate, nextVisitDate, stampNumbers, go1, go2, go3,go4,go5,go6," +
-                " bacakaGo1, bacakaGo2, bacakaGo3,bacakaGo4,bacakaGo5,bacakaGo6, jth, jtt, ket, jah, jk, jv,pakan ,bacakaJth, bacakaJtt, bacakaKet, bacakaJah, bacakaJk,bacakaPakan, bacakaJv, JTLog, risk, masterId, regionId)\n" +
+                " bacakaGo1, bacakaGo2, bacakaGo3,bacakaGo4,bacakaGo5,bacakaGo6, jth, jtt, ket, jah, jk, jv,pakan ,bacakaJth, bacakaJtt, bacakaKet, bacakaJk, bacakaJv, JTLog, risk, masterId, regionId, semiAnnualId)\n" +
                 "VALUES (:clientId, :violationActNumber, :visitType, :visitDescription, :updateDate, :previousVisitDate, :nextVisitDate, :stampNumbers, :go1, :go2, :go3,:go4,:go5,:go6, :bacakaGo1," +
-                ":bacakaGo2, :bacakaGo3,:bacakaGo4,:bacakaGo5,:bacakaGo6, :jth, :jtt, :ket, :jah, :jk, :jv,:pakan ,:bacakaJth, :bacakaJtt, :bacakaKet, :bacakaJah, :bacakaJk,:bacakaPakan, :bacakaJv,:JTLog, :risk, :masterId, :regionId)";
+                ":bacakaGo2, :bacakaGo3,:bacakaGo4,:bacakaGo5,:bacakaGo6, :jth, :jtt, :ket, :jah, :jk, :jv,:pakan ,:bacakaJth, :bacakaJtt, :bacakaKet, :bacakaJk, :bacakaJv,:JTLog, :risk, :masterId, :regionId, :semiAnnualId)";
         SqlParameterSource fileParameters = new BeanPropertySqlParameterSource(clientHistory);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int result = namedJdbc.update(sql, fileParameters, keyHolder);
@@ -115,6 +115,7 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
         namedParameters.put("updateDate", new Date());
         namedParameters.put("previousVisitDate", clientHistory.getPreviousVisitDate());
         namedParameters.put("nextVisitDate", clientHistory.getNextVisitDate());
+        namedParameters.put("semiAnnualId", clientHistory.getSemiAnnualId());
         namedParameters.put("stampNumbers", clientHistory.getStampNumbers());
         namedParameters.put("visitType", clientHistory.getVisitType());
         namedParameters.put("visitDescription", clientHistory.getVisitDescription());
@@ -140,9 +141,7 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
         namedParameters.put("bacakaJth", clientHistory.getBacakaJth());
         namedParameters.put("bacakaJtt", clientHistory.getBacakaJtt());
         namedParameters.put("bacakaKet", clientHistory.getBacakaKet());
-        namedParameters.put("bacakaJah", clientHistory.getBacakaJah());
         namedParameters.put("bacakaJk", clientHistory.getBacakaJk());
-        namedParameters.put("bacakaPakan", clientHistory.getBacakaPakan());
         namedParameters.put("bacakaJv", clientHistory.getBacakaJv());
         namedParameters.put("JTLog", clientHistory.getJTLog());
         namedParameters.put("risk", clientHistory.getRisk());
@@ -154,8 +153,8 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
                 "stampNumbers = :stampNumbers, visitType = :visitType,visitDescription = :visitDescription,go1 = :go1, go2 = :go2, go3 = :go3,go4 = :go4,go5 = :go5,go6 = :go6," +
                 " bacakaGo1 = :bacakaGo1, bacakaGo2 = :bacakaGo2, bacakaGo3 = :bacakaGo3,bacakaGo4 = :bacakaGo4,bacakaGo5 = :bacakaGo5, " +
                 "bacakaGo6 = :bacakaGo6, jth = :jth, jtt = :jtt, ket = :ket, jah = :jah, jk = :jk, jv = :jv,pakan = :pakan ," +
-                "bacakaJth = :bacakaJth, bacakaJtt = :bacakaJtt, bacakaKet = :bacakaKet, bacakaJah = :bacakaJah, bacakaJk = :bacakaJk," +
-                "bacakaPakan =:bacakaPakan, bacakaJv = :bacakaJv, JTLog = :JTLog, risk = :risk, masterId = :masterId\n" +
+                "bacakaJth = :bacakaJth, bacakaJtt = :bacakaJtt, bacakaKet = :bacakaKet, bacakaJk = :bacakaJk," +
+                "bacakaJv = :bacakaJv, JTLog = :JTLog, risk = :risk, masterId = :masterId\n, semiAnnualId = :semiAnnualId " +
                 "WHERE id = :id AND regionId = :regionId";
 
         int updateCount = namedJdbc.update(sql, namedParameters);

@@ -72,21 +72,19 @@ public class ClientHistory {
 
     private Integer jah;
 
-    private Integer bacakaJah;
-
     private Integer pakan;
-
-    private Integer bacakaPakan;
 
     private String JTLog;
 
-    private Integer risk;
+    private String risk;
 
     private Integer masterId;
 
     private boolean isPaid;
 
     private Integer regionId;
+
+    private Integer semiAnnualId;
 
     public ClientHistory() {
     }
@@ -347,14 +345,6 @@ public class ClientHistory {
         this.jah = jah;
     }
 
-    public Integer getBacakaJah() {
-        return bacakaJah;
-    }
-
-    public void setBacakaJah(Integer bacakaJah) {
-        this.bacakaJah = bacakaJah;
-    }
-
     public Integer getPakan() {
         return pakan;
     }
@@ -363,19 +353,11 @@ public class ClientHistory {
         this.pakan = pakan;
     }
 
-    public Integer getBacakaPakan() {
-        return bacakaPakan;
-    }
-
-    public void setBacakaPakan(Integer bacakaPakan) {
-        this.bacakaPakan = bacakaPakan;
-    }
-
-    public Integer getRisk() {
+    public String getRisk() {
         return risk;
     }
 
-    public void setRisk(Integer risk) {
+    public void setRisk(String risk) {
         this.risk = risk;
     }
 
@@ -409,6 +391,14 @@ public class ClientHistory {
 
     public void setJTLog(String JTLog) {
         this.JTLog = JTLog;
+    }
+
+    public Integer getSemiAnnualId() {
+        return semiAnnualId;
+    }
+
+    public void setSemiAnnualId(Integer semiAnnualId) {
+        this.semiAnnualId = semiAnnualId;
     }
 
     @Override
@@ -449,9 +439,7 @@ public class ClientHistory {
                 Objects.equals(jv, that.jv) &&
                 Objects.equals(bacakaJv, that.bacakaJv) &&
                 Objects.equals(jah, that.jah) &&
-                Objects.equals(bacakaJah, that.bacakaJah) &&
                 Objects.equals(pakan, that.pakan) &&
-                Objects.equals(bacakaPakan, that.bacakaPakan) &&
                 Objects.equals(risk, that.risk) &&
                 Objects.equals(masterId, that.masterId);
     }
@@ -459,6 +447,6 @@ public class ClientHistory {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, clientId, violationActNumber, visitType, visitDescription, updateDate, previousVisitDate, nextVisitDate, stampNumbers, go1, bacakaGo1, go2, bacakaGo2, go3, bacakaGo3, go4, bacakaGo4, go5, bacakaGo5, go6, bacakaGo6, jth, bacakaJth, jtt, bacakaJtt, ket, bacakaKet, jk, bacakaJk, jv, bacakaJv, jah, bacakaJah, pakan, bacakaPakan, risk, masterId, isPaid);
+        return Objects.hash(id, clientId, violationActNumber, visitType, visitDescription, updateDate, previousVisitDate, nextVisitDate, stampNumbers, go1, bacakaGo1, go2, bacakaGo2, go3, bacakaGo3, go4, bacakaGo4, go5, bacakaGo5, go6, bacakaGo6, jth, bacakaJth, jtt, bacakaJtt, ket, bacakaKet, jk, bacakaJk, jv, bacakaJv, jah, pakan, risk, masterId, isPaid);
     }
 }

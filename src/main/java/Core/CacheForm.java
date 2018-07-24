@@ -46,6 +46,9 @@ public class CacheForm {
     public GRSDao grsDao;
 
     @Autowired
+    public SemiAnnualDao semiAnnualDao;
+
+    @Autowired
     public ViolationCodeDao violationCodeDao;
 
     @Autowired
@@ -65,6 +68,7 @@ public class CacheForm {
     private List<GRS> grss;
     private List<VisitType> visitTypes;
     private List<PriceList> priceLists;
+    private List<SemiAnnual> semiAnnuals;
 
     public List<VisitType> getVisitTypes() {
         if (this.visitTypes == null){
@@ -75,6 +79,13 @@ public class CacheForm {
         }
 
         return visitTypes;
+    }
+
+    public List<SemiAnnual> getSemiAnnuals() {
+        if(this.semiAnnuals == null){
+            this.semiAnnuals = semiAnnualDao.loadAll();
+        }
+        return semiAnnuals;
     }
 
     public List<City> getCities() {

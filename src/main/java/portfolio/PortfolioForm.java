@@ -2,17 +2,18 @@ package portfolio;
 
 import Core.CacheForm;
 import Core.Models.City;
-import Core.Models.Region;
 import Models.*;
 import dao.ClientDao;
 import dao.ClientHistoryDao;
-import dao.UserDao;
 import dao.ViolationClientHistoryDao;
 import dao.ViolationCodeDao;
 import login.LoginForm;
 import login.User;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -306,6 +307,8 @@ public class PortfolioForm {
 
     private Boolean jtlog;
 
+    private Boolean risk;
+
     private Integer historyRegionId;
 
     public Integer getHistoryRegionId() {
@@ -326,6 +329,19 @@ public class PortfolioForm {
             clientHistory.setJTLog("+");
         } else {
             clientHistory.setJTLog("-");
+        }
+    }
+
+    public Boolean getRisk() {
+        return Objects.equals(clientHistory.getRisk(),"+");
+    }
+
+    public void setRisk(Boolean risk) {
+        this.risk = risk;
+        if (risk) {
+            clientHistory.setRisk("+");
+        } else {
+            clientHistory.setRisk("-");
         }
     }
 
