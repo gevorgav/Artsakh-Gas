@@ -1,0 +1,119 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog dynamic="true" header="Edit Filter" id="filterDialogId" modal="true" onShow="showDialog()" onHide="hideDialog()"
+              resizable="false" widgetVar="filterDialog" width="70%" height="100%" style="z-index: 100" maximizable="true">
+        <p:ajax event="close" listener="#{portfolioForm.closeFilterDialog}" update="filterEditFormId:resetId" resetValues="true"/>
+        <h:form id="filterEditFormId">
+            <h:panelGroup id="resetId" layout="block">
+                <div class="row">
+                    <div class="col-sm-4 col-md-4">
+                        <p:outputLabel for="filterRegionId" value="Շրջան"/>
+                        <p:selectOneMenu id="filterRegionId" value="#{portfolioForm.filter.regionId}" styleClass="form-control input-c" >
+                            <f:selectItem id="filterRegionSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                            <f:selectItems id="filterRegionsId"
+                                           itemLabel="#{region.name}"
+                                           itemValue="#{region.id}"
+                                           value="#{portfolioForm.cache.regions}" var="region"/>
+                            <p:ajax event="change" process="@this" update="@this filterCityPanelId filterStreetPanelId location2 filterAshtId" listener="#{portfolioForm.resetFilteredCity}"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <h:panelGroup class="col-sm-4 col-md-4" id="filterCityPanelId">
+                        <p:outputLabel for="filterCityId" value="Քաղաք/Գյուղ"/>
+                        <p:selectOneMenu id="filterCityId" value="#{portfolioForm.filter.cityId}" styleClass="form-control input-c" >
+                            <f:selectItem id="filterCitySelectOneId" itemLabel="Ընտրիր մեկը"/>
+                            <f:selectItems id="filterCitysId"
+                                           itemLabel="#{city.name}"
+                                           itemValue="#{city.id}"
+                                           value="#{portfolioForm.citiesByRegionId(portfolioForm.filter.regionId)}" var="city"/>
+                            <p:ajax event="change" process="@this" update="@this filterStreetId filterSectionId filterSubSectionId"
+                                    listener="#{portfolioForm.resetFilteredStreet}"/>
+                        </p:selectOneMenu>
+                    </h:panelGroup>
+                    <h:panelGroup class="col-sm-4 col-md-4" id="filterStreetPanelId">
+                        <p:outputLabel for="filterStreetId" value="Փողոց"/>
+                        <p:selectOneMenu id="filterStreetId" value="#{portfolioForm.filter.streetId}"
+                                         styleClass="form-control input-c">
+                            <f:selectItem id="filterStreetSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                            <f:selectItems id="filterStreetsId"
+                                           itemLabel="#{street.name}"
+                                           itemValue="#{street.id}"
+                                           value="#{portfolioForm.streetsByCityId(portfolioForm.filter.cityId)}"
+                                           var="street"/>
+                        </p:selectOneMenu>
+                    </h:panelGroup>
+                </div>
+                <h:panelGroup class="row" id="location2" layout="block">
+                    <h:panelGroup class="col-sm-4 col-md-4" id="ashtPanelId">
+                        <p:outputLabel for="filterAshtId" value="ԱՇՏ"/>
+                        <p:selectOneMenu id="filterAshtId" value="#{portfolioForm.filter.ashtId}" styleClass="form-control input-c">
+                            <f:selectItem id="filterAshtSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                            <f:selectItems id="filterAshtsId"
+                                           itemLabel="#{asht.name}"
+                                           itemValue="#{asht.id}"
+                                           value="#{portfolioForm.ashtsByRegionId(portfolioForm.filter.regionId)}" var="asht"/>
+                        </p:selectOneMenu>
+                    </h:panelGroup>
+                    <div class="col-sm-4 col-md-4">
+                        <p:outputLabel for="filterGrpId" value="ԳԿԿ"/>
+                        <p:selectOneMenu id="filterGrpId" value="#{portfolioForm.filter.grpId}"
+                                         styleClass="form-control input-c">
+                            <f:selectItem id="filterGrpSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                            <f:selectItems id="filterGrpsId"
+                                           itemLabel="#{grp.name}"
+                                           itemValue="#{grp.id}"
+                                           value="#{portfolioForm.cache.grps}"
+                                           var="grp"/>
+                        </p:selectOneMenu>
+                    </div>
+                </h:panelGroup>
+                <div class="row">
+                    <div class="col-sm-4 col-md-4">
+                        <p:outputLabel for="filterSectionId" value="Մաս"/>
+                        <p:selectOneMenu id="filterSectionId" value="#{portfolioForm.filter.sectionId}"
+                                         styleClass="form-control input-c">
+                            <f:selectItem id="filterSectionSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                            <f:selectItems id="filterSectionsId"
+                                           itemLabel="#{section.name}"
+                                           itemValue="#{section.id}"
+                                           value="#{portfolioForm.sectionsByCityId(portfolioForm.filter.cityId)}"
+                                           var="section"/>
+                            <p:ajax event="change" process="@this" update="@this filterSubSectionId"
+                                    listener="#{portfolioForm.resetFilteredSubSection}"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <p:outputLabel for="filterSubSectionId" value="Ենթատեղամաս"/>
+                        <p:selectOneMenu id="filterSubSectionId" value="#{portfolioForm.filter.subSectionId}"
+                                         styleClass="form-control input-c">
+                            <f:selectItem id="filterSubSectionSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                            <f:selectItems id="filterSubSectionsId"
+                                           itemLabel="#{subSection.name}"
+                                           itemValue="#{subSection.id}"
+                                           value="#{portfolioForm.subSectionsBySectionId(portfolioForm.filter.sectionId)}"
+                                           var="subSection"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <!--<div class="col-sm-4 col-md-4">
+                        <p:outputLabel for="violationCodeId" value="Խախտման կոդ"/><br/>
+                        <p:selectCheckboxMenu id="violationCodeId" value="#{portfolioForm.filter.violationCodes}"
+                                              label="Cities" multiple="true"
+                                              filter="true" filterMatchMode="startsWith"
+                                              panelStyle="width:250px">
+                            <f:selectItems value="#{portfolioForm.cache.violationCodes}"/>
+                        </p:selectCheckboxMenu>
+                    </div>-->
+                </div>
+            </h:panelGroup>
+            <div class="modal-footer m-t-3">
+                <p:commandButton value="Պահպանել" styleClass="dark"  actionListener="#{portfolioForm.addFilter}" update="filterEditFormId:resetId" oncomplete="PF('reportClientTable').filter()"/>
+                <p:commandButton id="cancelClientDialogId"  value="Չեղարկել" styleClass="dark" actionListener="#{portfolioForm.cancelFilterDialog}" update="filterEditFormId:resetId" process="@this">
+                    <p:resetInput target="filterEditFormId:resetId" />
+                </p:commandButton>
+            </div>
+        </h:form>
+    </p:dialog>
+</ui:composition>

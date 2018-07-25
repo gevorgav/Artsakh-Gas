@@ -7,9 +7,7 @@ import dao.*;
 import login.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class CacheForm {
     @Autowired
@@ -69,6 +67,7 @@ public class CacheForm {
     private List<VisitType> visitTypes;
     private List<PriceList> priceLists;
     private List<SemiAnnual> semiAnnuals;
+    private Map<Integer, List<ViolationCode>> violationCodesByClientHistory;
 
     public List<VisitType> getVisitTypes() {
         if (this.visitTypes == null){
@@ -220,6 +219,16 @@ public class CacheForm {
             });
         }
         return this.priceLists;
+    }
+
+    public List<ViolationCode> getViolationCodesByClientHistory(Integer clientHistoryId) {
+        if(violationCodesByClientHistory == null) {
+            violationCodesByClientHistory = new HashMap<>();
+        }
+        if(violationCodesByClientHistory.get(clientHistoryId) == null){
+            violationCodesByClientHistory.put(clientHistoryId, violationCodeDao.loadByClientId(clientHistoryId));
+        }
+        return violationCodesByClientHistory.get(clientHistoryId);
     }
 
     public void resetCities(){

@@ -44,6 +44,7 @@ public class PortfolioForm {
     private CacheForm cache;
     private String[] paidStatus;
     private LoginForm loginForm;
+    private List<Client> customFilteredClients;
 
     public PortfolioForm() {
     }
@@ -114,6 +115,23 @@ public class PortfolioForm {
 
     public void setFilteredClients(List<Client> filteredClients) {
         this.filteredClients = filteredClients;
+    }
+
+    public List<Client> getCustomFilteredClients() {
+        return customFilteredClients;
+    }
+
+    public void setCustomFilteredClients(List<Client> customFilteredClients) {
+        List<Client> newCustomFilteredClients = filter(customFilteredClients );
+        this.customFilteredClients = newCustomFilteredClients;
+    }
+
+    public Filter getFilter() {
+        return filter;
+    }
+
+    public void setFilter(Filter filter) {
+        this.filter = filter;
     }
 
     public void editClient(Client client) {
@@ -623,4 +641,138 @@ public class PortfolioForm {
     public List<ViolationCode> loadViolationClientHistory(Integer clientHistoryId){
         return violationCodeDao.loadByClientId(clientHistoryId);
     }
+
+
+
+    public VisitType getVisitType(Integer id){
+        if(id != null){
+            for(VisitType visitType: cache.getVisitTypes()){
+                if(Objects.equals(visitType.getId(), id)){
+                    return visitType;
+                }
+            }
+        }
+        return null;
+    }
+
+    // Filter Form
+
+    private Filter filter;
+
+    private Filter filterSnapshot;
+
+    public void addFilter() {
+        closeFilterDialog();
+    }
+
+    public void cancelFilterDialog() {
+        this.filter = this.filterSnapshot;
+        closeFilterDialog();
+    }
+
+    public void closeFilterDialog() {
+        RequestContext.getCurrentInstance().execute("PF('filterDialog').hide()");
+    }
+
+    public void openFilterDialog(){
+        if(this.filter == null){
+            this.filter = new Filter();
+        }
+        try {
+            this.filterSnapshot = (Filter) this.filter.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        showFilterEditDialog();
+    }
+
+    public void showFilterEditDialog(){
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        requestContext.execute("PF('filterDialog').show()");
+    }
+
+    public void removeFilter(){
+        this.filter = null;
+    }
+
+    public void resetFilteredCity() {
+        if (filter != null) {
+            filter.setCityId(null);
+            filter.setStreetId(null);
+            filter.setAshtId(null);
+            streets = null;
+            cities = null;
+            ashts = null;
+        }
+    }
+
+    public void resetFilteredStreet() {
+        if (filter != null) {
+            filter.setStreetId(null);
+            streets = null;
+            filter.setSectionId(null);
+            filter.setSubSectionId(null);
+            resetFilteredSubSection();
+            sections = null;
+        }
+    }
+
+    public void resetFilteredSubSection() {
+        if (filter != null) {
+            filter.setSubSectionId(null);
+            subSections = null;
+        }
+    }
+
+    public List<Client> filter(List<Client> filteredClients){
+        List<Client> newFilteredClients = new ArrayList<>();
+        if(filteredClients == null){
+            filteredClients = this.clients;
+        }
+        if(this.filter != null){
+            for(Client client: filteredClients){
+                if(this.filter.getRegionId() != null && !Objects.equals(client.getRegionId(), this.filter.getRegionId())){
+                    continue;
+                }
+                if(this.filter.getCityId() != null && !Objects.equals(client.getCityId(), this.filter.getCityId())){
+                    continue;
+                }
+                if(this.filter.getStreetId() != null && !Objects.equals(client.getStreetId(), this.filter.getStreetId())){
+                    continue;
+                }
+                if(this.filter.getAshtId() != null && !Objects.equals(client.getAshtId(), this.filter.getAshtId())){
+                    continue;
+                }
+                if(this.filter.getGrpId() != null && !Objects.equals(client.getGrpId(), this.filter.getGrpId())){
+                    continue;
+                }
+                if(this.filter.getSectionId() != null && !Objects.equals(client.getSectionId(), this.filter.getSectionId())){
+                    continue;
+                }
+                if(this.filter.getSubSectionId() != null && !Objects.equals(client.getSubSectionId(), this.filter.getSubSectionId())){
+                    continue;
+                }
+//                if(this.filter.getViolationCodes() != null && this.filter.getViolationCodes().length != 0){
+//                    List<ViolationCode> violationCodes = cache.getViolationCodesByClientHistory(client.getClientHistory().getId());
+//                    boolean isExpected = false;
+//                    if(violationCodes != null) {
+//                        for (String violationCode : this.filter.getViolationCodes()) {
+//                            if (!violationCodes.contains(violationCode)) {
+//                                isExpected = true;
+//                                break;
+//                            }
+//                        }
+//                        if(isExpected) {
+//                            continue;
+//                        }
+//                    }
+//                }
+                newFilteredClients.add(client);
+            }
+            return newFilteredClients;
+        } else {
+            return filteredClients;
+        }
+    }
+
 }
