@@ -522,7 +522,7 @@ public class PortfolioForm {
             return null;
         }
         export();
-        InputStream stream = new FileInputStream("C:/Users/arsha/Desktop/Projects/Artsakh-Gas/src/main/resources/testFile2.xlsx");
+        InputStream stream = new FileInputStream("C:/Users/arshak.askaryan/Desktop/GIT/Artsakh-Gas/src/main/resources/testFile2.xlsx");
         file = new DefaultStreamedContent(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8", "downloaded_boromir.xlsx");
         return file;
     }
@@ -535,7 +535,7 @@ public class PortfolioForm {
         File file = new File(classLoader.getResource("template.xlsx").getFile());
 
 
-        FileOutputStream out = new FileOutputStream("C:/Users/arsha/Desktop/Projects/Artsakh-Gas/src/main/resources/testFile2.xlsx");
+        FileOutputStream out = new FileOutputStream("C:/Users/arshak.askaryan/Desktop/GIT/Artsakh-Gas/src/main/resources/testFile2.xlsx");
 
         Workbook workbook = WorkbookFactory.create(new FileInputStream(file));
 

@@ -247,13 +247,13 @@
                                     <h:form>
                                         <span class="input-group-addon no-border no-bg"><i
                                                 class="fa fa-search"></i></span>
-                                        <h:selectOneMenu value="#{settingsForm.categoryTypeId}" styleClass="form-control"
+                                        <p:selectOneMenu value="#{settingsForm.categoryTypeId}" styleClass="form-control"
                                                          id="categoryTypeSelectId">
                                             <f:selectItem id="ashtSelectOneId" itemLabel="Ընտրիր մեկը"/>
                                             <f:selectItems value="#{settingsForm.categories}" var="category"
                                                            itemLabel="#{category.name}" itemValue="#{category.id}"/>
-                                            <f:ajax event="change" listener="#{settingsForm.changeCategoryType}" render="@this :categoriesListForm :editFormId :addNewFormId"/>
-                                        </h:selectOneMenu>
+                                            <p:ajax event="change" listener="#{settingsForm.changeCategoryType}" update="@this :categoriesListForm :editFormId :addNewFormId"/>
+                                        </p:selectOneMenu>
                                     </h:form>
                                 </div>
                             </div>
