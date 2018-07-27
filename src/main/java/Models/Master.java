@@ -76,4 +76,9 @@ public class Master {
         result = 31 * result + (ashtId != null ? ashtId.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;
+    }
 }

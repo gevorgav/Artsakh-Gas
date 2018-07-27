@@ -263,6 +263,8 @@
                                             <p:commandButton value="Ստեղծել Գրաֆիկը" ajax="false" icon="ui-icon-arrowthick-1-s" update="@form">
                                                 <p:fileDownload value="#{portfolioForm.file}" />
                                             </p:commandButton>
+                                            <p:commandButton id="graficButtonId" value="Ստեղծել Գրաֆիկ" styleClass="dark" update="@form" oncomplete="PF('graficDialog').show();">
+                                            </p:commandButton>
                                             <p:commandButton value="Ավելացնել ֆիլտր" styleClass="dark" action="#{portfolioForm.openFilterDialog}" process="@this" update="filterDialogId"/>
                                             <p:commandButton value="Ջնջել ֆիլտրը" styleClass="dark" actionListener="#{portfolioForm.removeFilter}" oncomplete="PF('reportClientTable').filter()"/>
                                         </h:panelGrid>
@@ -282,7 +284,6 @@
                                                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                                                          rowsPerPageTemplate="10,20,50"
                                                          style="margin-bottom:0">
-
                                                 <p:column selectionMode="multiple" style="width:35px;text-align:center"/>
 
                                                 <p:column filterBy="#{client.id}" headerText="ՀՀ" filterMatchMode="contains">
@@ -339,9 +340,8 @@
                 </div>
             </h:form>
 
-            <ui:include src="dialogs/clientHistoryEdit.xhtml" />
-            <ui:include src="dialogs/clientEdit.xhtml" />
             <ui:include src="dialogs/filter.xhtml" />
+            <ui:include src="dialogs/grafic.xhtml" />
 
         </div>
         <!-- ############ PAGE END-->

@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog dynamic="true" header="Edit Filter" id="graficDialogId" modal="true" onShow="showDialog()" onHide="hideDialog()"
+              resizable="false" widgetVar="graficDialog" width="70%" height="100%" style="z-index: 100" maximizable="true">
+        <p:ajax event="close" listener="#{portfolioForm.closeGraficDialog}" update="graficEditFormId:resetId" resetValues="true"/>
+        <h:form id="graficEditFormId">
+            <h:panelGroup id="resetId" layout="block">
+                <div class="row">
+                    <div class="col-sm-4 col-md-4">
+                        <p:outputLabel for="masterId" value="Տեղամասի վարպետ"/>
+                        <p:selectOneMenu id="masterId" value="#{portfolioForm.master}" styleClass="form-control input-c" >
+                            <f:selectItem id="masterSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                            <f:selectItems id="mastersId"
+                                           itemLabel="#{master.firstName} #{master.lastName}"
+                                           itemValue="#{master.id}"
+                                           value="#{portfolioForm.cache.masters}" var="master"/>
+                            <p:ajax event="change" process="@this" update="@this"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <!--<div class="col-sm-4 col-md-4">-->
+                        <!--<p:outputLabel for="master2Id" value="Տեղամասի վարպետ"/>-->
+                        <!--<p:selectOneMenu id="master2Id" value="#{portfolioForm.master1}" styleClass="form-control input-c" >-->
+                            <!--<f:selectItem id="master2SelectOneId" itemLabel="Ընտրիր մեկը"/>-->
+                            <!--<f:selectItems id="masters2Id"-->
+                                           <!--itemLabel="#{master.firstName }"-->
+                                           <!--itemValue="#{master.id}"-->
+                                           <!--value="#{portfolioForm.cache.masters}" var="master"/>-->
+                            <!--<p:ajax event="change" process="@this" update="@this"/>-->
+                        <!--</p:selectOneMenu>-->
+                    <!--</div>-->
+
+                </div>
+
+            </h:panelGroup>
+            <div class="modal-footer m-t-3">
+                <p:commandButton value="Ստեղծել" styleClass="dark" ajax="false" icon="ui-icon-arrowthick-1-s" update="@form">
+                    <p:fileDownload value="#{portfolioForm.file}" />
+                </p:commandButton>
+                <p:commandButton id="cancelClientDialogId"  value="Չեղարկել" styleClass="dark" actionListener="#{portfolioForm.closeGraficDialog}" update="graficEditFormId:resetId" process="@this">
+                    <p:resetInput target="graficEditFormId:resetId" />
+                </p:commandButton>
+            </div>
+        </h:form>
+    </p:dialog>
+</ui:composition>

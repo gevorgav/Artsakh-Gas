@@ -44,7 +44,26 @@ public class PortfolioForm {
     private CacheForm cache;
     private String[] paidStatus;
     private LoginForm loginForm;
-    private List<Client> customFilteredClients;
+    private List<Client> customFilteredClients = new ArrayList<>();
+
+    private Integer master;
+    private Integer master1;
+
+    public Integer getMaster() {
+        return master;
+    }
+
+    public void setMaster(Integer master) {
+        this.master = master;
+    }
+
+    public Integer getMaster1() {
+        return master1;
+    }
+
+    public void setMaster1(Integer master1) {
+        this.master1 = master1;
+    }
 
     public PortfolioForm() {
     }
@@ -596,6 +615,15 @@ public class PortfolioForm {
 
         }
 
+        row =sheet.getRow(41);
+        Master selectedMaster = null;
+        if(Objects.nonNull(this.master)){
+            selectedMaster = cache.getMasters().stream().filter(m -> m.getId().equals(this.master)).findFirst().get();
+        }
+        if(Objects.nonNull(selectedMaster)){
+            row.getCell(0).setCellValue("Փականագործ`" + selectedMaster.toString());
+        }
+
         // Write the output to the file
         FileOutputStream fileOut = new FileOutputStream("template.xlsx");
         workbook.write(out);
@@ -672,6 +700,11 @@ public class PortfolioForm {
 
     public void closeFilterDialog() {
         RequestContext.getCurrentInstance().execute("PF('filterDialog').hide()");
+    }
+
+    public void closeGraficDialog() {
+        this.master = null;
+        RequestContext.getCurrentInstance().execute("PF('graficDialog').hide()");
     }
 
     public void openFilterDialog(){
