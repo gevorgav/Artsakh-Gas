@@ -36,13 +36,15 @@ public class SettingsForm implements Serializable {
         categories.add(new Category(2, "Քաղաք/Գյուղ"));
         categories.add(new Category(3, "ԳԿԿ"));
         categories.add(new Category(4, "ԳՐՍ"));//
-        categories.add(new Category(5, "Սարքերի գներ")); // TODO -
+        categories.add(new Category(5, "Սարքերի գներ"));
         categories.add(new Category(6, "Շրջան"));
         categories.add(new Category(7, "Մաս"));
         categories.add(new Category(8, "Ենթատեղամաս"));
         categories.add(new Category(9, "Փողոց"));
         categories.add(new Category(10, "Գ/Հ տիպ"));
         categories.add(new Category(11, "Խախտման կոդեր"));
+        categories.add(new Category(12, "Վարպետ"));
+        categories.add(new Category(13, "Փականագործ"));
     }
 
     private Integer categoryTypeId;
@@ -114,6 +116,12 @@ public class SettingsForm implements Serializable {
                     break;
                 case 11:
                     this.editedViolationCode = cache.getViolationCodes().isEmpty() ? new ViolationCode() : cache.getViolationCodes().get(0);
+                    break;
+                case 12:
+                    this.editedMaster = cache.getMasters().isEmpty() ? new Master() : cache.getMasters().get(0);
+                    break;
+                case 13:
+                    this.editedLocksmith = cache.getLocksmiths().isEmpty() ? new Locksmith() : cache.getLocksmiths().get(0);
                     break;
             }
         }
@@ -785,5 +793,159 @@ public class SettingsForm implements Serializable {
         cache.resetViolationCodes(); // TODO load anel kam jnjel u avelacnel mej@
         this.editedViolationCode = new ViolationCode();
         this.reloadPage();
+    }
+
+    // --------- Master Form
+
+    private Master editedMaster;
+
+    private Master masterSnapshot;
+
+    public Master getEditedMaster() {
+        if(this.editedMaster == null){
+            this.editedMaster = new Master();
+        }
+        return editedMaster;
+    }
+
+    public void setEditedMaster(Master editedMaster) {
+        this.editedMaster = editedMaster;
+    }
+
+    public void editMaster(Master master) {
+        try {
+            this.editedMaster = (Master) master.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        this.masterSnapshot = master;
+    }
+
+    public void addNewMaster() {
+        this.editedMaster = new Master();
+    }
+
+    public void deleteMaster(Master master) {
+        if(Objects.equals(this.editedMaster.getId(), master.getId())){
+            this.editedMaster = new Master();
+        }
+        if (cache.masterDao.delete(master.getId())) {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            FacesMessage facesMessage = new FacesMessage("Հաջողությամբ ջնջվել է");
+            facesContext.addMessage(null, facesMessage);
+            cache.getMasters().remove(master);
+        }
+        this.reloadPage();
+    }
+
+    public void saveMaster(){
+        if (this.editedMaster.getId() != null) {
+            if (cache.masterDao.update(this.editedMaster)) {
+                FacesContext facesContext = FacesContext.getCurrentInstance();
+                FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
+                facesContext.addMessage(null, facesMessage);
+            }
+        } else {
+            if (cache.masterDao.insert(this.editedMaster)) {
+                FacesContext facesContext = FacesContext.getCurrentInstance();
+                FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
+                facesContext.addMessage(null, facesMessage);
+            }
+        }
+        cache.resetMasters();  // TODO load anel kam jnjel u avelacnel mej@
+        this.editedMaster = new Master();
+        this.reloadPage();
+    }
+
+    // --------- Locksmith Form
+
+    private List<Asht> ashts;
+
+    private Locksmith editedLocksmith;
+
+    private Locksmith locksmithSnapshot;
+
+    public Locksmith getEditedLocksmith() {
+        if(this.editedLocksmith == null){
+            this.editedLocksmith = new Locksmith();
+        }
+        return editedLocksmith;
+    }
+
+    public void setEditedLocksmith(Locksmith editedLocksmith) {
+        this.editedLocksmith = editedLocksmith;
+    }
+
+    public void editLocksmith(Locksmith locksmith) {
+        try {
+            this.editedLocksmith = (Locksmith) locksmith.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        this.locksmithSnapshot = locksmith;
+    }
+
+    public void addNewLocksmith() {
+        this.editedLocksmith = new Locksmith();
+    }
+
+    public void deleteLocksmith(Locksmith locksmith) {
+        if(Objects.equals(this.editedLocksmith.getId(), locksmith.getId())){
+            this.editedLocksmith = new Locksmith();
+        }
+        if (cache.locksmithDao.delete(locksmith.getId())) {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            FacesMessage facesMessage = new FacesMessage("Հաջողությամբ ջնջվել է");
+            facesContext.addMessage(null, facesMessage);
+            cache.getLocksmiths().remove(locksmith);
+        }
+        this.reloadPage();
+    }
+
+    public void saveLocksmith(){
+        if (this.editedLocksmith.getId() != null) {
+            if (cache.locksmithDao.update(this.editedLocksmith)) {
+                FacesContext facesContext = FacesContext.getCurrentInstance();
+                FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
+                facesContext.addMessage(null, facesMessage);
+            }
+        } else {
+            if (cache.locksmithDao.insert(this.editedLocksmith)) {
+                FacesContext facesContext = FacesContext.getCurrentInstance();
+                FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
+                facesContext.addMessage(null, facesMessage);
+            }
+        }
+        cache.resetLocksmiths();  // TODO load anel kam jnjel u avelacnel mej@
+        this.editedLocksmith = new Locksmith();
+        this.reloadPage();
+    }
+
+    public List<Asht> ashtsByRegionId(Integer regionId) {
+        if (ashts == null) {
+            ashts = new ArrayList<>();
+            if (regionId != null) {
+                for (Asht asht : cache.getAshts()) {
+                    if (asht.getRegionId().equals(regionId)) {
+                        ashts.add(asht);
+                    }
+                }
+            }
+        }
+        return ashts;
+    }
+
+    public void resetMasterAsht() {
+        if (editedMaster != null) {
+            editedMaster.setAshtId(null);
+            ashts = null;
+        }
+    }
+
+    public void resetLocksmithAsht() {
+        if (editedLocksmith != null) {
+            editedLocksmith.setAshtId(null);
+            ashts = null;
+        }
     }
 }

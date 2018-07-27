@@ -33,16 +33,16 @@ public class MasterDao extends Dao<Master> {
     @Override
     public boolean insert(Master master) {
         Objects.requireNonNull(master);
-        String sql = "INSERT INTO master(firstName, lastName, ashtId) VALUES (?, ?, ?)";
-        int result = jdbcTemplate.update(sql, master.getFirstName(), master.getLastName(), master.getAshtId());
+        String sql = "INSERT INTO master(firstName, lastName, ashtId, subSectionId, regionId, sectionId) VALUES (?, ?, ?, ?, ?, ?)";
+        int result = jdbcTemplate.update(sql, master.getFirstName(), master.getLastName(), master.getAshtId(), master.getSubSectionId(), master.getRegionId(), master.getSectionId());
         return result == 1;
     }
 
     @Override
     public boolean update(Master master) {
         Objects.requireNonNull(master);
-        String sql = "UPDATE master SET firstName = ?, lastName = ?, ashtId = ? WHERE id = ?";
-        int result = jdbcTemplate.update(sql, master.getFirstName(), master.getLastName(), master.getAshtId(), master.getId());
+        String sql = "UPDATE master SET firstName = ?, lastName = ?, ashtId = ?, subSectionId = ?, regionId = ?, sectionId = ? WHERE id = ?";
+        int result = jdbcTemplate.update(sql, master.getFirstName(), master.getLastName(), master.getAshtId(), master.getSubSectionId(), master.getRegionId(), master.getSectionId(), master.getId());
         return result == 1;
     }
 

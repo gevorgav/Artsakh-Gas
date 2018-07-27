@@ -444,6 +444,40 @@
                                                             </p:commandLink>
                                                         </c:forEach>
                                                     </c:if>
+                                                    <!--Master-->
+                                                    <c:if test="#{settingsForm.categoryTypeId eq 12}">
+                                                        <c:forEach var="master" items="#{settingsForm.cache.masters}">
+                                                            <p:commandLink actionListener="#{settingsForm.editMaster(master)}" immediate="true" update=":editFormId">
+                                                                <div class="list-body list-group-item">
+                                                                    <h:outputText value="#{master.firstName}"/>
+                                                                    <div style="float: right">
+                                                                        <c:if test="#{authorisationUtil.authorisedUser}">
+                                                                            <h:commandLink styleClass="glyphicon glyphicon-trash" immediate="true" onclick="return confirm('Ջնջել');">
+                                                                                <f:ajax listener="#{settingsForm.deleteMaster(master)}" event="click" render="@this :categoriesListForm :editFormId"/>
+                                                                            </h:commandLink>
+                                                                        </c:if>
+                                                                    </div>
+                                                                </div>
+                                                            </p:commandLink>
+                                                        </c:forEach>
+                                                    </c:if>
+                                                    <!--Locksmith-->
+                                                    <c:if test="#{settingsForm.categoryTypeId eq 13}">
+                                                        <c:forEach var="locksmith" items="#{settingsForm.cache.locksmiths}">
+                                                            <p:commandLink actionListener="#{settingsForm.editLocksmith(locksmith)}" immediate="true" update=":editFormId">
+                                                                <div class="list-body list-group-item">
+                                                                    <h:outputText value="#{locksmith.firstName}"/>
+                                                                    <div style="float: right">
+                                                                        <c:if test="#{authorisationUtil.authorisedUser}">
+                                                                            <h:commandLink styleClass="glyphicon glyphicon-trash" immediate="true" onclick="return confirm('Ջնջել');">
+                                                                                <f:ajax listener="#{settingsForm.deleteLocksmith(locksmith)}" event="click" render="@this :categoriesListForm :editFormId"/>
+                                                                            </h:commandLink>
+                                                                        </c:if>
+                                                                    </div>
+                                                                </div>
+                                                            </p:commandLink>
+                                                        </c:forEach>
+                                                    </c:if>
                                                 </div>
                                             </h:form>
                                         </div>
@@ -485,6 +519,12 @@
                                                 <!--ViolationCode-->
                                                 <p:commandButton value="Ավելացնել նորը" styleClass="btn btn-fw primary" rendered="#{settingsForm.categoryTypeId eq 11}"
                                                                  action="#{settingsForm.addNewViolationCode}" update=":editFormId"/>
+                                                <!--Master-->
+                                                <p:commandButton value="Ավելացնել նորը" styleClass="btn btn-fw primary" rendered="#{settingsForm.categoryTypeId eq 12}"
+                                                                 action="#{settingsForm.addNewMaster}" update=":editFormId"/>
+                                                <!--Locksmith-->
+                                                <p:commandButton value="Ավելացնել նորը" styleClass="btn btn-fw primary" rendered="#{settingsForm.categoryTypeId eq 13}"
+                                                                 action="#{settingsForm.addNewLocksmith}" update=":editFormId"/>
                                             </h:form>
                                         </h:panelGroup>
                                     </div>
@@ -848,7 +888,7 @@
                                                             <p:outputLabel for="violationCodeNameId" value="Խախտման կոդ"/>
                                                             <p:inputText id="violationCodeNameId" value="#{settingsForm.editedViolationCode.name}" styleClass="form-control"
                                                                          required="true"
-                                                                         requiredMessage="Խախտման կոդն պարտադիր դաշտ է" placeholder="Խախտման կոդ"/>
+                                                                         requiredMessage="Խախտման կոդը պարտադիր դաշտ է" placeholder="Խախտման կոդ"/>
                                                         </div>
                                                         <div class="col-sm-8 col-md-8">
                                                             <p:outputLabel for="violationCodeNameId" value="Նկարագրություն"/>
@@ -859,6 +899,118 @@
                                                 <c:if test="#{authorisationUtil.authorisedUser}">
                                                     <div class="de-btn-top">
                                                         <p:commandButton ajax="false" value="Պահպանել" styleClass="btn btn-fw primary"  actionListener="#{settingsForm.saveViolationCode}" update=":categoriesListForm" >
+                                                        </p:commandButton>
+                                                        <h:commandLink immediate="true" value="Դուրս գալ" styleClass="btn " actionListener="#{authorisationUtil.signout}"/>
+                                                    </div>
+                                                </c:if>
+                                                <c:if test="#{!authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <h:commandLink immediate="true" value="Մուտք" styleClass="btn " actionListener="#{authorisationUtil.signIn}"/>
+                                                    </div>
+                                                </c:if>
+                                            </h:form>
+                                            <!--Master-->
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 12}">
+                                                <h:panelGroup layout="block">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="masterFirstNameId" value="Անուն"/>
+                                                            <p:inputText id="masterFirstNameId" value="#{settingsForm.editedMaster.firstName}" styleClass="form-control"
+                                                                         required="true"
+                                                                         requiredMessage="Անունը պարտադիր դաշտ է" placeholder="Անուն"/>
+                                                        </div>
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="masterLastNameId" value="Ազգանուն"/>
+                                                            <p:inputText id="masterLastNameId" value="#{settingsForm.editedMaster.lastName}" styleClass="form-control"
+                                                                         required="true"
+                                                                         requiredMessage="Ազգանունը պարտադիր դաշտ է" placeholder="Ազգանուն"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="masterRegionId" value="Շրջան"/>
+                                                            <p:selectOneMenu id="masterRegionId" value="#{settingsForm.editedMaster.regionId}" styleClass="form-control input-c"
+                                                                             requiredMessage="Շրջան պարտադիր դաշտ է">
+                                                                <f:selectItem id="masterRegionSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                                                                <f:selectItems id="masterRegionsId"
+                                                                               itemLabel="#{region.name}"
+                                                                               itemValue="#{region.id}"
+                                                                               value="#{settingsForm.cache.regions}" var="region"/>
+                                                                <p:ajax event="change" process="@this" update="@this masterAshtPanelId"
+                                                                        listener="#{settingsForm.resetMasterAsht}"/>
+                                                            </p:selectOneMenu>
+                                                        </div>
+                                                        <h:panelGroup class="col-sm-4 col-md-4" id="masterAshtPanelId">
+                                                            <p:outputLabel for="masterAshtId" value="ԱՇՏ"/>
+                                                            <p:selectOneMenu id="masterAshtId" value="#{settingsForm.editedMaster.ashtId}" styleClass="form-control input-c">
+                                                                <f:selectItem id="masterAshtSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                                                                <f:selectItems id="masterAshtsId"
+                                                                               itemLabel="#{asht.name}"
+                                                                               itemValue="#{asht.id}"
+                                                                               value="#{settingsForm.ashtsByRegionId(settingsForm.editedMaster.regionId)}" var="asht"/>
+                                                            </p:selectOneMenu>
+                                                        </h:panelGroup>
+                                                    </div>
+                                                </h:panelGroup>
+                                                <c:if test="#{authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <p:commandButton ajax="false" value="Պահպանել" styleClass="btn btn-fw primary"  actionListener="#{settingsForm.saveMaster}" update=":categoriesListForm" >
+                                                        </p:commandButton>
+                                                        <h:commandLink immediate="true" value="Դուրս գալ" styleClass="btn " actionListener="#{authorisationUtil.signout}"/>
+                                                    </div>
+                                                </c:if>
+                                                <c:if test="#{!authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <h:commandLink immediate="true" value="Մուտք" styleClass="btn " actionListener="#{authorisationUtil.signIn}"/>
+                                                    </div>
+                                                </c:if>
+                                            </h:form>
+                                            <!--Locksmith-->
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 13}">
+                                                <h:panelGroup layout="block">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="locksmithFirstNameId" value="Անուն"/>
+                                                            <p:inputText id="locksmithFirstNameId" value="#{settingsForm.editedLocksmith.firstName}" styleClass="form-control"
+                                                                         required="true"
+                                                                         requiredMessage="Անունը պարտադիր դաշտ է" placeholder="Անուն"/>
+                                                        </div>
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="locksmithLastNameId" value="Ազգանուն"/>
+                                                            <p:inputText id="locksmithLastNameId" value="#{settingsForm.editedLocksmith.lastName}" styleClass="form-control"
+                                                                         required="true"
+                                                                         requiredMessage="Ազգանունը պարտադիր դաշտ է" placeholder="Ազգանուն"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="locksmithRegionId" value="Շրջան"/>
+                                                            <p:selectOneMenu id="locksmithRegionId" value="#{settingsForm.editedLocksmith.regionId}" styleClass="form-control input-c"
+                                                                             requiredMessage="Շրջան պարտադիր դաշտ է">
+                                                                <f:selectItem id="locksmithRegionSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                                                                <f:selectItems id="locksmithRegionsId"
+                                                                               itemLabel="#{region.name}"
+                                                                               itemValue="#{region.id}"
+                                                                               value="#{settingsForm.cache.regions}" var="region"/>
+                                                                <p:ajax event="change" process="@this" update="@this locksmithAshtPanelId"
+                                                                        listener="#{settingsForm.resetLocksmithAsht}"/>
+                                                            </p:selectOneMenu>
+                                                        </div>
+                                                        <h:panelGroup class="col-sm-4 col-md-4" id="locksmithAshtPanelId">
+                                                            <p:outputLabel for="locksmithAshtId" value="ԱՇՏ"/>
+                                                            <p:selectOneMenu id="locksmithAshtId" value="#{settingsForm.editedLocksmith.ashtId}" styleClass="form-control input-c">
+                                                                <f:selectItem id="locksmithAshtSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                                                                <f:selectItems id="locksmithAshtsId"
+                                                                               itemLabel="#{asht.name}"
+                                                                               itemValue="#{asht.id}"
+                                                                               value="#{settingsForm.ashtsByRegionId(settingsForm.editedLocksmith.regionId)}" var="asht"/>
+                                                            </p:selectOneMenu>
+                                                        </h:panelGroup>
+                                                    </div>
+                                                </h:panelGroup>
+                                                <c:if test="#{authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <p:commandButton ajax="false" value="Պահպանել" styleClass="btn btn-fw primary"  actionListener="#{settingsForm.saveLocksmith}" update=":categoriesListForm" >
                                                         </p:commandButton>
                                                         <h:commandLink immediate="true" value="Դուրս գալ" styleClass="btn " actionListener="#{authorisationUtil.signout}"/>
                                                     </div>

@@ -19,13 +19,13 @@ public abstract class Dao<T> {
     @Autowired
     protected NamedParameterJdbcTemplate namedJdbc;
 
-    abstract List<T> loadAll();
+    public abstract List<T> loadAll();
 
-    abstract T loadById(Integer id);
+    public abstract T loadById(Integer id);
 
-    abstract boolean insert(T t);
+    public abstract boolean insert(T t);
 
-    abstract boolean update(T t);
+    public abstract boolean update(T t);
 
-    abstract boolean delete(Integer id);
+    public abstract boolean delete(Integer id);
 }

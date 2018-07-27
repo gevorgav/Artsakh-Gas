@@ -6,27 +6,27 @@ import java.util.List;
 
 public class PaymentDao extends Dao<Payment> {
     @Override
-    List<Payment> loadAll() {
+    public List<Payment> loadAll() {
         return null;
     }
 
     @Override
-    Payment loadById(Integer id) {
+    public Payment loadById(Integer id) {
         return null;
     }
 
     @Override
-    boolean insert(Payment payment) {
+    public boolean insert(Payment payment) {
         return false;
     }
 
     @Override
-    boolean update(Payment payment) {
+    public boolean update(Payment payment) {
         return false;
     }
 
     @Override
-    boolean delete(Integer id) {
+    public boolean delete(Integer id) {
         return false;
     }
 }

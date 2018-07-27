@@ -51,12 +51,12 @@ public class ClientDao extends Dao<Client>{
     }
 
     @Override
-    List<Client> loadAll() {
+    public List<Client> loadAll() {
         return Collections.emptyList();
     }
 
     @Override
-    Client loadById(Integer id) {
+    public Client loadById(Integer id) {
         return null;
     }
 
@@ -118,7 +118,7 @@ public class ClientDao extends Dao<Client>{
     }
 
     @Override
-    boolean delete(Integer id) {
+    public boolean delete(Integer id) {
         return false;
     }
 }

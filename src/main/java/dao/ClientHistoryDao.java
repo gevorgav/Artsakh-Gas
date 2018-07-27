@@ -162,7 +162,7 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
     }
 
     @Override
-    boolean delete(Integer id) {
+    public boolean delete(Integer id) {
         return false;
     }
 }

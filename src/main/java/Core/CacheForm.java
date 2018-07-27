@@ -26,7 +26,7 @@ public class CacheForm {
     public GRPDao grpDao;
 
     @Autowired
-    private MasterDao masterDao;
+    public MasterDao masterDao;
 
     @Autowired
     public SectionDao sectionDao;
@@ -50,6 +50,9 @@ public class CacheForm {
     public ViolationCodeDao violationCodeDao;
 
     @Autowired
+    public LocksmithDao locksmithDao;
+
+    @Autowired
     public PriceListDao priceListDao;
 
     private List<City> cities;
@@ -68,6 +71,7 @@ public class CacheForm {
     private List<PriceList> priceLists;
     private List<SemiAnnual> semiAnnuals;
     private Map<Integer, List<ViolationCode>> violationCodesByClientHistory;
+    private List<Locksmith> locksmiths;
 
     public List<VisitType> getVisitTypes() {
         if (this.visitTypes == null){
@@ -231,6 +235,19 @@ public class CacheForm {
         return violationCodesByClientHistory.get(clientHistoryId);
     }
 
+    public List<Locksmith> getLocksmiths() {
+        if(locksmiths == null){
+            locksmiths = locksmithDao.loadAll();
+            this.locksmiths.sort(new Comparator<Locksmith>() {
+                @Override
+                public int compare(Locksmith o1, Locksmith o2) {
+                    return o1.getFirstName().compareTo(o2.getFirstName());
+                }
+            });
+        }
+        return locksmiths;
+    }
+
     public void resetCities(){
         this.cities = null;
     }
@@ -272,6 +289,14 @@ public class CacheForm {
 
     public void resetPriceList(){
         this.priceLists = null;
+    }
+
+    public void resetMasters(){
+        this.masters = null;
+    }
+
+    public void resetLocksmiths(){
+        this.locksmiths = null;
     }
 
 }

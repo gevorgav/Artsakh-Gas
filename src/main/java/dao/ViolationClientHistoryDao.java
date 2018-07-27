@@ -11,12 +11,12 @@ import java.util.Objects;
 public class ViolationClientHistoryDao extends Dao<ViolationClientHistory> {
 
     @Override
-    List<ViolationClientHistory> loadAll() {
+    public List<ViolationClientHistory> loadAll() {
         return null;
     }
 
     @Override
-    ViolationClientHistory loadById(Integer id) {
+    public ViolationClientHistory loadById(Integer id) {
         return null;
     }
 
@@ -43,7 +43,7 @@ public class ViolationClientHistoryDao extends Dao<ViolationClientHistory> {
     }
 
     @Override
-    boolean delete(Integer id) {
+    public boolean delete(Integer id) {
         return false;
     }
 

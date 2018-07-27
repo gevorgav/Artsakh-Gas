@@ -22,22 +22,22 @@ public class UserDao extends Dao<User> {
     }
 
     @Override
-    User loadById(Integer id) {
+    public User loadById(Integer id) {
         return null;
     }
 
     @Override
-    boolean insert(User user) {
+    public boolean insert(User user) {
         return false;
     }
 
     @Override
-    boolean update(User user) {
+    public boolean update(User user) {
         return false;
     }
 
     @Override
-    boolean delete(Integer id) {
+    public boolean delete(Integer id) {
         return false;
     }
 }

@@ -29,17 +29,17 @@ public class SemiAnnualDao extends Dao<SemiAnnual> {
     }
 
     @Override
-    boolean insert(SemiAnnual semiAnnual) {
+    public boolean insert(SemiAnnual semiAnnual) {
         return false;
     }
 
     @Override
-    boolean update(SemiAnnual semiAnnual) {
+    public boolean update(SemiAnnual semiAnnual) {
         return false;
     }
 
     @Override
-    boolean delete(Integer id) {
+    public boolean delete(Integer id) {
         return false;
     }
 }
