@@ -282,17 +282,17 @@
                                                          rowsPerPageTemplate="10,30,50"
                                                          style="margin-bottom:0">
 
-                                                <p:column filterBy="#{client.id}" headerText="ՀՀ" footerText="contains" filterMatchMode="contains">
+                                                <p:column filterBy="#{client.id}" headerText="ՀՀ" footerText="" filterMatchMode="contains">
                                                     <h:outputText value="#{client.id}" />
                                                 </p:column>
 
-                                                <p:column filterBy="#{client.firstName}" headerText="Անուն" footerText="contains" filterMatchMode="contains">
+                                                <p:column filterBy="#{client.firstName}" headerText="Անուն" footerText="" filterMatchMode="contains">
                                                     <h:outputText value="#{client.firstName}" />
                                                 </p:column>
-                                                <p:column filterBy="#{client.lastName}" headerText="Ազգանուն" footerText="contains" filterMatchMode="contains">
+                                                <p:column filterBy="#{client.lastName}" headerText="Ազգանուն" footerText="" filterMatchMode="contains">
                                                     <h:outputText value="#{client.lastName}" />
                                                 </p:column>
-                                                <p:column filterBy="#{client.phoneNumber}" headerText="Հեռախոսի համար" footerText="contains" filterMatchMode="contains">
+                                                <p:column filterBy="#{client.phoneNumber}" headerText="Հեռախոսի համար" footerText="" filterMatchMode="contains">
                                                     <h:outputText value="#{client.phoneNumber}" />
                                                 </p:column>
                                                 <p:column>
@@ -300,9 +300,6 @@
                                                                    update="clientDialogId table2" icon="" title="Խմբագրել"/>
                                                 </p:column>
 
-                                                <f:facet name="footer">
-                                                    <p:commandButton process="clientTableId" icon="ui-icon-search" value="View" />
-                                                </f:facet>
                                             </p:dataTable>
                                             <div class="col s5 input-field">
                                                 <p:commandButton value="Ավելացնել" styleClass="dark" action="#{portfolioForm.addNewClient}" process="@this" update="clientDialogId"/>

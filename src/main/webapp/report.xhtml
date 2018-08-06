@@ -260,10 +260,7 @@
                                     <h:panelGroup id="yearlyPanelId">
 
                                         <h:panelGrid columns="3" cellpadding="5">
-                                            <p:commandButton value="Ստեղծել Գրաֆիկը" ajax="false" icon="ui-icon-arrowthick-1-s" update="@form">
-                                                <p:fileDownload value="#{portfolioForm.file}" />
-                                            </p:commandButton>
-                                            <p:commandButton id="graficButtonId" value="Ստեղծել Գրաֆիկ" styleClass="dark" update="@form" oncomplete="PF('graficDialog').show();">
+                                            <p:commandButton id="graficButtonId" value="Ստեղծել Գրաֆիկ" styleClass="dark"  oncomplete="PF('graficDialog').show();">
                                             </p:commandButton>
                                             <p:commandButton value="Ավելացնել ֆիլտր" styleClass="dark" action="#{portfolioForm.openFilterDialog}" process="@this" update="filterDialogId"/>
                                             <p:commandButton value="Ջնջել ֆիլտրը" styleClass="dark" actionListener="#{portfolioForm.removeFilter}" oncomplete="PF('reportClientTable').filter()"/>

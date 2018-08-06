@@ -3,7 +3,7 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui">
-    <p:dialog dynamic="true" header="Edit Filter" id="filterDialogId" modal="true" onShow="showDialog()" onHide="hideDialog()"
+    <p:dialog dynamic="true" header="Ֆիլտր" id="filterDialogId" modal="true" onShow="showDialog()" onHide="hideDialog()"
               resizable="false" widgetVar="filterDialog" width="70%" height="100%" style="z-index: 100" maximizable="true">
         <p:ajax event="close" listener="#{portfolioForm.closeFilterDialog}" update="filterEditFormId:resetId" resetValues="true"/>
         <h:form id="filterEditFormId">
