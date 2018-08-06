@@ -243,12 +243,12 @@ public class PortfolioForm {
         return subSections;
     }
 
-    public List<Section> sectionsByCityId(Integer cityId) {
+    public List<Section> sectionsByRegionId(Integer regionId) {
         if (sections == null) {
             sections = new ArrayList<>();
-            if (cityId != null) {
+            if (regionId != null) {
                 for (Section section : cache.getSections()) {
-                    if (section.getCityId().equals(cityId)) {
+                    if (section.getRegionId().equals(regionId)) {
                         sections.add(section);
                     }
                 }
@@ -265,6 +265,9 @@ public class PortfolioForm {
             streets = null;
             cities = null;
             ashts = null;
+            client.setSectionId(null);
+            resetSubSection();
+            sections = null;
         }
     }
 
@@ -286,10 +289,6 @@ public class PortfolioForm {
         if (client != null) {
             client.setStreetId(null);
             streets = null;
-            client.setSectionId(null);
-            client.setSubSectionId(null);
-            resetSubSection();
-            sections = null;
         }
     }
 
@@ -736,6 +735,9 @@ public class PortfolioForm {
             streets = null;
             cities = null;
             ashts = null;
+            filter.setSectionId(null);
+            resetFilteredSubSection();
+            sections = null;
         }
     }
 
@@ -743,10 +745,6 @@ public class PortfolioForm {
         if (filter != null) {
             filter.setStreetId(null);
             streets = null;
-            filter.setSectionId(null);
-            filter.setSubSectionId(null);
-            resetFilteredSubSection();
-            sections = null;
         }
     }
 

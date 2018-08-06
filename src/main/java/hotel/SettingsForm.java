@@ -865,6 +865,10 @@ public class SettingsForm implements Serializable {
 
     private Locksmith locksmithSnapshot;
 
+    private List<Section> sections;
+
+    private List<SubSection> subSections;
+
     public Locksmith getEditedLocksmith() {
         if(this.editedLocksmith == null){
             this.editedLocksmith = new Locksmith();
@@ -939,6 +943,9 @@ public class SettingsForm implements Serializable {
         if (editedMaster != null) {
             editedMaster.setAshtId(null);
             ashts = null;
+            editedMaster.setSectionId(null);
+            resetMasterSubSection();
+            sections = null;
         }
     }
 
@@ -946,6 +953,51 @@ public class SettingsForm implements Serializable {
         if (editedLocksmith != null) {
             editedLocksmith.setAshtId(null);
             ashts = null;
+            editedLocksmith.setSectionId(null);
+            resetLocksmithSubSection();
+            sections = null;
+        }
+    }
+
+    public List<Section> sectionsByRegionId(Integer regionId) {
+        if (sections == null) {
+            sections = new ArrayList<>();
+            if (regionId != null) {
+                for (Section section : cache.getSections()) {
+                    if (section.getRegionId().equals(regionId)) {
+                        sections.add(section);
+                    }
+                }
+            }
+        }
+        return sections;
+    }
+
+    public List<SubSection> subSectionsBySectionId(Integer sectionId) {
+        if (subSections == null) {
+            subSections = new ArrayList<>();
+            if (sectionId != null) {
+                for (SubSection subSection : cache.getSubSections()) {
+                    if (subSection.getSectionId().equals(sectionId)) {
+                        subSections.add(subSection);
+                    }
+                }
+            }
+        }
+        return subSections;
+    }
+
+    public void resetLocksmithSubSection() {
+        if (editedLocksmith != null) {
+            editedLocksmith.setSubSectionId(null);
+            subSections = null;
+        }
+    }
+
+    public void resetMasterSubSection() {
+        if (editedMaster != null) {
+            editedMaster.setSubSectionId(null);
+            subSections = null;
         }
     }
 }

@@ -35,7 +35,7 @@ public class SectionDao extends Dao<Section> {
     public boolean insert(Section section) {
         Objects.requireNonNull(section);
         String sql = "INSERT INTO section(name, cityId) VALUES (?, ?)";
-        int result = jdbcTemplate.update(sql, section.getName(), section.getCityId());
+        int result = jdbcTemplate.update(sql, section.getName(), section.getRegionId());
         return result == 1;
     }
 
@@ -43,7 +43,7 @@ public class SectionDao extends Dao<Section> {
     public boolean update(Section section) {
         Objects.requireNonNull(section);
         String sql = "UPDATE section SET name = ?, cityId = ? WHERE id = ?";
-        int result = jdbcTemplate.update(sql, section.getName(), section.getCityId(), section.getId());
+        int result = jdbcTemplate.update(sql, section.getName(), section.getRegionId(), section.getId());
         return result == 1;
     }
 

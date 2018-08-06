@@ -15,7 +15,7 @@ public class SectionMapper  implements RowMapper<Section> {
         Section section = new Section();
         section.setId(rs.getInt("id"));
         section.setName(rs.getString("name"));
-        section.setCityId(rs.getInt("cityId"));
+        section.setRegionId(rs.getInt("regionId"));
         return section;
     }
 }

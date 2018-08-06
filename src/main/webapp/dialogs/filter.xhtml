@@ -17,7 +17,7 @@
                                            itemLabel="#{region.name}"
                                            itemValue="#{region.id}"
                                            value="#{portfolioForm.cache.regions}" var="region"/>
-                            <p:ajax event="change" process="@this" update="@this filterCityPanelId filterStreetPanelId location2 filterAshtId" listener="#{portfolioForm.resetFilteredCity}"/>
+                            <p:ajax event="change" process="@this" update="@this filterSectionId filterCityPanelId filterStreetPanelId location2 filterAshtId" listener="#{portfolioForm.resetFilteredCity}"/>
                         </p:selectOneMenu>
                     </div>
                     <h:panelGroup class="col-sm-4 col-md-4" id="filterCityPanelId">
@@ -28,7 +28,7 @@
                                            itemLabel="#{city.name}"
                                            itemValue="#{city.id}"
                                            value="#{portfolioForm.citiesByRegionId(portfolioForm.filter.regionId)}" var="city"/>
-                            <p:ajax event="change" process="@this" update="@this filterStreetId filterSectionId filterSubSectionId"
+                            <p:ajax event="change" process="@this" update="@this filterStreetId filterSubSectionId"
                                     listener="#{portfolioForm.resetFilteredStreet}"/>
                         </p:selectOneMenu>
                     </h:panelGroup>
@@ -78,7 +78,7 @@
                             <f:selectItems id="filterSectionsId"
                                            itemLabel="#{section.name}"
                                            itemValue="#{section.id}"
-                                           value="#{portfolioForm.sectionsByCityId(portfolioForm.filter.cityId)}"
+                                           value="#{portfolioForm.sectionsByRegionId(portfolioForm.filter.regionId)}"
                                            var="section"/>
                             <p:ajax event="change" process="@this" update="@this filterSubSectionId"
                                     listener="#{portfolioForm.resetFilteredSubSection}"/>

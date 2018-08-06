@@ -45,7 +45,7 @@
                                            itemLabel="#{region.name}"
                                            itemValue="#{region.id}"
                                            value="#{portfolioForm.cache.regions}" var="region"/>
-                            <p:ajax event="change" process="@this" update="@this cityPanelId streetPanelId location1 location2 ashtId" listener="#{portfolioForm.resetCity}"/>
+                            <p:ajax event="change" process="@this" update="@this cityPanelId streetPanelId location1 location2 ashtId sectionId subSectionId" listener="#{portfolioForm.resetCity}"/>
                         </p:selectOneMenu>
                     </div>
                     <h:panelGroup class="col-sm-4 col-md-4" id="cityPanelId">
@@ -57,7 +57,7 @@
                                            itemLabel="#{city.name}"
                                            itemValue="#{city.id}"
                                            value="#{portfolioForm.citiesByRegionId(portfolioForm.client.regionId)}" var="city"/>
-                            <p:ajax event="change" process="@this" update="@this streetId sectionId subSectionId"
+                            <p:ajax event="change" process="@this" update="@this streetId"
                                     listener="#{portfolioForm.resetStreet}"/>
                         </p:selectOneMenu>
                     </h:panelGroup>
@@ -147,7 +147,7 @@
                             <f:selectItems id="sectionsId"
                                            itemLabel="#{section.name}"
                                            itemValue="#{section.id}"
-                                           value="#{portfolioForm.sectionsByCityId(portfolioForm.client.cityId)}"
+                                           value="#{portfolioForm.sectionsByRegionId(portfolioForm.client.regionId)}"
                                            var="section"/>
                             <p:ajax event="change" process="@this" update="@this subSectionId"
                                     listener="#{portfolioForm.resetSubSection}"/>

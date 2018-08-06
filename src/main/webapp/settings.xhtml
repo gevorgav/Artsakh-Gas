@@ -936,7 +936,7 @@
                                                                                itemLabel="#{region.name}"
                                                                                itemValue="#{region.id}"
                                                                                value="#{settingsForm.cache.regions}" var="region"/>
-                                                                <p:ajax event="change" process="@this" update="@this masterAshtPanelId"
+                                                                <p:ajax event="change" process="@this" update="@this masterAshtPanelId masterSectionId masterSubSectionId"
                                                                         listener="#{settingsForm.resetMasterAsht}"/>
                                                             </p:selectOneMenu>
                                                         </div>
@@ -950,6 +950,34 @@
                                                                                value="#{settingsForm.ashtsByRegionId(settingsForm.editedMaster.regionId)}" var="asht"/>
                                                             </p:selectOneMenu>
                                                         </h:panelGroup>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="masterSectionId" value="Մաս"/>
+                                                            <p:selectOneMenu id="masterSectionId" value="#{settingsForm.editedMaster.sectionId}"
+                                                                             styleClass="form-control input-c">
+                                                                <f:selectItem id="masterSectionSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                                                                <f:selectItems id="masterSectionsId"
+                                                                               itemLabel="#{section.name}"
+                                                                               itemValue="#{section.id}"
+                                                                               value="#{settingsForm.sectionsByRegionId(settingsForm.editedMaster.regionId)}"
+                                                                               var="section"/>
+                                                                <p:ajax event="change" process="@this" update="@this masterSubSectionId"
+                                                                        listener="#{settingsForm.resetMasterSubSection}"/>
+                                                            </p:selectOneMenu>
+                                                        </div>
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="masterSubSectionId" value="Ենթատեղամաս"/>
+                                                            <p:selectOneMenu id="masterSubSectionId" value="#{settingsForm.editedMaster.subSectionId}"
+                                                                             styleClass="form-control input-c">
+                                                                <f:selectItem id="masterSubSectionSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                                                                <f:selectItems id="masterSubSectionsId"
+                                                                               itemLabel="#{subSection.name}"
+                                                                               itemValue="#{subSection.id}"
+                                                                               value="#{settingsForm.subSectionsBySectionId(settingsForm.editedMaster.sectionId)}"
+                                                                               var="subSection"/>
+                                                            </p:selectOneMenu>
+                                                        </div>
                                                     </div>
                                                 </h:panelGroup>
                                                 <c:if test="#{authorisationUtil.authorisedUser}">
@@ -992,7 +1020,7 @@
                                                                                itemLabel="#{region.name}"
                                                                                itemValue="#{region.id}"
                                                                                value="#{settingsForm.cache.regions}" var="region"/>
-                                                                <p:ajax event="change" process="@this" update="@this locksmithAshtPanelId"
+                                                                <p:ajax event="change" process="@this" update="@this locksmithAshtPanelId locksmithSectionId locksmithSubSectionId"
                                                                         listener="#{settingsForm.resetLocksmithAsht}"/>
                                                             </p:selectOneMenu>
                                                         </div>
@@ -1006,6 +1034,34 @@
                                                                                value="#{settingsForm.ashtsByRegionId(settingsForm.editedLocksmith.regionId)}" var="asht"/>
                                                             </p:selectOneMenu>
                                                         </h:panelGroup>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="locksmithSectionId" value="Մաս"/>
+                                                            <p:selectOneMenu id="locksmithSectionId" value="#{settingsForm.editedLocksmith.sectionId}"
+                                                                             styleClass="form-control input-c">
+                                                                <f:selectItem id="locksmithSectionSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                                                                <f:selectItems id="locksmithSectionsId"
+                                                                               itemLabel="#{section.name}"
+                                                                               itemValue="#{section.id}"
+                                                                               value="#{settingsForm.sectionsByRegionId(settingsForm.editedLocksmith.regionId)}"
+                                                                               var="section"/>
+                                                                <p:ajax event="change" process="@this" update="@this locksmithSubSectionId"
+                                                                        listener="#{settingsForm.resetLocksmithSubSection}"/>
+                                                            </p:selectOneMenu>
+                                                        </div>
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel for="locksmithSubSectionId" value="Ենթատեղամաս"/>
+                                                            <p:selectOneMenu id="locksmithSubSectionId" value="#{settingsForm.editedLocksmith.subSectionId}"
+                                                                             styleClass="form-control input-c">
+                                                                <f:selectItem id="locksmithSubSectionSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                                                                <f:selectItems id="locksmithSubSectionsId"
+                                                                               itemLabel="#{subSection.name}"
+                                                                               itemValue="#{subSection.id}"
+                                                                               value="#{settingsForm.subSectionsBySectionId(settingsForm.editedLocksmith.sectionId)}"
+                                                                               var="subSection"/>
+                                                            </p:selectOneMenu>
+                                                        </div>
                                                     </div>
                                                 </h:panelGroup>
                                                 <c:if test="#{authorisationUtil.authorisedUser}">

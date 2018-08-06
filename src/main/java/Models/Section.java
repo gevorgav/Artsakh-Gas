@@ -9,15 +9,15 @@ public class Section {
 
     private String name;
 
-    private Integer cityId;
+    private Integer regionId;
 
     public Section() {
     }
 
-    public Section(Integer id, String name, Integer cityId) {
+    public Section(Integer id, String name, Integer regionId) {
         this.id = id;
         this.name = name;
-        this.cityId = cityId;
+        this.regionId = regionId;
     }
 
     public Integer getId() {
@@ -36,12 +36,12 @@ public class Section {
         this.name = name;
     }
 
-    public Integer getCityId() {
-        return cityId;
+    public Integer getRegionId() {
+        return regionId;
     }
 
-    public void setCityId(Integer cityId) {
-        this.cityId = cityId;
+    public void setRegionId(Integer regionId) {
+        this.regionId = regionId;
     }
 
     @Override
@@ -53,14 +53,14 @@ public class Section {
 
         if (id != null ? !id.equals(section.id) : section.id != null) return false;
         if (name != null ? !name.equals(section.name) : section.name != null) return false;
-        return cityId != null ? cityId.equals(section.cityId) : section.cityId == null;
+        return regionId != null ? regionId.equals(section.regionId) : section.regionId == null;
     }
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (cityId != null ? cityId.hashCode() : 0);
+        result = 31 * result + (regionId != null ? regionId.hashCode() : 0);
         return result;
     }
 
@@ -69,7 +69,7 @@ public class Section {
         Section section = new Section();
         section.setId(this.id);
         section.setName(this.name);
-        section.setCityId(this.cityId);
+        section.setRegionId(this.regionId);
         return section;
     }
 }
