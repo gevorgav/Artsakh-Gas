@@ -49,9 +49,9 @@
                         </p:selectOneMenu>
                     </div>
                     <h:panelGroup class="col-sm-4 col-md-4" id="cityPanelId">
-                        <p:outputLabel for="cityId" value="Քաղաք/Գյուղ"/>
+                        <p:outputLabel for="cityId" value="Քաղաք"/>
                         <p:selectOneMenu id="cityId" value="#{portfolioForm.client.cityId}" styleClass="form-control input-c"
-                                         requiredMessage="Քաղաք/Գյուղ պարտադիր դաշտ է">
+                                         requiredMessage="Քաղաք պարտադիր դաշտ է">
                             <f:selectItem id="citySelectOneId" itemLabel="Ընտրիր մեկը"/>
                             <f:selectItems id="citysId"
                                            itemLabel="#{city.name}"
@@ -62,7 +62,7 @@
                         </p:selectOneMenu>
                     </h:panelGroup>
                     <h:panelGroup class="col-sm-4 col-md-4" id="streetPanelId">
-                        <p:outputLabel for="streetId" value="Փողոց"/>
+                        <p:outputLabel for="streetId" value="Գյուղ/Փողոց"/>
                         <p:selectOneMenu id="streetId" value="#{portfolioForm.client.streetId}"
                                          styleClass="form-control input-c">
                             <f:selectItem id="streetSelectOneId" itemLabel="Ընտրիր մեկը"/>

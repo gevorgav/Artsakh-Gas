@@ -303,6 +303,7 @@ public class PortfolioForm {
         if (validate(this.client)) {
             if (this.client.isNew()) {
                 clientDao.insert(this.client);
+                clientHistoryDao.insert(new ClientHistory(this.client.getId()));
             } else {
                 clientDao.update(this.client);
                 this.clients.remove(this.clientSnapshot);

@@ -89,6 +89,10 @@ public class ClientHistory {
     public ClientHistory() {
     }
 
+    public ClientHistory(String clientId) {
+        this.clientId = clientId;
+    }
+
     public Integer getId() {
         return id;
     }

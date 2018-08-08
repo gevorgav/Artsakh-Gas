@@ -33,14 +33,14 @@ public class SettingsForm implements Serializable {
     static {
         categories = new ArrayList<>();
         categories.add(new Category(1, "ԱՇՏ"));
-        categories.add(new Category(2, "Քաղաք/Գյուղ"));
+        categories.add(new Category(2, "Քաղաք"));
         categories.add(new Category(3, "ԳԿԿ"));
         categories.add(new Category(4, "ԳՐՍ"));//
         categories.add(new Category(5, "Սարքերի գներ"));
         categories.add(new Category(6, "Շրջան"));
         categories.add(new Category(7, "Մաս"));
         categories.add(new Category(8, "Ենթատեղամաս"));
-        categories.add(new Category(9, "Փողոց"));
+        categories.add(new Category(9, "Գյուղ/Փողոց"));
         categories.add(new Category(10, "Գ/Հ տիպ"));
         categories.add(new Category(11, "Խախտման կոդեր"));
         categories.add(new Category(12, "Վարպետ"));

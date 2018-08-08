@@ -633,9 +633,9 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="cityId" value="Քաղաք/Գյուղ"/>
+                                                            <p:outputLabel for="cityId" value="Քաղաք"/>
                                                             <p:selectOneMenu id="cityId" value="#{settingsForm.editedGrp.cityId}" styleClass="form-control input-c"
-                                                                             requiredMessage="Քաղաք/Գյուղը պարտադիր դաշտ է">
+                                                                             requiredMessage="Քաղաք պարտադիր դաշտ է">
                                                                 <f:selectItem id="citySelectOneId" itemLabel="Ընտրիր մեկը"/>
                                                                 <f:selectItems id="citiesId"
                                                                                itemLabel="#{city.name}"
@@ -750,14 +750,14 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="sectionCityId" value="Քաղաք/Գյուղ"/>
-                                                            <p:selectOneMenu id="sectionCityId" value="#{settingsForm.editedSection.cityId}" styleClass="form-control input-c"
-                                                                             requiredMessage="Քաղաք/Գյուղը պարտադիր դաշտ է">
-                                                                <f:selectItem id="sectionCitySelectOneId" itemLabel="Ընտրիր մեկը"/>
-                                                                <f:selectItems id="sectionCitiesId"
-                                                                               itemLabel="#{city.name}"
-                                                                               itemValue="#{city.id}"
-                                                                               value="#{settingsForm.cache.cities}" var="city"/>
+                                                            <p:outputLabel for="sectionRegionId" value="Շրջան"/>
+                                                            <p:selectOneMenu id="sectionRegionId" value="#{settingsForm.editedSection.regionId}" styleClass="form-control input-c"
+                                                                             requiredMessage="Շրջան պարտադիր դաշտ է">
+                                                                <f:selectItem id="sectionRegionSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                                                                <f:selectItems id="sectionRegionsId"
+                                                                               itemLabel="#{region.name}"
+                                                                               itemValue="#{region.id}"
+                                                                               value="#{settingsForm.cache.regions}" var="region"/>
                                                             </p:selectOneMenu>
                                                         </div>
                                                     </div>
@@ -820,17 +820,17 @@
                                                 <h:panelGroup layout="block">
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="streetNameId" value="Փողոց"/>
+                                                            <p:outputLabel for="streetNameId" value="Գյուղ/Փողոց"/>
                                                             <p:inputText id="streetNameId" value="#{settingsForm.editedStreet.name}" styleClass="form-control"
                                                                          required="true"
-                                                                         requiredMessage="Փողոցը պարտադիր դաշտ է" placeholder="Փողոց"/>
+                                                                         requiredMessage="Գյուղ/Փողոցը պարտադիր դաշտ է" placeholder="Փողոց"/>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="streetCityId" value="Քաղաք/Գյուղ"/>
+                                                            <p:outputLabel for="streetCityId" value="Քաղաք"/>
                                                             <p:selectOneMenu id="streetCityId" value="#{settingsForm.editedStreet.cityId}" styleClass="form-control input-c"
-                                                                             requiredMessage="Քաղաք/Գյուղը պարտադիր դաշտ է">
+                                                                             requiredMessage="Քաղաք պարտադիր դաշտ է">
                                                                 <f:selectItem id="streetCitySelectOneId" itemLabel="Ընտրիր մեկը"/>
                                                                 <f:selectItems id="streetCitiesId"
                                                                                itemLabel="#{city.name}"
