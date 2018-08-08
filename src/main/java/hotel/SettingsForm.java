@@ -171,22 +171,40 @@ public class SettingsForm implements Serializable {
     }
 
     public void saveCity(){
-        if (this.editedCity.getId() != null) {
-            if (cache.cityDao.update(this.editedCity)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
+        if(validateCity(this.editedCity)) {
+            if (this.editedCity.getId() != null) {
+                if (cache.cityDao.update(this.editedCity)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
+            } else {
+                if (cache.cityDao.insert(this.editedCity)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
             }
-        } else {
-            if (cache.cityDao.insert(this.editedCity)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
-            }
+            cache.resetCities();  // TODO load anel kam jnjel u avelacnel mej@
+            this.editedCity = new City();
+            this.reloadPage();
         }
-        cache.resetCities();  // TODO load anel kam jnjel u avelacnel mej@
-        this.editedCity = new City();
-        this.reloadPage();
+    }
+
+    public boolean validateCity(City city) {
+        boolean isValid = true;
+        if(city.getName() == null || city.getName().trim().isEmpty()){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Քաղաքը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("cityFormId:nameId", facesMessage);
+            isValid = false;
+        }
+        if(city.getRegionId() == null){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Շրջանը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("cityFormId:regionId", facesMessage);
+            isValid = false;
+        }
+
+        return isValid;
     }
 
 
@@ -234,24 +252,41 @@ public class SettingsForm implements Serializable {
     }
 
     public void saveAsht(){
-        if (this.editedAsht.getId() != null) {
-            if (cache.ashtDao.update(this.editedAsht)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
+        if(validateAsht(this.editedAsht)) {
+            if (this.editedAsht.getId() != null) {
+                if (cache.ashtDao.update(this.editedAsht)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
+            } else {
+                if (cache.ashtDao.insert(this.editedAsht)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
             }
-        } else {
-            if (cache.ashtDao.insert(this.editedAsht)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
-            }
+            cache.resetAshts();  // TODO load anel kam jnjel u avelacnel mej@
+            this.editedAsht = new Asht();
+            this.reloadPage();
         }
-        cache.resetAshts();  // TODO load anel kam jnjel u avelacnel mej@
-        this.editedAsht = new Asht();
-        this.reloadPage();
     }
 
+    public boolean validateAsht(Asht asht) {
+        boolean isValid = true;
+        if(asht.getName() == null || asht.getName().trim().isEmpty()){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "ԱՇՏը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("ashtFormId:ashtNameId", facesMessage);
+            isValid = false;
+        }
+        if(asht.getRegionId() == null){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Շրջանը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("ashtFormId:ashtRegionId", facesMessage);
+            isValid = false;
+        }
+
+        return isValid;
+    }
     // --------- GRP Form
 
     private GRP editedGrp;
@@ -296,22 +331,40 @@ public class SettingsForm implements Serializable {
     }
 
     public void saveGrp(){
-        if (this.editedGrp.getId() != null) {
-            if (cache.grpDao.update(this.editedGrp)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
+        if(validateGrp(this.editedGrp)) {
+            if (this.editedGrp.getId() != null) {
+                if (cache.grpDao.update(this.editedGrp)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
+            } else {
+                if (cache.grpDao.insert(this.editedGrp)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
             }
-        } else {
-            if (cache.grpDao.insert(this.editedGrp)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
-            }
+            cache.resetGrps(); // TODO load anel kam jnjel u avelacnel mej@
+            this.editedGrp = new GRP();
+            this.reloadPage();
         }
-        cache.resetGrps(); // TODO load anel kam jnjel u avelacnel mej@
-        this.editedGrp = new GRP();
-        this.reloadPage();
+    }
+
+    public boolean validateGrp(GRP grp) {
+        boolean isValid = true;
+        if(grp.getName() == null || grp.getName().trim().isEmpty()){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "ԳԿԿն պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("grpFormId:grpNameId", facesMessage);
+            isValid = false;
+        }
+        if(grp.getCityId() == null){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Քաղաքը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("grpFormId:cityId", facesMessage);
+            isValid = false;
+        }
+
+        return isValid;
     }
 
     // --------- GRS Form
@@ -358,22 +411,34 @@ public class SettingsForm implements Serializable {
     }
 
     public void saveGrs(){
-        if (this.editedGrs.getId() != null) {
-            if (cache.grsDao.update(this.editedGrs)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
+        if(validateGrs(this.editedGrs)) {
+            if (this.editedGrs.getId() != null) {
+                if (cache.grsDao.update(this.editedGrs)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
+            } else {
+                if (cache.grsDao.insert(this.editedGrs)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
             }
-        } else {
-            if (cache.grsDao.insert(this.editedGrs)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
-            }
+            cache.resetGrss(); // TODO load anel kam jnjel u avelacnel mej@
+            this.editedGrs = new GRS();
+            this.reloadPage();
         }
-        cache.resetGrss(); // TODO load anel kam jnjel u avelacnel mej@
-        this.editedGrs = new GRS();
-        this.reloadPage();
+    }
+
+    public boolean validateGrs(GRS grs) {
+        boolean isValid = true;
+        if(grs.getName() == null || grs.getName().trim().isEmpty()){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "ԳՐՍն պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("grsFormId:grsNameId", facesMessage);
+            isValid = false;
+        }
+        return isValid;
     }
 
     // --------- Price List Form
@@ -405,22 +470,34 @@ public class SettingsForm implements Serializable {
 
 
     public void savePrice(){
-        if (this.editedPrice.getId() != null) {
-            if (cache.priceListDao.update(this.editedPrice)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
+        if(validatePriceList(this.editedPrice)) {
+            if (this.editedPrice.getId() != null) {
+                if (cache.priceListDao.update(this.editedPrice)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
+            } else {
+                if (cache.priceListDao.insert(this.editedPrice)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
             }
-        } else {
-            if (cache.priceListDao.insert(this.editedPrice)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
-            }
+            cache.resetPriceList(); // TODO load anel kam jnjel u avelacnel mej@
+            this.editedPrice = new PriceList();
+            this.reloadPage();
         }
-        cache.resetPriceList(); // TODO load anel kam jnjel u avelacnel mej@
-        this.editedPrice = new PriceList();
-        this.reloadPage();
+    }
+
+    public boolean validatePriceList(PriceList priceList) {
+        boolean isValid = true;
+        if(priceList.getName() == null || priceList.getName().trim().isEmpty()){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Գինը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("priceFormId:editedPriceId", facesMessage);
+            isValid = false;
+        }
+        return isValid;
     }
 
     // --------- Region Form
@@ -467,22 +544,34 @@ public class SettingsForm implements Serializable {
     }
 
     public void saveRegion(){
-        if (this.editedRegion.getId() != null) {
-            if (cache.regionDao.update(this.editedRegion)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
+        if(validateRegion(this.editedRegion)) {
+            if (this.editedRegion.getId() != null) {
+                if (cache.regionDao.update(this.editedRegion)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
+            } else {
+                if (cache.regionDao.insert(this.editedRegion)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
             }
-        } else {
-            if (cache.regionDao.insert(this.editedRegion)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
-            }
+            cache.resetRegions(); // TODO load anel kam jnjel u avelacnel mej@
+            this.editedRegion = new Region();
+            this.reloadPage();
         }
-        cache.resetRegions(); // TODO load anel kam jnjel u avelacnel mej@
-        this.editedRegion = new Region();
-        this.reloadPage();
+    }
+
+    public boolean validateRegion(Region region) {
+        boolean isValid = true;
+        if(region.getName() == null || region.getName().trim().isEmpty()){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Շրջանը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("regionFormId:regionNameId", facesMessage);
+            isValid = false;
+        }
+        return isValid;
     }
 
     // --------- Section Form
@@ -529,22 +618,40 @@ public class SettingsForm implements Serializable {
     }
 
     public void saveSection(){
-        if (this.editedSection.getId() != null) {
-            if (cache.sectionDao.update(this.editedSection)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
+        if(validateSection(this.editedSection)) {
+            if (this.editedSection.getId() != null) {
+                if (cache.sectionDao.update(this.editedSection)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
+            } else {
+                if (cache.sectionDao.insert(this.editedSection)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
             }
-        } else {
-            if (cache.sectionDao.insert(this.editedSection)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
-            }
+            cache.resetSections(); // TODO load anel kam jnjel u avelacnel mej@
+            this.editedSection = new Section();
+            this.reloadPage();
         }
-        cache.resetSections(); // TODO load anel kam jnjel u avelacnel mej@
-        this.editedSection = new Section();
-        this.reloadPage();
+    }
+
+    public boolean validateSection(Section section) {
+        boolean isValid = true;
+        if(section.getName() == null || section.getName().trim().isEmpty()){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Մասը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("sectionFormId:sectionNameId", facesMessage);
+            isValid = false;
+        }
+        if(section.getRegionId() == null){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Շրջանը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("sectionFormId:sectionRegionId", facesMessage);
+            isValid = false;
+        }
+
+        return isValid;
     }
 
     // --------- SubSection Form
@@ -591,22 +698,40 @@ public class SettingsForm implements Serializable {
     }
 
     public void saveSubSection(){
-        if (this.editedSubSection.getId() != null) {
-            if (cache.subSectionDao.update(this.editedSubSection)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
+        if(validateSubSection(this.editedSubSection)) {
+            if (this.editedSubSection.getId() != null) {
+                if (cache.subSectionDao.update(this.editedSubSection)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
+            } else {
+                if (cache.subSectionDao.insert(this.editedSubSection)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
             }
-        } else {
-            if (cache.subSectionDao.insert(this.editedSubSection)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
-            }
+            cache.resetSubSections(); // TODO load anel kam jnjel u avelacnel mej@
+            this.editedSubSection = new SubSection();
+            this.reloadPage();
         }
-        cache.resetSubSections(); // TODO load anel kam jnjel u avelacnel mej@
-        this.editedSubSection = new SubSection();
-        this.reloadPage();
+    }
+
+    public boolean validateSubSection(SubSection subSection) {
+        boolean isValid = true;
+        if(subSection.getName() == null || subSection.getName().trim().isEmpty()){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ենթատեղամասը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("subSectionFormId:subSectionNameId", facesMessage);
+            isValid = false;
+        }
+        if(subSection.getSectionId() == null){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Մասը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("subSectionFormId:subSectionSectionId", facesMessage);
+            isValid = false;
+        }
+
+        return isValid;
     }
 
     // --------- Street Form
@@ -653,22 +778,40 @@ public class SettingsForm implements Serializable {
     }
 
     public void saveStreet(){
-        if (this.editedStreet.getId() != null) {
-            if (cache.streetDao.update(this.editedStreet)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
+        if(validateStreet(this.editedStreet)) {
+            if (this.editedStreet.getId() != null) {
+                if (cache.streetDao.update(this.editedStreet)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
+            } else {
+                if (cache.streetDao.insert(this.editedStreet)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
             }
-        } else {
-            if (cache.streetDao.insert(this.editedStreet)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
-            }
+            cache.resetStreets(); // TODO load anel kam jnjel u avelacnel mej@
+            this.editedStreet = new Street();
+            this.reloadPage();
         }
-        cache.resetStreets(); // TODO load anel kam jnjel u avelacnel mej@
-        this.editedStreet = new Street();
-        this.reloadPage();
+    }
+
+    public boolean validateStreet(Street street) {
+        boolean isValid = true;
+        if(street.getName() == null || street.getName().trim().isEmpty()){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Գյուղ/Փողոցը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("streetFormId:streetNameId", facesMessage);
+            isValid = false;
+        }
+        if(street.getCityId() == null){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Քաղաքը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("streetFormId:streetCityId", facesMessage);
+            isValid = false;
+        }
+
+        return isValid;
     }
 
     // --------- Type Form
@@ -715,22 +858,35 @@ public class SettingsForm implements Serializable {
     }
 
     public void saveType(){
-        if (this.editedType.getId() != null) {
-            if (cache.typeDao.update(this.editedType)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
+        if(validateType(this.editedType)) {
+            if (this.editedType.getId() != null) {
+                if (cache.typeDao.update(this.editedType)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
+            } else {
+                if (cache.typeDao.insert(this.editedType)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
             }
-        } else {
-            if (cache.typeDao.insert(this.editedType)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
-            }
+            cache.resetTypes(); // TODO load anel kam jnjel u avelacnel mej@
+            this.editedType = new Type();
+            this.reloadPage();
         }
-        cache.resetTypes(); // TODO load anel kam jnjel u avelacnel mej@
-        this.editedType = new Type();
-        this.reloadPage();
+    }
+
+    public boolean validateType(Type type) {
+        boolean isValid = true;
+        if(type.getName() == null || type.getName().trim().isEmpty()){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Գ/Հ տիպը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("typeFormId:typeNameId", facesMessage);
+            isValid = false;
+        }
+
+        return isValid;
     }
 
     // --------- ViolationCode Form
@@ -777,22 +933,35 @@ public class SettingsForm implements Serializable {
     }
 
     public void saveViolationCode(){
-        if (this.editedViolationCode.getId() != null) {
-            if (cache.violationCodeDao.update(this.editedViolationCode)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
+        if(validateViolationCodeNumber(this.editedViolationCode)) {
+            if (this.editedViolationCode.getId() != null) {
+                if (cache.violationCodeDao.update(this.editedViolationCode)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
+            } else {
+                if (cache.violationCodeDao.insert(this.editedViolationCode)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
             }
-        } else {
-            if (cache.violationCodeDao.insert(this.editedViolationCode)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
-            }
+            cache.resetViolationCodes(); // TODO load anel kam jnjel u avelacnel mej@
+            this.editedViolationCode = new ViolationCode();
+            this.reloadPage();
         }
-        cache.resetViolationCodes(); // TODO load anel kam jnjel u avelacnel mej@
-        this.editedViolationCode = new ViolationCode();
-        this.reloadPage();
+    }
+
+    public boolean validateViolationCodeNumber(ViolationCode violationCode) {
+        boolean isValid = true;
+        if(violationCode.getName() == null || violationCode.getName().trim().isEmpty()){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Խախտման կոդը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("violationCodeFormId:violationCodeNameId", facesMessage);
+            isValid = false;
+        }
+
+        return isValid;
     }
 
     // --------- Master Form
@@ -839,22 +1008,60 @@ public class SettingsForm implements Serializable {
     }
 
     public void saveMaster(){
-        if (this.editedMaster.getId() != null) {
-            if (cache.masterDao.update(this.editedMaster)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
+        if(validateMaster(this.editedMaster)) {
+            if (this.editedMaster.getId() != null) {
+                if (cache.masterDao.update(this.editedMaster)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
+            } else {
+                if (cache.masterDao.insert(this.editedMaster)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
             }
-        } else {
-            if (cache.masterDao.insert(this.editedMaster)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
-            }
+            cache.resetMasters();  // TODO load anel kam jnjel u avelacnel mej@
+            this.editedMaster = new Master();
+            this.reloadPage();
         }
-        cache.resetMasters();  // TODO load anel kam jnjel u avelacnel mej@
-        this.editedMaster = new Master();
-        this.reloadPage();
+    }
+
+    public boolean validateMaster(Master master) {
+        boolean isValid = true;
+        if(master.getFirstName() == null || master.getFirstName().trim().isEmpty()){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Անունը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("masterFormId:masterFirstNameId", facesMessage);
+            isValid = false;
+        }
+        if(master.getLastName() == null || master.getLastName().trim().isEmpty()){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ազգանունը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("masterFormId:masterLastNameId", facesMessage);
+            isValid = false;
+        }
+        if(master.getRegionId() == null){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Շրջանը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("masterFormId:masterRegionId", facesMessage);
+            isValid = false;
+        }
+        if(master.getAshtId() == null){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "ԱՇՏը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("masterFormId:masterAshtId", facesMessage);
+            isValid = false;
+        }
+        if(master.getSectionId() == null){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Մասը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("masterFormId:masterSectionId", facesMessage);
+            isValid = false;
+        }
+        if(master.getSubSectionId() == null){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ենթատեղամասը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("masterFormId:masterSubSectionId", facesMessage);
+            isValid = false;
+        }
+
+        return isValid;
     }
 
     // --------- Locksmith Form
@@ -907,22 +1114,60 @@ public class SettingsForm implements Serializable {
     }
 
     public void saveLocksmith(){
-        if (this.editedLocksmith.getId() != null) {
-            if (cache.locksmithDao.update(this.editedLocksmith)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
+        if(validateLocksmith(this.editedLocksmith)) {
+            if (this.editedLocksmith.getId() != null) {
+                if (cache.locksmithDao.update(this.editedLocksmith)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Փոփոխությունը Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
+            } else {
+                if (cache.locksmithDao.insert(this.editedLocksmith)) {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
+                    facesContext.addMessage(null, facesMessage);
+                }
             }
-        } else {
-            if (cache.locksmithDao.insert(this.editedLocksmith)) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage facesMessage = new FacesMessage("Հաջողությամբ պահպանվել է");
-                facesContext.addMessage(null, facesMessage);
-            }
+            cache.resetLocksmiths();  // TODO load anel kam jnjel u avelacnel mej@
+            this.editedLocksmith = new Locksmith();
+            this.reloadPage();
         }
-        cache.resetLocksmiths();  // TODO load anel kam jnjel u avelacnel mej@
-        this.editedLocksmith = new Locksmith();
-        this.reloadPage();
+    }
+
+    public boolean validateLocksmith(Locksmith locksmith) {
+        boolean isValid = true;
+        if(locksmith.getFirstName() == null || locksmith.getFirstName().trim().isEmpty()){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Անունը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("locksmithFormId:locksmithFirstNameId", facesMessage);
+            isValid = false;
+        }
+        if(locksmith.getLastName() == null || locksmith.getLastName().trim().isEmpty()){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ազգանունը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("locksmithFormId:locksmithLastNameId", facesMessage);
+            isValid = false;
+        }
+        if(locksmith.getRegionId() == null){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Շրջանը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("locksmithFormId:locksmithRegionId", facesMessage);
+            isValid = false;
+        }
+        if(locksmith.getAshtId() == null){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "ԱՇՏը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("locksmithFormId:locksmithAshtId", facesMessage);
+            isValid = false;
+        }
+        if(locksmith.getSectionId() == null){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Մասը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("locksmithFormId:locksmithSectionId", facesMessage);
+            isValid = false;
+        }
+        if(locksmith.getSubSectionId() == null){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ենթատեղամասը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("locksmithFormId:locksmithSubSectionId", facesMessage);
+            isValid = false;
+        }
+
+        return isValid;
     }
 
     public List<Asht> ashtsByRegionId(Integer regionId) {

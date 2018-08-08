@@ -10,36 +10,32 @@
             <h:panelGroup id="resetId" layout="block">
                 <div class="row">
                     <div class="col-sm-4 col-md-4">
-                        <p:outputLabel for="id" value="Բաժանորդի համար"/>
+                        <p:outputLabel for="id" value="Բաժանորդի համար" styleClass="required"/>
                         <p:inputText id="id" maxlength="11" value="#{portfolioForm.client.id}"  disabled="#{not portfolioForm.client.isNew()}">
                         </p:inputText>
+                        <p:message for="id" display="text"/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-4 col-md-4">
-                        <p:outputLabel for="firstNameId" value="Անուն"/>
-                        <p:inputText id="firstNameId" value="#{portfolioForm.client.firstName}" styleClass="form-control"
-                                     required="true"
-                                     requiredMessage="Անունը պարտադիր դաշտ է" placeholder="Անուն"/>
+                        <p:outputLabel for="firstNameId" value="Անուն" styleClass="required"/>
+                        <p:inputText id="firstNameId" value="#{portfolioForm.client.firstName}" styleClass="form-control" placeholder="Անուն"/>
+                        <p:message for="firstNameId" display="text"/>
                     </div>
                     <div class="col-sm-4 col-md-4">
-                        <p:outputLabel for="lastNameId" value="Ազգանուն"/>
-                        <p:inputText id="lastNameId" value="#{portfolioForm.client.lastName}" styleClass="form-control"
-                                     required="true"
-                                     requiredMessage="Ազգանունը պարտադիր դաշտ է" placeholder="Ազգանուն"/>
+                        <p:outputLabel for="lastNameId" value="Ազգանուն" styleClass="required"/>
+                        <p:inputText id="lastNameId" value="#{portfolioForm.client.lastName}" styleClass="form-control" placeholder="Ազգանուն"/>
+                        <p:message for="lastNameId" display="text"/>
                     </div>
                     <div class="col-sm-4 col-md-4">
                         <p:outputLabel for="middleNameId" value="Հայրանուն"/>
-                        <p:inputText id="middleNameId" value="#{portfolioForm.client.middleName}" styleClass="form-control"
-                                     required="true"
-                                     requiredMessage="Հայրանունը պարտադիր դաշտ է" placeholder="Հայրանուն"/>
+                        <p:inputText id="middleNameId" value="#{portfolioForm.client.middleName}" styleClass="form-control" placeholder="Հայրանուն"/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-4 col-md-4">
-                        <p:outputLabel for="regionId" value="Շրջան"/>
-                        <p:selectOneMenu id="regionId" value="#{portfolioForm.client.regionId}" styleClass="form-control input-c"
-                                         requiredMessage="Շրջան պարտադիր դաշտ է">
+                        <p:outputLabel for="regionId" value="Շրջան" styleClass="required"/>
+                        <p:selectOneMenu id="regionId" value="#{portfolioForm.client.regionId}" styleClass="form-control input-c" >
                             <f:selectItem id="regionSelectOneId" itemLabel="Ընտրիր մեկը"/>
                             <f:selectItems id="regionsId"
                                            itemLabel="#{region.name}"
@@ -47,11 +43,11 @@
                                            value="#{portfolioForm.cache.regions}" var="region"/>
                             <p:ajax event="change" process="@this" update="@this cityPanelId streetPanelId location1 location2 ashtId sectionId subSectionId" listener="#{portfolioForm.resetCity}"/>
                         </p:selectOneMenu>
+                        <p:message for="regionId" display="text"/>
                     </div>
                     <h:panelGroup class="col-sm-4 col-md-4" id="cityPanelId">
-                        <p:outputLabel for="cityId" value="Քաղաք"/>
-                        <p:selectOneMenu id="cityId" value="#{portfolioForm.client.cityId}" styleClass="form-control input-c"
-                                         requiredMessage="Քաղաք պարտադիր դաշտ է">
+                        <p:outputLabel for="cityId" value="Քաղաք" styleClass="required"/>
+                        <p:selectOneMenu id="cityId" value="#{portfolioForm.client.cityId}" styleClass="form-control input-c">
                             <f:selectItem id="citySelectOneId" itemLabel="Ընտրիր մեկը"/>
                             <f:selectItems id="citysId"
                                            itemLabel="#{city.name}"
@@ -60,9 +56,10 @@
                             <p:ajax event="change" process="@this" update="@this streetId"
                                     listener="#{portfolioForm.resetStreet}"/>
                         </p:selectOneMenu>
+                        <p:message for="cityId" display="text"/>
                     </h:panelGroup>
                     <h:panelGroup class="col-sm-4 col-md-4" id="streetPanelId">
-                        <p:outputLabel for="streetId" value="Գյուղ/Փողոց"/>
+                        <p:outputLabel for="streetId" value="Գյուղ/Փողոց" styleClass="required"/>
                         <p:selectOneMenu id="streetId" value="#{portfolioForm.client.streetId}"
                                          styleClass="form-control input-c">
                             <f:selectItem id="streetSelectOneId" itemLabel="Ընտրիր մեկը"/>
@@ -72,6 +69,7 @@
                                            value="#{portfolioForm.streetsByCityId(portfolioForm.client.cityId)}"
                                            var="street"/>
                         </p:selectOneMenu>
+                        <p:message for="streetId" display="text"/>
                     </h:panelGroup>
                 </div>
                 <h:panelGroup class="row" id="location1" layout="block">
@@ -127,15 +125,12 @@
                 <div class="row">
                     <div class="col-sm-4 col-md-4">
                         <p:outputLabel for="phoneNumberId" value="Հեռախոս"/>
-                        <p:inputMask id="phoneNumberId" value="#{portfolioForm.client.phoneNumber}" styleClass="form-control"
-                                     required="true" requiredMessage="Հեռախոսը պարտադիր դաշտ է" placeholder="Հեռախոս"
+                        <p:inputMask id="phoneNumberId" value="#{portfolioForm.client.phoneNumber}" styleClass="form-control" placeholder="Հեռախոս"
                                      mask="999-999"/>
                     </div>
                     <div class="col-sm-4 col-md-4">
                         <p:outputLabel for="counterNumberId" value="Ազդանշանի համար"/>
-                        <p:inputText id="counterNumberId" value="#{portfolioForm.client.counterNumber}" styleClass="form-control"
-                                     required="true"
-                                     requiredMessage="Հաշվիչի համարը պարտադիր դաշտ է" placeholder="Հաշվիչի համար"/>
+                        <p:inputText id="counterNumberId" value="#{portfolioForm.client.counterNumber}" styleClass="form-control" placeholder="Ազդանշանի համար"/>
                     </div>
                 </div>
                 <div class="row">

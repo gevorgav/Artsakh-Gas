@@ -331,7 +331,40 @@ public class PortfolioForm {
     }
 
     public boolean validate(Client client) {
-        return true;
+        boolean isValid = true;
+        if(client.getId() == null || client.getId().trim().isEmpty()){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Բաժանորդի համարը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("clientEditFormId:id", facesMessage);
+            isValid = false;
+        }
+        if(client.getFirstName() == null || client.getFirstName().trim().isEmpty()){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Անունը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("clientEditFormId:firstNameId", facesMessage);
+            isValid = false;
+        }
+        if(client.getLastName() == null || client.getLastName().trim().isEmpty()){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ազգանունը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("clientEditFormId:lastNameId", facesMessage);
+            isValid = false;
+        }
+        if(client.getRegionId() == null){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Շրջանը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("clientEditFormId:regionId", facesMessage);
+            isValid = false;
+        }
+        if(client.getCityId() == null){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Քաղաքը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("clientEditFormId:cityId", facesMessage);
+            isValid = false;
+        }
+
+        if(client.getStreetId() == null){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Գյուղ/Փողոցը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("clientEditFormId:streetId", facesMessage);
+            isValid = false;
+        }
+
+        return isValid;
     }
 
     public void addNewClient(){

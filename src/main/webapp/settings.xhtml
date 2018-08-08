@@ -37,6 +37,7 @@
     <link rel="stylesheet" href="assets/styles/app.css" type="text/css"/>
     <!-- endbuild -->
     <link rel="stylesheet" href="assets/styles/font.css" type="text/css"/>
+    <link rel="stylesheet" href="resources/main/ui/style.css" />
 
 </h:head>
 <body>
@@ -543,19 +544,19 @@
                                         <h:panelGroup layout="block" class="padding" id="editFormId"
                                                       style="max-width: 800px; margin: 0 auto;">
                                             <!--Asht-->
-                                            <h:form rendered="#{settingsForm.categoryTypeId eq 1}">
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 1}" id="ashtFormId">
                                                 <h:panelGroup layout="block">
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="ashtNameId" value="ԱՇՏ"/>
+                                                            <p:outputLabel for="ashtNameId" value="ԱՇՏ" styleClass="required"/>
                                                             <p:inputText id="ashtNameId" value="#{settingsForm.editedAsht.name}" styleClass="form-control"
-                                                                         required="true"
-                                                                         requiredMessage="ԱՇՏը պարտադիր դաշտ է" placeholder="ԱՇՏ"/>
+                                                                         placeholder="ԱՇՏ"/>
+                                                            <p:message for="ashtNameId" display="text"/>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="ashtRegionId" value="Շրջան"/>
+                                                            <p:outputLabel for="ashtRegionId" value="Շրջան" styleClass="required"/>
                                                             <p:selectOneMenu id="ashtRegionId" value="#{settingsForm.editedAsht.regionId}" styleClass="form-control input-c"
                                                                              requiredMessage="Շրջան պարտադիր դաշտ է">
                                                                 <f:selectItem id="ashtRegionSelectOneId" itemLabel="Ընտրիր մեկը"/>
@@ -564,6 +565,7 @@
                                                                                itemValue="#{region.id}"
                                                                                value="#{settingsForm.cache.regions}" var="region"/>
                                                             </p:selectOneMenu>
+                                                            <p:message for="ashtRegionId" display="text"/>
                                                         </div>
                                                     </div>
                                                 </h:panelGroup>
@@ -582,27 +584,27 @@
                                                 </c:if>
                                             </h:form>
                                             <!--City-->
-                                            <h:form rendered="#{settingsForm.categoryTypeId eq 2}">
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 2}" id="cityFormId">
                                                 <h:panelGroup layout="block">
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="nameId" value="Քաղաք"/>
+                                                            <p:outputLabel for="nameId" value="Քաղաք" styleClass="required"/>
                                                             <p:inputText id="nameId" value="#{settingsForm.editedCity.name}" styleClass="form-control"
-                                                                         required="true"
-                                                                         requiredMessage="Քաղաքը պարտադիր դաշտ է" placeholder="Քաղաք"/>
+                                                                         placeholder="Քաղաք"/>
+                                                            <p:message for="nameId" display="text"/>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="regionId" value="Շրջան"/>
-                                                            <p:selectOneMenu id="regionId" value="#{settingsForm.editedCity.regionId}" styleClass="form-control input-c"
-                                                                             requiredMessage="Շրջան պարտադիր դաշտ է">
+                                                            <p:outputLabel for="regionId" value="Շրջան" styleClass="required"/>
+                                                            <p:selectOneMenu id="regionId" value="#{settingsForm.editedCity.regionId}" styleClass="form-control input-c">
                                                                 <f:selectItem id="regionSelectOneId" itemLabel="Ընտրիր մեկը"/>
                                                                 <f:selectItems id="regionsId"
                                                                                itemLabel="#{region.name}"
                                                                                itemValue="#{region.id}"
                                                                                value="#{settingsForm.cache.regions}" var="region"/>
                                                             </p:selectOneMenu>
+                                                            <p:message for="regionId" display="text"/>
                                                         </div>
                                                     </div>
                                                 </h:panelGroup>
@@ -621,27 +623,27 @@
                                                 </c:if>
                                             </h:form>
                                             <!--GRP-->
-                                            <h:form rendered="#{settingsForm.categoryTypeId eq 3}">
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 3}" id="grpFormId">
                                                 <h:panelGroup layout="block">
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="grpNameId" value="ԳԿԿ"/>
+                                                            <p:outputLabel for="grpNameId" value="ԳԿԿ" styleClass="required"/>
                                                             <p:inputText id="grpNameId" value="#{settingsForm.editedGrp.name}" styleClass="form-control"
-                                                                         required="true"
-                                                                         requiredMessage="ԳԿԿն պարտադիր դաշտ է" placeholder="ԳԿԿ"/>
+                                                                         placeholder="ԳԿԿ"/>
+                                                            <p:message for="grpNameId" display="text"/>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="cityId" value="Քաղաք"/>
-                                                            <p:selectOneMenu id="cityId" value="#{settingsForm.editedGrp.cityId}" styleClass="form-control input-c"
-                                                                             requiredMessage="Քաղաք պարտադիր դաշտ է">
+                                                            <p:outputLabel for="cityId" value="Քաղաք" styleClass="required"/>
+                                                            <p:selectOneMenu id="cityId" value="#{settingsForm.editedGrp.cityId}" styleClass="form-control input-c">
                                                                 <f:selectItem id="citySelectOneId" itemLabel="Ընտրիր մեկը"/>
                                                                 <f:selectItems id="citiesId"
                                                                                itemLabel="#{city.name}"
                                                                                itemValue="#{city.id}"
                                                                                value="#{settingsForm.cache.cities}" var="city"/>
                                                             </p:selectOneMenu>
+                                                            <p:message for="cityId" display="text"/>
                                                         </div>
                                                     </div>
                                                 </h:panelGroup>
@@ -660,14 +662,14 @@
                                                 </c:if>
                                             </h:form>
                                             <!--GRS-->
-                                            <h:form rendered="#{settingsForm.categoryTypeId eq 4}">
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 4}" id="grsFormId">
                                                 <h:panelGroup layout="block">
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="grsNameId" value="ԳԲԿ"/>
+                                                            <p:outputLabel for="grsNameId" value="ԳՐՍ" styleClass="required"/>
                                                             <p:inputText id="grsNameId" value="#{settingsForm.editedGrs.name}" styleClass="form-control"
-                                                                         required="true"
-                                                                         requiredMessage="ԳԲԿն պարտադիր դաշտ է" placeholder="ԳԲԿ"/>
+                                                                         placeholder="ԳՐՍ"/>
+                                                            <p:message for="grsNameId" display="text"/>
                                                         </div>
                                                     </div>
                                                 </h:panelGroup>
@@ -686,14 +688,15 @@
                                                 </c:if>
                                             </h:form>
                                             <!--Price-->
-                                            <h:form rendered="#{settingsForm.categoryTypeId eq 5}">
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 5}" id="priceFormId">
                                                 <h:panelGroup layout="block">
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <h:outputLabel class="form-control-label">Գինը ${settingsForm.editedPrice.name} համար</h:outputLabel>
+                                                            <h:outputLabel class="form-control-label" styleClass="required">Գինը ${settingsForm.editedPrice.name} համար</h:outputLabel>
                                                             <p:inputText  value="#{settingsForm.editedPrice.price}"
                                                                            id="editedPriceId">
                                                             </p:inputText>
+                                                            <p:message for="editedPriceId" display="text"/>
                                                         </div>
                                                     </div>
                                                 </h:panelGroup>
@@ -712,14 +715,13 @@
                                                 </c:if>
                                             </h:form>
                                             <!--Region-->
-                                            <h:form rendered="#{settingsForm.categoryTypeId eq 6}">
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 6}" id="regionFormId">
                                                 <h:panelGroup layout="block">
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="regionNameId" value="Շրջան"/>
-                                                            <p:inputText id="regionNameId" value="#{settingsForm.editedRegion.name}" styleClass="form-control"
-                                                                         required="true"
-                                                                         requiredMessage="Շրջանը պարտադիր դաշտ է" placeholder="Շրջան"/>
+                                                            <p:outputLabel for="regionNameId" value="Շրջան" styleClass="required"/>
+                                                            <p:inputText id="regionNameId" value="#{settingsForm.editedRegion.name}" styleClass="form-control" placeholder="Շրջան"/>
+                                                            <p:message for="regionNameId" display="text"/>
                                                         </div>
                                                     </div>
                                                 </h:panelGroup>
@@ -738,19 +740,19 @@
                                                 </c:if>
                                             </h:form>
                                             <!--Section-->
-                                            <h:form rendered="#{settingsForm.categoryTypeId eq 7}">
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 7}" id="sectionFormId">
                                                 <h:panelGroup layout="block">
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="sectionNameId" value="Մաս"/>
+                                                            <p:outputLabel for="sectionNameId" value="Մաս" styleClass="required"/>
                                                             <p:inputText id="sectionNameId" value="#{settingsForm.editedSection.name}" styleClass="form-control"
-                                                                         required="true"
-                                                                         requiredMessage="Մասը պարտադիր դաշտ է" placeholder="Մաս"/>
+                                                                         placeholder="Մաս"/>
+                                                            <p:message for="sectionNameId" display="text"/>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="sectionRegionId" value="Շրջան"/>
+                                                            <p:outputLabel for="sectionRegionId" value="Շրջան" styleClass="required"/>
                                                             <p:selectOneMenu id="sectionRegionId" value="#{settingsForm.editedSection.regionId}" styleClass="form-control input-c"
                                                                              requiredMessage="Շրջան պարտադիր դաշտ է">
                                                                 <f:selectItem id="sectionRegionSelectOneId" itemLabel="Ընտրիր մեկը"/>
@@ -759,6 +761,7 @@
                                                                                itemValue="#{region.id}"
                                                                                value="#{settingsForm.cache.regions}" var="region"/>
                                                             </p:selectOneMenu>
+                                                            <p:message for="sectionRegionId" display="text"/>
                                                         </div>
                                                     </div>
                                                 </h:panelGroup>
@@ -777,27 +780,27 @@
                                                 </c:if>
                                             </h:form>
                                             <!--SubSection-->
-                                            <h:form rendered="#{settingsForm.categoryTypeId eq 8}">
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 8}" id="subSectionFormId">
                                                 <h:panelGroup layout="block">
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="subSectionNameId" value="Ենթատեղամաս"/>
+                                                            <p:outputLabel for="subSectionNameId" value="Ենթատեղամաս" styleClass="required"/>
                                                             <p:inputText id="subSectionNameId" value="#{settingsForm.editedSubSection.name}" styleClass="form-control"
-                                                                         required="true"
-                                                                         requiredMessage="Ենթատեղամասը պարտադիր դաշտ է" placeholder="Ենթատեղամաս"/>
+                                                                         placeholder="Ենթատեղամաս"/>
+                                                            <p:message for="subSectionNameId" display="text"/>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="subSectionSectionId" value="Մաս"/>
-                                                            <p:selectOneMenu id="subSectionSectionId" value="#{settingsForm.editedSubSection.sectionId}" styleClass="form-control input-c"
-                                                                             requiredMessage="Մասը պարտադիր դաշտ է">
+                                                            <p:outputLabel for="subSectionSectionId" value="Մաս" styleClass="required"/>
+                                                            <p:selectOneMenu id="subSectionSectionId" value="#{settingsForm.editedSubSection.sectionId}" styleClass="form-control input-c" >
                                                                 <f:selectItem id="subSectionSectionSelectOneId" itemLabel="Ընտրիր մեկը"/>
                                                                 <f:selectItems id="subSectionSectionsId"
                                                                                itemLabel="#{section.name}"
                                                                                itemValue="#{section.id}"
                                                                                value="#{settingsForm.cache.sections}" var="section"/>
                                                             </p:selectOneMenu>
+                                                            <p:message for="subSectionSectionId" display="text"/>
                                                         </div>
                                                     </div>
                                                 </h:panelGroup>
@@ -816,27 +819,27 @@
                                                 </c:if>
                                             </h:form>
                                             <!--Street-->
-                                            <h:form rendered="#{settingsForm.categoryTypeId eq 9}">
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 9}" id="streetFormId">
                                                 <h:panelGroup layout="block">
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="streetNameId" value="Գյուղ/Փողոց"/>
+                                                            <p:outputLabel for="streetNameId" value="Գյուղ/Փողոց" styleClass="required"/>
                                                             <p:inputText id="streetNameId" value="#{settingsForm.editedStreet.name}" styleClass="form-control"
-                                                                         required="true"
-                                                                         requiredMessage="Գյուղ/Փողոցը պարտադիր դաշտ է" placeholder="Փողոց"/>
+                                                                         placeholder="Փողոց"/>
+                                                            <p:message for="streetNameId" display="text"/>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="streetCityId" value="Քաղաք"/>
-                                                            <p:selectOneMenu id="streetCityId" value="#{settingsForm.editedStreet.cityId}" styleClass="form-control input-c"
-                                                                             requiredMessage="Քաղաք պարտադիր դաշտ է">
+                                                            <p:outputLabel for="streetCityId" value="Քաղաք" styleClass="required"/>
+                                                            <p:selectOneMenu id="streetCityId" value="#{settingsForm.editedStreet.cityId}" styleClass="form-control input-c">
                                                                 <f:selectItem id="streetCitySelectOneId" itemLabel="Ընտրիր մեկը"/>
                                                                 <f:selectItems id="streetCitiesId"
                                                                                itemLabel="#{city.name}"
                                                                                itemValue="#{city.id}"
                                                                                value="#{settingsForm.cache.cities}" var="city"/>
                                                             </p:selectOneMenu>
+                                                            <p:message for="streetCityId" display="text"/>
                                                         </div>
                                                     </div>
                                                 </h:panelGroup>
@@ -855,14 +858,14 @@
                                                 </c:if>
                                             </h:form>
                                             <!--Type-->
-                                            <h:form rendered="#{settingsForm.categoryTypeId eq 10}">
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 10}" id="typeFormId">
                                                 <h:panelGroup layout="block">
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="typeNameId" value="Գ/Հ համար"/>
+                                                            <p:outputLabel for="typeNameId" value="Գ/Հ տիպ" styleClass="required"/>
                                                             <p:inputText id="typeNameId" value="#{settingsForm.editedType.name}" styleClass="form-control"
-                                                                         required="true"
-                                                                         requiredMessage="Գ/Հ համարն պարտադիր դաշտ է" placeholder="Գ/Հ համար"/>
+                                                                         placeholder="Գ/Հ տիպ"/>
+                                                            <p:message for="typeNameId" display="text"/>
                                                         </div>
                                                     </div>
                                                 </h:panelGroup>
@@ -881,14 +884,14 @@
                                                 </c:if>
                                             </h:form>
                                             <!--ViolationCode-->
-                                            <h:form rendered="#{settingsForm.categoryTypeId eq 11}">
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 11}" id="violationCodeFormId">
                                                 <h:panelGroup layout="block">
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="violationCodeNameId" value="Խախտման կոդ"/>
+                                                            <p:outputLabel for="violationCodeNameId" value="Խախտման կոդ" styleClass="required"/>
                                                             <p:inputText id="violationCodeNameId" value="#{settingsForm.editedViolationCode.name}" styleClass="form-control"
-                                                                         required="true"
-                                                                         requiredMessage="Խախտման կոդը պարտադիր դաշտ է" placeholder="Խախտման կոդ"/>
+                                                                         placeholder="Խախտման կոդ"/>
+                                                            <p:message for="violationCodeNameId" display="text"/>
                                                         </div>
                                                         <div class="col-sm-8 col-md-8">
                                                             <p:outputLabel for="violationCodeNameId" value="Նկարագրություն"/>
@@ -910,27 +913,26 @@
                                                 </c:if>
                                             </h:form>
                                             <!--Master-->
-                                            <h:form rendered="#{settingsForm.categoryTypeId eq 12}">
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 12}" id="masterFormId">
                                                 <h:panelGroup layout="block">
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="masterFirstNameId" value="Անուն"/>
+                                                            <p:outputLabel for="masterFirstNameId" value="Անուն" styleClass="required"/>
                                                             <p:inputText id="masterFirstNameId" value="#{settingsForm.editedMaster.firstName}" styleClass="form-control"
-                                                                         required="true"
-                                                                         requiredMessage="Անունը պարտադիր դաշտ է" placeholder="Անուն"/>
+                                                                         placeholder="Անուն"/>
+                                                            <p:message for="masterFirstNameId" display="text"/>
                                                         </div>
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="masterLastNameId" value="Ազգանուն"/>
+                                                            <p:outputLabel for="masterLastNameId" value="Ազգանուն" styleClass="required"/>
                                                             <p:inputText id="masterLastNameId" value="#{settingsForm.editedMaster.lastName}" styleClass="form-control"
-                                                                         required="true"
-                                                                         requiredMessage="Ազգանունը պարտադիր դաշտ է" placeholder="Ազգանուն"/>
+                                                                         placeholder="Ազգանուն"/>
+                                                            <p:message for="masterLastNameId" display="text"/>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="masterRegionId" value="Շրջան"/>
-                                                            <p:selectOneMenu id="masterRegionId" value="#{settingsForm.editedMaster.regionId}" styleClass="form-control input-c"
-                                                                             requiredMessage="Շրջան պարտադիր դաշտ է">
+                                                            <p:outputLabel for="masterRegionId" value="Շրջան" styleClass="required"/>
+                                                            <p:selectOneMenu id="masterRegionId" value="#{settingsForm.editedMaster.regionId}" styleClass="form-control input-c">
                                                                 <f:selectItem id="masterRegionSelectOneId" itemLabel="Ընտրիր մեկը"/>
                                                                 <f:selectItems id="masterRegionsId"
                                                                                itemLabel="#{region.name}"
@@ -939,9 +941,10 @@
                                                                 <p:ajax event="change" process="@this" update="@this masterAshtPanelId masterSectionId masterSubSectionId"
                                                                         listener="#{settingsForm.resetMasterAsht}"/>
                                                             </p:selectOneMenu>
+                                                            <p:message for="masterRegionId" display="text"/>
                                                         </div>
                                                         <h:panelGroup class="col-sm-4 col-md-4" id="masterAshtPanelId">
-                                                            <p:outputLabel for="masterAshtId" value="ԱՇՏ"/>
+                                                            <p:outputLabel for="masterAshtId" value="ԱՇՏ" styleClass="required"/>
                                                             <p:selectOneMenu id="masterAshtId" value="#{settingsForm.editedMaster.ashtId}" styleClass="form-control input-c">
                                                                 <f:selectItem id="masterAshtSelectOneId" itemLabel="Ընտրիր մեկը"/>
                                                                 <f:selectItems id="masterAshtsId"
@@ -949,11 +952,12 @@
                                                                                itemValue="#{asht.id}"
                                                                                value="#{settingsForm.ashtsByRegionId(settingsForm.editedMaster.regionId)}" var="asht"/>
                                                             </p:selectOneMenu>
+                                                            <p:message for="masterAshtId" display="text"/>
                                                         </h:panelGroup>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="masterSectionId" value="Մաս"/>
+                                                            <p:outputLabel for="masterSectionId" value="Մաս" styleClass="required"/>
                                                             <p:selectOneMenu id="masterSectionId" value="#{settingsForm.editedMaster.sectionId}"
                                                                              styleClass="form-control input-c">
                                                                 <f:selectItem id="masterSectionSelectOneId" itemLabel="Ընտրիր մեկը"/>
@@ -965,9 +969,10 @@
                                                                 <p:ajax event="change" process="@this" update="@this masterSubSectionId"
                                                                         listener="#{settingsForm.resetMasterSubSection}"/>
                                                             </p:selectOneMenu>
+                                                            <p:message for="masterSectionId" display="text"/>
                                                         </div>
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="masterSubSectionId" value="Ենթատեղամաս"/>
+                                                            <p:outputLabel for="masterSubSectionId" value="Ենթատեղամաս" styleClass="required"/>
                                                             <p:selectOneMenu id="masterSubSectionId" value="#{settingsForm.editedMaster.subSectionId}"
                                                                              styleClass="form-control input-c">
                                                                 <f:selectItem id="masterSubSectionSelectOneId" itemLabel="Ընտրիր մեկը"/>
@@ -977,6 +982,7 @@
                                                                                value="#{settingsForm.subSectionsBySectionId(settingsForm.editedMaster.sectionId)}"
                                                                                var="subSection"/>
                                                             </p:selectOneMenu>
+                                                            <p:message for="masterSubSectionId" display="text"/>
                                                         </div>
                                                     </div>
                                                 </h:panelGroup>
@@ -994,27 +1000,26 @@
                                                 </c:if>
                                             </h:form>
                                             <!--Locksmith-->
-                                            <h:form rendered="#{settingsForm.categoryTypeId eq 13}">
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 13}" id="locksmithFormId">
                                                 <h:panelGroup layout="block">
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
                                                             <p:outputLabel for="locksmithFirstNameId" value="Անուն"/>
                                                             <p:inputText id="locksmithFirstNameId" value="#{settingsForm.editedLocksmith.firstName}" styleClass="form-control"
-                                                                         required="true"
-                                                                         requiredMessage="Անունը պարտադիր դաշտ է" placeholder="Անուն"/>
+                                                                         placeholder="Անուն"/>
+                                                            <p:message for="locksmithFirstNameId" display="text"/>
                                                         </div>
                                                         <div class="col-sm-4 col-md-4">
                                                             <p:outputLabel for="locksmithLastNameId" value="Ազգանուն"/>
                                                             <p:inputText id="locksmithLastNameId" value="#{settingsForm.editedLocksmith.lastName}" styleClass="form-control"
-                                                                         required="true"
-                                                                         requiredMessage="Ազգանունը պարտադիր դաշտ է" placeholder="Ազգանուն"/>
+                                                                         placeholder="Ազգանուն"/>
+                                                            <p:message for="locksmithLastNameId" display="text"/>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="locksmithRegionId" value="Շրջան"/>
-                                                            <p:selectOneMenu id="locksmithRegionId" value="#{settingsForm.editedLocksmith.regionId}" styleClass="form-control input-c"
-                                                                             requiredMessage="Շրջան պարտադիր դաշտ է">
+                                                            <p:outputLabel for="locksmithRegionId" value="Շրջան" styleClass="required"/>
+                                                            <p:selectOneMenu id="locksmithRegionId" value="#{settingsForm.editedLocksmith.regionId}" styleClass="form-control input-c">
                                                                 <f:selectItem id="locksmithRegionSelectOneId" itemLabel="Ընտրիր մեկը"/>
                                                                 <f:selectItems id="locksmithRegionsId"
                                                                                itemLabel="#{region.name}"
@@ -1023,9 +1028,10 @@
                                                                 <p:ajax event="change" process="@this" update="@this locksmithAshtPanelId locksmithSectionId locksmithSubSectionId"
                                                                         listener="#{settingsForm.resetLocksmithAsht}"/>
                                                             </p:selectOneMenu>
+                                                            <p:message for="locksmithRegionId" display="text"/>
                                                         </div>
                                                         <h:panelGroup class="col-sm-4 col-md-4" id="locksmithAshtPanelId">
-                                                            <p:outputLabel for="locksmithAshtId" value="ԱՇՏ"/>
+                                                            <p:outputLabel for="locksmithAshtId" value="ԱՇՏ" styleClass="required"/>
                                                             <p:selectOneMenu id="locksmithAshtId" value="#{settingsForm.editedLocksmith.ashtId}" styleClass="form-control input-c">
                                                                 <f:selectItem id="locksmithAshtSelectOneId" itemLabel="Ընտրիր մեկը"/>
                                                                 <f:selectItems id="locksmithAshtsId"
@@ -1033,11 +1039,12 @@
                                                                                itemValue="#{asht.id}"
                                                                                value="#{settingsForm.ashtsByRegionId(settingsForm.editedLocksmith.regionId)}" var="asht"/>
                                                             </p:selectOneMenu>
+                                                            <p:message for="locksmithAshtId" display="text"/>
                                                         </h:panelGroup>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="locksmithSectionId" value="Մաս"/>
+                                                            <p:outputLabel for="locksmithSectionId" value="Մաս" styleClass="required"/>
                                                             <p:selectOneMenu id="locksmithSectionId" value="#{settingsForm.editedLocksmith.sectionId}"
                                                                              styleClass="form-control input-c">
                                                                 <f:selectItem id="locksmithSectionSelectOneId" itemLabel="Ընտրիր մեկը"/>
@@ -1049,9 +1056,10 @@
                                                                 <p:ajax event="change" process="@this" update="@this locksmithSubSectionId"
                                                                         listener="#{settingsForm.resetLocksmithSubSection}"/>
                                                             </p:selectOneMenu>
+                                                            <p:message for="locksmithSectionId" display="text"/>
                                                         </div>
                                                         <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="locksmithSubSectionId" value="Ենթատեղամաս"/>
+                                                            <p:outputLabel for="locksmithSubSectionId" value="Ենթատեղամաս" styleClass="required"/>
                                                             <p:selectOneMenu id="locksmithSubSectionId" value="#{settingsForm.editedLocksmith.subSectionId}"
                                                                              styleClass="form-control input-c">
                                                                 <f:selectItem id="locksmithSubSectionSelectOneId" itemLabel="Ընտրիր մեկը"/>
@@ -1061,6 +1069,7 @@
                                                                                value="#{settingsForm.subSectionsBySectionId(settingsForm.editedLocksmith.sectionId)}"
                                                                                var="subSection"/>
                                                             </p:selectOneMenu>
+                                                            <p:message for="locksmithSubSectionId" display="text"/>
                                                         </div>
                                                     </div>
                                                 </h:panelGroup>
