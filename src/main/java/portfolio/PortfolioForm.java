@@ -551,7 +551,7 @@ public class PortfolioForm {
             return;
         }
         ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("template.xlsx").getFile());
+        File file = new File(getTemaplateUrl());
 
 
         FileOutputStream out = new FileOutputStream(getFileUploadUrl());
@@ -615,14 +615,26 @@ public class PortfolioForm {
 
         }
 
-        row =sheet.getRow(41);
+
+        row =sheet.getRow(38);
         Master selectedMaster = null;
         if(Objects.nonNull(this.master)){
             selectedMaster = cache.getMasters().stream().filter(m -> m.getId().equals(this.master)).findFirst().get();
         }
         if(Objects.nonNull(selectedMaster)){
-            row.getCell(0).setCellValue("Փականագործ`" + selectedMaster.toString());
+            row.getCell(0).setCellValue("Տեղամասի վարպետ`" + selectedMaster.toString());
         }
+
+        row =sheet.getRow(41);
+        Locksmith selectedLocksmith = null;
+
+        if(Objects.nonNull(this.master1)){
+            selectedLocksmith = cache.getLocksmiths().stream().filter(m -> m.getId().equals(this.master1)).findFirst().get();
+        }
+        if(Objects.nonNull(selectedLocksmith)){
+            row.getCell(0).setCellValue("Փականագործ՝" + selectedLocksmith.toString());
+        }
+
 
         // Write the output to the file
         FileOutputStream fileOut = new FileOutputStream("template.xlsx");
@@ -815,6 +827,20 @@ public class PortfolioForm {
             InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties");
             prop.load(input);
             url = prop.getProperty("fileUploadUrl");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+    private String getTemaplateUrl() {
+        Properties prop = new Properties();
+        String url = "";
+        try {
+            InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties");
+            prop.load(input);
+            url = prop.getProperty("templateUrl");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -129,4 +129,9 @@ public class Locksmith {
         locksmith.setSectionId(this.sectionId);
         return locksmith;
     }
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;
+    }
 }

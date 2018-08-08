@@ -236,7 +236,7 @@
 
 
   <build>
-    <finalName>Tourism</finalName>
+    <finalName>Gas</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

@@ -20,17 +20,17 @@
                             <p:ajax event="change" process="@this" update="@this"/>
                         </p:selectOneMenu>
                     </div>
-                    <!--<div class="col-sm-4 col-md-4">-->
-                        <!--<p:outputLabel for="master2Id" value="Տեղամասի վարպետ"/>-->
-                        <!--<p:selectOneMenu id="master2Id" value="#{portfolioForm.master1}" styleClass="form-control input-c" >-->
-                            <!--<f:selectItem id="master2SelectOneId" itemLabel="Ընտրիր մեկը"/>-->
-                            <!--<f:selectItems id="masters2Id"-->
-                                           <!--itemLabel="#{master.firstName }"-->
-                                           <!--itemValue="#{master.id}"-->
-                                           <!--value="#{portfolioForm.cache.masters}" var="master"/>-->
-                            <!--<p:ajax event="change" process="@this" update="@this"/>-->
-                        <!--</p:selectOneMenu>-->
-                    <!--</div>-->
+                    <div class="col-sm-4 col-md-4">
+                        <p:outputLabel for="master2Id" value="Տեղամասի փականագործ"/>
+                        <p:selectOneMenu id="master2Id" value="#{portfolioForm.master1}" styleClass="form-control input-c" >
+                            <f:selectItem id="master2SelectOneId" itemLabel="Ընտրիր մեկը"/>
+                            <f:selectItems id="masters2Id"
+                                           itemLabel="#{master.firstName} #{master.lastName}"
+                                           itemValue="#{master.id}"
+                                           value="#{portfolioForm.cache.locksmiths}" var="master"/>
+                            <p:ajax event="change" process="@this" update="@this"/>
+                        </p:selectOneMenu>
+                    </div>
 
                 </div>
 
