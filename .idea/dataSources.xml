@@ -1,25 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="arshak90_newgaz@91.217.9.247" uuid="aea2658c-4b36-4f24-85d1-a71307c0109f">
+    <data-source source="LOCAL" name="arshak90_gaz2018@91.217.9.247" uuid="9759d338-1011-49c8-8c59-985f8f46e888">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://91.217.9.247:3306/arshak90_newgaz</jdbc-url>
-      <driver-properties>
-        <property name="autoReconnect" value="true" />
-        <property name="zeroDateTimeBehavior" value="convertToNull" />
-        <property name="tinyInt1isBit" value="false" />
-        <property name="characterEncoding" value="utf8" />
-        <property name="characterSetResults" value="utf8" />
-        <property name="yearIsDateType" value="false" />
-      </driver-properties>
-    </data-source>
-    <data-source source="LOCAL" name="arshak90_gazgaz@91.217.9.247" uuid="582c3370-0304-459f-b680-55e42891aaba">
-      <driver-ref>mysql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://91.217.9.247:3306/arshak90_gazgaz</jdbc-url>
+      <jdbc-url>jdbc:mysql://91.217.9.247:3306/arshak90_gaz2018</jdbc-url>
       <driver-properties>
         <property name="autoReconnect" value="true" />
         <property name="zeroDateTimeBehavior" value="convertToNull" />

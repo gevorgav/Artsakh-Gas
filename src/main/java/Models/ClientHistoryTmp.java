@@ -4,11 +4,13 @@ import java.util.Date;
 import java.util.Objects;
 
 /**
- * Created by astghik.mamunc on 6/13/2018.
+ * Created by gevorg.avetisyan on 6/13/2018.
  */
-public class ClientHistory {
+public class ClientHistoryTmp {
 
     private Integer id;
+
+    private Integer clientHistoryId;
 
     private String clientId;
 
@@ -86,13 +88,49 @@ public class ClientHistory {
 
     private Integer semiAnnualId;
 
-    private Integer userId;
-
-    public ClientHistory() {
+    public ClientHistoryTmp() {
     }
 
-    public ClientHistory(String clientId) {
-        this.clientId = clientId;
+    public ClientHistoryTmp(ClientHistory clientHistory, Integer clientHistoryId) {
+        this.clientHistoryId = clientHistoryId;
+        this.clientId = clientHistory.getClientId();
+        this.violationActNumber = clientHistory.getViolationActNumber();
+        this.visitType = clientHistory.getVisitType();
+        this.visitDescription = clientHistory.getVisitDescription();
+        this.updateDate = clientHistory.getUpdateDate();
+        this.previousVisitDate = clientHistory.getPreviousVisitDate();
+        this.nextVisitDate = clientHistory.getNextVisitDate();
+        this.stampNumbers = clientHistory.getStampNumbers();
+        this.go1 = clientHistory.getGo1();
+        this.bacakaGo1 = clientHistory.getBacakaGo1();
+        this.go2 = clientHistory.getGo2();
+        this.bacakaGo2 = clientHistory.getBacakaGo2();
+        this.go3 = clientHistory.getGo3();
+        this.bacakaGo3 = clientHistory.getBacakaGo3();
+        this.go4 = clientHistory.getGo4();
+        this.bacakaGo4 = clientHistory.getBacakaGo4();
+        this.go5 = clientHistory.getGo5();
+        this.bacakaGo5 = clientHistory.getBacakaGo5();
+        this.go6 = clientHistory.getGo6();
+        this.bacakaGo6 = clientHistory.getBacakaGo6();
+        this.jth = clientHistory.getJth();
+        this.bacakaJth = clientHistory.getBacakaJth();
+        this.jtt = clientHistory.getJtt();
+        this.bacakaJtt = clientHistory.getBacakaJtt();
+        this.ket = clientHistory.getKet();
+        this.bacakaKet = clientHistory.getBacakaKet();
+        this.jk = clientHistory.getJk();
+        this.bacakaJk = clientHistory.getBacakaJk();
+        this.jv = clientHistory.getJv();
+        this.bacakaJv = clientHistory.getBacakaJv();
+        this.jah = clientHistory.getJah();
+        this.pakan = clientHistory.getPakan();
+        this.JTLog = clientHistory.getJTLog();
+        this.risk = clientHistory.getRisk();
+        this.masterId = clientHistory.getMasterId();
+        this.isPaid = clientHistory.isPaid();
+        this.regionId = clientHistory.getRegionId();
+        this.semiAnnualId = clientHistory.getSemiAnnualId();
     }
 
     public Integer getId() {
@@ -403,23 +441,23 @@ public class ClientHistory {
         return semiAnnualId;
     }
 
+    public Integer getClientHistoryId() {
+        return clientHistoryId;
+    }
+
+    public void setClientHistoryId(Integer clientHistoryId) {
+        this.clientHistoryId = clientHistoryId;
+    }
+
     public void setSemiAnnualId(Integer semiAnnualId) {
         this.semiAnnualId = semiAnnualId;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ClientHistory that = (ClientHistory) o;
+        ClientHistoryTmp that = (ClientHistoryTmp) o;
         return isPaid == that.isPaid &&
                 Objects.equals(id, that.id) &&
                 Objects.equals(clientId, that.clientId) &&

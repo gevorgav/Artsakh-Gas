@@ -41,13 +41,13 @@
                 <c:if test="#{not empty portfolioForm.clientHistory}">
                     <div class="row">
                         <div class="col-sm-4 col-md-4">
-                            <p:outputLabel for="previewDate" value="Preview Date:" class="form-control-label"/>
+                            <p:outputLabel for="previewDate" value="Նախորդ այցելություն:" class="form-control-label"/>
                             <p:calendar id="previewDate" styleClass="form-control"
                                         value="#{portfolioForm.clientHistory.previousVisitDate}"
                                         pattern="dd-MM-yyyy" mask="true"/>
                         </div>
                         <div class="col-sm-4 col-md-4">
-                            <p:outputLabel for="previewDate" value="Next visit Date:"
+                            <p:outputLabel for="previewDate" value="Հաջորդ այցելություն:"
                                            class="form-control-label"/>
                             <p:calendar id="nextDate" styleClass="form-control"
                                         value="#{portfolioForm.clientHistory.nextVisitDate}"
@@ -56,7 +56,8 @@
                         <div class="col-sm-4 col-md-4">
                             <p:outputLabel for="semiAnnualId" value="Կիսամյակ"/>
                             <p:selectOneMenu id="semiAnnualId" value="#{portfolioForm.clientHistory.semiAnnualId}"
-                                             styleClass="form-control input-c">
+                                             styleClass="form-control input-c"
+                                             requiredMessage="Պարտադիր դաշտ է">
                                 <f:ajax event="change" render=":clientHistoryForm"/>
                                 <f:selectItems id="semiAnnualsId"
                                                itemLabel="#{semiAnnual.name}"

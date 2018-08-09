@@ -10,6 +10,8 @@ public class PriceList {
 
     private Double price;
 
+    private String formula;
+
     public Integer getId() {
         return id;
     }
@@ -32,6 +34,14 @@ public class PriceList {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public String getFormula() {
+        return formula;
+    }
+
+    public void setFormula(String formula) {
+        this.formula = formula;
     }
 
     @Override

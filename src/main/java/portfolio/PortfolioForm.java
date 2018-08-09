@@ -3,10 +3,7 @@ package portfolio;
 import Core.CacheForm;
 import Core.Models.City;
 import Models.*;
-import dao.ClientDao;
-import dao.ClientHistoryDao;
-import dao.ViolationClientHistoryDao;
-import dao.ViolationCodeDao;
+import dao.*;
 import login.LoginForm;
 import login.User;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -68,16 +65,24 @@ public class PortfolioForm {
     public PortfolioForm() {
     }
 
-    public void initClientHistory(){
-        if(!getLoginForm().getUser().getRole().equals(User.Role.ADMIN)){
+    public void initClientHistory() {
+        if (!getLoginForm().getUser().getRole().equals(User.Role.ADMIN)) {
             this.historyRegionId = getLoginForm().getUser().getRegionId();
         }
+
     }
+
     @Autowired
     private ClientDao clientDao;
 
     @Autowired
     private ClientHistoryDao clientHistoryDao;
+
+    @Autowired
+    private ClientHistoryTmpDao clientHistoryTmpDao;
+
+    @Autowired
+    private PaymentDao paymentDao;
 
     @Autowired
     private ViolationCodeDao violationCodeDao;
@@ -141,7 +146,7 @@ public class PortfolioForm {
     }
 
     public void setCustomFilteredClients(List<Client> customFilteredClients) {
-        List<Client> newCustomFilteredClients = filter(customFilteredClients );
+        List<Client> newCustomFilteredClients = filter(customFilteredClients);
         this.customFilteredClients = newCustomFilteredClients;
     }
 
@@ -163,7 +168,7 @@ public class PortfolioForm {
         showClientEditDialog();
     }
 
-    public void showClientEditDialog(){
+    public void showClientEditDialog() {
         resetClientEditForm();
         RequestContext requestContext = RequestContext.getCurrentInstance();
         requestContext.execute("PF('clientDialog').show()");
@@ -295,7 +300,7 @@ public class PortfolioForm {
     public void resetSubSection() {
         if (client != null) {
             client.setSubSectionId(null);
-             subSections = null;
+            subSections = null;
         }
     }
 
@@ -332,34 +337,34 @@ public class PortfolioForm {
 
     public boolean validate(Client client) {
         boolean isValid = true;
-        if(client.getId() == null || client.getId().trim().isEmpty()){
-            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Բաժանորդի համարը պարտադիր դաշտ է");
+        if (client.getId() == null || client.getId().trim().isEmpty()) {
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Բաժանորդի համարը պարտադիր դաշտ է");
             FacesContext.getCurrentInstance().addMessage("clientEditFormId:id", facesMessage);
             isValid = false;
         }
-        if(client.getFirstName() == null || client.getFirstName().trim().isEmpty()){
-            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Անունը պարտադիր դաշտ է");
+        if (client.getFirstName() == null || client.getFirstName().trim().isEmpty()) {
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Անունը պարտադիր դաշտ է");
             FacesContext.getCurrentInstance().addMessage("clientEditFormId:firstNameId", facesMessage);
             isValid = false;
         }
-        if(client.getLastName() == null || client.getLastName().trim().isEmpty()){
-            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ազգանունը պարտադիր դաշտ է");
+        if (client.getLastName() == null || client.getLastName().trim().isEmpty()) {
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ազգանունը պարտադիր դաշտ է");
             FacesContext.getCurrentInstance().addMessage("clientEditFormId:lastNameId", facesMessage);
             isValid = false;
         }
-        if(client.getRegionId() == null){
-            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Շրջանը պարտադիր դաշտ է");
+        if (client.getRegionId() == null) {
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Շրջանը պարտադիր դաշտ է");
             FacesContext.getCurrentInstance().addMessage("clientEditFormId:regionId", facesMessage);
             isValid = false;
         }
-        if(client.getCityId() == null){
-            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Քաղաքը պարտադիր դաշտ է");
+        if (client.getCityId() == null) {
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Քաղաքը պարտադիր դաշտ է");
             FacesContext.getCurrentInstance().addMessage("clientEditFormId:cityId", facesMessage);
             isValid = false;
         }
 
-        if(client.getStreetId() == null){
-            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Գյուղ/Փողոցը պարտադիր դաշտ է");
+        if (client.getStreetId() == null) {
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Գյուղ/Փողոցը պարտադիր դաշտ է");
             FacesContext.getCurrentInstance().addMessage("clientEditFormId:streetId", facesMessage);
             isValid = false;
         }
@@ -367,7 +372,7 @@ public class PortfolioForm {
         return isValid;
     }
 
-    public void addNewClient(){
+    public void addNewClient() {
         this.client = new Client();
         client.setNew(true);
         showClientEditDialog();
@@ -390,7 +395,7 @@ public class PortfolioForm {
     }
 
     public Boolean getJtlog() {
-        return Objects.equals(clientHistory.getJTLog(),"+");
+        return Objects.equals(clientHistory.getJTLog(), "+");
     }
 
     public void setJtlog(Boolean jtlog) {
@@ -403,7 +408,7 @@ public class PortfolioForm {
     }
 
     public Boolean getRisk() {
-        return Objects.equals(clientHistory.getRisk(),"+");
+        return Objects.equals(clientHistory.getRisk(), "+");
     }
 
     public void setRisk(Boolean risk) {
@@ -415,12 +420,12 @@ public class PortfolioForm {
         }
     }
 
-    public void searchClientHistory(){
-        if (!Objects.isNull(clientId) && !Objects.isNull(historyRegionId) && !Objects.isNull(clientHistoryDao.loadLastClientHistory(clientId, historyRegionId))){
+    public void searchClientHistory() {
+        if (!Objects.isNull(clientId) && !Objects.isNull(historyRegionId) && !Objects.isNull(clientHistoryDao.loadLastClientHistory(clientId, historyRegionId))) {
             clientHistory = clientHistoryDao.loadLastClientHistory(clientId, historyRegionId);
             loadClientViolationCode(clientHistory.getId());
             clientHistory.setRegionId(historyRegionId);
-        }else {
+        } else {
             clientHistory = null;
             FacesContext facesContext = FacesContext.getCurrentInstance();
             FacesMessage facesMessage = new FacesMessage("Incorrect clientID.");
@@ -432,13 +437,13 @@ public class PortfolioForm {
         List<ViolationCode> violationCodes = violationCodeDao.loadByClientId(clientId);
         int i = 0;
         this.violationCodes = new String[violationCodes.size()];
-        for (ViolationCode violationCode:violationCodes) {
-            this.violationCodes[i]=violationCode.getName();
+        for (ViolationCode violationCode : violationCodes) {
+            this.violationCodes[i] = violationCode.getName();
             i++;
         }
     }
 
-    public void cancelHistoryDialog(){
+    public void cancelHistoryDialog() {
         clientId = null;
         clientHistory = null;
         historyRegionId = null;
@@ -453,7 +458,7 @@ public class PortfolioForm {
     }
 
     public List<String> getViolationActNumber() {
-        if(Objects.isNull(clientHistory.getViolationActNumber())){
+        if (Objects.isNull(clientHistory.getViolationActNumber())) {
             return Collections.emptyList();
         }
         this.violationActNumber = Arrays.asList(clientHistory.getViolationActNumber().split("\\s*,\\s*"));
@@ -461,10 +466,9 @@ public class PortfolioForm {
     }
 
     public void setViolationActNumber(List<String> violationActNumber) {
-        if (Objects.nonNull(violationActNumber)){
+        if (Objects.nonNull(violationActNumber)) {
             StringBuilder listString = new StringBuilder();
-            for (String s : violationActNumber)
-            {
+            for (String s : violationActNumber) {
                 listString.append(s).append(",");
             }
             clientHistory.setViolationActNumber(listString.toString());
@@ -474,7 +478,7 @@ public class PortfolioForm {
     }
 
     public List<String> getStamps() {
-        if(Objects.isNull(clientHistory.getStampNumbers())){
+        if (Objects.isNull(clientHistory.getStampNumbers())) {
             return Collections.emptyList();
         }
         this.stamps = Arrays.asList(clientHistory.getStampNumbers().split("\\s*,\\s*"));
@@ -482,10 +486,9 @@ public class PortfolioForm {
     }
 
     public void setStamps(List<String> stamps) {
-        if (Objects.nonNull(stamps)){
+        if (Objects.nonNull(stamps)) {
             StringBuilder listString = new StringBuilder();
-            for (String s : stamps)
-            {
+            for (String s : stamps) {
                 listString.append(s).append(", ");
             }
             clientHistory.setStampNumbers(listString.toString());
@@ -494,30 +497,67 @@ public class PortfolioForm {
         this.stamps = stamps;
     }
 
-    public void saveHistory(){
+    public void saveHistory() {
+        clientHistory.setUserId(getLoginForm().getUser().getId());
         Integer historyId = clientHistoryDao.insertAndReturnId(clientHistory);
-        updateClientHistory();
+        Client client = updateClientHistory();
+        if (clientHistory.getVisitType() == 1) {
+            Integer clientHistoryTmpId = saveClientHistoryTemp(historyId);
+            Double debt = initDept();
+            savePayment(clientHistoryTmpId, client.getId(), client.getFirstName(), client.getLastName(), client.getMiddleName(), client.getRegionId(), client.getCityId(), client.getStreetId(), clientHistory.getSemiAnnualId(), debt);
+        }
         saveViolationCodes(historyId);
         cancelHistoryDialog();
     }
 
-    private void updateClientHistory(){
-        for (Client client : clients){
-            if (Objects.equals(client.getId(), clientHistory.getClientId()) && Objects.equals(client.getRegionId(), clientHistory.getRegionId())){
-                client.setClientHistory(clientHistory);
+    private Double initDept() {
+        Integer deviceCount = getClientHistoryDeviceCount();
+        for (PriceList priceList : cache.getPriceLists()) {
+            if (priceList.getFormula().contains("=") && !priceList.getFormula().contains("<=")) {
+                Integer count = Integer.parseInt(priceList.getFormula().replace("=", ""));
+                if (Objects.equals(count, deviceCount)) {
+                    return priceList.getPrice();
+                }
+            } else if (priceList.getFormula().contains("<=")) {
+                Integer count = Integer.parseInt(priceList.getFormula().replace("<=", ""));
+                if (count <= deviceCount) {
+                    return priceList.getPrice();
+                }
             }
         }
+        return 0.00;
+    }
+
+    private void savePayment(Integer clientHistoryTmpId, String clientId, String firstName, String lastName, String
+            middleName, Integer regionId, Integer cityId, Integer streetId, Integer semiAnnualId, Double debt) {
+        Payment lastPayment = paymentDao.loadLastPayment(clientId, regionId);
+        paymentDao.insert(new Payment(clientId, clientHistoryTmpId, firstName, lastName, middleName, regionId, cityId, streetId, semiAnnualId, lastPayment != null ? lastPayment.getDebt() + debt : debt, 0.00));
+    }
+
+    private Integer saveClientHistoryTemp(Integer historyId) {
+        return clientHistoryTmpDao.insertAndReturnId(new ClientHistoryTmp(clientHistory, historyId));
+    }
+
+    private Client updateClientHistory() {
+        for (Client client : clients) {
+            if (Objects.equals(client.getId(), clientHistory.getClientId()) && Objects.equals(client.getRegionId(), clientHistory.getRegionId())) {
+                client.setClientHistory(clientHistory);
+                return client;
+            }
+        }
+        return null;
     }
 
     private void saveViolationCodes(Integer historyId) {
-        for (ViolationCode violationCode:cache.getViolationCodes()) {
-            if (Arrays.asList(violationCodes).indexOf(violationCode.getName()) != -1){
+        for (ViolationCode violationCode : cache.getViolationCodes()) {
+            if (Arrays.asList(violationCodes).indexOf(violationCode.getName()) != -1) {
                 violationClientHistoryDao.insert(new ViolationClientHistory(violationCode.getId(), historyId));
             }
         }
     }
 
-    public void editHistory(){
+    public void editHistory() {
+        clientHistory.setUserId(getLoginForm().getUser().getId());
         clientHistoryDao.update(clientHistory);
         editViolationCode(clientHistory.getId());
         updateClientHistory();
@@ -525,7 +565,7 @@ public class PortfolioForm {
 
     private void editViolationCode(Integer historyId) {
         List<ViolationCode> violationCodesOld = violationCodeDao.loadByClientId(historyId);
-        for (ViolationCode violationCode:violationCodesOld) {
+        for (ViolationCode violationCode : violationCodesOld) {
             violationClientHistoryDao.delete(violationCode.getId(), historyId);
         }
         saveViolationCodes(historyId);
@@ -564,11 +604,10 @@ public class PortfolioForm {
     }
 
 
-
     private StreamedContent file;
 
     public StreamedContent getFile() throws IOException, InvalidFormatException {
-        if(getSelectedClients().isEmpty() || getSelectedClients().size() >15){
+        if (getSelectedClients().isEmpty() || getSelectedClients().size() > 15) {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Սխալ", "Տվյալները սխալ են մուտքագրված"));
             return null;
@@ -580,7 +619,7 @@ public class PortfolioForm {
     }
 
     public void export() throws IOException, InvalidFormatException {
-        if(getSelectedClients().isEmpty() || getSelectedClients().size() >15){
+        if (getSelectedClients().isEmpty() || getSelectedClients().size() > 15) {
             return;
         }
         ClassLoader classLoader = getClass().getClassLoader();
@@ -597,14 +636,14 @@ public class PortfolioForm {
         // Get Row at index 1
         Row row = null;
 
-        for(int i=0; i< getSelectedClients().size();i++){
+        for (int i = 0; i < getSelectedClients().size(); i++) {
             Client client = getSelectedClients().get(i);
-            if(client != null ){
+            if (client != null) {
                 List<ViolationCode> violationCodes = loadViolationClientHistory(client.getClientHistory().getId());
-                row = sheet.getRow(i*2+5);
+                row = sheet.getRow(i * 2 + 5);
                 row.getCell(1).setCellValue(nullToEmptyString(client.getId(), false));
                 row.getCell(2).setCellValue((Objects.nonNull(getStreetMap().get(client.getStreetId())) ? getStreetMap().get(client.getStreetId()).getName() : "") + " " + nullToEmptyString(client.getHomeNumber(), false) + " " + nullToEmptyString(client.getApartmentNumber(), false));
-                row.getCell(3).setCellValue(client.getLastName()+" " +client.getFirstName() + " " + (Objects.isNull(client.getMiddleName()) ? "" : client.getMiddleName()));
+                row.getCell(3).setCellValue(client.getLastName() + " " + client.getFirstName() + " " + (Objects.isNull(client.getMiddleName()) ? "" : client.getMiddleName()));
                 row.getCell(4).setCellValue(client.getPhoneNumber());
                 row.getCell(5).setCellValue(client.getClientHistory().getJTLog());
                 row.getCell(6).setCellValue(nullToEmptyString(client.getClientHistory().getGo1(), false));
@@ -631,7 +670,7 @@ public class PortfolioForm {
                 row.getCell(20).setCellValue(nullToEmptyString(client.getClientHistory().getRisk(), false));
 
                 //Second row
-                row = sheet.getRow(i*2+6);
+                row = sheet.getRow(i * 2 + 6);
                 row.getCell(1).setCellValue(nullToEmptyString(client.getTypeNumber(), false));
                 row.getCell(2).setCellValue(nullToEmptyString(client.getCounterNumber(), false));
                 row.getCell(6).setCellValue(nullToEmptyString(client.getClientHistory().getBacakaGo1(), true));
@@ -649,22 +688,22 @@ public class PortfolioForm {
         }
 
 
-        row =sheet.getRow(38);
+        row = sheet.getRow(38);
         Master selectedMaster = null;
-        if(Objects.nonNull(this.master)){
+        if (Objects.nonNull(this.master)) {
             selectedMaster = cache.getMasters().stream().filter(m -> m.getId().equals(this.master)).findFirst().get();
         }
-        if(Objects.nonNull(selectedMaster)){
+        if (Objects.nonNull(selectedMaster)) {
             row.getCell(0).setCellValue("Տեղամասի վարպետ`" + selectedMaster.toString());
         }
 
-        row =sheet.getRow(41);
+        row = sheet.getRow(41);
         Locksmith selectedLocksmith = null;
 
-        if(Objects.nonNull(this.master1)){
+        if (Objects.nonNull(this.master1)) {
             selectedLocksmith = cache.getLocksmiths().stream().filter(m -> m.getId().equals(this.master1)).findFirst().get();
         }
-        if(Objects.nonNull(selectedLocksmith)){
+        if (Objects.nonNull(selectedLocksmith)) {
             row.getCell(0).setCellValue("Փականագործ՝" + selectedLocksmith.toString());
         }
 
@@ -688,18 +727,18 @@ public class PortfolioForm {
         return string.getBytes(UTF8_CHARSET);
     }
 
-    public Map<Integer, Street> getStreetMap(){
+    public Map<Integer, Street> getStreetMap() {
         return cache.getStreets().stream()
                 .collect(Collectors.toMap(street -> street.getId(), street -> street));
     }
 
 
-    public String nullToEmptyString(Object o, boolean isAbsent){
-        return Objects.isNull(o) ? "": isAbsent ? "բ" + o.toString() :o.toString();
+    public String nullToEmptyString(Object o, boolean isAbsent) {
+        return Objects.isNull(o) ? "" : isAbsent ? "բ" + o.toString() : o.toString();
     }
 
-    public Integer nullToEmptyInteger(Object o){
-        return Objects.isNull(o) ? 0: Integer.valueOf(o.toString());
+    public Integer nullToEmptyInteger(Object o) {
+        return Objects.isNull(o) ? 0 : Integer.valueOf(o.toString());
     }
 
 
@@ -711,16 +750,15 @@ public class PortfolioForm {
         return loginForm;
     }
 
-    public List<ViolationCode> loadViolationClientHistory(Integer clientHistoryId){
+    public List<ViolationCode> loadViolationClientHistory(Integer clientHistoryId) {
         return violationCodeDao.loadByClientId(clientHistoryId);
     }
 
 
-
-    public VisitType getVisitType(Integer id){
-        if(id != null){
-            for(VisitType visitType: cache.getVisitTypes()){
-                if(Objects.equals(visitType.getId(), id)){
+    public VisitType getVisitType(Integer id) {
+        if (id != null) {
+            for (VisitType visitType : cache.getVisitTypes()) {
+                if (Objects.equals(visitType.getId(), id)) {
                     return visitType;
                 }
             }
@@ -752,8 +790,8 @@ public class PortfolioForm {
         RequestContext.getCurrentInstance().execute("PF('graficDialog').hide()");
     }
 
-    public void openFilterDialog(){
-        if(this.filter == null){
+    public void openFilterDialog() {
+        if (this.filter == null) {
             this.filter = new Filter();
         }
         try {
@@ -764,12 +802,12 @@ public class PortfolioForm {
         showFilterEditDialog();
     }
 
-    public void showFilterEditDialog(){
+    public void showFilterEditDialog() {
         RequestContext requestContext = RequestContext.getCurrentInstance();
         requestContext.execute("PF('filterDialog').show()");
     }
 
-    public void removeFilter(){
+    public void removeFilter() {
         this.filter = null;
     }
 
@@ -801,32 +839,32 @@ public class PortfolioForm {
         }
     }
 
-    public List<Client> filter(List<Client> filteredClients){
+    public List<Client> filter(List<Client> filteredClients) {
         List<Client> newFilteredClients = new ArrayList<>();
-        if(filteredClients == null){
+        if (filteredClients == null) {
             filteredClients = this.clients;
         }
-        if(this.filter != null){
-            for(Client client: filteredClients){
-                if(this.filter.getRegionId() != null && !Objects.equals(client.getRegionId(), this.filter.getRegionId())){
+        if (this.filter != null) {
+            for (Client client : filteredClients) {
+                if (this.filter.getRegionId() != null && !Objects.equals(client.getRegionId(), this.filter.getRegionId())) {
                     continue;
                 }
-                if(this.filter.getCityId() != null && !Objects.equals(client.getCityId(), this.filter.getCityId())){
+                if (this.filter.getCityId() != null && !Objects.equals(client.getCityId(), this.filter.getCityId())) {
                     continue;
                 }
-                if(this.filter.getStreetId() != null && !Objects.equals(client.getStreetId(), this.filter.getStreetId())){
+                if (this.filter.getStreetId() != null && !Objects.equals(client.getStreetId(), this.filter.getStreetId())) {
                     continue;
                 }
-                if(this.filter.getAshtId() != null && !Objects.equals(client.getAshtId(), this.filter.getAshtId())){
+                if (this.filter.getAshtId() != null && !Objects.equals(client.getAshtId(), this.filter.getAshtId())) {
                     continue;
                 }
-                if(this.filter.getGrpId() != null && !Objects.equals(client.getGrpId(), this.filter.getGrpId())){
+                if (this.filter.getGrpId() != null && !Objects.equals(client.getGrpId(), this.filter.getGrpId())) {
                     continue;
                 }
-                if(this.filter.getSectionId() != null && !Objects.equals(client.getSectionId(), this.filter.getSectionId())){
+                if (this.filter.getSectionId() != null && !Objects.equals(client.getSectionId(), this.filter.getSectionId())) {
                     continue;
                 }
-                if(this.filter.getSubSectionId() != null && !Objects.equals(client.getSubSectionId(), this.filter.getSubSectionId())){
+                if (this.filter.getSubSectionId() != null && !Objects.equals(client.getSubSectionId(), this.filter.getSubSectionId())) {
                     continue;
                 }
 //                if(this.filter.getViolationCodes() != null && this.filter.getViolationCodes().length != 0){
@@ -881,4 +919,22 @@ public class PortfolioForm {
         return url;
     }
 
+    private Integer getClientHistoryDeviceCount() {
+        Integer count = 0;
+        count += clientHistory.getJtt() != null ? clientHistory.getJtt() : 0;
+        count += clientHistory.getJah() != null ? clientHistory.getJah() : 0;
+        count += clientHistory.getGo1() != null ? clientHistory.getGo1() : 0;
+        count += clientHistory.getGo2() != null ? clientHistory.getGo2() : 0;
+        count += clientHistory.getGo3() != null ? clientHistory.getGo3() : 0;
+        count += clientHistory.getGo4() != null ? clientHistory.getGo4() : 0;
+        count += clientHistory.getGo5() != null ? clientHistory.getGo5() : 0;
+        count += clientHistory.getGo6() != null ? clientHistory.getGo6() : 0;
+        count += clientHistory.getJk() != null ? clientHistory.getJk() : 0;
+        count += clientHistory.getJv() != null ? clientHistory.getJv() : 0;
+        count += clientHistory.getJth() != null ? clientHistory.getJth() : 0;
+        count += clientHistory.getKet() != null ? clientHistory.getKet() : 0;
+        count += clientHistory.getPakan() != null ? clientHistory.getPakan() : 0;
+
+        return count;
+    }
 }

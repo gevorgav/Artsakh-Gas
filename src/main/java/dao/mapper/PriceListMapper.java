@@ -16,6 +16,7 @@ public class PriceListMapper implements RowMapper<PriceList> {
         priceList.setId(rs.getInt("id"));
         priceList.setName(rs.getString("name"));
         priceList.setPrice(rs.getDouble("price"));
+        priceList.setFormula(rs.getString("formula"));
         return priceList;
     }
 }

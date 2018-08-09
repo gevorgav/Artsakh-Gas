@@ -1,23 +1,24 @@
 package dao.mapper;
 
-import Models.ClientHistory;
+import Models.ClientHistoryTmp;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by astghik.mamunc on 6/13/2018.
+ * Created by gevorg.avetisyan on 6/13/2018.
  */
-public class ClientHistoryMapper  implements RowMapper<ClientHistory> {
+public class ClientHistoryTmpMapper implements RowMapper<ClientHistoryTmp> {
 
-    public ClientHistoryMapper() {
+    public ClientHistoryTmpMapper() {
     }
 
     @Override
-    public ClientHistory mapRow(ResultSet rs, int rowNum) throws SQLException {
-        ClientHistory clientHistory = new ClientHistory();
-        clientHistory.setId(rs.getInt("clientsHistory.id"));
+    public ClientHistoryTmp mapRow(ResultSet rs, int rowNum) throws SQLException {
+        ClientHistoryTmp clientHistory = new ClientHistoryTmp();
+        clientHistory.setId(rs.getInt("id"));
+        clientHistory.setId(rs.getInt("clientsHistoryId"));
         clientHistory.setSemiAnnualId(rs.getObject("semiAnnualId") != null ? rs.getInt("semiAnnualId") : null);
         clientHistory.setClientId(rs.getString("clientId"));
         clientHistory.setViolationActNumber(rs.getString("violationActNumber"));
@@ -55,7 +56,6 @@ public class ClientHistoryMapper  implements RowMapper<ClientHistory> {
         clientHistory.setRisk(rs.getString("risk"));
         clientHistory.setMasterId(rs.getObject("masterId") != null ? rs.getInt("masterId") : null);
         clientHistory.setRegionId(rs.getObject("regionId") != null ? rs.getInt("regionId") : null);
-        clientHistory.setUserId(rs.getObject("userId") != null ? rs.getInt("userId") : null);
         clientHistory.setPaid(rs.getBoolean("isPaid"));
         return clientHistory;
     }
