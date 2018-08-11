@@ -91,6 +91,7 @@
                                                      styleClass="form-control input-c"
                                                      requiredMessage="Պարտադիր դաշտ է">
                                         <f:ajax event="change" render=":clientHistoryForm"/>
+                                        <f:selectItem itemLabel="Ընտրել Այցելությունը"></f:selectItem>
                                         <f:selectItems id="visitsId"
                                                        itemLabel="#{visitType.name}"
                                                        itemValue="#{visitType.id}"

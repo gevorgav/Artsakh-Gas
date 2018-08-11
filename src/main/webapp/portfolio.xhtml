@@ -173,7 +173,7 @@
                                     <!--</li>-->
                                 <!--</ul>-->
                             <!--</li>-->
-                            <h:panelGroup rendered="#{dashboardForm.admin}">
+                            <h:panelGroup rendered="#{loginForm.user.admin}">
                                 <li>
                                     <a href="settings.xhtml">
                             <span class="nav-icon">
@@ -282,7 +282,7 @@
                                                          rowsPerPageTemplate="10,30,50"
                                                          style="margin-bottom:0">
 
-                                                <p:column filterBy="#{client.id}" headerText="ՀՀ" footerText="" filterMatchMode="contains">
+                                                <p:column filterBy="#{client.id}" headerText="ԲՀ" footerText="" filterMatchMode="contains">
                                                     <h:outputText value="#{client.id}" />
                                                 </p:column>
 

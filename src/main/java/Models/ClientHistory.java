@@ -95,6 +95,11 @@ public class ClientHistory {
         this.clientId = clientId;
     }
 
+    public ClientHistory(String clientId, Integer regionId) {
+        this.clientId = clientId;
+        this.regionId = regionId;
+    }
+
     public Integer getId() {
         return id;
     }

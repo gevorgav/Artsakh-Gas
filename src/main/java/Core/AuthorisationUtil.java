@@ -26,6 +26,13 @@ public class AuthorisationUtil {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }else if (((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRequestURI().equals("/Gas/settings.xhtml") && !Util.getBean("loginForm", LoginForm.class).getUser().isAdmin()){
+            HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect(request.getContextPath()+"/portfolio.xhtml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

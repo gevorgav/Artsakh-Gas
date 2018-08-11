@@ -40,8 +40,16 @@
     <link rel="stylesheet" href="resources/main/ui/style.css" />
 
 </h:head>
-<body>
-
+<h:body>
+    <div class="" id="login-page">
+        <div class="container">
+            <div class="center-align">
+                <f:metadata>
+                    <f:event type="preRenderView" listener="#{authorisationUtil.onLoad}"/>
+                </f:metadata>
+            </div>
+        </div>
+    </div>
 
 <div class="app" id="app">
 
@@ -160,7 +168,7 @@
                         <!--</li>-->
                         <!--</ul>-->
                         <!--</li>-->
-                        <h:panelGroup rendered="#{dashboardForm.admin}">
+                        <h:panelGroup rendered="#{loginForm.user.admin}">
                             <li>
                                 <a href="settings.xhtml">
                             <span class="nav-icon">
@@ -1152,5 +1160,5 @@
 <!--<script src="scripts/ajax.js"></script>-->
 <!-- endbuild -->
 
-</body>
+</h:body>
 </html>
