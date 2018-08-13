@@ -259,13 +259,23 @@
                                 <div class="box-body">
                                     <h:panelGroup id="yearlyPanelId">
 
-                                        <h:panelGrid columns="3" cellpadding="5">
+                                        <h:panelGrid columns="4" cellpadding="5">
                                             <p:commandButton id="graficButtonId" value="Ստեղծել Գրաֆիկ" styleClass="dark"  oncomplete="PF('graficDialog').show();">
                                             </p:commandButton>
                                             <p:commandButton value="Ավելացնել ֆիլտր" styleClass="dark" action="#{portfolioForm.openFilterDialog}" process="@this" update="filterDialogId"/>
                                             <p:commandButton value="Ջնջել ֆիլտրը" styleClass="dark" actionListener="#{portfolioForm.removeFilter}" oncomplete="PF('reportClientTable').filter()"/>
+                                            <div class="row">
+                                                <div class="col-sm-4 col-md-4">
+                                                    <p:selectOneMenu id="semiAnnualId" styleClass="form-control input-c" value="#{portfolioForm.currentSemiAnnualId}">
+                                                        <f:converter converterId="javax.faces.Integer" />
+                                                        <f:selectItems value="#{portfolioForm.cache.semiAnnuals}" var="semiAnnual" itemLabel="#{semiAnnual.name}" itemValue="#{semiAnnual.id}"/>
+                                                        <p:ajax event="change" process="@this" oncomplete="PF('reportClientTable').filter()"  />
+                                                    </p:selectOneMenu>
+                                                </div>
+                                            </div>
                                         </h:panelGrid>
                                         <div class="clear"></div>
+                                        <p:remoteCommand name="onload" oncomplete="PF('reportClientTable').filter()" autoRun="true"/>
                                         <h:panelGroup layout="block" class="de-table-block" id="table2">
                                             <p:dataTable var="client"
                                                          id="clientTableId"
@@ -274,11 +284,11 @@
                                                          styleClass="table table-hover b-t de-table"
                                                          emptyMessage="Չկա տվյալններ"
                                                          filteredValue="#{portfolioForm.customFilteredClients}"
-                                                         paginator="true"
+                                                         paginator="false"
                                                          rows="20"
                                                          selection="#{portfolioForm.selectedClients}"
                                                          rowKey="#{client.id}"
-                                                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink}"
                                                          rowsPerPageTemplate="10,20,50"
                                                          style="margin-bottom:0">
                                                 <p:column selectionMode="multiple" style="width:35px;text-align:center"/>
@@ -293,16 +303,16 @@
                                                 <p:column filterBy="#{client.lastName}" headerText="Ազգանուն" filterMatchMode="contains">
                                                     <h:outputText value="#{client.lastName}" />
                                                 </p:column>
-                                                <p:column filterBy="#{client.clientHistory.paid}" style="width: 20%" headerText="Վճառման վիճակ" filterMatchMode="equals">
+                                                <p:column filterBy="#{client.clientHistory.paid}" style="width: 20%" headerText="Վճարման վիճակ" filterMatchMode="equals">
                                                     <f:facet name="filter">
                                                         <p:selectOneMenu  label="Colors" onchange="PF('reportClientTable').filter()"  panelStyle="width:125px" scrollHeight="150">
                                                             <f:converter converterId="javax.faces.Boolean" />
                                                             <f:selectItem itemLabel="Բոլոր" itemValue="" />
-                                                            <f:selectItem itemLabel="Վճառված" itemValue="true" />
-                                                            <f:selectItem itemLabel="Չվճառված" itemValue="false" />
+                                                            <f:selectItem itemLabel="Վճարված" itemValue="true" />
+                                                            <f:selectItem itemLabel="Չվճարված" itemValue="false" />
                                                         </p:selectOneMenu>
                                                     </f:facet>
-                                                    <h:outputText value="#{client.clientHistory.paid ? 'Վճառված': 'Չվճառված'}" />
+                                                    <h:outputText value="#{client.clientHistory.paid ? 'Վճարված': 'Չվճարված'}" />
                                                 </p:column>
 
                                                 <p:column filterBy="#{client.clientHistory.visitType}" style="width: 20%" headerText="Այցելություն" filterMatchMode="equals">

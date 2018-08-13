@@ -263,6 +263,10 @@
                                                 <f:ajax  render=":searchFormId :clientHistoryForm"/>
                                             </p:commandButton>
                                         </h:panelGrid>
+                                        <h:panelGrid columns="1" cellpadding="5">
+                                            <p:commandButton value="Ավելացնել այցելությունների գրաֆիկ" update="visitPlanSearchFormId" actionListener="#{portfolioForm.initVisitPlan}">
+                                            </p:commandButton>
+                                        </h:panelGrid>
                                         <div class="clear"></div>
 
                                         <div class="clear"></div>
@@ -319,6 +323,7 @@
 
             <ui:include src="dialogs/clientHistoryEdit.xhtml" />
             <ui:include src="dialogs/clientEdit.xhtml" />
+            <ui:include src="dialogs/visitPlanDialog.xhtml" />
 
         </div>
         <!-- ############ PAGE END-->

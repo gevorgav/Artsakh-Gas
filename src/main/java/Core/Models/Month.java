@@ -7,15 +7,15 @@ public class Month {
     public Month() {
     }
 
-    public Month(Integer id, String name, Integer quarter) {
+    public Month(Integer id, String name, Integer semiAnnualId) {
         this.id = id;
         this.name = name;
-        this.quarter = quarter;
+        this.semiAnnualId = semiAnnualId;
     }
 
     private Integer id;
     private String name;
-    private Integer quarter;
+    private Integer semiAnnualId;
 
     public Integer getId() {
         return id;
@@ -33,11 +33,11 @@ public class Month {
         this.name = name;
     }
 
-    public Integer getQuarter() {
-        return quarter;
+    public Integer getSemiAnnualId() {
+        return semiAnnualId;
     }
 
-    public void setQuarter(Integer quarter) {
-        this.quarter = quarter;
+    public void setSemiAnnualId(Integer quarter) {
+        this.semiAnnualId = quarter;
     }
 }

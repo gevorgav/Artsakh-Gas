@@ -2,6 +2,7 @@ package portfolio;
 
 import Core.CacheForm;
 import Core.Models.City;
+import Core.Models.Month;
 import Models.*;
 import dao.*;
 import login.LoginForm;
@@ -12,6 +13,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -22,6 +24,7 @@ import javax.faces.context.FacesContext;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -45,6 +48,8 @@ public class PortfolioForm {
 
     private Integer master;
     private Integer master1;
+
+    private Integer currentSemiAnnualId;
 
     public Integer getMaster() {
         return master;
@@ -89,6 +94,12 @@ public class PortfolioForm {
 
     @Autowired
     private ViolationClientHistoryDao violationClientHistoryDao;
+
+    @Autowired
+    private SectionDao sectionDao;
+
+    @Autowired
+    private VisitPlanDao visitPlanDao;
 
     public List<Client> getClients() {
         if (clients == null) {
@@ -308,7 +319,9 @@ public class PortfolioForm {
         if (validate(this.client)) {
             if (this.client.isNew()) {
                 clientDao.insert(this.client);
-                clientHistoryDao.insert(new ClientHistory(this.client.getId(), this.client.getRegionId()));
+                ClientHistory clientHistory = new ClientHistory(this.client.getId(), this.client.getRegionId(), getCurrentSemiAnnual().getId());
+                clientHistoryDao.insertAndReturnId(clientHistory);
+                this.client.setClientHistory(clientHistory);
             } else {
                 clientDao.update(this.client);
                 this.clients.remove(this.clientSnapshot);
@@ -841,11 +854,17 @@ public class PortfolioForm {
 
     public List<Client> filter(List<Client> filteredClients) {
         List<Client> newFilteredClients = new ArrayList<>();
+        List<Client> filteredClientsBySemiAnnual = new ArrayList<>();
         if (filteredClients == null) {
             filteredClients = this.clients;
         }
+        for (Client client : filteredClients) {
+            if(Objects.equals(getCurrentSemiAnnualId(), client.getClientHistory().getSemiAnnualId())){
+                filteredClientsBySemiAnnual.add(client);
+            }
+        }
         if (this.filter != null) {
-            for (Client client : filteredClients) {
+            for (Client client : filteredClientsBySemiAnnual) {
                 if (this.filter.getRegionId() != null && !Objects.equals(client.getRegionId(), this.filter.getRegionId())) {
                     continue;
                 }
@@ -886,7 +905,7 @@ public class PortfolioForm {
             }
             return newFilteredClients;
         } else {
-            return filteredClients;
+            return filteredClientsBySemiAnnual;
         }
     }
 
@@ -937,4 +956,191 @@ public class PortfolioForm {
 
         return count;
     }
+
+    public SemiAnnual getSemiAnnualById(Integer id){
+        List<SemiAnnual> semiAnnuals = cache.getSemiAnnuals();
+        for(SemiAnnual semiAnnual: semiAnnuals) {
+            if(Objects.equals(semiAnnual.getId(), id)){
+                return semiAnnual;
+            }
+        }
+        return null;
+    }
+
+    public Integer getCurrentSemiAnnualId(){
+        if(currentSemiAnnualId == null) {
+          currentSemiAnnualId = getCurrentSemiAnnual().getId();
+        }
+        return currentSemiAnnualId;
+    }
+
+    public void setCurrentSemiAnnualId(Integer currentSemiAnnualId) {
+        this.currentSemiAnnualId = currentSemiAnnualId;
+    }
+
+    private SemiAnnual getCurrentSemiAnnual(){
+        SemiAnnual currentSemiAnnual = null;
+        List<SemiAnnual> semiAnnuals = cache.getSemiAnnuals();
+        LocalDate currentDate = LocalDate.now();
+        Integer semi = currentDate.getMonthValue() < 7 ? 1 : 2;
+        for (SemiAnnual semiAnnual : semiAnnuals) {
+            if (Objects.equals(semiAnnual.getId() / 10, currentDate.getYear()) && Objects.equals(semiAnnual.getId() % 10, semi)) {
+                currentSemiAnnual =  semiAnnual;
+                break;
+            }
+        }
+        return currentSemiAnnual;
+    }
+
+  /* -------------- Visit Plan Form Start --------*/
+
+    private Integer visitPlanAshtId;
+
+    private Integer semiAnnualId;
+
+    private Integer visitPlanRegionId;
+
+    private List<Asht> visitPlanAshtsByRegionId;
+
+    private List<VisitPlan> visitPlans;
+
+    public Integer getVisitPlanAshtId() {
+        return visitPlanAshtId;
+    }
+
+    public void setVisitPlanAshtId(Integer visitPlanAshtId) {
+        this.visitPlanAshtId = visitPlanAshtId;
+    }
+
+    public Integer getSemiAnnualId() {
+        return semiAnnualId;
+    }
+
+    public void setSemiAnnualId(Integer semiAnnualId) {
+        this.semiAnnualId = semiAnnualId;
+    }
+
+    public Integer getVisitPlanRegionId() {
+        return visitPlanRegionId;
+    }
+
+    public void setVisitPlanRegionId(Integer visitPlanRegionId) {
+        this.visitPlanRegionId = visitPlanRegionId;
+    }
+
+    public List<VisitPlan> getVisitPlans() {
+        return visitPlans;
+    }
+
+    public void setVisitPlans(List<VisitPlan> visitPlans) {
+        this.visitPlans = visitPlans;
+    }
+
+    public void initVisitPlan() {
+        if (!getLoginForm().getUser().getRole().equals(User.Role.ADMIN)) {
+            this.visitPlanRegionId = getLoginForm().getUser().getRegionId();
+        }
+        openVisitPlanDialog();
+    }
+
+    public void openVisitPlanDialog(){
+        resetVisitPlan();
+        RequestContext.getCurrentInstance().execute("PF('visitPlanDialog').show()");
+    }
+
+    public void cancelPlanVisitDialog() {
+        resetVisitPlan();
+        RequestContext.getCurrentInstance().execute("PF('visitPlanDialog').hide()");
+    }
+
+    public void resetVisitPlan(){
+        visitPlanRegionId = null;
+        semiAnnualId = null;
+        visitPlans = null;
+    }
+
+    public List<Asht> getVisitPlanAshtsByRegionId(Integer regionId) {
+        if(visitPlanAshtsByRegionId == null && regionId != null) {
+            visitPlanAshtsByRegionId = new ArrayList<>();
+            for(Asht asht: cache.getAshts()) {
+                if (asht.getRegionId().equals(regionId)) {
+                    visitPlanAshtsByRegionId.add(asht);
+                }
+            }
+        }
+        return visitPlanAshtsByRegionId;
+    }
+
+    public void setVisitPlanAshtsByRegionId(List<Asht> visitPlanAshtsByRegionId) {
+        this.visitPlanAshtsByRegionId = visitPlanAshtsByRegionId;
+    }
+
+    public void resetVisitPlanAsht() {
+        visitPlanAshtsByRegionId = null;
+    }
+
+    public void saveVisitPlan() {
+    }
+
+    public void searchVisitPlans() {
+        if (validateVisitPlanSearchFields()) {
+            visitPlans = new ArrayList<>();
+            for (Section section : cache.getSections())
+                if (section.getRegionId().equals(visitPlanRegionId)) {
+                    for(int i = 6 * (semiAnnualId % 10) - 5; i <= 6 * (semiAnnualId % 10); i++){
+                        Integer monthId = semiAnnualId*100 + i;
+                        VisitPlan loadedVisitPlan = visitPlanByMonthId(monthId, section.getId());
+                        if(loadedVisitPlan == null) {
+                            visitPlans.add(new VisitPlan(section.getId(), monthId, null, semiAnnualId, section, getMonthById(monthId)));
+                        } else {
+                            loadedVisitPlan.setSection(section);
+                            loadedVisitPlan.setMonth(getMonthById(monthId));
+                            visitPlans.add(loadedVisitPlan);
+                        }
+
+                    }
+                }
+        }
+        if(visitPlans != null && visitPlans.isEmpty()){
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            FacesMessage facesMessage = new FacesMessage("Տվյալները չեն գտնվել");
+            facesContext.addMessage("visitPlanSearchFormId:visitPlanList", facesMessage);
+        }
+    }
+
+    public VisitPlan visitPlanByMonthId(Integer monthId, Integer sectionId){
+        for(VisitPlan visitPlan: cache.getVisitPlans(sectionId)){
+            if(visitPlan.getMonthId().equals(monthId)){
+                return visitPlan;
+            }
+        }
+        return null;
+    }
+
+    private boolean validateVisitPlanSearchFields(){
+        return true;
+    }
+
+    public void onRowEdit(RowEditEvent event) {
+        VisitPlan visitPlan = (VisitPlan) event.getObject();
+        if(visitPlan.getId() != null) {
+            visitPlanDao.update(visitPlan);
+        } else {
+            visitPlanDao.insertAndReturnId(visitPlan);
+
+        }
+        cache.resetVisitPlansBySection(visitPlan.getSectionId());
+    }
+
+    public Month getMonthById(Integer id){
+        for(Month month: cache.getMonths()) {
+            if(Objects.equals(id, month.getId())){
+                return month;
+            }
+        }
+        return null;
+    }
+
+  /* -------------- Visit Plan Form End ----------*/
+
 }

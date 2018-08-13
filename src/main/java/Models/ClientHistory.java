@@ -95,9 +95,10 @@ public class ClientHistory {
         this.clientId = clientId;
     }
 
-    public ClientHistory(String clientId, Integer regionId) {
+    public ClientHistory(String clientId, Integer regionId, Integer semiAnnualId) {
         this.clientId = clientId;
         this.regionId = regionId;
+        this.semiAnnualId = semiAnnualId;
     }
 
     public Integer getId() {

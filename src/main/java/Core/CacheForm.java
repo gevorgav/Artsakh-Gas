@@ -1,6 +1,7 @@
 package Core;
 
 import Core.Models.City;
+import Core.Models.Month;
 import Core.Models.Region;
 import Models.*;
 import dao.*;
@@ -55,6 +56,12 @@ public class CacheForm {
     @Autowired
     public PriceListDao priceListDao;
 
+    @Autowired
+    public MonthDao monthDao;
+
+    @Autowired
+    public VisitPlanDao visitPlanDao;
+
     private List<City> cities;
     private List<Region> regions;
     private List<Street> streets;
@@ -72,6 +79,8 @@ public class CacheForm {
     private List<SemiAnnual> semiAnnuals;
     private Map<Integer, List<ViolationCode>> violationCodesByClientHistory;
     private List<Locksmith> locksmiths;
+    private List<Month> months;
+    private Map<Integer, List<VisitPlan>> visitPlans = new HashMap<>();
 
     public List<VisitType> getVisitTypes() {
         if (this.visitTypes == null){
@@ -250,6 +259,26 @@ public class CacheForm {
         return locksmiths;
     }
 
+    public List<Month> getMonths() {
+        if(months == null){
+            months = monthDao.loadAll();
+            this.months.sort(new Comparator<Month>() {
+                @Override
+                public int compare(Month o1, Month o2) {
+                    return o1.getId().compareTo(o2.getId());
+                }
+            });
+        }
+        return months;
+    }
+
+    public List<VisitPlan> getVisitPlans(Integer sectionId) {
+        if(visitPlans.get(sectionId) == null) {
+            visitPlans.put(sectionId, visitPlanDao.loadAllBySectionId(sectionId));
+        }
+        return visitPlans.get(sectionId);
+    }
+
     public void resetCities(){
         this.cities = null;
     }
@@ -299,6 +328,10 @@ public class CacheForm {
 
     public void resetLocksmiths(){
         this.locksmiths = null;
+    }
+
+    public void resetVisitPlansBySection(Integer sectionId) {
+        visitPlans.remove(sectionId);
     }
 
 }

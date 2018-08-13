@@ -38,7 +38,9 @@ public class AuthorisationUtil {
 
     public void signout(){
         Util.getBean("loginForm", LoginForm.class).setUser(new User());
-        Util.getBean("portfolioForm", PortfolioForm.class).setClients(null);
+        PortfolioForm portfolioForm = Util.getBean("portfolioForm", PortfolioForm.class);
+        portfolioForm.setClients(null);
+        portfolioForm.setVisitPlans(null);
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         try {
             FacesContext.getCurrentInstance().getExternalContext().redirect(request.getContextPath()+"/login.xhtml");
