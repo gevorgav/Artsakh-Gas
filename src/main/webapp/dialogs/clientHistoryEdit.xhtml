@@ -108,7 +108,7 @@
                                     <h:outputText id="display"/>
                                 </div>
                             </div>
-                            <c:if test="#{portfolioForm.clientHistory.visitType == 1}">
+                            <c:if test="#{portfolioForm.clientHistory.visitType == 1 or portfolioForm.clientHistory.visitType == 4}">
                                 <div class="form-group row">
                                     <div class="col-sm-4 col-md-4">
                                         <p:outputLabel for="violationCodeId" value="Խախտման կոդ"/><br/>

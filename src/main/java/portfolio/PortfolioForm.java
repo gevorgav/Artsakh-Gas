@@ -1037,14 +1037,14 @@ public class PortfolioForm {
     }
 
     public void initVisitPlan() {
-        if (!getLoginForm().getUser().getRole().equals(User.Role.ADMIN)) {
-            this.visitPlanRegionId = getLoginForm().getUser().getRegionId();
-        }
         openVisitPlanDialog();
     }
 
     public void openVisitPlanDialog(){
         resetVisitPlan();
+        if (!getLoginForm().getUser().getRole().equals(User.Role.ADMIN)) {
+            setVisitPlanRegionId(getLoginForm().getUser().getRegionId());
+        }
         RequestContext.getCurrentInstance().execute("PF('visitPlanDialog').show()");
     }
 

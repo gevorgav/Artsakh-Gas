@@ -284,11 +284,11 @@
                                                          styleClass="table table-hover b-t de-table"
                                                          emptyMessage="Չկա տվյալններ"
                                                          filteredValue="#{portfolioForm.customFilteredClients}"
-                                                         paginator="false"
+                                                         paginator="true"
                                                          rows="20"
                                                          selection="#{portfolioForm.selectedClients}"
                                                          rowKey="#{client.id}"
-                                                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink}"
+                                                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {RowsPerPageDropdown} {NextPageLink} {LastPageLink}"
                                                          rowsPerPageTemplate="10,20,50"
                                                          style="margin-bottom:0">
                                                 <p:column selectionMode="multiple" style="width:35px;text-align:center"/>
@@ -331,6 +331,7 @@
                                                 </p:column>
 
                                             </p:dataTable>
+
                                         </h:panelGroup>
                                     </h:panelGroup>
 

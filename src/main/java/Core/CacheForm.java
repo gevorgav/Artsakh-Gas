@@ -87,7 +87,7 @@ public class CacheForm {
             this.visitTypes = new ArrayList<>();
             visitTypes.add(new VisitType(0, "Չի այցելվել"));
             visitTypes.add(new VisitType(1, "Այցելել է"));
-            visitTypes.add(new VisitType(2, "Պականագործը չի այցելել"));
+            visitTypes.add(new VisitType(2, "Փականագործը չի այցելել"));
             visitTypes.add(new VisitType(3, "Փակ դուռ"));
             visitTypes.add(new VisitType(4, "Այցելել է առանց պայմանագրի"));
         }
