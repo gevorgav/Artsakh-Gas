@@ -166,4 +166,19 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
     public boolean delete(Integer id) {
         return false;
     }
+
+    public boolean moveHistoryToSemiAnnualByRegionId(@NotNull Integer semiAnnualId, @NotNull Integer regionId){
+        Map namedParameters = new HashMap();
+        namedParameters.put("regionId", regionId);
+        namedParameters.put("semiAnnualId", semiAnnualId);
+        String query = "INSERT INTO clientsHistory (clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, semiAnnualId)" +
+                "                           SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId" +
+                "                           FROM clientsHistory" +
+                "                           WHERE id IN (SELECT MAX(id)" +
+                "                                        FROM clientsHistory" +
+                "                                        WHERE regionId = :regionId" +
+                "                                        GROUP BY clientId);";
+        int updateCount = namedJdbc.update(query, namedParameters);
+        return updateCount > 0;
+    }
 }

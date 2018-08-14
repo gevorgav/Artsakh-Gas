@@ -1,27 +1,19 @@
 package hotel;
 
 import Core.CacheForm;
-import Core.FileUpload;
-import Core.Interface.Form;
 import Core.Models.City;
 import Core.Models.Region;
-import Core.Root;
-import Core.Util;
 import Models.*;
-import org.primefaces.context.RequestContext;
-import portfolio.Portfoliohotels;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by arshak.askaryan on 1/25/2017.
@@ -45,6 +37,7 @@ public class SettingsForm implements Serializable {
         categories.add(new Category(11, "Խախտման կոդեր"));
         categories.add(new Category(12, "Վարպետ"));
         categories.add(new Category(13, "Փականագործ"));
+        categories.add(new Category(14, "Կիսամյակի կարգավորում"));
     }
 
     private Integer categoryTypeId;
@@ -123,8 +116,57 @@ public class SettingsForm implements Serializable {
                 case 13:
                     this.editedLocksmith = cache.getLocksmiths().isEmpty() ? new Locksmith() : cache.getLocksmiths().get(0);
                     break;
+                case 14:
+                    this.editedSemiAnnualRegion = cache.getSemiAnnualRegions().get(0);
+                    break;
             }
         }
+    }
+
+    // ---------- SemiAnnual Region Form
+
+    private SemiAnnualRegion editedSemiAnnualRegion;
+
+    public SemiAnnualRegion getEditedSemiAnnualRegion() {
+        return editedSemiAnnualRegion;
+    }
+
+    public void setEditedSemiAnnualRegion(SemiAnnualRegion editedSemiAnnualRegion) {
+        this.editedSemiAnnualRegion = editedSemiAnnualRegion;
+    }
+
+    public void editSemiAnnualRegion(SemiAnnualRegion semiAnnualRegion){
+        try {
+            this.editedSemiAnnualRegion = (SemiAnnualRegion) semiAnnualRegion.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        this.editedSemiAnnualRegion = semiAnnualRegion;
+    }
+
+    public void saveSemiAnnualRegion(){
+        if (validateSemiAnnualRegion(this.editedSemiAnnualRegion)){
+            this.cache.semiAnnualRegionDao.update(this.editedSemiAnnualRegion);
+            this.cache.clientHistoryDao.moveHistoryToSemiAnnualByRegionId(this.editedSemiAnnualRegion.getSemiAnnualId(), this.editedSemiAnnualRegion.getRegionId());
+            this.cache.setSemiAnnualRegions(null);
+        }
+
+    }
+
+    private boolean validateSemiAnnualRegion(SemiAnnualRegion semiAnnualRegion) {
+        boolean isValid = true;
+        if(semiAnnualRegion.getRegionId() == null ){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Շրջանը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("semiAnnualRegionIdForm:sregionId", facesMessage);
+            isValid = false;
+        }
+        if(semiAnnualRegion.getSemiAnnualId() == null){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Կիսամյակը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("semiAnnualRegionIdForm:semiAnnualId", facesMessage);
+            isValid = false;
+        }
+
+        return isValid;
     }
 
     // --------- City Form

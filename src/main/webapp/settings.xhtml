@@ -487,6 +487,17 @@
                                                             </p:commandLink>
                                                         </c:forEach>
                                                     </c:if>
+                                                    <!--SemiAnnualRegion-->
+                                                    <c:if test="#{settingsForm.categoryTypeId eq 14}">
+                                                        <c:forEach var="semiAnnualRegion" items="#{settingsForm.cache.semiAnnualRegions}">
+                                                            <p:commandLink actionListener="#{settingsForm.editSemiAnnualRegion(semiAnnualRegion)}" immediate="true" update=":editFormId">
+                                                                <div class="list-body list-group-item">
+                                                                    <h:outputText value="#{semiAnnualRegion.region}"/>
+                                                                    <h:outputText style="float: right" value="#{semiAnnualRegion.semiAnnual}"/>
+                                                                </div>
+                                                            </p:commandLink>
+                                                        </c:forEach>
+                                                    </c:if>
                                                 </div>
                                             </h:form>
                                         </div>
@@ -551,6 +562,46 @@
                                     <h:panelGroup id="contentId" styleClass="row-inner" layout="block">
                                         <h:panelGroup layout="block" class="padding" id="editFormId"
                                                       style="max-width: 800px; margin: 0 auto;">
+
+                                            <!--SemiAnnualRegion-->
+                                            <h:form rendered="#{settingsForm.categoryTypeId eq 14}" id="semiAnnualRegionIdForm">
+                                                <h:panelGroup layout="block">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4" style="text-align: center">
+                                                            <h:outputText  value="#{settingsForm.editedSemiAnnualRegion.region}"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-4">
+                                                            <p:outputLabel  for="semiAnnualId" value="Կիսամյակ" styleClass="required"/>
+                                                            <p:selectOneMenu id="semiAnnualId" value="#{settingsForm.editedSemiAnnualRegion.semiAnnualId}" styleClass="form-control input-c"
+                                                                             requiredMessage="Կիսամյակը պարտադիր դաշտ է">
+                                                                <f:selectItem id="semiAnnualSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                                                                <f:selectItems id="semiAnnualsId"
+                                                                               itemLabel="#{semiAnnual.name}"
+                                                                               itemValue="#{semiAnnual.id}"
+                                                                               value="#{settingsForm.cache.semiAnnuals}" var="semiAnnual"/>
+                                                            </p:selectOneMenu>
+                                                            <p:message for="semiAnnualId" display="text"/>
+                                                        </div>
+                                                    </div>
+                                                </h:panelGroup>
+
+                                                <c:if test="#{authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <p:commandButton ajax="false" value="Պահպանել" styleClass="btn btn-fw primary"  actionListener="#{settingsForm.saveSemiAnnualRegion}">
+                                                            <f:ajax event="click" render=":clientHistoryForm"/>
+                                                        </p:commandButton>
+                                                        <h:commandLink immediate="true" value="Դուրս գալ" styleClass="btn " actionListener="#{authorisationUtil.signout}"/>
+                                                    </div>
+                                                </c:if>
+                                                <c:if test="#{!authorisationUtil.authorisedUser}">
+                                                    <div class="de-btn-top">
+                                                        <h:commandLink immediate="true" value="Մուտք" styleClass="btn " actionListener="#{authorisationUtil.signIn}"/>
+                                                    </div>
+                                                </c:if>
+                                            </h:form>
+
                                             <!--Asht-->
                                             <h:form rendered="#{settingsForm.categoryTypeId eq 1}" id="ashtFormId">
                                                 <h:panelGroup layout="block">
@@ -1111,6 +1162,16 @@
     </div>
     <!-- / -->
 
+</div>
+
+<div class="" id="login-page">
+    <div class="container">
+        <div class="center-align">
+            <f:metadata>
+                <f:event type="preRenderView" listener="#{authorisationUtil.onLoad}"/>
+            </f:metadata>
+        </div>
+    </div>
 </div>
 
 

@@ -57,6 +57,12 @@ public class CacheForm {
     public PriceListDao priceListDao;
 
     @Autowired
+    public SemiAnnualRegionDao semiAnnualRegionDao;
+
+    @Autowired
+    public ClientHistoryDao clientHistoryDao;
+
+    @Autowired
     public MonthDao monthDao;
 
     @Autowired
@@ -79,6 +85,7 @@ public class CacheForm {
     private List<SemiAnnual> semiAnnuals;
     private Map<Integer, List<ViolationCode>> violationCodesByClientHistory;
     private List<Locksmith> locksmiths;
+    private List<SemiAnnualRegion> semiAnnualRegions;
     private List<Month> months;
     private Map<Integer, List<VisitPlan>> visitPlans = new HashMap<>();
 
@@ -100,6 +107,17 @@ public class CacheForm {
             this.semiAnnuals = semiAnnualDao.loadAll();
         }
         return semiAnnuals;
+    }
+
+    public List<SemiAnnualRegion> getSemiAnnualRegions() {
+        if(this.semiAnnualRegions == null){
+            this.semiAnnualRegions = semiAnnualRegionDao.loadAll();
+        }
+        return semiAnnualRegions;
+    }
+
+    public void setSemiAnnualRegions(List<SemiAnnualRegion> semiAnnualRegions) {
+        this.semiAnnualRegions = semiAnnualRegions;
     }
 
     public List<City> getCities() {
