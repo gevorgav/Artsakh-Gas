@@ -1085,12 +1085,12 @@ public class PortfolioForm {
     public void searchVisitPlans() {
         if (validateVisitPlanSearchFields()) {
             visitPlans = new ArrayList<>();
-            for (Section section : cache.getSections())
+            for (Section section : cache.getSections()) {
                 if (section.getRegionId().equals(visitPlanRegionId)) {
-                    for(int i = 6 * (semiAnnualId % 10) - 5; i <= 6 * (semiAnnualId % 10); i++){
-                        Integer monthId = semiAnnualId*100 + i;
+                    for (int i = 6 * (semiAnnualId % 10) - 5; i <= 6 * (semiAnnualId % 10); i++) {
+                        Integer monthId = semiAnnualId * 100 + i;
                         VisitPlan loadedVisitPlan = visitPlanByMonthId(monthId, section.getId());
-                        if(loadedVisitPlan == null) {
+                        if (loadedVisitPlan == null) {
                             visitPlans.add(new VisitPlan(section.getId(), monthId, null, semiAnnualId, section, getMonthById(monthId)));
                         } else {
                             loadedVisitPlan.setSection(section);
@@ -1100,11 +1100,12 @@ public class PortfolioForm {
 
                     }
                 }
-        }
-        if(visitPlans != null && visitPlans.isEmpty()){
-            FacesContext facesContext = FacesContext.getCurrentInstance();
-            FacesMessage facesMessage = new FacesMessage("Տվյալները չեն գտնվել");
-            facesContext.addMessage("visitPlanSearchFormId:visitPlanList", facesMessage);
+            }
+            if(visitPlans != null && visitPlans.isEmpty()){
+                FacesContext facesContext = FacesContext.getCurrentInstance();
+                FacesMessage facesMessage = new FacesMessage("Տվյալները չեն գտնվել");
+                facesContext.addMessage("visitPlanSearchFormId:visitPlanList", facesMessage);
+            }
         }
     }
 
@@ -1118,7 +1119,18 @@ public class PortfolioForm {
     }
 
     private boolean validateVisitPlanSearchFields(){
-        return true;
+        boolean isValid = true;
+        if(visitPlanRegionId == null){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ընտրեք որևէ շրջան");
+            FacesContext.getCurrentInstance().addMessage("visitPlanSearchFormId:visitPlanRegionId", facesMessage);
+            isValid = false;
+        }
+        if(semiAnnualId == null){
+            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ընտրեք որևէ կիսամյակ");
+            FacesContext.getCurrentInstance().addMessage("visitPlanSearchFormId:visitPlanSemiAnnualId", facesMessage);
+            isValid = false;
+        }
+        return isValid;
     }
 
     public void onRowEdit(RowEditEvent event) {

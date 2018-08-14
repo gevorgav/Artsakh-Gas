@@ -19,6 +19,7 @@
                                            itemValue="#{region.id}"
                                            value="#{portfolioForm.cache.regions}" var="region"/>
                         </p:selectOneMenu>
+                        <p:message for="visitPlanRegionId" />
                     </div>
                     <div class="col-sm-4 col-md-4">
                         <p:selectOneMenu id="visitPlanSemiAnnualId" value="#{portfolioForm.semiAnnualId}" disabled="#{portfolioForm.visitPlans.size() > 0}" styleClass="form-control input-c">
@@ -28,6 +29,7 @@
                                            itemValue="#{semiAnnual.id}"
                                            value="#{portfolioForm.cache.semiAnnuals}" var="semiAnnual"/>
                         </p:selectOneMenu>
+                        <p:message for="visitPlanSemiAnnualId" />
                     </div>
                     <div class="col-sm-4 col-md-4">
                         <p:commandButton styleClass="btn btn-fw success" value="Ավելացնել" actionListener="#{portfolioForm.searchVisitPlans}" update="visitPlanSearchFormId" disabled="#{portfolioForm.visitPlans.size() > 0}" />
