@@ -1,12 +1,11 @@
 package Core;
 
 import Core.Models.Month;
-import Models.SemiAnnual;
+import Models.Payment;
 
 import javax.el.ELContext;
 import javax.faces.context.FacesContext;
-import java.io.IOException;
-import java.time.LocalDate;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,59 +24,59 @@ public class Util {
         return (T) FacesContext.getCurrentInstance().getApplication().getELResolver().getValue(elContext, null, beanName);
     }
 
-    public static List<Month> getMonths(){
+    public static List<Month> getMonths() {
         List<Month> months = new ArrayList<>();
-        months.add(new Month(1,"Հունվար",1));
-        months.add(new Month(2,"Փետրվար",1));
-        months.add(new Month(3,"Մարտ",1));
-        months.add(new Month(4,"Ապրիլ",2));
-        months.add(new Month(5,"Մայիս",2));
-        months.add(new Month(6,"Հունիս",2));
-        months.add(new Month(7,"Հուլիս",3));
-        months.add(new Month(8,"Օգոստոս",3));
-        months.add(new Month(9,"Սեպտեմբեր",3));
-        months.add(new Month(10,"Հոկտեմբեր",4));
-        months.add(new Month(11,"Նոյեմբեր",4));
-        months.add(new Month(12,"Դեկտեմբեր",4));
+        months.add(new Month(1, "Հունվար", 1));
+        months.add(new Month(2, "Փետրվար", 1));
+        months.add(new Month(3, "Մարտ", 1));
+        months.add(new Month(4, "Ապրիլ", 2));
+        months.add(new Month(5, "Մայիս", 2));
+        months.add(new Month(6, "Հունիս", 2));
+        months.add(new Month(7, "Հուլիս", 3));
+        months.add(new Month(8, "Օգոստոս", 3));
+        months.add(new Month(9, "Սեպտեմբեր", 3));
+        months.add(new Month(10, "Հոկտեմբեր", 4));
+        months.add(new Month(11, "Նոյեմբեր", 4));
+        months.add(new Month(12, "Դեկտեմբեր", 4));
         return months;
 
     }
 
-    public static Map<Integer, Double> initMap(){
+    public static Map<Integer, Double> initMap() {
         Map<Integer, Double> doubleMap = new HashMap<>();
-        doubleMap.put(1,0.0);
-        doubleMap.put(2,0.0);
-        doubleMap.put(3,0.0);
-        doubleMap.put(4,0.0);
-        doubleMap.put(5,0.0);
-        doubleMap.put(6,0.0);
-        doubleMap.put(7,0.0);
-        doubleMap.put(8,0.0);
-        doubleMap.put(9,0.0);
-        doubleMap.put(10,0.0);
-        doubleMap.put(11,0.0);
-        doubleMap.put(12,0.0);
+        doubleMap.put(1, 0.0);
+        doubleMap.put(2, 0.0);
+        doubleMap.put(3, 0.0);
+        doubleMap.put(4, 0.0);
+        doubleMap.put(5, 0.0);
+        doubleMap.put(6, 0.0);
+        doubleMap.put(7, 0.0);
+        doubleMap.put(8, 0.0);
+        doubleMap.put(9, 0.0);
+        doubleMap.put(10, 0.0);
+        doubleMap.put(11, 0.0);
+        doubleMap.put(12, 0.0);
         return doubleMap;
     }
 
-    public static Map<Integer, Integer> initMapForTurCount(){
+    public static Map<Integer, Integer> initMapForTurCount() {
         Map<Integer, Integer> doubleMap = new HashMap<>();
-        doubleMap.put(1,0);
-        doubleMap.put(2,0);
-        doubleMap.put(3,0);
-        doubleMap.put(4,0);
-        doubleMap.put(5,0);
-        doubleMap.put(6,0);
-        doubleMap.put(7,0);
-        doubleMap.put(8,0);
-        doubleMap.put(9,0);
-        doubleMap.put(10,0);
-        doubleMap.put(11,0);
-        doubleMap.put(12,0);
+        doubleMap.put(1, 0);
+        doubleMap.put(2, 0);
+        doubleMap.put(3, 0);
+        doubleMap.put(4, 0);
+        doubleMap.put(5, 0);
+        doubleMap.put(6, 0);
+        doubleMap.put(7, 0);
+        doubleMap.put(8, 0);
+        doubleMap.put(9, 0);
+        doubleMap.put(10, 0);
+        doubleMap.put(11, 0);
+        doubleMap.put(12, 0);
         return doubleMap;
     }
 
-    public static void logMessage(String s){
+    public static void logMessage(String s) {
         Logger logger = Logger.getLogger("MyLog");
         FileHandler fh;
 
@@ -97,6 +96,37 @@ public class Util {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void exportDataBase(List<Payment> payments) {
+        Writer writer = null;
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Payment payment : payments) {
+            stringBuilder.append("INSERT INTO gaz.payment (clientId, fullName, regionId, city, street, home, pay, debt, semiAnnualId)" +
+                    " VALUES (");
+            stringBuilder.append("'"+ payment.getClientId() +"',");
+            stringBuilder.append("'"+ payment.getFirstName() + " " + payment.getLastName()  +"',");
+            stringBuilder.append(payment.getRegionId()+ ",");
+            stringBuilder.append("'"+ payment.getCityId() +"',");
+            stringBuilder.append("'"+ payment.getStreetId() +"',");
+            stringBuilder.append("'Will be home',");
+            stringBuilder.append(payment.getPay()+ ",");
+            stringBuilder.append(payment.getDebt()+",");
+            stringBuilder.append(payment.getSemiAnnualId());
+            stringBuilder.append(");\n");
+        }
+        try {
+            writer = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream("f://payment.sql"), "utf-8"));
+            writer.write(stringBuilder.toString());
+        } catch (IOException ex) {
+            // Report
+        } finally {
+            try {
+                writer.close();
+            } catch (Exception ex) {/*ignore*/}
+        }
+
     }
 
 }

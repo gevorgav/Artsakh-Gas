@@ -3,6 +3,7 @@ package portfolio;
 import Core.CacheForm;
 import Core.Models.City;
 import Core.Models.Month;
+import Core.Util;
 import Models.*;
 import dao.*;
 import login.LoginForm;
@@ -618,6 +619,7 @@ public class PortfolioForm {
 
 
     private StreamedContent file;
+    private StreamedContent exportSql;
 
     public StreamedContent getFile() throws IOException, InvalidFormatException {
         if (getSelectedClients().isEmpty() || getSelectedClients().size() > 15) {
@@ -1154,5 +1156,40 @@ public class PortfolioForm {
     }
 
   /* -------------- Visit Plan Form End ----------*/
+
+    public StreamedContent getExportSql() {
+        insertDataBase();
+        Util.exportDataBase(paymentDao.loadAll());
+        try {
+            exportSql = new DefaultStreamedContent(new FileInputStream("f://payment.sql"),"","downloaded_payment.sql");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return exportSql;
+    }
+
+    public void insertDataBase(){
+        List<String> list = new ArrayList<String>();
+        try {
+            File file = new File("f://payment.sql");
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            StringBuffer stringBuffer = new StringBuffer();
+
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+//                stringBuffer.append(line);
+                list.add(line);
+//                stringBuffer.append("\n");
+            }
+            fileReader.close();
+            System.out.println("Contents of file:");
+            System.out.println(stringBuffer.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        paymentDao.insertAll(list.toArray(new String[0]));
+    }
 
 }

@@ -5,6 +5,9 @@ import dao.mapper.PaymentMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
 
 /**
@@ -37,6 +40,13 @@ public class PaymentDao extends Dao<Payment> {
         int result = jdbcTemplate.update(sql, payment.getClientId(), payment.getClientHistoryTmpId(), payment.getFirstName(), payment.getLastName(), payment.getMiddleName(),
         payment.getRegionId(), payment.getCityId(), payment.getStreetId(), payment.getPay(), payment.getDebt(), payment.getSemiAnnualId());
         return result == 1;
+    }
+
+    public void insertAll(String[] payment) {
+        Objects.requireNonNull(payment);
+        Connection con = ....
+        ScriptRunner runner = new ScriptRunner(con, [booleanAutoCommit], [booleanStopOnerror]);
+        runner.runScript(new BufferedReader(new FileReader("test.sql")));
     }
 
     @Override

@@ -266,6 +266,9 @@
                                         <h:panelGrid columns="1" cellpadding="5">
                                             <p:commandButton value="Ավելացնել այցելությունների գրաֆիկ" update="visitPlanSearchFormId" actionListener="#{portfolioForm.initVisitPlan}">
                                             </p:commandButton>
+                                            <p:commandButton value="Export" styleClass="dark" ajax="false" icon="ui-icon-arrowthick-1-s" >
+                                                <p:fileDownload value="#{portfolioForm.exportSql}" />
+                                            </p:commandButton>
                                         </h:panelGrid>
                                         <div class="clear"></div>
 
