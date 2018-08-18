@@ -1,6 +1,7 @@
 package Models;
 
 import java.util.Objects;
+
 /**
  * Created by gevorg.avetisyan on 6/13/2018.
  */
@@ -12,8 +13,9 @@ public class Payment {
     private String lastName;
     private String middleName;
     private Integer regionId;
-    private Integer cityId;
-    private Integer streetId;
+    private String city;
+    private String street;
+    private String home;
     private Integer semiAnnualId;
     private Double debt;
     private Double balance;
@@ -22,7 +24,7 @@ public class Payment {
     public Payment() {
     }
 
-    public Payment(Integer id, String clientId, Integer clientHistoryTmpId, String firstName, String lastName, String middleName, Integer regionId, Integer cityId, Integer streetId, Integer semiAnnualId, Double debt, Double pay) {
+    public Payment(Integer id, String clientId, Integer clientHistoryTmpId, String firstName, String lastName, String middleName, Integer regionId, String city, String street, String home, Integer semiAnnualId, Double debt, Double pay) {
         this.id = id;
         this.clientId = clientId;
         this.clientHistoryTmpId = clientHistoryTmpId;
@@ -30,22 +32,24 @@ public class Payment {
         this.lastName = lastName;
         this.middleName = middleName;
         this.regionId = regionId;
-        this.cityId = cityId;
-        this.streetId = streetId;
+        this.city = city;
+        this.street = street;
+        this.home = home;
         this.semiAnnualId = semiAnnualId;
         this.debt = debt;
         this.pay = pay;
     }
 
-    public Payment(String clientId, Integer clientHistoryTmpId, String firstName, String lastName, String middleName, Integer regionId, Integer cityId, Integer streetId, Integer semiAnnualId, Double debt, Double pay) {
+    public Payment(String clientId, Integer clientHistoryTmpId, String firstName, String lastName, String middleName, Integer regionId, String city, String street, String home, Integer semiAnnualId, Double debt, Double pay) {
         this.clientId = clientId;
         this.clientHistoryTmpId = clientHistoryTmpId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
         this.regionId = regionId;
-        this.cityId = cityId;
-        this.streetId = streetId;
+        this.city = city;
+        this.street = street;
+        this.home = home;
         this.semiAnnualId = semiAnnualId;
         this.debt = debt;
         this.pay = pay;
@@ -107,20 +111,28 @@ public class Payment {
         this.regionId = regionId;
     }
 
-    public Integer getCityId() {
-        return cityId;
+    public String getCity() {
+        return city;
     }
 
-    public void setCityId(Integer cityId) {
-        this.cityId = cityId;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public Integer getStreetId() {
-        return streetId;
+    public String getStreet() {
+        return street;
     }
 
-    public void setStreetId(Integer streetId) {
-        this.streetId = streetId;
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getHome() {
+        return home;
+    }
+
+    public void setHome(String home) {
+        this.home = home;
     }
 
     public Integer getSemiAnnualId() {
@@ -167,8 +179,9 @@ public class Payment {
                 Objects.equals(lastName, payment.lastName) &&
                 Objects.equals(middleName, payment.middleName) &&
                 Objects.equals(regionId, payment.regionId) &&
-                Objects.equals(cityId, payment.cityId) &&
-                Objects.equals(streetId, payment.streetId) &&
+                Objects.equals(city, payment.city) &&
+                Objects.equals(street, payment.street) &&
+                Objects.equals(home, payment.home) &&
                 Objects.equals(semiAnnualId, payment.semiAnnualId) &&
                 Objects.equals(debt, payment.debt) &&
                 Objects.equals(balance, payment.balance) &&
@@ -178,6 +191,6 @@ public class Payment {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, clientId, clientHistoryTmpId, firstName, lastName, middleName, regionId, cityId, streetId, semiAnnualId, debt, balance, pay);
+        return Objects.hash(id, clientId, clientHistoryTmpId, firstName, lastName, middleName, regionId, city, street, home, semiAnnualId, debt, balance, pay);
     }
 }

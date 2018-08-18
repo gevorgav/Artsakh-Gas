@@ -100,6 +100,12 @@ public class PortfolioForm {
     private SectionDao sectionDao;
 
     @Autowired
+    private CityDao cityDao;
+
+    @Autowired
+    private StreetDao streetDao;
+
+    @Autowired
     private VisitPlanDao visitPlanDao;
 
     public List<Client> getClients() {
@@ -518,7 +524,7 @@ public class PortfolioForm {
         if (clientHistory.getVisitType() == 1) {
             Integer clientHistoryTmpId = saveClientHistoryTemp(historyId);
             Double debt = initDept();
-            savePayment(clientHistoryTmpId, client.getId(), client.getFirstName(), client.getLastName(), client.getMiddleName(), client.getRegionId(), client.getCityId(), client.getStreetId(), clientHistory.getSemiAnnualId(), debt);
+            savePayment(clientHistoryTmpId, client.getId(), client.getFirstName(), client.getLastName(), client.getMiddleName(), client.getRegionId(), client.getCityId(), client.getStreetId(), client.getHomeNumber(), clientHistory.getSemiAnnualId(), debt);
         }
         saveViolationCodes(historyId);
         cancelHistoryDialog();
@@ -543,14 +549,29 @@ public class PortfolioForm {
     }
 
     private void savePayment(Integer clientHistoryTmpId, String clientId, String firstName, String lastName, String
-            middleName, Integer regionId, Integer cityId, Integer streetId, Integer semiAnnualId, Double debt) {
-        Payment lastPayment = paymentDao.loadLastPayment(clientId, regionId);
-        paymentDao.insert(new Payment(clientId, clientHistoryTmpId, firstName, lastName, middleName, regionId, cityId, streetId, semiAnnualId, lastPayment != null ? lastPayment.getDebt() + debt : debt, 0.00));
+            middleName, Integer regionId, Integer cityId, Integer streetId, String home, Integer semiAnnualId, Double debt) {
+        Integer lastSemiAnnualId = defineLastSemiAnnualId(semiAnnualId);
+        Payment lastPayment = paymentDao.loadLastPayment(clientId, regionId, lastSemiAnnualId);
+        String city = cityDao.loadById(cityId).getName();
+        String street = streetDao.loadById(streetId).getName();
+        paymentDao.insert(new Payment(clientId, clientHistoryTmpId, firstName, lastName, middleName, regionId, city, street, home, semiAnnualId, lastPayment != null ? lastPayment.getDebt() + debt : debt, 0.00));
+    }
+
+    private Integer defineLastSemiAnnualId(Integer semiAnnualId) {
+        if (semiAnnualId%10 == 2){
+            return semiAnnualId - 1;
+        }else if (semiAnnualId%10 == 1){
+            Integer lastYear = semiAnnualId/10 - 1;
+            return lastYear * 10 + 2;
+        }
+        return null;
     }
 
     private Integer saveClientHistoryTemp(Integer historyId) {
         return clientHistoryTmpDao.insertAndReturnId(new ClientHistoryTmp(clientHistory, historyId));
     }
+
+
 
     private Client updateClientHistory() {
         for (Client client : clients) {
@@ -1156,10 +1177,19 @@ public class PortfolioForm {
     }
 
   /* -------------- Visit Plan Form End ----------*/
+    private Integer semiAnnualIdForExport;
+
+    public Integer getSemiAnnualIdForExport() {
+        return semiAnnualIdForExport;
+    }
+
+    public void setSemiAnnualIdForExport(Integer semiAnnualIdForExport) {
+        this.semiAnnualIdForExport = semiAnnualIdForExport;
+    }
 
     public StreamedContent getExportSql() {
         insertDataBase();
-        Util.exportDataBase(paymentDao.loadAll());
+        Util.exportDataBase(paymentDao.paymentsForExportBySemiAnnual(semiAnnualIdForExport));
         try {
             exportSql = new DefaultStreamedContent(new FileInputStream("f://payment.sql"),"","downloaded_payment.sql");
         } catch (FileNotFoundException e) {

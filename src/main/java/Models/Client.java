@@ -1,14 +1,11 @@
 package Models;
 
-import Core.Models.City;
 import Core.Models.Region;
-
-import java.util.Objects;
 
 /**
  * Created by astghik.mamunc on 6/13/2018.
  */
-public class Client {
+public class  Client {
 
     private String id;
 

@@ -19,8 +19,9 @@ public class PaymentMapper implements RowMapper<Payment> {
         payment.setLastName(resultSet.getString("lastName"));
         payment.setMiddleName(resultSet.getString("middleName"));
         payment.setRegionId(resultSet.getInt("regionId"));
-        payment.setCityId(resultSet.getInt("cityId"));
-        payment.setStreetId(resultSet.getInt("streetId"));
+        payment.setCity(resultSet.getString("city"));
+        payment.setStreet(resultSet.getString("street"));
+        payment.setHome(resultSet.getString("home"));
         payment.setSemiAnnualId(resultSet.getInt("semiAnnualId"));
         payment.setDebt(resultSet.getDouble("debt"));
         payment.setPay(resultSet.getDouble("pay"));

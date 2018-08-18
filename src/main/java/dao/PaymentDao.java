@@ -3,11 +3,10 @@ package dao;
 import Models.Payment;
 import dao.mapper.PaymentMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.*;
 
 /**
@@ -25,6 +24,18 @@ public class PaymentDao extends Dao<Payment> {
         }
     }
 
+    public List<Payment> paymentsForExportBySemiAnnual(Integer semiAnnualId){
+        Objects.requireNonNull(semiAnnualId);
+        String sql = "SELECT\n" +
+                "  *\n" +
+                "FROM payment\n" +
+                "WHERE id IN (SELECT MAX(id)\n" +
+                "             FROM payment\n" +
+                "             WHERE semiAnnualId = ? " +
+                "             GROUP BY regionId + clientId);";
+        return jdbcTemplate.query(sql, new PaymentMapper(), semiAnnualId);
+    }
+
     @Override
     public Payment loadById(Integer id) {
         Objects.requireNonNull(id);
@@ -34,19 +45,19 @@ public class PaymentDao extends Dao<Payment> {
 
     @Override
     public boolean insert(Payment payment) {
+
         Objects.requireNonNull(payment);
-        String sql = "INSERT INTO payment(clientId, clientHistoryTmpId, firstName, lastName, middleName, regionId, cityId, streetId, pay, debt, semiAnnualId)\n" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        int result = jdbcTemplate.update(sql, payment.getClientId(), payment.getClientHistoryTmpId(), payment.getFirstName(), payment.getLastName(), payment.getMiddleName(),
-        payment.getRegionId(), payment.getCityId(), payment.getStreetId(), payment.getPay(), payment.getDebt(), payment.getSemiAnnualId());
-        return result == 1;
+        String sql = "INSERT INTO payment(clientId, clientHistoryTmpId, firstName, lastName, middleName, regionId, city, street, home, pay, debt, semiAnnualId) " +
+                "VALUES (:clientId, :clientHistoryTmpId, :firstName, :lastName, :middleName, :regionId, :city, :street, :home, :pay, :debt, :semiAnnualId)";
+        SqlParameterSource fileParameters = new BeanPropertySqlParameterSource(payment);
+        return namedJdbc.update(sql, fileParameters) == 1;
     }
 
     public void insertAll(String[] payment) {
-        Objects.requireNonNull(payment);
-        Connection con = ....
-        ScriptRunner runner = new ScriptRunner(con, [booleanAutoCommit], [booleanStopOnerror]);
-        runner.runScript(new BufferedReader(new FileReader("test.sql")));
+//        Objects.requireNonNull(payment);
+//        Connection con = ....
+//        ScriptRunner runner = new ScriptRunner(con, [booleanAutoCommit], [booleanStopOnerror]);
+//        runner.runScript(new BufferedReader(new FileReader("test.sql")));
     }
 
     @Override
@@ -59,10 +70,10 @@ public class PaymentDao extends Dao<Payment> {
         return false;
     }
 
-    public Payment loadLastPayment(String clientId, Integer regionId) {
+    public Payment loadLastPayment(String clientId, Integer regionId, Integer semiAnnualId) {
         Objects.requireNonNull(clientId);
-        String sql = "SELECT * FROM payment WHERE clientId = ? AND regionId = ? ORDER BY id DESC LIMIT 1";
-        List<Payment> paymentList = jdbcTemplate.query(sql, new PaymentMapper(), clientId ,regionId);
+        String sql = "SELECT * FROM payment WHERE clientId = ? AND regionId = ? AND semiAnnualId = ? ORDER BY id DESC LIMIT 1";
+        List<Payment> paymentList = jdbcTemplate.query(sql, new PaymentMapper(), clientId , regionId, semiAnnualId);
         if (paymentList.size() < 1) {
             return null;
         }

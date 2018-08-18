@@ -107,9 +107,9 @@ public class Util {
             stringBuilder.append("'"+ payment.getClientId() +"',");
             stringBuilder.append("'"+ payment.getFirstName() + " " + payment.getLastName()  +"',");
             stringBuilder.append(payment.getRegionId()+ ",");
-            stringBuilder.append("'"+ payment.getCityId() +"',");
-            stringBuilder.append("'"+ payment.getStreetId() +"',");
-            stringBuilder.append("'Will be home',");
+            stringBuilder.append("'"+ payment.getCity() +"',");
+            stringBuilder.append("'"+ payment.getStreet() +"',");
+            stringBuilder.append("'"+ payment.getHome() +"',");
             stringBuilder.append(payment.getPay()+ ",");
             stringBuilder.append(payment.getDebt()+",");
             stringBuilder.append(payment.getSemiAnnualId());
