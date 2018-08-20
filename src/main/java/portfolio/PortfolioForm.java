@@ -554,7 +554,7 @@ public class PortfolioForm {
         Payment lastPayment = paymentDao.loadLastPayment(clientId, regionId, lastSemiAnnualId);
         String city = cityDao.loadById(cityId).getName();
         String street = streetDao.loadById(streetId).getName();
-        paymentDao.insert(new Payment(clientId, clientHistoryTmpId, firstName, lastName, middleName, regionId, city, street, home, semiAnnualId, lastPayment != null ? lastPayment.getDebt() + debt : debt, 0.00));
+        paymentDao.insert(new Payment(clientId, clientHistoryTmpId, firstName + " " + lastName + "" + middleName, regionId, city, street, home, semiAnnualId, lastPayment != null ? lastPayment.getDebt() + debt : debt, 0.00));
     }
 
     private Integer defineLastSemiAnnualId(Integer semiAnnualId) {
@@ -604,6 +604,24 @@ public class PortfolioForm {
             violationClientHistoryDao.delete(violationCode.getId(), historyId);
         }
         saveViolationCodes(historyId);
+    }
+
+    public void importPayment(){
+        String sd;
+        try {
+
+            BufferedReader in = new BufferedReader(new FileReader("C:\\payment.sql"));
+            while( (sd = in.readLine()) != null) {
+
+                String line = new String(sd.getBytes(),"UTF-8");
+                paymentDao.insertByLine(line);
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String[] getViolationCodes() {
@@ -1219,7 +1237,7 @@ public class PortfolioForm {
             e.printStackTrace();
         }
 
-        paymentDao.insertAll(list.toArray(new String[0]));
+       // paymentDao.insertAll(list.toArray(new String[0]));
     }
 
 }

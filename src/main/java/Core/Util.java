@@ -102,10 +102,11 @@ public class Util {
         Writer writer = null;
         StringBuilder stringBuilder = new StringBuilder();
         for (Payment payment : payments) {
-            stringBuilder.append("INSERT INTO gaz.payment (clientId, fullName, regionId, city, street, home, pay, debt, semiAnnualId)" +
+            stringBuilder.append("INSERT INTO payment (clientId, clientHistoryTmpId, fullName, regionId, city, street, home, pay, debt, semiAnnualId)" +
                     " VALUES (");
             stringBuilder.append("'"+ payment.getClientId() +"',");
-            stringBuilder.append("'"+ payment.getFirstName() + " " + payment.getLastName()  +"',");
+            stringBuilder.append("'"+ payment.getClientHistoryTmpId()  +"',");
+            stringBuilder.append("'"+ payment.getFullName()  +"',");
             stringBuilder.append(payment.getRegionId()+ ",");
             stringBuilder.append("'"+ payment.getCity() +"',");
             stringBuilder.append("'"+ payment.getStreet() +"',");

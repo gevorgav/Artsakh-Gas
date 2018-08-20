@@ -32,7 +32,7 @@ public class PaymentDao extends Dao<Payment> {
                 "WHERE id IN (SELECT MAX(id)\n" +
                 "             FROM payment\n" +
                 "             WHERE semiAnnualId = ? " +
-                "             GROUP BY regionId + clientId);";
+                "             GROUP BY regionId + clientId) AND  debt > 0.0;";
         return jdbcTemplate.query(sql, new PaymentMapper(), semiAnnualId);
     }
 
@@ -47,17 +47,15 @@ public class PaymentDao extends Dao<Payment> {
     public boolean insert(Payment payment) {
 
         Objects.requireNonNull(payment);
-        String sql = "INSERT INTO payment(clientId, clientHistoryTmpId, firstName, lastName, middleName, regionId, city, street, home, pay, debt, semiAnnualId) " +
-                "VALUES (:clientId, :clientHistoryTmpId, :firstName, :lastName, :middleName, :regionId, :city, :street, :home, :pay, :debt, :semiAnnualId)";
+        String sql = "INSERT INTO payment(clientId, clientHistoryTmpId, fullName, regionId, city, street, home, pay, debt, semiAnnualId) " +
+                "VALUES (:clientId, :clientHistoryTmpId, :firstName, :regionId, :city, :street, :home, :pay, :debt, :semiAnnualId)";
         SqlParameterSource fileParameters = new BeanPropertySqlParameterSource(payment);
         return namedJdbc.update(sql, fileParameters) == 1;
     }
 
-    public void insertAll(String[] payment) {
-//        Objects.requireNonNull(payment);
-//        Connection con = ....
-//        ScriptRunner runner = new ScriptRunner(con, [booleanAutoCommit], [booleanStopOnerror]);
-//        runner.runScript(new BufferedReader(new FileReader("test.sql")));
+    public boolean insertByLine(String payment) {
+        Map namedParameters = new HashMap();
+        return namedJdbc.update(payment,namedParameters) == 1;
     }
 
     @Override
