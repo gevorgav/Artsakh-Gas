@@ -15,10 +15,12 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.*;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.faces.application.FacesMessage;
@@ -608,20 +610,40 @@ public class PortfolioForm {
     }
 
     public void importPayment(){
-        String sd;
-        try {
+        if(this.fileUpload != null) {
+            String sd;
+            try {
 
-            BufferedReader in = new BufferedReader(new FileReader("C:\\payment.sql"));
-            while( (sd = in.readLine()) != null) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(fileUpload.getInputstream(),  "UTF-8"));
+                while( (sd = in.readLine()) != null) {
+                    String line = new String(sd.getBytes(),"UTF-8");
+                    paymentDao.insertByLine(line);
+                }
 
-                String line = new String(sd.getBytes(),"UTF-8");
-                paymentDao.insertByLine(line);
+                this.fileUpload  = null;
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        }
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+    }
+
+    private UploadedFile fileUpload;
+
+    public UploadedFile getFileUpload() {
+        return fileUpload;
+    }
+
+    public void setFileUpload(UploadedFile fileUpload) {
+        this.fileUpload = fileUpload;
+    }
+
+    public void upload() {
+        if(this.fileUpload != null) {
+            FacesMessage message = new FacesMessage("Succesful", fileUpload.getFileName() + " is uploaded.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
         }
     }
 
@@ -1258,6 +1280,7 @@ public class PortfolioForm {
 
        // paymentDao.insertAll(list.toArray(new String[0]));
     }
+
 
   /* -------------- Visit Graphic Start -------------*/
 

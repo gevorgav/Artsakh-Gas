@@ -217,6 +217,7 @@
                     </div>
                 </div>
             </div>-->
+
             <h:form id="portfolioForm" prependId="false">
                 <p:ajaxStatus id="ajaxShadowId">
                     <f:facet id="startFacet1Id" name="start">
@@ -259,21 +260,35 @@
                             <div class="box form-border">
                                 <div class="box-body">
                                     <h:panelGroup id="yearlyPanelId">
-                                        <h:panelGrid columns="1" cellpadding="5">
-                                            <p:commandButton value="Ավելացնել այցելություն"
-                                                             actionListener="#{portfolioForm.initClientHistory}"
-                                                             type="button" onclick="PF('historyDialog').show();">
-                                                <f:ajax render=":searchFormId :clientHistoryForm"/>
-                                            </p:commandButton>
-                                        </h:panelGrid>
-                                        <h:panelGrid columns="1" cellpadding="5">
-                                            <p:commandButton value="Ավելացնել այցելությունների գրաֆիկ"
-                                                             update="visitPlanSearchFormId"
-                                                             actionListener="#{portfolioForm.initVisitPlan}">
-                                            </p:commandButton>
+                                        <h:panelGroup>
+
                                             <div class="form-horizontal">
                                                 <div class="form-group row">
-                                                    <div class="col-sm-4 col-md-4">
+                                                    <div class="col-xl-3 col-sm-3 col-md-3">
+                                                        <p:commandButton value="Ավելացնել այցելությունների գրաֆիկ"
+                                                                         update="visitPlanSearchFormId"
+                                                                         style="width: 100%"
+                                                                         actionListener="#{portfolioForm.initVisitPlan}">
+                                                        </p:commandButton>
+                                                    </div>
+                                                    <div class="col-xl-3 col-sm-3 col-md-3">
+                                                        <p:commandButton value="Ավելացնել այցելություն"
+                                                                         styleClass="w-100"
+                                                                         actionListener="#{portfolioForm.initClientHistory}"
+                                                                         type="button" onclick="PF('historyDialog').show();">
+                                                            <f:ajax render=":searchFormId :clientHistoryForm"/>
+                                                        </p:commandButton>
+                                                    </div>
+                                                    <div class="col-xl-3 col-sm-3 col-md-3">
+                                                        <p:commandButton id="visitGraficButtonId"
+                                                                         value="Ստեղծել այցելությունների գրաֆիկ"
+                                                                         styleClass="dark w-100" update="visitGraficDialogId"
+                                                                         actionListener="#{portfolioForm.openVisitGraficDialog}">
+                                                        </p:commandButton>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-xl-3 col-sm-3 col-md-3">
                                                         <p:selectOneMenu id="semiAnnualId"
                                                                          value="#{portfolioForm.semiAnnualIdForExport}"
                                                                          styleClass="form-control input-c"
@@ -286,24 +301,28 @@
                                                                            var="semiAnnual"/>
                                                         </p:selectOneMenu>
                                                     </div>
-                                                    <div class="col-sm-4 col-md-4">
-                                                        <p:commandButton value="Export" styleClass="dark" ajax="false"
-                                                                         icon="ui-icon-arrowthick-1-s">
+                                                    <div class="col-xl-3 col-sm-3 col-md-3">
+                                                        <p:commandButton value="Արտահանում" styleClass="dark w-100" ajax="false">
                                                             <p:fileDownload value="#{portfolioForm.exportSql}"/>
                                                         </p:commandButton>
                                                     </div>
-                                                    <div class="col-sm-4 col-md-4">
-                                                        <p:commandButton value="Import" styleClass="dark" ajax="false"
-                                                                         icon="ui-icon-arrowthick-1-s" actionListener="#{portfolioForm.importPayment}">
-                                                        </p:commandButton>
+                                                    <div class="col-xl-3 col-sm-3 col-md-3">
+                                                        <h:form enctype="multipart/form-data">
+                                                            <p:fileUpload value="#{portfolioForm.fileUpload}"
+                                                                          allowTypes="/(\.|\/)(sql)$/"
+                                                                          mode="simple" skinSimple="true" label="Ընտրել ֆայլը"
+                                                            />
+                                                            <p:commandButton value="Վերբեռնել" update="@form"
+                                                                             process="@form" ajax="false"
+                                                                             actionListener="#{portfolioForm.importPayment}"/>
+                                                        </h:form>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                        </h:panelGrid>
+                                        </h:panelGroup>
                                         <h:panelGrid columns="1" cellpadding="5">
-                                            <p:commandButton id="visitGraficButtonId" value="Ստեղծել այցելությունների գրաֆիկ" styleClass="dark" update="visitGraficDialogId" actionListener="#{portfolioForm.openVisitGraficDialog}">
-                                            </p:commandButton>
+
                                         </h:panelGrid>
                                         <div class="clear"></div>
 

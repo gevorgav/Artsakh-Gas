@@ -5963,3 +5963,6 @@ textarea.md-input {
     padding-bottom: 0;
 }
 
+.ui-button-icon-left .ui-icon .ui-c .ui-icon-plusthick{
+  display: none;
+}
