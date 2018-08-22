@@ -19,8 +19,8 @@
     <!-- dataSource configuration -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://91.217.9.247:3306/arshak90_gaz2019"/>
-        <property name="username" value="arshak90_gaz2019" />
+        <property name="url" value="jdbc:mysql://91.217.9.247:3306/arshak90_gaz2018"/>
+        <property name="username" value="arshak90_gaz2018" />
         <property name="password" value="passwordforgaz" />
     </bean>
 

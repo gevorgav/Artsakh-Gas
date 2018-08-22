@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog dynamic="true" header="Գրաֆիկ" id="visitGraficDialogId" modal="true" onShow="showDialog()"
+              onHide="hideDialog()"
+              resizable="false" widgetVar="visitGraficDialog" width="70%" height="100%" style="z-index: 100"
+              maximizable="true">
+        <p:ajax event="close" listener="#{portfolioForm.closeVisitGraficDialog}" update="visitGraficEditFormId:resetId"
+                resetValues="true"/>
+        <h:form id="visitGraficEditFormId">
+            <h:panelGroup id="resetId" layout="block">
+                <div class="row">
+                    <div class="col-sm-4 col-md-4">
+                        <p:outputLabel for="visitGraficSemiAnnualId" value="Կիսամյակ" styleClass="required"/>
+                        <p:selectOneMenu id="visitGraficSemiAnnualId" value="#{portfolioForm.visitGraficSemiAnnualId}"
+                                         styleClass="form-control input-c">
+                            <f:selectItem id="visitGraficSemiANnualSelectOneId" itemLabel="Ընտրիր Կիսամյակը"/>
+                            <f:selectItems id="visitGraficSemiAnnualsId"
+                                           itemLabel="#{semiAnnual.name}"
+                                           itemValue="#{semiAnnual.id}"
+                                           value="#{portfolioForm.cache.semiAnnuals}" var="semiAnnual"/>
+                            <p:ajax event="change" process="@this" update="@this visitGraficMonthId"
+                                    listener="#{portfolioForm.resetVisitGraficMonth}"/>
+                        </p:selectOneMenu>
+                        <p:message for="visitGraficSemiAnnualId"/>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <p:outputLabel for="visitGraficMonthId" value="Ամիս" styleClass="required"/>
+                        <p:selectOneMenu id="visitGraficMonthId" value="#{portfolioForm.visitGraficMonthId}"
+                                         styleClass="form-control input-c">
+                            <f:selectItem id="visitGraficMonthSelectOneId" itemLabel="Ընտրիր Ամիսը"/>
+                            <f:selectItems id="visitGraficMonthsId"
+                                           itemLabel="#{month.name}"
+                                           itemValue="#{month.id}"
+                                           value="#{portfolioForm.visitGraficMonths(portfolioForm.visitGraficSemiAnnualId)}"
+                                           var="month"/>
+                        </p:selectOneMenu>
+                        <p:message for="visitGraficSemiAnnualId"/>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <p:outputLabel for="regionId" value="Շրջան" styleClass="required"/>
+                        <p:selectOneMenu id="regionId" value="#{portfolioForm.visitGraficRegionId}"
+                                         styleClass="form-control input-c">
+                            <f:selectItem id="regionSelectOneId" itemLabel="Ընտրիր մեկը"/>
+                            <f:selectItems id="regionsId"
+                                           itemLabel="#{region.name}"
+                                           itemValue="#{region.id}"
+                                           value="#{portfolioForm.cache.regions}" var="region"/>
+                        </p:selectOneMenu>
+                        <p:message for="regionId" display="text"/>
+                    </div>
+                </div>
+            </h:panelGroup>
+            <div class="modal-footer m-t-3">
+                <p:commandButton value="Ստեղծել" styleClass="dark" ajax="false" icon="ui-icon-arrowthick-1-s"
+                                 update="@form">
+                    <p:fileDownload value="#{portfolioForm.visitGraficFile}"/>
+                </p:commandButton>
+                <p:commandButton id="cancelVisitGraficDialogId" value="Չեղարկել" styleClass="dark"
+                                 actionListener="#{portfolioForm.closeVisitGraficDialog}"
+                                 update="visitGraficEditFormId:resetId" process="@this">
+                    <p:resetInput target="visitGraficEditFormId:resetId"/>
+                </p:commandButton>
+            </div>
+        </h:form>
+    </p:dialog>
+</ui:composition>

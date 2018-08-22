@@ -121,4 +121,14 @@ public class ClientDao extends Dao<Client>{
     public boolean delete(Integer id) {
         return false;
     }
+
+    public Integer countOfClientsByRegion(Integer regionId) {
+        String sql = "SELECT COUNT(id) FROM clients WHERE regionId = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, regionId);
+    }
+
+    public Integer countOfClientsBySection(Integer sectionId) {
+        String sql = "SELECT COUNT(id) FROM clients WHERE sectionId = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, sectionId);
+    }
 }

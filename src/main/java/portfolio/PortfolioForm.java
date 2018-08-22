@@ -8,11 +8,12 @@ import Models.*;
 import dao.*;
 import login.LoginForm;
 import login.User;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.hssf.util.HSSFRegionUtil;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.*;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
@@ -79,10 +80,10 @@ public class PortfolioForm {
     }
 
     @Autowired
-    private ClientDao clientDao;
+    public ClientDao clientDao;
 
     @Autowired
-    private ClientHistoryDao clientHistoryDao;
+    public ClientHistoryDao clientHistoryDao;
 
     @Autowired
     private ClientHistoryTmpDao clientHistoryTmpDao;
@@ -951,7 +952,7 @@ public class PortfolioForm {
     }
 
 
-    private String getFileUploadUrl() {
+    public String getFileUploadUrl() {
         Properties prop = new Properties();
         String url = "";
         try {
@@ -965,13 +966,28 @@ public class PortfolioForm {
         return url;
     }
 
-    private String getTemaplateUrl() {
+    public String getTemaplateUrl() {
         Properties prop = new Properties();
         String url = "";
         try {
             InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties");
             prop.load(input);
             url = prop.getProperty("templateUrl");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+
+    public String getTemaplate2Url() {
+        Properties prop = new Properties();
+        String url = "";
+        try {
+            InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties");
+            prop.load(input);
+            url = prop.getProperty("template2Url");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -1082,9 +1098,12 @@ public class PortfolioForm {
     }
 
     public void openVisitPlanDialog(){
-        resetVisitPlan();
+        semiAnnualId = null;
+        visitPlans = null;
         if (!getLoginForm().getUser().getRole().equals(User.Role.ADMIN)) {
             setVisitPlanRegionId(getLoginForm().getUser().getRegionId());
+        } else {
+            visitPlanRegionId = null;
         }
         RequestContext.getCurrentInstance().execute("PF('visitPlanDialog').show()");
     }
@@ -1239,5 +1258,204 @@ public class PortfolioForm {
 
        // paymentDao.insertAll(list.toArray(new String[0]));
     }
+
+  /* -------------- Visit Graphic Start -------------*/
+
+    private Integer visitGraficAshtId;
+
+    private Integer visitGraficSemiAnnualId;
+
+    private Integer visitGraficMonthId;
+
+    private Integer visitGraficRegionId;
+
+    private List<Asht> visitGraficAshtsByRegionId;
+
+    private Integer visitGraficSectionId;
+
+    private Integer visitGraficSubSectionId;
+
+    private List<Month> visitGraficMonths;
+
+    private List<SubSection> graficSubSections;
+
+    public Integer getVisitGraficAshtId() {
+        return visitGraficAshtId;
+    }
+
+    public void setVisitGraficAshtId(Integer visitGraficAshtId) {
+        this.visitGraficAshtId = visitGraficAshtId;
+    }
+
+    public Integer getVisitGraficSemiAnnualId() {
+        return visitGraficSemiAnnualId;
+    }
+
+    public void setVisitGraficSemiAnnualId(Integer visitGraficSemiAnnualId) {
+        this.visitGraficSemiAnnualId = visitGraficSemiAnnualId;
+    }
+
+    public Integer getVisitGraficRegionId() {
+        return visitGraficRegionId;
+    }
+
+    public void setVisitGraficRegionId(Integer visitGraficRegionId) {
+        this.visitGraficRegionId = visitGraficRegionId;
+    }
+
+    public Integer getVisitGraficSectionId() {
+        return visitGraficSectionId;
+    }
+
+    public void setVisitGraficSectionId(Integer visitGraficSectionId) {
+        this.visitGraficSectionId = visitGraficSectionId;
+    }
+
+    public Integer getVisitGraficSubSectionId() {
+        return visitGraficSubSectionId;
+    }
+
+    public void setVisitGraficSubSectionId(Integer visitGraficSubSectionId) {
+        this.visitGraficSubSectionId = visitGraficSubSectionId;
+    }
+
+    public Integer getVisitGraficMonthId() {
+        return visitGraficMonthId;
+    }
+
+    public void setVisitGraficMonthId(Integer visitGraficMonthId) {
+        this.visitGraficMonthId = visitGraficMonthId;
+    }
+
+    public List<Asht> visitGraficAshtsByRegionId(Integer regionId) {
+        if(visitGraficAshtsByRegionId == null && regionId != null) {
+            visitGraficAshtsByRegionId = new ArrayList<>();
+            for(Asht asht: cache.getAshts()) {
+                if (asht.getRegionId().equals(regionId)) {
+                    visitGraficAshtsByRegionId.add(asht);
+                }
+            }
+        }
+        return visitGraficAshtsByRegionId;
+    }
+
+    public void setVisitGraficAshtsByRegionId(List<Asht> visitGraficAshtsByRegionId) {
+        this.visitGraficAshtsByRegionId = visitGraficAshtsByRegionId;
+    }
+
+    public List<Section> visitGraficSectionsByRegionId(Integer regionId) {
+            List<Section> visitGraficSectionsByRegionId = new ArrayList<>();
+            if (regionId != null) {
+                for (Section section : cache.getSections()) {
+                    if (section.getRegionId().equals(regionId)) {
+                        visitGraficSectionsByRegionId.add(section);
+                    }
+                }
+            }
+        return visitGraficSectionsByRegionId;
+    }
+
+    public List<SubSection> visitGraficSubSectionsBySectionId(Integer sectionId) {
+        List<SubSection> visitGraficSubSectionsBySectionId = new ArrayList<>();
+        if (sectionId != null) {
+            for (SubSection subSection : cache.getSubSections()) {
+                if (subSection.getSectionId().equals(sectionId)) {
+                    visitGraficSubSectionsBySectionId.add(subSection);
+                }
+            }
+        }
+        return visitGraficSubSectionsBySectionId;
+    }
+
+    public List<SubSection> getGraficSubSections(){
+        if(graficSubSections == null){
+            graficSubSections = new ArrayList<>();
+            List<Section> sections = visitGraficSectionsByRegionId(visitGraficRegionId);
+            for(Section section : sections){
+                graficSubSections.addAll(visitGraficSubSectionsBySectionId(section.getId()));
+            }
+        }
+        return graficSubSections;
+    }
+
+    public List<Month> visitGraficMonths(Integer semiAnnualId) {
+        if (visitGraficMonths == null) {
+            visitGraficMonths = new ArrayList<>();
+            if (semiAnnualId != null) {
+                for (Month month : cache.getMonths()) {
+                    if (month.getSemiAnnualId().equals(semiAnnualId)) {
+                        visitGraficMonths.add(month);
+                    }
+                }
+            }
+        }
+        return visitGraficMonths;
+    }
+
+    public void resetVisitGrafic() {
+        visitGraficAshtId = null;
+        visitGraficAshtsByRegionId = null;
+        resetVisitGraficSubSection();
+        visitGraficSectionId = null;
+    }
+
+    public void resetVisitGraficDialogForm(){
+        resetVisitGrafic();
+        resetVisitGraficMonth();
+        visitGraficSemiAnnualId = null;
+    }
+
+
+    public void resetVisitGraficSubSection() {
+        setVisitGraficSubSectionId(null);
+    }
+
+    public void resetVisitGraficMonth() {
+        setVisitGraficMonthId(null);
+        visitGraficMonths = null;
+    }
+
+    public void openVisitGraficDialog(){
+        resetVisitGraficDialogForm();
+        if (!getLoginForm().getUser().getRole().equals(User.Role.ADMIN)) {
+            setVisitGraficRegionId(getLoginForm().getUser().getRegionId());
+        } else {
+            visitGraficRegionId = null;
+        }
+        RequestContext.getCurrentInstance().execute("PF('visitGraficDialog').show()");
+    }
+
+    public void closeVisitGraficDialog() {
+        RequestContext.getCurrentInstance().execute("PF('visitGraficDialog').hide()");
+    }
+
+    public StreamedContent getVisitGraficFile() throws IOException, InvalidFormatException {
+        graficSubSections = null;
+        if (!validateVisitGrafic()) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Լրացրեք բոլոր պարտադիր դաշտերը", "Լրացրեք բոլոր պարտադիր դաշտերը"));
+            return null;
+        }
+        VisitGraficExcelParser visitGraficExcelParser = new VisitGraficExcelParser(this);
+        visitGraficExcelParser.exportVisitGrafic();
+        InputStream stream = new FileInputStream(getFileUploadUrl());
+        file = new DefaultStreamedContent(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8", "downloaded_boromir.xlsx");
+        return file;
+    }
+
+    public boolean validateVisitGrafic(){
+        boolean isValid = true;
+        if (visitGraficSemiAnnualId == null) {
+            isValid = false;
+        }
+        if (visitGraficMonthId == null) {
+            isValid = false;
+        }
+        if (visitGraficRegionId == null) {
+            isValid = false;
+        }
+        return isValid;
+    }
+  /* -------------- Visit Graphic End -------------*/
 
 }

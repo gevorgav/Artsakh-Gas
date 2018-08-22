@@ -301,6 +301,10 @@
                                             </div>
 
                                         </h:panelGrid>
+                                        <h:panelGrid columns="1" cellpadding="5">
+                                            <p:commandButton id="visitGraficButtonId" value="Ստեղծել այցելությունների գրաֆիկ" styleClass="dark" update="visitGraficDialogId" actionListener="#{portfolioForm.openVisitGraficDialog}">
+                                            </p:commandButton>
+                                        </h:panelGrid>
                                         <div class="clear"></div>
 
                                         <div class="clear"></div>
@@ -363,9 +367,10 @@
                 </div>
             </h:form>
 
-            <ui:include src="dialogs/clientHistoryEdit.xhtml"/>
-            <ui:include src="dialogs/clientEdit.xhtml"/>
-            <ui:include src="dialogs/visitPlanDialog.xhtml"/>
+            <ui:include src="dialogs/clientHistoryEdit.xhtml" />
+            <ui:include src="dialogs/clientEdit.xhtml" />
+            <ui:include src="dialogs/visitPlanDialog.xhtml" />
+            <ui:include src="dialogs/visitGrafic.xhtml" />
 
         </div>
         <!-- ############ PAGE END-->

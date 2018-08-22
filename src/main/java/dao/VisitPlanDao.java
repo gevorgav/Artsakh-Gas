@@ -74,4 +74,25 @@ public class VisitPlanDao extends Dao<VisitPlan> {
 		visitPlan.setId(keyHolder.getKey().intValue());
 		return keyHolder.getKey().intValue();
 	}
+
+	public Integer sumPlannedByRegion(Integer regionId, Integer monthId){
+		String sql = "SELECT SUM(planned) FROM visitPlan WHERE monthId = ? AND sectionId in (SELECT section.id FROM section WHERE regionId = ?)";
+		return jdbcTemplate.queryForObject(sql, Integer.class, monthId, regionId);
+	}
+
+	public Integer sumPlannedByRegionAndSemiAnnual(Integer regionId, Integer semiAnnualId){
+		String sql = "SELECT SUM(planned) FROM visitPlan WHERE semiAnnualId = ? AND sectionId in (SELECT section.id FROM section WHERE regionId = ?)";
+		return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId);
+	}
+
+	public Integer sumPlannedBySection(Integer sectionId, Integer monthId){
+		String sql = "SELECT SUM(planned) FROM visitPlan WHERE monthId = ? AND sectionId = ?";
+		return jdbcTemplate.queryForObject(sql, Integer.class, monthId, sectionId);
+	}
+
+	public Integer sumPlannedBySectionAndSemiAnnual(Integer sectionId, Integer semiAnnualId){
+		String sql = "SELECT SUM(planned) FROM visitPlan WHERE semiAnnualId = ? AND sectionId = ?";
+		return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, sectionId);
+	}
+
 }

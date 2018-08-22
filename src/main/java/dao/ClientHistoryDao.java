@@ -167,17 +167,78 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
         return false;
     }
 
+    public Integer getVisitedCountByMonth(Integer regionId, Integer semiAnnualId, Integer month) {
+        String sql = "SELECT COUNT(DISTINCT clientId) FROM clientsHistory WHERE semiAnnualId = ? AND regionId = ? AND MONTH(updateDate) = ?  AND visitType = 1";
+        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, month);
+    }
+
+    public Integer getVisitedCountByMonthAndSection(Integer regionId, Integer semiAnnualId, Integer month, Integer sectionId) {
+        String sql = "SELECT COUNT(DISTINCT clientId)\n" +
+            "FROM clientsHistory\n" +
+            "LEFT JOIN clients ON clients.id = clientsHistory.clientId\n" +
+            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND MONTH(updateDate) = ? AND clients.sectionId = ? AND visitType = 1";
+        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, month, sectionId);
+    }
+
+    public Integer getVisitedCountBySemiAnnualAndSection(Integer regionId, Integer semiAnnualId, Integer sectionId, Integer visitType) {
+        String sql = "SELECT COUNT(DISTINCT clientId)\n" +
+            "FROM clientsHistory\n" +
+            "LEFT JOIN clients ON clients.id = clientsHistory.clientId\n" +
+            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND clients.sectionId = ? AND visitType = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, sectionId, visitType);
+    }
+
+    public Integer getVisitedCountBySemiAnnual(Integer regionId, Integer semiAnnualId, Integer visitType) {
+        String sql = "SELECT COUNT(DISTINCT clientId) FROM clientsHistory WHERE semiAnnualId = ? AND regionId = ? AND visitType = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, visitType);
+    }
+
+    public Integer getViolationCodesCountByMonthAndSection(Integer regionId, Integer semiAnnualId, Integer month, Integer sectionId) {
+        String sql =     "SELECT COUNT(violationClientHistory.id)\n"+
+            "FROM violationClientHistory\n"+
+            "LEFT JOIN clientsHistory ON clientsHistory.id = violationClientHistory.clientHistoryId\n"+
+            "LEFT JOIN clients ON clients.id = clientsHistory.clientId\n"+
+            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND MONTH(updateDate) = ? AND clients.sectionId = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, month, sectionId);
+    }
+
+
+    public Integer getViolationCodesCountByMonth(Integer regionId, Integer semiAnnualId, Integer month) {
+        String sql = "SELECT COUNT(violationClientHistory.id)\n" +
+            "FROM violationClientHistory\n" +
+            "LEFT JOIN clientsHistory ON clientsHistory.id = violationClientHistory.clientHistoryId\n" +
+            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND MONTH(updateDate) = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, month);
+    }
+
+    public Integer getViolationCodesCountBySemiAnnualAndSection(Integer regionId, Integer semiAnnualId, Integer sectionId) {
+        String sql =     "SELECT COUNT(violationClientHistory.id)\n"+
+            "FROM violationClientHistory\n"+
+            "LEFT JOIN clientsHistory ON clientsHistory.id = violationClientHistory.clientHistoryId\n"+
+            "LEFT JOIN clients ON clients.id = clientsHistory.clientId\n"+
+            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND clients.sectionId = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, sectionId);
+    }
+
+    public Integer getViolationCodesCountBySemiAnnual(Integer regionId, Integer semiAnnualId) {
+        String sql =     "SELECT COUNT(violationClientHistory.id)\n"+
+            "FROM violationClientHistory\n"+
+            "LEFT JOIN clientsHistory ON clientsHistory.id = violationClientHistory.clientHistoryId\n"+
+            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId);
+    }
+
     public boolean moveHistoryToSemiAnnualByRegionId(@NotNull Integer semiAnnualId, @NotNull Integer regionId){
         Map namedParameters = new HashMap();
         namedParameters.put("regionId", regionId);
         namedParameters.put("semiAnnualId", semiAnnualId);
         String query = "INSERT INTO clientsHistory (clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, semiAnnualId)" +
-                "                           SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId" +
-                "                           FROM clientsHistory" +
-                "                           WHERE id IN (SELECT MAX(id)" +
-                "                                        FROM clientsHistory" +
-                "                                        WHERE regionId = :regionId" +
-                "                                        GROUP BY clientId);";
+            "                           SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId" +
+            "                           FROM clientsHistory" +
+            "                           WHERE id IN (SELECT MAX(id)" +
+            "                                        FROM clientsHistory" +
+            "                                        WHERE regionId = :regionId" +
+            "                                        GROUP BY clientId);";
         int updateCount = namedJdbc.update(query, namedParameters);
         return updateCount > 0;
     }
