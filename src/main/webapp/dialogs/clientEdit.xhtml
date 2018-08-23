@@ -10,6 +10,18 @@
             <h:panelGroup id="resetId" layout="block">
                 <div class="row">
                     <div class="col-sm-4 col-md-4">
+                        <p:outputLabel for="isCompany" value="Հիմնարկ"/>
+                        <p:selectOneRadio id="isCompany" value="#{portfolioForm.client.company}" layout="grid" disabled="#{not portfolioForm.client.isNew()}"
+                                        columns="2">
+                            <f:selectItem itemLabel="Այո" itemValue="true"/>
+                            <f:selectItem itemLabel="Ոչ" itemValue="false"/>
+                            <p:ajax event="change" process="@this" update="@this resetId" />
+                        </p:selectOneRadio>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="row">
+                    <div class="col-sm-4 col-md-4">
                         <p:outputLabel for="id" value="Բաժանորդի համար" styleClass="required"/>
                         <p:inputText id="id" maxlength="11" value="#{portfolioForm.client.id}"  disabled="#{not portfolioForm.client.isNew()}">
                         </p:inputText>
@@ -22,15 +34,20 @@
                         <p:inputText id="firstNameId" value="#{portfolioForm.client.firstName}" styleClass="form-control" placeholder="Անուն"/>
                         <p:message for="firstNameId" display="text"/>
                     </div>
-                    <div class="col-sm-4 col-md-4">
+                    <h:panelGroup  rendered="#{!portfolioForm.client.company}" class="col-sm-4 col-md-4">
                         <p:outputLabel for="lastNameId" value="Ազգանուն" styleClass="required"/>
                         <p:inputText id="lastNameId" value="#{portfolioForm.client.lastName}" styleClass="form-control" placeholder="Ազգանուն"/>
                         <p:message for="lastNameId" display="text"/>
-                    </div>
-                    <div class="col-sm-4 col-md-4">
+                    </h:panelGroup>
+                    <h:panelGroup  rendered="#{portfolioForm.client.company}" class="col-sm-4 col-md-4">
+                        <p:outputLabel for="licenseId" value="Լիցենզիա" styleClass="required"/>
+                        <p:inputText id="licenseId" value="#{portfolioForm.client.lastName}" styleClass="form-control" placeholder="Լիցենզիա"/>
+                        <p:message for="licenseId" display="text"/>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{!portfolioForm.client.company}"  class="col-sm-4 col-md-4">
                         <p:outputLabel for="middleNameId" value="Հայրանուն"/>
                         <p:inputText id="middleNameId" value="#{portfolioForm.client.middleName}" styleClass="form-control" placeholder="Հայրանուն"/>
-                    </div>
+                    </h:panelGroup>
                 </div>
                 <div class="row">
                     <div class="col-sm-4 col-md-4">

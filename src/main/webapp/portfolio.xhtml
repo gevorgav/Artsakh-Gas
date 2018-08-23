@@ -348,6 +348,16 @@
                                                     <h:outputText value="#{client.id}"/>
                                                 </p:column>
 
+                                                <p:column filterBy="#{client.company}" headerText="isCompany" filterMatchMode="equals">
+                                                    <f:facet name="filter">
+                                                        <p:selectBooleanCheckbox label="company" onchange="PF('clientTable').filter()" panelStyle="width:125px" scrollHeight="150">
+                                                            <f:selectItem value="0" itemLabel="Այո"/>
+                                                            <f:selectItem value="1" itemLabel="Ոչ" />
+                                                        </p:selectBooleanCheckbox>
+                                                    </f:facet>
+                                                    <h:outputText value="#{client.company}" />
+                                                </p:column>
+
                                                 <p:column filterBy="#{client.firstName}" headerText="Անուն"
                                                           footerText="" filterMatchMode="contains">
                                                     <h:outputText value="#{client.firstName}"/>

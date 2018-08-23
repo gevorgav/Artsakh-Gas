@@ -327,6 +327,12 @@ public class PortfolioForm {
 
     public void saveClient() {
         if (validate(this.client)) {
+            if(client.isCompany()){
+                this.client.setLastName(null);
+                this.client.setMiddleName(null);
+            } else {
+                this.client.setLicense(null);
+            }
             if (this.client.isNew()) {
                 clientDao.insert(this.client);
                 ClientHistory clientHistory = new ClientHistory(this.client.getId(), this.client.getRegionId(), getCurrentSemiAnnual().getId());
@@ -370,7 +376,12 @@ public class PortfolioForm {
             FacesContext.getCurrentInstance().addMessage("clientEditFormId:firstNameId", facesMessage);
             isValid = false;
         }
-        if (client.getLastName() == null || client.getLastName().trim().isEmpty()) {
+        if (client.isCompany() && (client.getLicense() == null || client.getLicense().trim().isEmpty())) {
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Լիցենզիան պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("clientEditFormId:licenseId", facesMessage);
+            isValid = false;
+        }
+        if (!client.isCompany() && (client.getLastName() == null || client.getLastName().trim().isEmpty())) {
             FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ազգանունը պարտադիր դաշտ է");
             FacesContext.getCurrentInstance().addMessage("clientEditFormId:lastNameId", facesMessage);
             isValid = false;
@@ -988,6 +999,20 @@ public class PortfolioForm {
         return url;
     }
 
+    public String getFile2UploadUrl() {
+        Properties prop = new Properties();
+        String url = "";
+        try {
+            InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties");
+            prop.load(input);
+            url = prop.getProperty("file2UploadUrl");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
     public String getTemaplateUrl() {
         Properties prop = new Properties();
         String url = "";
@@ -1461,7 +1486,7 @@ public class PortfolioForm {
         }
         VisitGraficExcelParser visitGraficExcelParser = new VisitGraficExcelParser(this);
         visitGraficExcelParser.exportVisitGrafic();
-        InputStream stream = new FileInputStream(getFileUploadUrl());
+        InputStream stream = new FileInputStream(getFile2UploadUrl());
         file = new DefaultStreamedContent(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8", "downloaded_boromir.xlsx");
         return file;
     }

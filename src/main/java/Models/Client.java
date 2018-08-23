@@ -49,6 +49,10 @@ public class  Client {
 
     private boolean isNew;
 
+    private boolean isCompany;
+
+    private String license;
+
     public Client() {
     }
 
@@ -220,6 +224,23 @@ public class  Client {
         this.grsId = grsId;
     }
 
+    public boolean isCompany() {
+        return isCompany;
+    }
+
+    public void setCompany(boolean company) {
+        isCompany = company;
+    }
+
+    public String getLicense() {
+
+        return license;
+    }
+
+    public void setLicense(String license) {
+        this.license = license;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -227,6 +248,8 @@ public class  Client {
 
         Client client = (Client) o;
 
+        if (isNew != client.isNew) return false;
+        if (isCompany != client.isCompany) return false;
         if (id != null ? !id.equals(client.id) : client.id != null) return false;
         if (firstName != null ? !firstName.equals(client.firstName) : client.firstName != null) return false;
         if (lastName != null ? !lastName.equals(client.lastName) : client.lastName != null) return false;
@@ -237,17 +260,21 @@ public class  Client {
         if (cityId != null ? !cityId.equals(client.cityId) : client.cityId != null) return false;
         if (regionId != null ? !regionId.equals(client.regionId) : client.regionId != null) return false;
         if (streetId != null ? !streetId.equals(client.streetId) : client.streetId != null) return false;
-        if (sectionId != null ? !sectionId.equals(client.sectionId) : client.sectionId != null) return false;
-        if (subSectionId != null ? !subSectionId.equals(client.subSectionId) : client.subSectionId != null) return false;
         if (homeNumber != null ? !homeNumber.equals(client.homeNumber) : client.homeNumber != null) return false;
         if (apartmentNumber != null ? !apartmentNumber.equals(client.apartmentNumber) : client.apartmentNumber != null)
             return false;
         if (ashtId != null ? !ashtId.equals(client.ashtId) : client.ashtId != null) return false;
         if (grpId != null ? !grpId.equals(client.grpId) : client.grpId != null) return false;
-        if (grsId != null ? !grsId.equals(client.grsId) : client.grsId != null) return false;
+        if (sectionId != null ? !sectionId.equals(client.sectionId) : client.sectionId != null) return false;
+        if (subSectionId != null ? !subSectionId.equals(client.subSectionId) : client.subSectionId != null)
+            return false;
         if (typeId != null ? !typeId.equals(client.typeId) : client.typeId != null) return false;
         if (typeNumber != null ? !typeNumber.equals(client.typeNumber) : client.typeNumber != null) return false;
-        return clientHistory != null ? clientHistory.equals(client.clientHistory) : client.clientHistory == null;
+        if (grsId != null ? !grsId.equals(client.grsId) : client.grsId != null) return false;
+        if (clientHistory != null ? !clientHistory.equals(client.clientHistory) : client.clientHistory != null)
+            return false;
+        if (region != null ? !region.equals(client.region) : client.region != null) return false;
+        return license != null ? license.equals(client.license) : client.license == null;
     }
 
     @Override
@@ -268,9 +295,13 @@ public class  Client {
         result = 31 * result + (sectionId != null ? sectionId.hashCode() : 0);
         result = 31 * result + (subSectionId != null ? subSectionId.hashCode() : 0);
         result = 31 * result + (typeId != null ? typeId.hashCode() : 0);
-        result = 31 * result + (clientHistory != null ? clientHistory.hashCode() : 0);
         result = 31 * result + (typeNumber != null ? typeNumber.hashCode() : 0);
         result = 31 * result + (grsId != null ? grsId.hashCode() : 0);
+        result = 31 * result + (clientHistory != null ? clientHistory.hashCode() : 0);
+        result = 31 * result + (region != null ? region.hashCode() : 0);
+        result = 31 * result + (isNew ? 1 : 0);
+        result = 31 * result + (isCompany ? 1 : 0);
+        result = 31 * result + (license != null ? license.hashCode() : 0);
         return result;
     }
 
@@ -296,6 +327,8 @@ public class  Client {
         client.setTypeId(this.typeId);
         client.setTypeNumber(this.typeNumber);
         client.setClientHistory(this.clientHistory);
+        client.setCompany(this.isCompany);
+        client.setLicense(this.license);
         return client;
     }
 }

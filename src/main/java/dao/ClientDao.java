@@ -67,11 +67,11 @@ public class ClientDao extends Dao<Client>{
      */
     public boolean insert(Client client) {
         Objects.requireNonNull(client);
-        String sql = "INSERT INTO clients(id, firstName, lastName, middleName, phoneNumber, counterNumber, regionId, cityId, streetId, homeNumber, apartmentNumber, ashtId, grpId, typeId, typeNumber, sectionId, subSectionId, grsId)\n" +
-                "    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO clients(id, firstName, lastName, middleName, phoneNumber, counterNumber, regionId, cityId, streetId, homeNumber, apartmentNumber, ashtId, grpId, typeId, typeNumber, sectionId, subSectionId, grsId, isCompany, license)\n" +
+                "    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         int result = jdbcTemplate.update(sql, client.getId(), client.getFirstName(), client.getLastName(), client.getMiddleName(),
                 client.getPhoneNumber(), client.getCounterNumber(), client.getCityId(), client.getCityId(), client.getStreetId(), client.getHomeNumber(),
-                client.getApartmentNumber(), client.getAshtId(), client.getGrpId(), client.getTypeId(), client.getTypeNumber(), client.getSectionId(), client.getSubSectionId(), client.getGrsId());
+                client.getApartmentNumber(), client.getAshtId(), client.getGrpId(), client.getTypeId(), client.getTypeNumber(), client.getSectionId(), client.getSubSectionId(), client.getGrsId(), client.isCompany(), client.getLicense());
         return result == 1;
     }
 
@@ -101,7 +101,9 @@ public class ClientDao extends Dao<Client>{
         namedParameters.put("subSectionId", client.getSubSectionId());
         namedParameters.put("typeNumber", client.getTypeNumber());
         namedParameters.put("grsId", client.getGrsId());
-        int sql = namedJdbc.update("UPDATE clients SET firstName = :firstName, lastName = :lastName, middleName = :middleName, phoneNumber = :phoneNumber, counterNumber = :counterNumber, regionId = :regionId, cityId = :cityId, streetId = :streetId, homeNumber = :homeNumber, apartmentNumber = :apartmentNumber, ashtId = :ashtId, grpId = :grpId , typeId = :typeId, typeNumber = :typeNumber, sectionId = :sectionId, subSectionId = :subSectionId, grsId = :grsId  WHERE id = :id", namedParameters);
+        namedParameters.put("isCompany", client.isCompany());
+        namedParameters.put("license", client.getLicense());
+        int sql = namedJdbc.update("UPDATE clients SET firstName = :firstName, lastName = :lastName, middleName = :middleName, phoneNumber = :phoneNumber, counterNumber = :counterNumber, regionId = :regionId, cityId = :cityId, streetId = :streetId, homeNumber = :homeNumber, apartmentNumber = :apartmentNumber, ashtId = :ashtId, grpId = :grpId , typeId = :typeId, typeNumber = :typeNumber, sectionId = :sectionId, subSectionId = :subSectionId, grsId = :grsId, isCompany = :isCompany, license = :license  WHERE id = :id", namedParameters);
         return sql == 1;
     }
 
@@ -122,13 +124,13 @@ public class ClientDao extends Dao<Client>{
         return false;
     }
 
-    public Integer countOfClientsByRegion(Integer regionId) {
-        String sql = "SELECT COUNT(id) FROM clients WHERE regionId = ?";
-        return jdbcTemplate.queryForObject(sql, Integer.class, regionId);
+    public Integer countOfClientsByRegion(Integer regionId, boolean isCompany) {
+        String sql = "SELECT COUNT(id) FROM clients WHERE regionId = ? AND isCompany = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, regionId, isCompany);
     }
 
-    public Integer countOfClientsBySection(Integer sectionId) {
-        String sql = "SELECT COUNT(id) FROM clients WHERE sectionId = ?";
-        return jdbcTemplate.queryForObject(sql, Integer.class, sectionId);
+    public Integer countOfClientsBySection(Integer sectionId, boolean isCompany) {
+        String sql = "SELECT COUNT(id) FROM clients WHERE sectionId = ?  AND isCompany = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, sectionId, isCompany);
     }
 }

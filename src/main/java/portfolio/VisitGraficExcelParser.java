@@ -50,9 +50,11 @@ public class VisitGraficExcelParser {
 		// Get Row at index 1
 		Row row;
 
-		Integer clients = zeroOrNumber(clientDao.countOfClientsByRegion(regionId));
+		Integer clients = zeroOrNumber(clientDao.countOfClientsByRegion(regionId, false));
+		Integer companies = zeroOrNumber(clientDao.countOfClientsByRegion(regionId, true));
 		// For Month
 		Integer plannedC = zeroOrNumber(visitPlanDao.sumPlannedByRegion(regionId, monthId));
+		Integer plannedCCompanies = zeroOrNumber(visitPlanDao.sumPlannedByRegion(regionId, monthId));
 		Integer visitedClientsCount = zeroOrNumber(clientHistoryDao.getVisitedCountByMonth(regionId, semiAnnualId, monthId % 10));
 		Float percent = plannedC != 0 ? (visitedClientsCount / plannedC) * 100 : 0f;
 		Integer notVisitedClientsCount = plannedC - visitedClientsCount;
@@ -71,7 +73,7 @@ public class VisitGraficExcelParser {
 
 		row = sheet.getRow(9);
 		row.getCell(0).setCellValue(portfolioForm.getCache().regionDao.loadById(regionId).getName());
-		row.getCell(2).setCellValue(clients); // piti gumarvi dzernarkurtyun@
+		row.getCell(2).setCellValue(clients + companies); // piti gumarvi dzernarkurtyun@
 		row.getCell(3).setCellValue(plannedC); // piti gumarvi dzernarkurtyun@
 		row.getCell(4).setCellValue(visitedClientsCount); // piti gumarvi dzernarkurtyun@
 		row.getCell(5).setCellValue(percent); // piti gumarvi dzernarkurtyun@
@@ -109,13 +111,29 @@ public class VisitGraficExcelParser {
 //        createCell(row, 0);
 		row.getCell(0).setCellValue("Հիմնարկ ձեռնարկություն");
 		row.setHeight((short) 400);
+		row.getCell(2).setCellValue(companies);
+//		row.getCell(3).setCellValue(plannedC);
+//		row.getCell(4).setCellValue(visitedClientsCount);
+//		row.getCell(5).setCellValue(percent);
+//		row.getCell(6).setCellValue(notVisitedClientsCount);
+//		row.getCell(7).setCellValue(plannedCSemi);
+//		row.getCell(8).setCellValue(visitedClientsCountSemi);
+//		row.getCell(9).setCellValue(percentSemi);
+//		row.getCell(10).setCellValue(notVisitedClientsCountSemi);
+//		row.getCell(11).setCellValue(closedDoorClientsCountSemi);
+//		row.getCell(12).setCellValue(0); //TODO
+//		row.getCell(13).setCellValue(violationCodesCount);
+//		row.getCell(14).setCellValue(violationCodesCountSemi);
+
+
 //        sheet.addMergedRegion(CellRangeAddress.valueOf("A12:B12"));
 		List<Section> sections = portfolioForm.visitGraficSectionsByRegionId(regionId);
 		for (int i = 0; i < sections.size(); i++) {
 			int rowIndex = i * 3 + 13;
 			Section section = sections.get(i);
 
-			clients = zeroOrNumber(clientDao.countOfClientsBySection(section.getId()));
+			clients = zeroOrNumber(clientDao.countOfClientsBySection(section.getId(), false));
+			companies = zeroOrNumber(clientDao.countOfClientsBySection(section.getId(), true));
 			// for month
 			plannedC = zeroOrNumber(visitPlanDao.sumPlannedBySection(section.getId(), monthId));
 			visitedClientsCount = zeroOrNumber(clientHistoryDao.getVisitedCountByMonthAndSection(regionId, semiAnnualId, monthId % 10, section.getId()));
@@ -144,7 +162,7 @@ public class VisitGraficExcelParser {
 			setCellStyle(row.getCell(1), workbook, (short) 11);
 			createCell(row, 2);
 			setCellStyle(row.getCell(2), workbook, (short) 10);
-			row.getCell(2).setCellValue(clients); // petq e gumarvi dzernarkutyun@
+			row.getCell(2).setCellValue(clients + companies); // petq e gumarvi dzernarkutyun@
 			createCell(row, 3);
 			setCellStyle(row.getCell(3), workbook, (short) 10);
 			row.getCell(3).setCellValue(plannedC);  // petq e gumarvi dzernarkutyun@
@@ -246,62 +264,51 @@ public class VisitGraficExcelParser {
 			row.getCell(0).setCellValue("Հիմնարկ ձեռնարկություն");
 			sheet.addMergedRegion(CellRangeAddress.valueOf(String.format(mergeIndex, rowIndex + 3, rowIndex + 3)));
 
-            /*row.getCell(2).setCellValue((Objects.nonNull(getStreetMap().get(client.getStreetId())) ? getStreetMap().get(client.getStreetId()).getName() : "") + " " + nullToEmptyString(client.getHomeNumber(), false) + " " + nullToEmptyString(client.getApartmentNumber(), false));
-			row.getCell(3).setCellValue(client.getLastName() + " " + client.getFirstName() + " " + (Objects.isNull(client.getMiddleName()) ? "" : client.getMiddleName()));
-            row.getCell(4).setCellValue(client.getPhoneNumber());
-            row.getCell(5).setCellValue(client.getClientHistory().getJTLog());
-            row.getCell(6).setCellValue(nullToEmptyString(client.getClientHistory().getGo1(), false));
-            row.getCell(7).setCellValue(nullToEmptyString(client.getClientHistory().getGo2(), false));
-            row.getCell(8).setCellValue(nullToEmptyString(client.getClientHistory().getGo3(), false));
-            row.getCell(9).setCellValue(nullToEmptyString(client.getClientHistory().getGo4(), false));
-            row.getCell(10).setCellValue(nullToEmptyString(client.getClientHistory().getJth(), false));
-            row.getCell(11).setCellValue(nullToEmptyString(client.getClientHistory().getJtt(), false));
-            row.getCell(12).setCellValue(nullToEmptyString(client.getClientHistory().getJv(), false));
-            row.getCell(13).setCellValue(nullToEmptyString(client.getClientHistory().getJk(), false));
-            row.getCell(14).setCellValue(nullToEmptyString(client.getClientHistory().getKet(), false));
-            row.getCell(15).setCellValue(nullToEmptyString("ս - " + nullToEmptyInteger(client.getClientHistory().getJah()), false));
-            row.getCell(16).setCellValue(client.getClientHistory().getPreviousVisitDate());
-            row.getCell(17).setCellValue(client.getClientHistory().getNextVisitDate());*/
-
-			//Second row
-            /*row = sheet.getRow(i * 2 + 6);
-            row.getCell(1).setCellValue(nullToEmptyString(client.getTypeNumber(), false));
-            row.getCell(2).setCellValue(nullToEmptyString(client.getCounterNumber(), false));
-            row.getCell(6).setCellValue(nullToEmptyString(client.getClientHistory().getBacakaGo1(), true));
-            row.getCell(7).setCellValue(nullToEmptyString(client.getClientHistory().getBacakaGo2(), true));
-            row.getCell(8).setCellValue(nullToEmptyString(client.getClientHistory().getBacakaGo3(), true));
-            row.getCell(9).setCellValue(nullToEmptyString(client.getClientHistory().getBacakaGo4(), true));
-            row.getCell(10).setCellValue(nullToEmptyString(client.getClientHistory().getBacakaJth(), true));
-            row.getCell(11).setCellValue(nullToEmptyString(client.getClientHistory().getBacakaJtt(), true));
-            row.getCell(12).setCellValue(nullToEmptyString(client.getClientHistory().getBacakaJv(), true));
-            row.getCell(13).setCellValue(nullToEmptyString(client.getClientHistory().getBacakaJk(), true));
-            row.getCell(15).setCellValue("փ - " + nullToEmptyInteger(client.getClientHistory().getJah()));
-            row.getCell(18).setCellValue(client.getClientHistory().getViolationActNumber());*/
+			createCell(row, 2);
+			setCellStyle(row.getCell(2), workbook, (short) 10);
+			row.getCell(2).setCellValue(companies);
+		/*	createCell(row, 3);
+			setCellStyle(row.getCell(3), workbook, (short) 10);
+			row.getCell(3).setCellValue(plannedC);
+			createCell(row, 4);
+			setCellStyle(row.getCell(4), workbook, (short) 10);
+			row.getCell(4).setCellValue(visitedClientsCount);
+			createCell(row, 5);
+			setCellStyle(row.getCell(5), workbook, (short) 10);
+			row.getCell(5).setCellValue(percent);
+			setCellStyleFont(row.getCell(5).getCellStyle(), workbook);
+			createCell(row, 6);
+			setCellStyle(row.getCell(6), workbook, (short) 10);
+			row.getCell(6).setCellValue(notVisitedClientsCount);
+			createCell(row, 7);
+			setCellStyle(row.getCell(7), workbook, (short) 10);
+			row.getCell(7).setCellValue(plannedCSemi);
+			createCell(row, 8);
+			setCellStyle(row.getCell(8), workbook, (short) 10);
+			row.getCell(8).setCellValue(visitedClientsCountSemi);
+			createCell(row, 9);
+			setCellStyle(row.getCell(9), workbook, (short) 10);
+			row.getCell(9).setCellValue(percentSemi);
+			setCellStyleFont(row.getCell(9).getCellStyle(), workbook);
+			createCell(row, 10);
+			setCellStyle(row.getCell(10), workbook, (short) 10);
+			row.getCell(10).setCellValue(notVisitedClientsCountSemi);
+			createCell(row, 11);
+			setCellStyle(row.getCell(11), workbook, (short) 10);
+			row.getCell(11).setCellValue(closedDoorClientsCountSemi);
+			createCell(row, 12);
+			setCellStyle(row.getCell(12), workbook, (short) 10);
+			row.getCell(12).setCellValue(0); //TODO
+			createCell(row, 13);
+			setCellStyle(row.getCell(13), workbook, (short) 10);
+			row.getCell(13).setCellValue(violationCodesCount);
+			createCell(row, 14);
+			setCellStyle(row.getCell(14), workbook, (short) 10);
+			row.getCell(14).setCellValue(violationCodesCountSemi);*/
 		}
 
-
-        /*row = sheet.getRow(38);
-        Master selectedMaster = null;
-        if (Objects.nonNull(this.master)) {
-            selectedMaster = cache.getMasters().stream().filter(m -> m.getId().equals(this.master)).findFirst().get();
-        }
-        if (Objects.nonNull(selectedMaster)) {
-            row.getCell(0).setCellValue("Տեղամասի վարպետ`" + selectedMaster.toString());
-        }
-
-        row = sheet.getRow(41);
-        Locksmith selectedLocksmith = null;
-
-        if (Objects.nonNull(this.master1)) {
-            selectedLocksmith = cache.getLocksmiths().stream().filter(m -> m.getId().equals(this.master1)).findFirst().get();
-        }
-        if (Objects.nonNull(selectedLocksmith)) {
-            row.getCell(0).setCellValue("Փականագործ՝" + selectedLocksmith.toString());
-        }
-
-*/
 		// Write the output to the file
-		FileOutputStream out = new FileOutputStream(portfolioForm.getFileUploadUrl());
+		FileOutputStream out = new FileOutputStream(portfolioForm.getFile2UploadUrl());
 		workbook.write(out);
 
 		// Closing the workbook
