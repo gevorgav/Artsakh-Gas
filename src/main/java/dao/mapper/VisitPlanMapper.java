@@ -16,7 +16,8 @@ public class VisitPlanMapper implements RowMapper<VisitPlan> {
 		visitPlan.setId(rs.getInt("id"));
 		visitPlan.setSectionId(rs.getInt("sectionId"));
 		visitPlan.setMonthId(rs.getInt("monthId"));
-		visitPlan.setPlanned(rs.getInt("planned"));
+		visitPlan.setPlannedCompanies(rs.getInt("plannedCompanies"));
+		visitPlan.setPlannedClients(rs.getInt("plannedClients"));
 		visitPlan.setSemiAnnualId(rs.getInt("semiAnnualId"));
 		return visitPlan;
 	}

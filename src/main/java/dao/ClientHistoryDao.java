@@ -167,65 +167,69 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
         return false;
     }
 
-    public Integer getVisitedCountByMonth(Integer regionId, Integer semiAnnualId, Integer month) {
-        String sql = "SELECT COUNT(DISTINCT clientId) FROM clientsHistory WHERE semiAnnualId = ? AND regionId = ? AND MONTH(updateDate) = ?  AND visitType = 1";
-        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, month);
+    public Integer getVisitedCountByMonth(Integer regionId, Integer semiAnnualId, Integer month, boolean isCompany) {
+        String sql = "SELECT COUNT(DISTINCT clientId) FROM clientsHistory\n" +
+            "  LEFT JOIN clients ON clients.id = clientsHistory.clientId\n" +
+            "WHERE semiAnnualId = ? AND clientsHistory.regionId = ? AND MONTH(updateDate) = ?  AND visitType = 1 AND clients.isCompany = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, month, isCompany);
     }
 
-    public Integer getVisitedCountByMonthAndSection(Integer regionId, Integer semiAnnualId, Integer month, Integer sectionId) {
+    public Integer getVisitedCountByMonthAndSection(Integer regionId, Integer semiAnnualId, Integer month, Integer sectionId, boolean isCompany) {
+        String sql = "SELECT COUNT(DISTINCT clientId) \n" +
+            "FROM clientsHistory \n" +
+            "LEFT JOIN clients ON clients.id = clientsHistory.clientId \n" +
+            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND MONTH(updateDate) = ? AND clients.sectionId = ? AND visitType = 1 AND isCompany = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, month, sectionId, isCompany);
+    }
+
+    public Integer getVisitedCountBySemiAnnualAndSection(Integer regionId, Integer semiAnnualId, Integer sectionId, Integer visitType, boolean isCompany) {
         String sql = "SELECT COUNT(DISTINCT clientId)\n" +
             "FROM clientsHistory\n" +
             "LEFT JOIN clients ON clients.id = clientsHistory.clientId\n" +
-            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND MONTH(updateDate) = ? AND clients.sectionId = ? AND visitType = 1";
-        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, month, sectionId);
+            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND clients.sectionId = ? AND visitType = ? AND isCompany = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, sectionId, visitType, isCompany);
     }
 
-    public Integer getVisitedCountBySemiAnnualAndSection(Integer regionId, Integer semiAnnualId, Integer sectionId, Integer visitType) {
-        String sql = "SELECT COUNT(DISTINCT clientId)\n" +
-            "FROM clientsHistory\n" +
-            "LEFT JOIN clients ON clients.id = clientsHistory.clientId\n" +
-            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND clients.sectionId = ? AND visitType = ?";
-        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, sectionId, visitType);
+    public Integer getVisitedCountBySemiAnnual(Integer regionId, Integer semiAnnualId, Integer visitType, boolean isCompany) {
+        String sql = "SELECT COUNT(DISTINCT clientId) FROM clientsHistory LEFT JOIN clients ON clientsHistory.clientId = clients.id WHERE semiAnnualId = ? AND clients.regionId = ? AND visitType = ? AND isCompany = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, visitType, isCompany);
     }
 
-    public Integer getVisitedCountBySemiAnnual(Integer regionId, Integer semiAnnualId, Integer visitType) {
-        String sql = "SELECT COUNT(DISTINCT clientId) FROM clientsHistory WHERE semiAnnualId = ? AND regionId = ? AND visitType = ?";
-        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, visitType);
-    }
-
-    public Integer getViolationCodesCountByMonthAndSection(Integer regionId, Integer semiAnnualId, Integer month, Integer sectionId) {
-        String sql =     "SELECT COUNT(violationClientHistory.id)\n"+
-            "FROM violationClientHistory\n"+
-            "LEFT JOIN clientsHistory ON clientsHistory.id = violationClientHistory.clientHistoryId\n"+
-            "LEFT JOIN clients ON clients.id = clientsHistory.clientId\n"+
-            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND MONTH(updateDate) = ? AND clients.sectionId = ?";
-        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, month, sectionId);
-    }
-
-
-    public Integer getViolationCodesCountByMonth(Integer regionId, Integer semiAnnualId, Integer month) {
+    public Integer getViolationCodesCountByMonthAndSection(Integer regionId, Integer semiAnnualId, Integer month, Integer sectionId, boolean isCompany) {
         String sql = "SELECT COUNT(violationClientHistory.id)\n" +
             "FROM violationClientHistory\n" +
             "LEFT JOIN clientsHistory ON clientsHistory.id = violationClientHistory.clientHistoryId\n" +
-            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND MONTH(updateDate) = ?";
-        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, month);
+            "LEFT JOIN clients ON clients.id = clientsHistory.clientId\n" +
+            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND MONTH(updateDate) = ? AND clients.sectionId = ? AND isCompany = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, month, sectionId, isCompany);
     }
 
-    public Integer getViolationCodesCountBySemiAnnualAndSection(Integer regionId, Integer semiAnnualId, Integer sectionId) {
-        String sql =     "SELECT COUNT(violationClientHistory.id)\n"+
-            "FROM violationClientHistory\n"+
-            "LEFT JOIN clientsHistory ON clientsHistory.id = violationClientHistory.clientHistoryId\n"+
-            "LEFT JOIN clients ON clients.id = clientsHistory.clientId\n"+
-            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND clients.sectionId = ?";
-        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, sectionId);
+
+    public Integer getViolationCodesCountByMonth(Integer regionId, Integer semiAnnualId, Integer month, boolean isCompany) {
+        String sql = "SELECT COUNT(violationClientHistory.id)\n" +
+            "FROM violationClientHistory\n" +
+            "LEFT JOIN clientsHistory ON clientsHistory.id = violationClientHistory.clientHistoryId\n" +
+            "LEFT JOIN clients ON clientsHistory.clientId = clients.id\n" +
+            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND MONTH(updateDate) = ? AND isCompany = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, month, isCompany);
     }
 
-    public Integer getViolationCodesCountBySemiAnnual(Integer regionId, Integer semiAnnualId) {
-        String sql =     "SELECT COUNT(violationClientHistory.id)\n"+
-            "FROM violationClientHistory\n"+
-            "LEFT JOIN clientsHistory ON clientsHistory.id = violationClientHistory.clientHistoryId\n"+
-            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ?";
-        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId);
+    public Integer getViolationCodesCountBySemiAnnualAndSection(Integer regionId, Integer semiAnnualId, Integer sectionId, boolean isCompany) {
+        String sql =     "SELECT COUNT(violationClientHistory.id)\n" +
+            "FROM violationClientHistory\n" +
+            "LEFT JOIN clientsHistory ON clientsHistory.id = violationClientHistory.clientHistoryId\n" +
+            "LEFT JOIN clients ON clients.id = clientsHistory.clientId\n" +
+            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND clients.sectionId = ? AND isCompany = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, sectionId, isCompany);
+    }
+
+    public Integer getViolationCodesCountBySemiAnnual(Integer regionId, Integer semiAnnualId, boolean isCompany) {
+        String sql =     "SELECT COUNT(violationClientHistory.id)\n" +
+            "FROM violationClientHistory\n" +
+            "LEFT JOIN clientsHistory ON clientsHistory.id = violationClientHistory.clientHistoryId\n" +
+            "LEFT JOIN clients ON clientsHistory.clientId = clients.id\n" +
+            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND isCompany = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, isCompany);
     }
 
     public boolean moveHistoryToSemiAnnualByRegionId(@NotNull Integer semiAnnualId, @NotNull Integer regionId){

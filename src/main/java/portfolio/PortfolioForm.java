@@ -1198,7 +1198,7 @@ public class PortfolioForm {
                         Integer monthId = semiAnnualId * 100 + i;
                         VisitPlan loadedVisitPlan = visitPlanByMonthId(monthId, section.getId());
                         if (loadedVisitPlan == null) {
-                            visitPlans.add(new VisitPlan(section.getId(), monthId, null, semiAnnualId, section, getMonthById(monthId)));
+                            visitPlans.add(new VisitPlan(section.getId(), monthId, null, null, semiAnnualId, section, getMonthById(monthId)));
                         } else {
                             loadedVisitPlan.setSection(section);
                             loadedVisitPlan.setMonth(getMonthById(monthId));

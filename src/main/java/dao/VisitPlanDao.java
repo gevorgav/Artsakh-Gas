@@ -38,16 +38,16 @@ public class VisitPlanDao extends Dao<VisitPlan> {
 	@Override
 	public boolean insert(VisitPlan visitPlan) {
 		Objects.requireNonNull(visitPlan);
-		String sql = "INSERT INTO visitPlan(sectionId, planned, monthId, semiAnnualId) VALUES (?, ?, ?, ?)";
-		int result = jdbcTemplate.update(sql, visitPlan.getSectionId(), visitPlan.getPlanned(), visitPlan.getMonthId(), visitPlan.getSemiAnnualId());
+		String sql = "INSERT INTO visitPlan(sectionId, plannedClients, plannedCompanies, monthId, semiAnnualId) VALUES (?, ?, ?, ?, ?)";
+		int result = jdbcTemplate.update(sql, visitPlan.getSectionId(), visitPlan.getPlannedClients(), visitPlan.getPlannedCompanies(), visitPlan.getMonthId(), visitPlan.getSemiAnnualId());
 		return result == 1;
 	}
 
 	@Override
 	public boolean update(VisitPlan visitPlan) {
 		Objects.requireNonNull(visitPlan);
-		String sql = "UPDATE visitPlan SET sectionId = ?, planned = ?, monthId = ?, semiAnnualId = ? WHERE id = ?";
-		int result = jdbcTemplate.update(sql, visitPlan.getSectionId(), visitPlan.getPlanned(), visitPlan.getMonthId(), visitPlan.getSemiAnnualId(), visitPlan.getId());
+		String sql = "UPDATE visitPlan SET sectionId = ?, plannedClients = ?, plannedCompanies = ?, monthId = ?, semiAnnualId = ? WHERE id = ?";
+		int result = jdbcTemplate.update(sql, visitPlan.getSectionId(), visitPlan.getPlannedClients(), visitPlan.getPlannedCompanies(), visitPlan.getMonthId(), visitPlan.getSemiAnnualId(), visitPlan.getId());
 		return result == 1;
 	}
 
@@ -66,8 +66,8 @@ public class VisitPlanDao extends Dao<VisitPlan> {
 	}
 	public Integer insertAndReturnId(VisitPlan visitPlan) {
 		Objects.requireNonNull(visitPlan);
-		String sql = "INSERT INTO visitPlan(sectionId, planned, monthId, semiAnnualId)\n" +
-			"VALUES (:sectionId, :planned, :monthId, :semiAnnualId)";
+		String sql = "INSERT INTO visitPlan(sectionId, plannedClients, plannedCompanies, monthId, semiAnnualId)\n" +
+			"VALUES (:sectionId, :plannedClients, :plannedCompanies, :monthId, :semiAnnualId)";
 		SqlParameterSource fileParameters = new BeanPropertySqlParameterSource(visitPlan);
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		int result = namedJdbc.update(sql, fileParameters, keyHolder);
@@ -76,22 +76,42 @@ public class VisitPlanDao extends Dao<VisitPlan> {
 	}
 
 	public Integer sumPlannedByRegion(Integer regionId, Integer monthId){
-		String sql = "SELECT SUM(planned) FROM visitPlan WHERE monthId = ? AND sectionId in (SELECT section.id FROM section WHERE regionId = ?)";
+		String sql = "SELECT SUM(plannedClients) FROM visitPlan WHERE monthId = ? AND sectionId in (SELECT section.id FROM section WHERE regionId = ?)";
 		return jdbcTemplate.queryForObject(sql, Integer.class, monthId, regionId);
 	}
 
 	public Integer sumPlannedByRegionAndSemiAnnual(Integer regionId, Integer semiAnnualId){
-		String sql = "SELECT SUM(planned) FROM visitPlan WHERE semiAnnualId = ? AND sectionId in (SELECT section.id FROM section WHERE regionId = ?)";
+		String sql = "SELECT SUM(plannedClients) FROM visitPlan WHERE semiAnnualId = ? AND sectionId in (SELECT section.id FROM section WHERE regionId = ?)";
 		return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId);
 	}
 
 	public Integer sumPlannedBySection(Integer sectionId, Integer monthId){
-		String sql = "SELECT SUM(planned) FROM visitPlan WHERE monthId = ? AND sectionId = ?";
+		String sql = "SELECT SUM(plannedClients) FROM visitPlan WHERE monthId = ? AND sectionId = ?";
 		return jdbcTemplate.queryForObject(sql, Integer.class, monthId, sectionId);
 	}
 
 	public Integer sumPlannedBySectionAndSemiAnnual(Integer sectionId, Integer semiAnnualId){
-		String sql = "SELECT SUM(planned) FROM visitPlan WHERE semiAnnualId = ? AND sectionId = ?";
+		String sql = "SELECT SUM(plannedClients) FROM visitPlan WHERE semiAnnualId = ? AND sectionId = ?";
+		return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, sectionId);
+	}
+
+	public Integer sumPlannedCompaniesByRegion(Integer regionId, Integer monthId){
+		String sql = "SELECT SUM(plannedCompanies) FROM visitPlan WHERE monthId = ? AND sectionId in (SELECT section.id FROM section WHERE regionId = ?)";
+		return jdbcTemplate.queryForObject(sql, Integer.class, monthId, regionId);
+	}
+
+	public Integer sumPlannedCompaniesByRegionAndSemiAnnual(Integer regionId, Integer semiAnnualId){
+		String sql = "SELECT SUM(plannedCompanies) FROM visitPlan WHERE semiAnnualId = ? AND sectionId in (SELECT section.id FROM section WHERE regionId = ?)";
+		return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId);
+	}
+
+	public Integer sumPlannedCompaniesBySection(Integer sectionId, Integer monthId){
+		String sql = "SELECT SUM(plannedCompanies) FROM visitPlan WHERE monthId = ? AND sectionId = ?";
+		return jdbcTemplate.queryForObject(sql, Integer.class, monthId, sectionId);
+	}
+
+	public Integer sumPlannedCompaniesBySectionAndSemiAnnual(Integer sectionId, Integer semiAnnualId){
+		String sql = "SELECT SUM(plannedCompanies) FROM visitPlan WHERE semiAnnualId = ? AND sectionId = ?";
 		return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, sectionId);
 	}
 

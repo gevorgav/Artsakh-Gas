@@ -44,18 +44,25 @@
                         <p:ajax event="rowEdit" listener="#{portfolioForm.onRowEdit}" oncomplete="$('.ui-row-editor span.ui-icon-pencil').each(function(){$(this).css('visibility','visible')});"/>
                         <p:ajax event="rowEditCancel" onstart="$('.ui-row-editor span.ui-icon-pencil').each(function(){$(this).css('visibility','visible')});"/>
                         <p:headerRow>
-                            <p:column colspan="3">
+                            <p:column colspan="4">
                                 <h:outputText value="#{visitPlan.section.name}" />
                             </p:column>
                         </p:headerRow>
                         <p:column headerText="Ամիս">
                             <h:outputText value="#{visitPlan.month.name}" />
                         </p:column>
-                        <p:column headerText="Ծրագրավորված">
+                        <p:column headerText="Ծրագրավորված բաժանորդներ">
                             <p:cellEditor>
-                                <f:facet name="output"> <h:outputText value="#{visitPlan.planned}" /></f:facet>
+                                <f:facet name="output"> <h:outputText value="#{visitPlan.plannedClients}" /></f:facet>
                                 <f:facet name="input"><p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
-                                                                     value="#{visitPlan.planned}" /></f:facet>
+                                                                     value="#{visitPlan.plannedClients}" /></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Ծրագրավորված հիմնարկներ">
+                            <p:cellEditor>
+                                <f:facet name="output"> <h:outputText value="#{visitPlan.plannedCompanies}" /></f:facet>
+                                <f:facet name="input"><p:inputNumber maxlength="11" maxValue="9999999999" minValue="0"
+                                                                     value="#{visitPlan.plannedCompanies}" /></f:facet>
                             </p:cellEditor>
                         </p:column>
                         <p:column style="width:32px">

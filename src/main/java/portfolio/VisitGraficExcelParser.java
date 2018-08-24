@@ -37,6 +37,7 @@ public class VisitGraficExcelParser {
 		ClientDao clientDao = portfolioForm.clientDao;
 		VisitPlanDao visitPlanDao = portfolioForm.getCache().visitPlanDao;
 		ClientHistoryDao clientHistoryDao = portfolioForm.clientHistoryDao;
+		String regionName = portfolioForm.getCache().regionDao.loadById(regionId).getName();
 
 		Integer semiAnnualId = portfolioForm.getVisitGraficSemiAnnualId();
 
@@ -54,38 +55,51 @@ public class VisitGraficExcelParser {
 		Integer companies = zeroOrNumber(clientDao.countOfClientsByRegion(regionId, true));
 		// For Month
 		Integer plannedC = zeroOrNumber(visitPlanDao.sumPlannedByRegion(regionId, monthId));
-		Integer plannedCCompanies = zeroOrNumber(visitPlanDao.sumPlannedByRegion(regionId, monthId));
-		Integer visitedClientsCount = zeroOrNumber(clientHistoryDao.getVisitedCountByMonth(regionId, semiAnnualId, monthId % 10));
+		Integer plannedCCompanies = zeroOrNumber(visitPlanDao.sumPlannedCompaniesByRegion(regionId, monthId));
+		Integer visitedClientsCount = zeroOrNumber(clientHistoryDao.getVisitedCountByMonth(regionId, semiAnnualId, monthId % 10, false));
+		Integer visitedCompaniesCount = zeroOrNumber(clientHistoryDao.getVisitedCountByMonth(regionId, semiAnnualId, monthId % 10, true));
 		Float percent = plannedC != 0 ? (visitedClientsCount / plannedC) * 100 : 0f;
+		Float percentCompanies = plannedCCompanies != 0 ? (visitedCompaniesCount / plannedCCompanies) * 100 : 0f;
 		Integer notVisitedClientsCount = plannedC - visitedClientsCount;
+		Integer notVisitedCompaniesCount = plannedCCompanies - visitedCompaniesCount;
 
-		Integer violationCodesCount = zeroOrNumber(clientHistoryDao.getViolationCodesCountByMonth(regionId, semiAnnualId, monthId % 10));
+		Integer violationCodesCount = zeroOrNumber(clientHistoryDao.getViolationCodesCountByMonth(regionId, semiAnnualId, monthId % 10, false));
+		Integer violationCodesCountCompanies = zeroOrNumber(clientHistoryDao.getViolationCodesCountByMonth(regionId, semiAnnualId, monthId % 10, true));
 
 		// For SemiANnual
 		Integer plannedCSemi = zeroOrNumber(visitPlanDao.sumPlannedByRegionAndSemiAnnual(regionId, semiAnnualId));
-		Integer visitedClientsCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnual(regionId, semiAnnualId, 1));
+		Integer plannedCSemiCompanies = zeroOrNumber(visitPlanDao.sumPlannedCompaniesByRegionAndSemiAnnual(regionId, semiAnnualId));
+		Integer visitedClientsCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnual(regionId, semiAnnualId, 1, false));
+		Integer visitedCompaniesCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnual(regionId, semiAnnualId, 1, true));
 		Float percentSemi = plannedCSemi != 0 ? (visitedClientsCountSemi / plannedCSemi) * 100 : 0f;
+		Float percentSemiCompanies = plannedCSemiCompanies != 0 ? (visitedCompaniesCountSemi / plannedCSemiCompanies) * 100 : 0f;
 		Integer notVisitedClientsCountSemi = plannedCSemi - visitedClientsCountSemi;
+		Integer notVisitedCompaniesCountSemi = plannedCSemiCompanies - visitedCompaniesCountSemi;
 
-		Integer closedDoorClientsCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnual(regionId, semiAnnualId, 4));
+		Integer closedDoorClientsCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnual(regionId, semiAnnualId, 4, false));
+		Integer closedDoorCompaniesCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnual(regionId, semiAnnualId, 4, true));
 
-		Integer violationCodesCountSemi = zeroOrNumber(clientHistoryDao.getViolationCodesCountBySemiAnnual(regionId, semiAnnualId));
+		Integer violationCodesCountSemi = zeroOrNumber(clientHistoryDao.getViolationCodesCountBySemiAnnual(regionId, semiAnnualId, false));
+		Integer violationCodesCountSemiCompanies = zeroOrNumber(clientHistoryDao.getViolationCodesCountBySemiAnnual(regionId, semiAnnualId, true));
+
+		row = sheet.getRow(3);
+		row.getCell(13).setCellValue(regionName + "ի ԱՇՏ");
 
 		row = sheet.getRow(9);
-		row.getCell(0).setCellValue(portfolioForm.getCache().regionDao.loadById(regionId).getName());
-		row.getCell(2).setCellValue(clients + companies); // piti gumarvi dzernarkurtyun@
-		row.getCell(3).setCellValue(plannedC); // piti gumarvi dzernarkurtyun@
-		row.getCell(4).setCellValue(visitedClientsCount); // piti gumarvi dzernarkurtyun@
-		row.getCell(5).setCellValue(percent); // piti gumarvi dzernarkurtyun@
-		row.getCell(6).setCellValue(notVisitedClientsCount); // piti gumarvi dzernarkurtyun@
-		row.getCell(7).setCellValue(plannedCSemi); // piti gumarvi dzernarkurtyun@
-		row.getCell(8).setCellValue(visitedClientsCountSemi); // piti gumarvi dzernarkurtyun@
-		row.getCell(9).setCellValue(percentSemi); // piti gumarvi dzernarkurtyun@
-		row.getCell(10).setCellValue(notVisitedClientsCountSemi); // piti gumarvi dzernarkurtyun@
-		row.getCell(11).setCellValue(closedDoorClientsCountSemi); // piti gumarvi dzernarkurtyun@
+		row.getCell(0).setCellValue(regionName);
+		row.getCell(2).setCellValue(clients + companies);
+		row.getCell(3).setCellValue(plannedC + plannedCCompanies);
+		row.getCell(4).setCellValue(visitedClientsCount + visitedCompaniesCount);
+		row.getCell(5).setCellValue(percent + percentCompanies);
+		row.getCell(6).setCellValue(notVisitedClientsCount + notVisitedCompaniesCount);
+		row.getCell(7).setCellValue(plannedCSemi + plannedCSemiCompanies);
+		row.getCell(8).setCellValue(visitedClientsCountSemi + visitedCompaniesCountSemi);
+		row.getCell(9).setCellValue(percentSemi + percentSemiCompanies);
+		row.getCell(10).setCellValue(notVisitedClientsCountSemi + notVisitedCompaniesCountSemi);
+		row.getCell(11).setCellValue(closedDoorClientsCountSemi + closedDoorCompaniesCountSemi);
 		row.getCell(12).setCellValue(0); // piti gumarvi dzernarkurtyun@ TODO
-		row.getCell(13).setCellValue(violationCodesCount); // piti gumarvi dzernarkurtyun@
-		row.getCell(14).setCellValue(violationCodesCountSemi); // piti gumarvi dzernarkurtyun@
+		row.getCell(13).setCellValue(violationCodesCount + violationCodesCountCompanies);
+		row.getCell(14).setCellValue(violationCodesCountSemi + violationCodesCountSemiCompanies);
 		row.setHeight((short) 400);
 
 		row = sheet.getRow(10);
@@ -112,18 +126,20 @@ public class VisitGraficExcelParser {
 		row.getCell(0).setCellValue("Հիմնարկ ձեռնարկություն");
 		row.setHeight((short) 400);
 		row.getCell(2).setCellValue(companies);
-//		row.getCell(3).setCellValue(plannedC);
-//		row.getCell(4).setCellValue(visitedClientsCount);
-//		row.getCell(5).setCellValue(percent);
-//		row.getCell(6).setCellValue(notVisitedClientsCount);
-//		row.getCell(7).setCellValue(plannedCSemi);
-//		row.getCell(8).setCellValue(visitedClientsCountSemi);
-//		row.getCell(9).setCellValue(percentSemi);
-//		row.getCell(10).setCellValue(notVisitedClientsCountSemi);
-//		row.getCell(11).setCellValue(closedDoorClientsCountSemi);
-//		row.getCell(12).setCellValue(0); //TODO
-//		row.getCell(13).setCellValue(violationCodesCount);
-//		row.getCell(14).setCellValue(violationCodesCountSemi);
+		row.getCell(3).setCellValue(plannedCCompanies);
+		row.getCell(7).setCellValue(plannedCSemiCompanies);
+		row.getCell(3).setCellValue(plannedCCompanies);
+		row.getCell(4).setCellValue(visitedCompaniesCount);
+		row.getCell(5).setCellValue(percentCompanies);
+		row.getCell(6).setCellValue(notVisitedCompaniesCount);
+		row.getCell(7).setCellValue(plannedCSemiCompanies);
+		row.getCell(8).setCellValue(visitedCompaniesCountSemi);
+		row.getCell(9).setCellValue(percentSemiCompanies);
+		row.getCell(10).setCellValue(notVisitedCompaniesCountSemi);
+		row.getCell(11).setCellValue(closedDoorCompaniesCountSemi);
+		row.getCell(12).setCellValue(0); //TODO
+		row.getCell(13).setCellValue(violationCodesCountCompanies);
+		row.getCell(14).setCellValue(violationCodesCountSemiCompanies);
 
 
 //        sheet.addMergedRegion(CellRangeAddress.valueOf("A12:B12"));
@@ -136,21 +152,32 @@ public class VisitGraficExcelParser {
 			companies = zeroOrNumber(clientDao.countOfClientsBySection(section.getId(), true));
 			// for month
 			plannedC = zeroOrNumber(visitPlanDao.sumPlannedBySection(section.getId(), monthId));
-			visitedClientsCount = zeroOrNumber(clientHistoryDao.getVisitedCountByMonthAndSection(regionId, semiAnnualId, monthId % 10, section.getId()));
+			plannedCCompanies = zeroOrNumber(visitPlanDao.sumPlannedCompaniesBySection(section.getId(), monthId));
+			visitedClientsCount = zeroOrNumber(clientHistoryDao.getVisitedCountByMonthAndSection(regionId, semiAnnualId, monthId % 10, section.getId(), false));
+			visitedCompaniesCount = zeroOrNumber(clientHistoryDao.getVisitedCountByMonthAndSection(regionId, semiAnnualId, monthId % 10, section.getId(), true));
 			percent = plannedC != 0 ? (visitedClientsCount / plannedC) * 100 : 0f;
+			percentCompanies = plannedCCompanies != 0 ? (visitedCompaniesCount / plannedCCompanies) * 100 : 0f;
 			notVisitedClientsCount = plannedC - visitedClientsCount;
+			notVisitedCompaniesCount = plannedCCompanies - visitedCompaniesCount;
 
-			violationCodesCount = zeroOrNumber(clientHistoryDao.getViolationCodesCountByMonthAndSection(regionId, semiAnnualId, monthId % 10, section.getId()));
+			violationCodesCount = zeroOrNumber(clientHistoryDao.getViolationCodesCountByMonthAndSection(regionId, semiAnnualId, monthId % 10, section.getId(), false));
+			violationCodesCountCompanies = zeroOrNumber(clientHistoryDao.getViolationCodesCountByMonthAndSection(regionId, semiAnnualId, monthId % 10, section.getId(), true));
 
 			// For Semi
 			plannedCSemi = zeroOrNumber(visitPlanDao.sumPlannedBySectionAndSemiAnnual(section.getId(), semiAnnualId));
-			visitedClientsCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnualAndSection(regionId, semiAnnualId, section.getId(), 1));
+			plannedCSemiCompanies = zeroOrNumber(visitPlanDao.sumPlannedCompaniesBySectionAndSemiAnnual(section.getId(), semiAnnualId));
+			visitedClientsCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnualAndSection(regionId, semiAnnualId, section.getId(), 1, false));
+			visitedCompaniesCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnualAndSection(regionId, semiAnnualId, section.getId(), 1, true));
 			percentSemi = plannedCSemi != 0 ? (visitedClientsCountSemi / plannedCSemi) * 100 : 0f;
+			percentSemiCompanies = plannedCSemiCompanies != 0 ? (visitedCompaniesCountSemi / plannedCSemiCompanies) * 100 : 0f;
 			notVisitedClientsCountSemi = plannedCSemi - visitedClientsCountSemi;
+			notVisitedCompaniesCountSemi = plannedCSemiCompanies - visitedCompaniesCountSemi;
 
-			closedDoorClientsCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnualAndSection(regionId, semiAnnualId, section.getId(), 4));
+			closedDoorClientsCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnualAndSection(regionId, semiAnnualId, section.getId(), 4, false));
+			closedDoorCompaniesCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnualAndSection(regionId, semiAnnualId, section.getId(), 4, true));
 
-			violationCodesCountSemi = zeroOrNumber(clientHistoryDao.getViolationCodesCountBySemiAnnualAndSection(regionId, semiAnnualId, section.getId()));
+			violationCodesCountSemi = zeroOrNumber(clientHistoryDao.getViolationCodesCountBySemiAnnualAndSection(regionId, semiAnnualId, section.getId(), false));
+			violationCodesCountSemiCompanies = zeroOrNumber(clientHistoryDao.getViolationCodesCountBySemiAnnualAndSection(regionId, semiAnnualId, section.getId(), true));
 
 			row = createRow(sheet, rowIndex);
 			row.setHeight((short) 400);
@@ -162,45 +189,54 @@ public class VisitGraficExcelParser {
 			setCellStyle(row.getCell(1), workbook, (short) 11);
 			createCell(row, 2);
 			setCellStyle(row.getCell(2), workbook, (short) 10);
-			row.getCell(2).setCellValue(clients + companies); // petq e gumarvi dzernarkutyun@
+			row.getCell(2).setCellValue(clients + companies);
 			createCell(row, 3);
 			setCellStyle(row.getCell(3), workbook, (short) 10);
-			row.getCell(3).setCellValue(plannedC);  // petq e gumarvi dzernarkutyun@
+			row.getCell(3).setCellValue(plannedC + plannedCCompanies);
 			createCell(row, 4);
 			setCellStyle(row.getCell(4), workbook, (short) 10);
-			row.getCell(4).setCellValue(visitedClientsCount);  // petq e gumarvi dzernarkutyun@
+			row.getCell(4).setCellValue(visitedClientsCount + visitedCompaniesCount);
 			createCell(row, 5);
 			setCellStyle(row.getCell(5), workbook, (short) 10);
-			row.getCell(5).setCellValue(percent);  // petq e gumarvi dzernarkutyun@
+			row.getCell(5).setCellValue(percent + percentCompanies);
 			setCellStyleFont(row.getCell(5).getCellStyle(), workbook);
 			createCell(row, 6);
 			setCellStyle(row.getCell(6), workbook, (short) 10);
-			row.getCell(6).setCellValue(notVisitedClientsCount);  // petq e gumarvi dzernarkutyun@
+			row.getCell(6).setCellValue(notVisitedClientsCount + notVisitedCompaniesCount);
 			createCell(row, 7);
 			setCellStyle(row.getCell(7), workbook, (short) 10);
-			row.getCell(7).setCellValue(plannedCSemi);  // petq e gumarvi dzernarkutyun@
+			row.getCell(7).setCellValue(plannedCSemi + plannedCSemiCompanies);
 			createCell(row, 8);
 			setCellStyle(row.getCell(8), workbook, (short) 10);
-			row.getCell(8).setCellValue(visitedClientsCountSemi);  // petq e gumarvi dzernarkutyun@
+			row.getCell(8).setCellValue(visitedClientsCountSemi + visitedCompaniesCountSemi);
 			createCell(row, 9);
 			setCellStyle(row.getCell(9), workbook, (short) 10);
-			row.getCell(9).setCellValue(percentSemi);  // petq e gumarvi dzernarkutyun@
+			row.getCell(9).setCellValue(percentSemi + percentSemiCompanies);
 			setCellStyleFont(row.getCell(9).getCellStyle(), workbook);
 			createCell(row, 10);
 			setCellStyle(row.getCell(10), workbook, (short) 10);
-			row.getCell(10).setCellValue(notVisitedClientsCountSemi);  // petq e gumarvi dzernarkutyun@
+			row.getCell(10).setCellValue(notVisitedClientsCountSemi + notVisitedCompaniesCountSemi);
 			createCell(row, 11);
 			setCellStyle(row.getCell(11), workbook, (short) 10);
-			row.getCell(11).setCellValue(closedDoorClientsCountSemi);  // petq e gumarvi dzernarkutyun@
+			row.getCell(11).setCellValue(closedDoorClientsCountSemi + closedDoorCompaniesCountSemi);
 			createCell(row, 12);
 			setCellStyle(row.getCell(12), workbook, (short) 10);
 			row.getCell(12).setCellValue(0);  // petq e gumarvi dzernarkutyun@ TODO
 			createCell(row, 13);
 			setCellStyle(row.getCell(13), workbook, (short) 10);
-			row.getCell(13).setCellValue(violationCodesCount);  // petq e gumarvi dzernarkutyun@
+			row.getCell(13).setCellValue(violationCodesCount + violationCodesCountCompanies);
 			createCell(row, 14);
 			setCellStyle(row.getCell(14), workbook, (short) 10);
-			row.getCell(14).setCellValue(violationCodesCountSemi);  // petq e gumarvi dzernarkutyun@
+			row.getCell(14).setCellValue(violationCodesCountSemi + violationCodesCountSemiCompanies);
+			createCell(row, 15);
+			setCellStyle(row.getCell(15), workbook, (short) 10);
+			row.getCell(15).setCellValue(0); //TODO
+			createCell(row, 16);
+			setCellStyle(row.getCell(16), workbook, (short) 10);
+			row.getCell(16).setCellValue(0); //TODO
+			createCell(row, 17);
+			setCellStyle(row.getCell(17), workbook, (short) 10);
+			row.getCell(17).setCellValue(0); //TODO
 
 			row = createRow(sheet, rowIndex + 1);
 			row.setHeight((short) 400);
@@ -251,6 +287,16 @@ public class VisitGraficExcelParser {
 			createCell(row, 14);
 			setCellStyle(row.getCell(14), workbook, (short) 10);
 			row.getCell(14).setCellValue(violationCodesCountSemi);
+			createCell(row, 15);
+			setCellStyle(row.getCell(15), workbook, (short) 10);
+			row.getCell(15).setCellValue(0); //TODO
+			createCell(row, 16);
+			setCellStyle(row.getCell(16), workbook, (short) 10);
+			row.getCell(16).setCellValue(0); //TODO
+			createCell(row, 17);
+			setCellStyle(row.getCell(17), workbook, (short) 10);
+			row.getCell(17).setCellValue(0); //TODO
+
 
 			String mergeIndex = "A%s:B%s";
 			sheet.addMergedRegion(CellRangeAddress.valueOf(String.format(mergeIndex, rowIndex + 2, rowIndex + 2)));
@@ -267,45 +313,90 @@ public class VisitGraficExcelParser {
 			createCell(row, 2);
 			setCellStyle(row.getCell(2), workbook, (short) 10);
 			row.getCell(2).setCellValue(companies);
-		/*	createCell(row, 3);
+			createCell(row, 3);
 			setCellStyle(row.getCell(3), workbook, (short) 10);
-			row.getCell(3).setCellValue(plannedC);
+			row.getCell(3).setCellValue(plannedCCompanies);
+			createCell(row, 7);
+			setCellStyle(row.getCell(7), workbook, (short) 10);
+			row.getCell(7).setCellValue(plannedCSemiCompanies);
+			createCell(row, 3);
+			setCellStyle(row.getCell(3), workbook, (short) 10);
+			row.getCell(3).setCellValue(plannedCCompanies);
 			createCell(row, 4);
 			setCellStyle(row.getCell(4), workbook, (short) 10);
-			row.getCell(4).setCellValue(visitedClientsCount);
+			row.getCell(4).setCellValue(visitedCompaniesCount);
 			createCell(row, 5);
 			setCellStyle(row.getCell(5), workbook, (short) 10);
-			row.getCell(5).setCellValue(percent);
+			row.getCell(5).setCellValue(percentCompanies);
 			setCellStyleFont(row.getCell(5).getCellStyle(), workbook);
 			createCell(row, 6);
 			setCellStyle(row.getCell(6), workbook, (short) 10);
-			row.getCell(6).setCellValue(notVisitedClientsCount);
+			row.getCell(6).setCellValue(notVisitedCompaniesCount);
 			createCell(row, 7);
 			setCellStyle(row.getCell(7), workbook, (short) 10);
-			row.getCell(7).setCellValue(plannedCSemi);
+			row.getCell(7).setCellValue(plannedCSemiCompanies);
 			createCell(row, 8);
 			setCellStyle(row.getCell(8), workbook, (short) 10);
-			row.getCell(8).setCellValue(visitedClientsCountSemi);
+			row.getCell(8).setCellValue(visitedCompaniesCountSemi);
 			createCell(row, 9);
 			setCellStyle(row.getCell(9), workbook, (short) 10);
-			row.getCell(9).setCellValue(percentSemi);
+			row.getCell(9).setCellValue(percentSemiCompanies);
 			setCellStyleFont(row.getCell(9).getCellStyle(), workbook);
 			createCell(row, 10);
 			setCellStyle(row.getCell(10), workbook, (short) 10);
-			row.getCell(10).setCellValue(notVisitedClientsCountSemi);
+			row.getCell(10).setCellValue(notVisitedCompaniesCountSemi);
 			createCell(row, 11);
 			setCellStyle(row.getCell(11), workbook, (short) 10);
-			row.getCell(11).setCellValue(closedDoorClientsCountSemi);
+			row.getCell(11).setCellValue(closedDoorCompaniesCountSemi);
 			createCell(row, 12);
 			setCellStyle(row.getCell(12), workbook, (short) 10);
 			row.getCell(12).setCellValue(0); //TODO
 			createCell(row, 13);
 			setCellStyle(row.getCell(13), workbook, (short) 10);
-			row.getCell(13).setCellValue(violationCodesCount);
+			row.getCell(13).setCellValue(violationCodesCountCompanies);
 			createCell(row, 14);
 			setCellStyle(row.getCell(14), workbook, (short) 10);
-			row.getCell(14).setCellValue(violationCodesCountSemi);*/
+			row.getCell(14).setCellValue(violationCodesCountSemiCompanies);
+			createCell(row, 15);
+			setCellStyle(row.getCell(15), workbook, (short) 10);
+			row.getCell(15).setCellValue(0); //TODO
+			createCell(row, 16);
+			setCellStyle(row.getCell(16), workbook, (short) 10);
+			row.getCell(16).setCellValue(0); //TODO
+			createCell(row, 17);
+			setCellStyle(row.getCell(17), workbook, (short) 10);
+			row.getCell(17).setCellValue(0); //TODO
 		}
+
+		int rowIndex = sections.size()*3 + 14;
+		row = createRow(sheet,  rowIndex);
+		row.setHeight((short) 400);
+		createCell(row, 6);
+		setFooterCellStyle(row.getCell(6), workbook, (short) 10);
+		row.getCell(6).setCellValue(regionName + "ի ԱՇՏ պետ");
+		sheet.addMergedRegion(CellRangeAddress.valueOf(String.format("G%s:J%s", rowIndex, rowIndex)));
+
+		createCell(row, 12);
+		setFooterCellStyle(row.getCell(12), workbook, (short) 10);
+		row.getCell(12).setCellValue("");
+		sheet.addMergedRegion(CellRangeAddress.valueOf(String.format("M%s:P%s", rowIndex, rowIndex)));
+
+		rowIndex ++;
+		row = createRow(sheet,  rowIndex );
+		row.setHeight((short) 400);
+		createCell(row, 6);
+		setFooterCellStyle(row.getCell(6), workbook, (short) 10);
+		row.getCell(6).setCellValue("Կատարեց");
+		sheet.addMergedRegion(CellRangeAddress.valueOf(String.format("G%s:J%s", rowIndex, rowIndex)));
+
+		rowIndex++;
+		row = createRow(sheet,  rowIndex );
+		row.setHeight((short) 400);
+		createCell(row, 1);
+		setFooterCellStyle(row.getCell(1), workbook, (short) 10);
+		row.getCell(1).setCellValue(" <<---------->> -------------------------------- 201_ թ․");
+		sheet.addMergedRegion(CellRangeAddress.valueOf(String.format("B%s:D%s", rowIndex, rowIndex)));
+
 
 		// Write the output to the file
 		FileOutputStream out = new FileOutputStream(portfolioForm.getFile2UploadUrl());
@@ -338,6 +429,17 @@ public class VisitGraficExcelParser {
 		style.setBorderLeft(BorderStyle.THIN);
 		style.setBorderRight(BorderStyle.THIN);
 		style.setBorderTop(BorderStyle.THIN);
+		style.setFont(font);
+		cell.setCellStyle(style);
+	}
+
+	public void setFooterCellStyle(Cell cell, XSSFWorkbook workbook, short fontSize) {
+		XSSFFont font = workbook.createFont();
+		font.setFontHeightInPoints(fontSize);
+		font.setFontName("Arial Unicode");
+
+		//Set font into style
+		XSSFCellStyle style = workbook.createCellStyle();
 		style.setFont(font);
 		cell.setCellStyle(style);
 	}

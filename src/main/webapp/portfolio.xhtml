@@ -342,7 +342,6 @@
                                                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                                                          rowsPerPageTemplate="10,30,50"
                                                          style="margin-bottom:0">
-
                                                 <p:column filterBy="#{client.id}" headerText="ԲՀ" footerText=""
                                                           filterMatchMode="contains">
                                                     <h:outputText value="#{client.id}"/>
@@ -378,6 +377,10 @@
                                                 </p:column>
 
                                             </p:dataTable>
+                                            <h:commandLink id="excel">
+                                                Export to xlsx
+                                                <p:dataExporter type="xlsx" target="clientTableId" fileName="clients" />
+                                            </h:commandLink>
                                             <div class="col s5 input-field">
                                                 <p:commandButton value="Ավելացնել" styleClass="dark"
                                                                  action="#{portfolioForm.addNewClient}" process="@this"
