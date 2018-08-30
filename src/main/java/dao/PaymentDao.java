@@ -48,7 +48,7 @@ public class PaymentDao extends Dao<Payment> {
 
         Objects.requireNonNull(payment);
         String sql = "INSERT INTO payment(clientId, clientHistoryTmpId, fullName, regionId, city, street, home, pay, debt, semiAnnualId) " +
-                "VALUES (:clientId, :clientHistoryTmpId, :firstName, :regionId, :city, :street, :home, :pay, :debt, :semiAnnualId)";
+                "VALUES (:clientId, :clientHistoryTmpId, :fullName, :regionId, :city, :street, :home, :pay, :debt, :semiAnnualId)";
         SqlParameterSource fileParameters = new BeanPropertySqlParameterSource(payment);
         return namedJdbc.update(sql, fileParameters) == 1;
     }

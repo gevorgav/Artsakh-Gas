@@ -23,7 +23,7 @@
                 <div class="row">
                     <div class="col-sm-4 col-md-4">
                         <p:outputLabel for="id" value="Բաժանորդի համար" styleClass="required"/>
-                        <p:inputText id="id" maxlength="11" value="#{portfolioForm.client.id}"  disabled="#{not portfolioForm.client.isNew()}">
+                        <p:inputText id="id" maxlength="6" value="#{portfolioForm.client.id}"  disabled="#{not portfolioForm.client.isNew()}">
                         </p:inputText>
                         <p:message for="id" display="text"/>
                     </div>
@@ -41,7 +41,7 @@
                     </h:panelGroup>
                     <h:panelGroup  rendered="#{portfolioForm.client.company}" class="col-sm-4 col-md-4">
                         <p:outputLabel for="licenseId" value="Լիցենզիա" styleClass="required"/>
-                        <p:inputText id="licenseId" value="#{portfolioForm.client.lastName}" styleClass="form-control" placeholder="Լիցենզիա"/>
+                        <p:inputText id="licenseId" value="#{portfolioForm.client.license}" styleClass="form-control" placeholder="Լիցենզիա"/>
                         <p:message for="licenseId" display="text"/>
                     </h:panelGroup>
                     <h:panelGroup rendered="#{!portfolioForm.client.company}"  class="col-sm-4 col-md-4">

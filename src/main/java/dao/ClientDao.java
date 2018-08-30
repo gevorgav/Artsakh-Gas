@@ -100,29 +100,15 @@ public class ClientDao extends Dao<Client>{
      */
     public boolean update(Client client){
         Objects.requireNonNull(client);
-        Map namedParameters = new HashMap();
-        namedParameters.put("id", client.getId());
-        namedParameters.put("firstName", client.getFirstName());
-        namedParameters.put("lastName", client.getLastName());
-        namedParameters.put("middleName", client.getMiddleName());
-        namedParameters.put("phoneNumber", client.getPhoneNumber());
-        namedParameters.put("counterNumber", client.getCounterNumber());
-        namedParameters.put("regionId", client.getRegionId());
-        namedParameters.put("cityId", client.getCityId());
-        namedParameters.put("streetId", client.getStreetId());
-        namedParameters.put("homeNumber", client.getHomeNumber());
-        namedParameters.put("apartmentNumber",client.getApartmentNumber());
-        namedParameters.put("ashtId", client.getAshtId());
-        namedParameters.put("grpId", client.getGrpId());
-        namedParameters.put("typeId", client.getTypeId());
-        namedParameters.put("sectionId", client.getSectionId());
-        namedParameters.put("subSectionId", client.getSubSectionId());
-        namedParameters.put("typeNumber", client.getTypeNumber());
-        namedParameters.put("grsId", client.getGrsId());
-        namedParameters.put("isCompany", client.isCompany());
-        namedParameters.put("license", client.getLicense());
-        int sql = namedJdbc.update("UPDATE clients SET firstName = :firstName, lastName = :lastName, middleName = :middleName, phoneNumber = :phoneNumber, counterNumber = :counterNumber, regionId = :regionId, cityId = :cityId, streetId = :streetId, homeNumber = :homeNumber, apartmentNumber = :apartmentNumber, ashtId = :ashtId, grpId = :grpId , typeId = :typeId, typeNumber = :typeNumber, sectionId = :sectionId, subSectionId = :subSectionId, grsId = :grsId, isCompany = :isCompany, license = :license  WHERE id = :id", namedParameters);
-        return sql == 1;
+        String sql = "UPDATE clients\n" +
+            "SET firstName = ?, lastName = ?, middleName = ?, phoneNumber = ?, counterNumber = ?, regionId = ?, cityId = ?, streetId = ?, homeNumber = ?, apartmentNumber = ?, ashtId = ?, grpId = ?,\n" +
+            "typeId = ?, sectionId = ?, subSectionId = ?, typeNumber = ?, grsId = ?, isCompany = ?, license = ? " +
+            "WHERE id = ?";
+        int result = jdbcTemplate.update(sql,client.getFirstName(), client.getLastName(), client.getMiddleName(),
+            client.getPhoneNumber(), client.getCounterNumber(), client.getCityId(), client.getCityId(), client.getStreetId(), client.getHomeNumber(),
+            client.getApartmentNumber(), client.getAshtId(), client.getGrpId(), client.getTypeId(), client.getSectionId(), client.getSubSectionId(),
+            client.getTypeNumber(), client.getGrsId(), client.isCompany(), client.getLicense(), client.getId());
+        return result == 1;
     }
 
     /**
