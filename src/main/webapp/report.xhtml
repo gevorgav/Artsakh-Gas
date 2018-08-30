@@ -278,7 +278,7 @@
                                         <p:remoteCommand name="onload" oncomplete="PF('reportClientTable').filter()" autoRun="true"/>
                                         <h:panelGroup layout="block" class="de-table-block" id="table2">
                                             <p:dataTable var="client"
-                                                         id="clientTableId"
+                                                         id="clientReportTableId"
                                                          value="#{portfolioForm.clients}"
                                                          widgetVar="reportClientTable"
                                                          styleClass="table table-hover b-t de-table"
@@ -291,29 +291,39 @@
                                                          paginatorTemplate="{FirstPageLink} {PreviousPageLink} {RowsPerPageDropdown} {NextPageLink} {LastPageLink}"
                                                          rowsPerPageTemplate="10,20,50"
                                                          style="margin-bottom:0">
+
+                                                <f:facet name="header">
+                                                    <p:commandButton id="toggler" type="button" value="Սյունակներ" style="float:right" />
+                                                    <p:columnToggler datasource="clientReportTableId" trigger="toggler" />
+
+                                                    <h:commandButton id="excel" value="Արտահանում excel">
+                                                        <p:dataExporter type="xlsx" target="clientReportTableId" fileName="clients" />
+                                                    </h:commandButton>
+                                                </f:facet>
+
                                                 <p:column selectionMode="multiple" style="width:35px;text-align:center"/>
 
-                                                <p:column filterBy="#{client.id}" headerText="ԲՀ" filterMatchMode="contains">
+                                                <p:column filterBy="#{client.id}" headerText="ԲՀ" style="width: 10%"  filterMatchMode="contains">
                                                     <h:outputText value="#{client.id}" />
                                                 </p:column>
 
-                                                <p:column filterBy="#{client.company}" headerText="isCompany" filterMatchMode="equals">
+                                                <p:column filterBy="#{client.company}" style="width: 10%"  headerText="Կազմ է" filterMatchMode="equals">
                                                     <f:facet name="filter">
-                                                        <p:selectBooleanCheckbox label="company" onchange="PF('reportClientTable').filter()" panelStyle="width:125px" scrollHeight="150">
+                                                        <p:selectBooleanCheckbox label="company" onchange="PF('reportClientTable').filter()" panelStyle="" scrollHeight="150">
                                                             <f:selectItem value="0" itemLabel="Այո"/>
                                                             <f:selectItem value="1" itemLabel="Ոչ" />
                                                         </p:selectBooleanCheckbox>
                                                     </f:facet>
-                                                    <h:outputText value="#{client.company}" />
+                                                    <h:outputText value="#{client.company ? 'Այո' : 'Ոչ'}" />
                                                 </p:column>
 
-                                                <p:column filterBy="#{client.firstName}" headerText="Անուն" filterMatchMode="contains">
+                                                <p:column filterBy="#{client.firstName}" headerText="Անուն" style="width: 10%"  filterMatchMode="contains">
                                                     <h:outputText value="#{client.firstName}" />
                                                 </p:column>
-                                                <p:column filterBy="#{client.lastName}" headerText="Ազգանուն" filterMatchMode="contains">
+                                                <p:column filterBy="#{client.lastName}" headerText="Ազգանուն" style="width: 10%"  filterMatchMode="contains">
                                                     <h:outputText value="#{client.lastName}" />
                                                 </p:column>
-                                                <p:column filterBy="#{client.clientHistory.paid}" style="width: 20%" headerText="Վճարման վիճակ" filterMatchMode="equals">
+                                                <p:column filterBy="#{client.clientHistory.paid}" style="width: 10%" headerText="Վճարման վիճակ" filterMatchMode="equals">
                                                     <f:facet name="filter">
                                                         <p:selectOneMenu  label="Colors" onchange="PF('reportClientTable').filter()"  panelStyle="width:125px" scrollHeight="150">
                                                             <f:converter converterId="javax.faces.Boolean" />
@@ -325,7 +335,7 @@
                                                     <h:outputText value="#{client.clientHistory.paid ? 'Վճարված': 'Չվճարված'}" />
                                                 </p:column>
 
-                                                <p:column filterBy="#{client.clientHistory.visitType}" style="width: 20%" headerText="Այցելություն" filterMatchMode="equals">
+                                                <p:column filterBy="#{client.clientHistory.visitType}" style="width: 10%" headerText="Այցելություն" filterMatchMode="equals">
                                                     <f:facet name="filter">
                                                         <p:selectOneMenu  label="Այցելություն" onchange="PF('reportClientTable').filter()"  panelStyle="width:125px" scrollHeight="150">
                                                             <f:converter converterId="javax.faces.Integer" />
@@ -336,8 +346,16 @@
                                                     <h:outputText value="#{portfolioForm.getVisitType(client.clientHistory.visitType) != null ? portfolioForm.getVisitType(client.clientHistory.visitType).name : ''}"></h:outputText>
                                                 </p:column>
 
-                                                <p:column filterBy="#{client.clientHistory.risk}" style="width: 20%" headerText="Ռիսկ" filterMatchMode="contains">
+                                                <p:column filterBy="#{client.clientHistory.risk}" style="width: 10%" headerText="Ռիսկ" filterMatchMode="contains">
                                                     <h:outputText value="#{client.clientHistory.risk}"></h:outputText>
+                                                </p:column>
+
+                                                <p:column filterBy="#{client.debt}" style="width: 10%" headerText="Պարտք" filterMatchMode="contains">
+                                                    <h:outputText value="#{client.debt}"></h:outputText>
+                                                </p:column>
+
+                                                <p:column filterBy="#{client.pay}" style="width: 10%" headerText="Մուծած" filterMatchMode="contains">
+                                                    <h:outputText value="#{client.pay}"></h:outputText>
                                                 </p:column>
 
                                             </p:dataTable>

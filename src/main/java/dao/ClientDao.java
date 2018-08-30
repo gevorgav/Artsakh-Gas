@@ -27,9 +27,27 @@ public class ClientDao extends Dao<Client>{
         try {
             String sql = null;
             if(Objects.isNull(regionId)){
-                sql = "SELECT *  FROM clients LEFT JOIN clientsHistory On clients.id = clientsHistory.clientId WHERE clientsHistory.id IN (SELECT MAX(clientsHistory.id) FROM clientsHistory GROUP BY clientsHistory.clientId)";
+                sql = "SELECT *\n" +
+                        "FROM clients\n" +
+                        "  LEFT JOIN clientsHistory ON clients.id = clientsHistory.clientId AND clients.regionId = clientsHistory.regionId\n" +
+                        "  LEFT JOIN payment ON payment.clientID = clientsHistory.clientId AND payment.semiAnnualId = clientsHistory.semiAnnualId\n" +
+                        "WHERE clientsHistory.id IN (SELECT MAX(clientsHistory.id)\n" +
+                        "                            FROM clientsHistory\n" +
+                        "                            GROUP BY clientsHistory.clientId) AND (SELECT MAX(payment.id)\n" +
+                        "                                                                   FROM payment\n" +
+                        "                                                                   GROUP BY payment.clientId, regionID\n" +
+                        "      )";
             }else {
-                sql = "SELECT *  FROM clients LEFT JOIN clientsHistory On clients.id = clientsHistory.clientId WHERE clients.regionId = "+ regionId +" AND clientsHistory.id IN (SELECT MAX(clientsHistory.id) FROM clientsHistory GROUP BY clientsHistory.clientId)";
+                sql = "SELECT *\n" +
+                        "FROM clients\n" +
+                        "  LEFT JOIN clientsHistory ON clients.id = clientsHistory.clientId AND clients.regionId = clientsHistory.regionId\n" +
+                        "  LEFT JOIN payment ON payment.clientID = clientsHistory.clientId AND payment.semiAnnualId = clientsHistory.semiAnnualId\n" +
+                        "WHERE  clients.regionId = " + regionId + " AND clientsHistory.id IN (SELECT MAX(clientsHistory.id)\n" +
+                        "                            FROM clientsHistory\n" +
+                        "                            GROUP BY clientsHistory.clientId) AND (SELECT MAX(payment.id)\n" +
+                        "                                                                   FROM payment\n" +
+                        "                                                                   GROUP BY payment.clientId, regionID\n" +
+                        "      )";
             }
 
             return jdbcTemplate.query(sql, new ClientMapper(clientHistoryDao));

@@ -53,6 +53,10 @@ public class  Client {
 
     private String license;
 
+    private Double debt;
+
+    private Double pay;
+
     public Client() {
     }
 
@@ -241,6 +245,22 @@ public class  Client {
         this.license = license;
     }
 
+    public Double getDebt() {
+        return debt;
+    }
+
+    public void setDebt(Double debt) {
+        this.debt = debt;
+    }
+
+    public Double getPay() {
+        return pay;
+    }
+
+    public void setPay(Double pay) {
+        this.pay = pay;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -302,6 +322,8 @@ public class  Client {
         result = 31 * result + (isNew ? 1 : 0);
         result = 31 * result + (isCompany ? 1 : 0);
         result = 31 * result + (license != null ? license.hashCode() : 0);
+        result = 31 * result + (debt != null ? debt.hashCode() : 0);
+        result = 31 * result + (pay != null ? pay.hashCode() : 0);
         return result;
     }
 
@@ -329,6 +351,8 @@ public class  Client {
         client.setClientHistory(this.clientHistory);
         client.setCompany(this.isCompany);
         client.setLicense(this.license);
+        client.setDebt(this.debt);
+        client.setPay(this.pay);
         return client;
     }
 }

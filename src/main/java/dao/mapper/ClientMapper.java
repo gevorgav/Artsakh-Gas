@@ -1,10 +1,7 @@
 package dao.mapper;
 
 import Models.Client;
-import dao.CityDao;
 import dao.ClientHistoryDao;
-import dao.GRPDao;
-import dao.StreetDao;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -45,6 +42,8 @@ public class ClientMapper  implements RowMapper<Client> {
         client.setTypeNumber(resultSet.getObject("typeNumber") != null ? resultSet.getString("typeNumber") : null);
         client.setCompany(resultSet.getBoolean("isCompany"));
         client.setLicense(resultSet.getObject("license") != null ? resultSet.getString("license") : null);
+        client.setDebt(resultSet.getObject("debt") != null ? resultSet.getDouble("payment.debt") : null);
+        client.setPay(resultSet.getObject("pay") != null ? resultSet.getDouble("payment.pay") : null);
         client.setClientHistory(new ClientHistoryMapper().mapRow(resultSet, i));
         return client;
     }
