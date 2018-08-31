@@ -548,6 +548,7 @@ public class PortfolioForm {
             Integer clientHistoryTmpId = saveClientHistoryTemp(historyId);
             Double debt = initDept();
             savePayment(clientHistoryTmpId, client.getId(), client.getFirstName(), client.getLastName(), client.getMiddleName(), client.getRegionId(), client.getCityId(), client.getStreetId(), client.getHomeNumber(), clientHistory.getSemiAnnualId(), debt);
+            client.setDebt(debt);
         }
         saveViolationCodes(historyId);
         cancelHistoryDialog();
@@ -559,12 +560,12 @@ public class PortfolioForm {
             if (priceList.getFormula().contains("=") && !priceList.getFormula().contains("<=")) {
                 Integer count = Integer.parseInt(priceList.getFormula().replace("=", ""));
                 if (Objects.equals(count, deviceCount)) {
-                    return priceList.getPrice();
+                    return priceList.getPrice()/2;
                 }
             } else if (priceList.getFormula().contains("<=")) {
                 Integer count = Integer.parseInt(priceList.getFormula().replace("<=", ""));
                 if (count <= deviceCount) {
-                    return priceList.getPrice();
+                    return priceList.getPrice()/2;
                 }
             }
         }
@@ -1054,7 +1055,7 @@ public class PortfolioForm {
     private Integer getClientHistoryDeviceCount() {
         Integer count = 0;
         count += clientHistory.getJtt() != null ? clientHistory.getJtt() : 0;
-        count += clientHistory.getJah() != null ? clientHistory.getJah() : 0;
+//        count += clientHistory.getJah() != null ? clientHistory.getJah() : 0;
         count += clientHistory.getGo1() != null ? clientHistory.getGo1() : 0;
         count += clientHistory.getGo2() != null ? clientHistory.getGo2() : 0;
         count += clientHistory.getGo3() != null ? clientHistory.getGo3() : 0;
@@ -1065,7 +1066,7 @@ public class PortfolioForm {
         count += clientHistory.getJv() != null ? clientHistory.getJv() : 0;
         count += clientHistory.getJth() != null ? clientHistory.getJth() : 0;
         count += clientHistory.getKet() != null ? clientHistory.getKet() : 0;
-        count += clientHistory.getPakan() != null ? clientHistory.getPakan() : 0;
+//        count += clientHistory.getPakan() != null ? clientHistory.getPakan() : 0;
 
         return count;
     }

@@ -32,7 +32,7 @@ public class ClientDao extends Dao<Client>{
                         "  LEFT JOIN clientsHistory ON clients.id = clientsHistory.clientId AND clients.regionId = clientsHistory.regionId\n" +
                         "  LEFT JOIN payment\n" +
                         "    ON payment.clientId = clientsHistory.clientId AND payment.semiAnnualId = clientsHistory.semiAnnualId AND\n" +
-                        "       clientsHistory.regionId = payment.regionId AND payment.Id in (SELECT payment.id\n" +
+                        "       clientsHistory.regionId = payment.regionId AND payment.Id in (SELECT MAX(payment.id)\n" +
                         "                                                                     FROM payment\n" +
                         "                                                                       LEFT  join clients on\n" +
                         "                                                                                            payment.clientId = clients.id\n" +
@@ -49,7 +49,7 @@ public class ClientDao extends Dao<Client>{
                         "  LEFT JOIN clientsHistory ON clients.id = clientsHistory.clientId AND clients.regionId = clientsHistory.regionId\n" +
                         "  LEFT JOIN payment\n" +
                         "    ON payment.clientId = clientsHistory.clientId AND payment.semiAnnualId = clientsHistory.semiAnnualId AND\n" +
-                        "       clientsHistory.regionId = payment.regionId AND payment.Id in (SELECT payment.id\n" +
+                        "       clientsHistory.regionId = payment.regionId AND payment.Id in (SELECT MAX(payment.id)\n" +
                         "                                                                     FROM payment\n" +
                         "                                                                       LEFT  join clients on\n" +
                         "                                                                                            payment.clientId = clients.id\n" +

@@ -347,14 +347,18 @@
                                                     <h:outputText value="#{client.id}"/>
                                                 </p:column>
 
-                                                <p:column filterBy="#{client.company}" headerText="isCompany" filterMatchMode="equals">
+                                                <p:column filterBy="#{client.company}" headerText="Կազմ է"
+                                                          filterMatchMode="equals">
                                                     <f:facet name="filter">
-                                                        <p:selectBooleanCheckbox label="company" onchange="PF('clientTable').filter()" panelStyle="width:125px" scrollHeight="150">
+                                                        <p:selectBooleanCheckbox label="company"
+                                                                                 onchange="PF('clientTable').filter()"
+                                                                                 panelStyle="width:125px"
+                                                                                 scrollHeight="150">
                                                             <f:selectItem value="0" itemLabel="Այո"/>
-                                                            <f:selectItem value="1" itemLabel="Ոչ" />
+                                                            <f:selectItem value="1" itemLabel="Ոչ"/>
                                                         </p:selectBooleanCheckbox>
                                                     </f:facet>
-                                                    <h:outputText value="#{client.company}" />
+                                                    <h:outputText value="#{client.company ? 'Այո':'Ոչ'}"/>
                                                 </p:column>
 
                                                 <p:column filterBy="#{client.firstName}" headerText="Անուն"
@@ -377,10 +381,6 @@
                                                 </p:column>
 
                                             </p:dataTable>
-                                            <h:commandLink id="excel">
-                                                Export to xlsx
-                                                <p:dataExporter type="xlsx" target="clientTableId" fileName="clients" />
-                                            </h:commandLink>
                                             <div class="col s5 input-field">
                                                 <p:commandButton value="Ավելացնել" styleClass="dark"
                                                                  action="#{portfolioForm.addNewClient}" process="@this"
