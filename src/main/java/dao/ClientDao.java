@@ -30,24 +30,36 @@ public class ClientDao extends Dao<Client>{
                 sql = "SELECT *\n" +
                         "FROM clients\n" +
                         "  LEFT JOIN clientsHistory ON clients.id = clientsHistory.clientId AND clients.regionId = clientsHistory.regionId\n" +
-                        "  LEFT JOIN payment ON payment.clientID = clientsHistory.clientId AND payment.semiAnnualId = clientsHistory.semiAnnualId\n" +
-                        "WHERE clientsHistory.id IN (SELECT MAX(clientsHistory.id)\n" +
-                        "                            FROM clientsHistory\n" +
-                        "                            GROUP BY clientsHistory.clientId) AND (SELECT MAX(payment.id)\n" +
-                        "                                                                   FROM payment\n" +
-                        "                                                                   GROUP BY payment.clientId, regionID\n" +
-                        "      )";
+                        "  LEFT JOIN payment\n" +
+                        "    ON payment.clientId = clientsHistory.clientId AND payment.semiAnnualId = clientsHistory.semiAnnualId AND\n" +
+                        "       clientsHistory.regionId = payment.regionId AND payment.Id in (SELECT payment.id\n" +
+                        "                                                                     FROM payment\n" +
+                        "                                                                       LEFT  join clients on\n" +
+                        "                                                                                            payment.clientId = clients.id\n" +
+                        "                                                                     GROUP BY payment.clientId,\n" +
+                        "                                                                       clients.regionId, payment.semiAnnualId)\n" +
+                        "WHERE  clientsHistory.id IN (SELECT MAX(clientsHistory.id)\n" +
+                        "                                                      FROM clientsHistory\n" +
+                        "                                                      GROUP BY clientsHistory.id, clientsHistory.clientId,\n" +
+                        "                                                        clientsHistory.regionId)\n" +
+                        "GROUP BY clients.id, clients.regionId, payment.semiAnnualId";
             }else {
                 sql = "SELECT *\n" +
                         "FROM clients\n" +
                         "  LEFT JOIN clientsHistory ON clients.id = clientsHistory.clientId AND clients.regionId = clientsHistory.regionId\n" +
-                        "  LEFT JOIN payment ON payment.clientID = clientsHistory.clientId AND payment.semiAnnualId = clientsHistory.semiAnnualId\n" +
-                        "WHERE  clients.regionId = " + regionId + " AND clientsHistory.id IN (SELECT MAX(clientsHistory.id)\n" +
-                        "                            FROM clientsHistory\n" +
-                        "                            GROUP BY clientsHistory.clientId) AND (SELECT MAX(payment.id)\n" +
-                        "                                                                   FROM payment\n" +
-                        "                                                                   GROUP BY payment.clientId, regionID\n" +
-                        "      )";
+                        "  LEFT JOIN payment\n" +
+                        "    ON payment.clientId = clientsHistory.clientId AND payment.semiAnnualId = clientsHistory.semiAnnualId AND\n" +
+                        "       clientsHistory.regionId = payment.regionId AND payment.Id in (SELECT payment.id\n" +
+                        "                                                                     FROM payment\n" +
+                        "                                                                       LEFT  join clients on\n" +
+                        "                                                                                            payment.clientId = clients.id\n" +
+                        "                                                                     GROUP BY payment.clientId,\n" +
+                        "                                                                       clients.regionId, payment.semiAnnualId)\n" +
+                        "WHERE  clients.regionId = " + regionId +" AND clientsHistory.id IN (SELECT MAX(clientsHistory.id)\n" +
+                        "                                                      FROM clientsHistory\n" +
+                        "                                                      GROUP BY clientsHistory.id, clientsHistory.clientId,\n" +
+                        "                                                        clientsHistory.regionId)\n" +
+                        "GROUP BY clients.id, clients.regionId, payment.semiAnnualId";
             }
 
             return jdbcTemplate.query(sql, new ClientMapper(clientHistoryDao));
