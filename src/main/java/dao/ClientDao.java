@@ -115,23 +115,24 @@ public class ClientDao extends Dao<Client>{
         String sql = "UPDATE clients\n" +
             "SET firstName = ?, lastName = ?, middleName = ?, phoneNumber = ?, counterNumber = ?, regionId = ?, cityId = ?, streetId = ?, homeNumber = ?, apartmentNumber = ?, ashtId = ?, grpId = ?,\n" +
             "typeId = ?, sectionId = ?, subSectionId = ?, typeNumber = ?, grsId = ?, isCompany = ?, license = ? " +
-            "WHERE id = ?";
+            "WHERE id = ? AND regionId = ?";
         int result = jdbcTemplate.update(sql,client.getFirstName(), client.getLastName(), client.getMiddleName(),
             client.getPhoneNumber(), client.getCounterNumber(), client.getCityId(), client.getCityId(), client.getStreetId(), client.getHomeNumber(),
             client.getApartmentNumber(), client.getAshtId(), client.getGrpId(), client.getTypeId(), client.getSectionId(), client.getSubSectionId(),
-            client.getTypeNumber(), client.getGrsId(), client.isCompany(), client.getLicense(), client.getId());
+            client.getTypeNumber(), client.getGrsId(), client.isCompany(), client.getLicense(), client.getId(), client.getRegionId());
         return result == 1;
     }
 
     /**
      * Method to delete Client by given id
-     * @param id Id of Client to be deleted
+     * @param clientId Id of Client to be deleted
      * @return true if client is deleted
      */
-    public boolean delete(String id){
-        Objects.requireNonNull(id);
-        String sql = "DELETE FROM clients WHERE id = ?";
-        int result = jdbcTemplate.update(sql, id);
+    public boolean delete(String clientId, Integer regionId){
+        Objects.requireNonNull(clientId);
+        Objects.requireNonNull(regionId);
+        String sql = "DELETE FROM clients WHERE id = ? AND regionId = ?";
+        int result = jdbcTemplate.update(sql, clientId, regionId);
         return result == 1;
     }
 

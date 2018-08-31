@@ -76,8 +76,8 @@ public class VisitGraficExcelParser {
 		Integer notVisitedClientsCountSemi = plannedCSemi - visitedClientsCountSemi;
 		Integer notVisitedCompaniesCountSemi = plannedCSemiCompanies - visitedCompaniesCountSemi;
 
-		Integer closedDoorClientsCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnual(regionId, semiAnnualId, 4, false));
-		Integer closedDoorCompaniesCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnual(regionId, semiAnnualId, 4, true));
+		Integer closedDoorClientsCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnual(regionId, semiAnnualId, 3, false));
+		Integer closedDoorCompaniesCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnual(regionId, semiAnnualId, 3, true));
 
 		Integer violationCodesCountSemi = zeroOrNumber(clientHistoryDao.getViolationCodesCountBySemiAnnual(regionId, semiAnnualId, false));
 		Integer violationCodesCountSemiCompanies = zeroOrNumber(clientHistoryDao.getViolationCodesCountBySemiAnnual(regionId, semiAnnualId, true));
@@ -173,8 +173,8 @@ public class VisitGraficExcelParser {
 			notVisitedClientsCountSemi = plannedCSemi - visitedClientsCountSemi;
 			notVisitedCompaniesCountSemi = plannedCSemiCompanies - visitedCompaniesCountSemi;
 
-			closedDoorClientsCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnualAndSection(regionId, semiAnnualId, section.getId(), 4, false));
-			closedDoorCompaniesCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnualAndSection(regionId, semiAnnualId, section.getId(), 4, true));
+			closedDoorClientsCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnualAndSection(regionId, semiAnnualId, section.getId(), 3, false));
+			closedDoorCompaniesCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnualAndSection(regionId, semiAnnualId, section.getId(), 3, true));
 
 			violationCodesCountSemi = zeroOrNumber(clientHistoryDao.getViolationCodesCountBySemiAnnualAndSection(regionId, semiAnnualId, section.getId(), false));
 			violationCodesCountSemiCompanies = zeroOrNumber(clientHistoryDao.getViolationCodesCountBySemiAnnualAndSection(regionId, semiAnnualId, section.getId(), true));

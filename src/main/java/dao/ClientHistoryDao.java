@@ -95,6 +95,7 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
 
     public Integer insertAndReturnId(ClientHistory clientHistory) {
         Objects.requireNonNull(clientHistory);
+        clientHistory.setUpdateDate(new Date());
         String sql = "INSERT INTO clientsHistory(clientId, violationActNumber, visitType, visitDescription, updateDate, previousVisitDate, nextVisitDate, stampNumbers, go1, go2, go3,go4,go5,go6," +
                 " bacakaGo1, bacakaGo2, bacakaGo3,bacakaGo4,bacakaGo5,bacakaGo6, jth, jtt, ket, jah, jk, jv,pakan ,bacakaJth, bacakaJtt, bacakaKet, bacakaJk, bacakaJv, JTLog, risk, masterId, regionId, semiAnnualId, userId)\n" +
                 "VALUES (:clientId, :violationActNumber, :visitType, :visitDescription, :updateDate, :previousVisitDate, :nextVisitDate, :stampNumbers, :go1, :go2, :go3,:go4,:go5,:go6, :bacakaGo1," +
@@ -228,8 +229,8 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
             "FROM violationClientHistory\n" +
             "LEFT JOIN clientsHistory ON clientsHistory.id = violationClientHistory.clientHistoryId\n" +
             "LEFT JOIN clients ON clientsHistory.clientId = clients.id\n" +
-            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND isCompany = ?";
-        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, isCompany);
+            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND isCompany = ? AND clients.regionId = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, isCompany, regionId);
     }
 
     public boolean moveHistoryToSemiAnnualByRegionId(@NotNull Integer semiAnnualId, @NotNull Integer regionId){

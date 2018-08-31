@@ -49,6 +49,5 @@ public class TestForm {
     }
 
     public void delete() {
-        clientDao.delete("");
     }
 }

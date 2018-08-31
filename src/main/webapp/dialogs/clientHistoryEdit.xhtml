@@ -44,14 +44,18 @@
                             <p:outputLabel for="previewDate" value="Նախորդ այցելություն:" class="form-control-label"/>
                             <p:calendar id="previewDate" styleClass="form-control"
                                         value="#{portfolioForm.clientHistory.previousVisitDate}"
-                                        pattern="dd-MM-yyyy" mask="true"/>
+                                        pattern="dd-MM-yyyy" mask="true">
+                                <f:ajax event="dateSelect" render=":clientHistoryForm"/>
+                            </p:calendar>
                         </div>
                         <div class="col-sm-4 col-md-4">
-                            <p:outputLabel for="previewDate" value="Հաջորդ այցելություն:"
+                            <p:outputLabel for="nextDate" value="Հաջորդ այցելություն:"
                                            class="form-control-label"/>
                             <p:calendar id="nextDate" styleClass="form-control"
                                         value="#{portfolioForm.clientHistory.nextVisitDate}"
-                                        pattern="dd-MM-yyyy" mask="true"/>
+                                        pattern="dd-MM-yyyy" mask="true">
+                                <f:ajax event="dateSelect" render=":clientHistoryForm"/>
+                            </p:calendar>
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <p:outputLabel for="semiAnnualId" value="Կիսամյակ"/>
@@ -83,6 +87,7 @@
                                                        itemValue="#{master.id}"
                                                        value="#{portfolioForm.cache.locksmiths}"
                                                        var="master"/>
+                                        <f:ajax event="change" render=":clientHistoryForm"/>
                                     </p:selectOneMenu>
                                 </div>
                                 <div class="col-sm-4 col-md-4">
