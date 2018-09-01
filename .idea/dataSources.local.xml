@@ -1,24 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal">
-    <data-source name="arshak90_gaz2018@91.217.9.247" uuid="9759d338-1011-49c8-8c59-985f8f46e888">
-      <database-info product="MySQL" version="5.5.5-10.1.26-MariaDB-0+deb9u1" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.46 ( Revision: 9cc87a48e75c2d2e87c1a293b2862ce651cb256e )">
-        <extra-name-characters>#@</extra-name-characters>
-        <identifier-quote-string>`</identifier-quote-string>
-      </database-info>
-      <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact" />
-      <user-name>arshak90_gaz2018</user-name>
-      <introspection-schemas>*:arshak90_gaz2018,arshak90_gaz2019,information_schema</introspection-schemas>
-    </data-source>
-    <data-source name="arshak90_gaz2020@91.217.9.247 [2]" uuid="1af6acb2-2144-461f-aa41-b4b454d448db">
-      <database-info product="MySQL" version="5.5.5-10.1.26-MariaDB-0+deb9u1" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.46 ( Revision: 9cc87a48e75c2d2e87c1a293b2862ce651cb256e )">
-        <extra-name-characters>#@</extra-name-characters>
-        <identifier-quote-string>`</identifier-quote-string>
-      </database-info>
-      <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact" />
-      <user-name>arshak90_8gaz21</user-name>
-      <introspection-schemas>*:arshak90_8gaz21,arshak90_gaz2020</introspection-schemas>
-    </data-source>
     <data-source name="arshak90_8gaz21@91.217.9.247" uuid="5b47ee8c-0b2b-432b-8ee4-dcf9f53a1890">
       <database-info product="MySQL" version="5.5.5-10.1.26-MariaDB-0+deb9u1" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.46 ( Revision: 9cc87a48e75c2d2e87c1a293b2862ce651cb256e )">
         <extra-name-characters>#@</extra-name-characters>

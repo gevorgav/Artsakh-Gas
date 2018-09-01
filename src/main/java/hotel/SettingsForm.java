@@ -117,7 +117,7 @@ public class SettingsForm implements Serializable {
                     this.editedLocksmith = cache.getLocksmiths().isEmpty() ? new Locksmith() : cache.getLocksmiths().get(0);
                     break;
                 case 14:
-                    this.editedSemiAnnualRegion = cache.getSemiAnnualRegions().get(0);
+                    this.editedSemiAnnualConfig = cache.getSemiAnnualConfig();
                     break;
             }
         }
@@ -125,42 +125,48 @@ public class SettingsForm implements Serializable {
 
     // ---------- SemiAnnual Region Form
 
-    private SemiAnnualRegion editedSemiAnnualRegion;
+    private SemiAnnualConfig editedSemiAnnualConfig;
 
-    public SemiAnnualRegion getEditedSemiAnnualRegion() {
-        return editedSemiAnnualRegion;
+    public SemiAnnualConfig getEditedSemiAnnualConfig() {
+        return editedSemiAnnualConfig;
     }
 
-    public void setEditedSemiAnnualRegion(SemiAnnualRegion editedSemiAnnualRegion) {
-        this.editedSemiAnnualRegion = editedSemiAnnualRegion;
+    public void setEditedSemiAnnualConfig(SemiAnnualConfig editedSemiAnnualConfig) {
+        this.editedSemiAnnualConfig = editedSemiAnnualConfig;
     }
 
-    public void editSemiAnnualRegion(SemiAnnualRegion semiAnnualRegion){
+    public void editSemiAnnualRegion(SemiAnnualConfig semiAnnualConfig){
         try {
-            this.editedSemiAnnualRegion = (SemiAnnualRegion) semiAnnualRegion.clone();
+            this.editedSemiAnnualConfig = (SemiAnnualConfig) semiAnnualConfig.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
-        this.editedSemiAnnualRegion = semiAnnualRegion;
+        this.editedSemiAnnualConfig = semiAnnualConfig;
     }
 
     public void saveSemiAnnualRegion(){
-        if (validateSemiAnnualRegion(this.editedSemiAnnualRegion)){
-            this.cache.semiAnnualRegionDao.update(this.editedSemiAnnualRegion);
-            this.cache.clientHistoryDao.moveHistoryToSemiAnnualByRegionId(this.editedSemiAnnualRegion.getSemiAnnualId(), this.editedSemiAnnualRegion.getRegionId());
-            this.cache.setSemiAnnualRegions(null);
+        if (validateSemiAnnualRegion(this.editedSemiAnnualConfig)){
+            if (this.cache.clientHistoryDao.moveHistoryToSemiAnnualForAllRegions(this.editedSemiAnnualConfig.getSemiAnnualId())){
+                this.cache.setSemiAnnualConfig(null);
+                saveCurrentSemiAnnual(this.editedSemiAnnualConfig.getSemiAnnualId());
+            }
+
         }
 
     }
 
-    private boolean validateSemiAnnualRegion(SemiAnnualRegion semiAnnualRegion) {
+    private void saveCurrentSemiAnnual(Integer semiAnnualId) {
+        this.cache.semiAnnualConfigDao.update(semiAnnualId);
+    }
+
+    private boolean validateSemiAnnualRegion(SemiAnnualConfig semiAnnualConfig) {
         boolean isValid = true;
-        if(semiAnnualRegion.getRegionId() == null ){
+        if(semiAnnualConfig.getSemiAnnualId() == null ){
             FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Շրջանը պարտադիր դաշտ է");
             FacesContext.getCurrentInstance().addMessage("semiAnnualRegionIdForm:sregionId", facesMessage);
             isValid = false;
         }
-        if(semiAnnualRegion.getSemiAnnualId() == null){
+        if(semiAnnualConfig.getSemiAnnualId() == null){
             FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Կիսամյակը պարտադիր դաշտ է");
             FacesContext.getCurrentInstance().addMessage("semiAnnualRegionIdForm:semiAnnualId", facesMessage);
             isValid = false;

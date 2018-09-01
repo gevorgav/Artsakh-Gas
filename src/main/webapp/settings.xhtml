@@ -41,15 +41,6 @@
 
 </h:head>
 <h:body>
-    <div class="" id="login-page">
-        <div class="container">
-            <div class="center-align">
-                <f:metadata>
-                    <f:event type="preRenderView" listener="#{authorisationUtil.onLoad}"/>
-                </f:metadata>
-            </div>
-        </div>
-    </div>
 
 <div class="app" id="app">
 
@@ -487,13 +478,12 @@
                                                             </p:commandLink>
                                                         </c:forEach>
                                                     </c:if>
-                                                    <!--SemiAnnualRegion-->
+                                                    <!--SemiAnnualConfig-->
                                                     <c:if test="#{settingsForm.categoryTypeId eq 14}">
-                                                        <c:forEach var="semiAnnualRegion" items="#{settingsForm.cache.semiAnnualRegions}">
-                                                            <p:commandLink actionListener="#{settingsForm.editSemiAnnualRegion(semiAnnualRegion)}" immediate="true" update=":editFormId">
+                                                        <c:forEach var="semiAnnualConfig" items="#{settingsForm.cache.semiAnnualConfigs}">
+                                                            <p:commandLink actionListener="#{settingsForm.editSemiAnnualRegion(semiAnnualConfig)}" immediate="true" update=":editFormId">
                                                                 <div class="list-body list-group-item">
-                                                                    <h:outputText value="#{semiAnnualRegion.region}"/>
-                                                                    <h:outputText style="float: right" value="#{semiAnnualRegion.semiAnnual}"/>
+                                                                    <h:outputText value="#{semiAnnualConfig.semiAnnual}"/>
                                                                 </div>
                                                             </p:commandLink>
                                                         </c:forEach>
@@ -563,18 +553,18 @@
                                         <h:panelGroup layout="block" class="padding" id="editFormId"
                                                       style="max-width: 800px; margin: 0 auto;">
 
-                                            <!--SemiAnnualRegion-->
+                                            <!--SemiAnnualConfig-->
                                             <h:form rendered="#{settingsForm.categoryTypeId eq 14}" id="semiAnnualRegionIdForm">
                                                 <h:panelGroup layout="block">
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4" style="text-align: center">
-                                                            <h:outputText  value="#{settingsForm.editedSemiAnnualRegion.region}"/>
+                                                            <h:outputText  value="Ընտրել հաջորդ կիսամյակը"/>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-sm-4 col-md-4">
                                                             <p:outputLabel  for="semiAnnualId" value="Կիսամյակ" styleClass="required"/>
-                                                            <p:selectOneMenu id="semiAnnualId" value="#{settingsForm.editedSemiAnnualRegion.semiAnnualId}" styleClass="form-control input-c"
+                                                            <p:selectOneMenu id="semiAnnualId" value="#{settingsForm.editedSemiAnnualConfig.semiAnnualId}" styleClass="form-control input-c"
                                                                              requiredMessage="Կիսամյակը պարտադիր դաշտ է">
                                                                 <f:selectItem id="semiAnnualSelectOneId" itemLabel="Ընտրիր մեկը"/>
                                                                 <f:selectItems id="semiAnnualsId"

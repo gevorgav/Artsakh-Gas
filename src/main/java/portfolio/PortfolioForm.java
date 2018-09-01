@@ -8,14 +8,12 @@ import Models.*;
 import dao.*;
 import login.LoginForm;
 import login.User;
-import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.hssf.util.HSSFRegionUtil;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.*;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -1271,19 +1269,10 @@ public class PortfolioForm {
     }
 
   /* -------------- Visit Plan Form End ----------*/
-    private Integer semiAnnualIdForExport;
-
-    public Integer getSemiAnnualIdForExport() {
-        return semiAnnualIdForExport;
-    }
-
-    public void setSemiAnnualIdForExport(Integer semiAnnualIdForExport) {
-        this.semiAnnualIdForExport = semiAnnualIdForExport;
-    }
 
     public StreamedContent getExportSql() {
         insertDataBase();
-        Util.exportDataBase(paymentDao.paymentsForExportBySemiAnnual(semiAnnualIdForExport));
+        Util.exportDataBase(paymentDao.paymentsForExportBySemiAnnual(cache.getSemiAnnualConfig().getSemiAnnualId()));
         try {
             exportSql = new DefaultStreamedContent(new FileInputStream("f://payment.sql"),"","downloaded_payment.sql");
         } catch (FileNotFoundException e) {
