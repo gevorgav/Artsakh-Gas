@@ -102,7 +102,7 @@ public class Util {
         Writer writer = null;
         StringBuilder stringBuilder = new StringBuilder();
         for (Payment payment : payments) {
-            stringBuilder.append("INSERT INTO payment (clientId, clientHistoryTmpId, fullName, regionId, city, street, home, pay, debt, semiAnnualId)" +
+            stringBuilder.append("INSERT INTO payment (clientId, clientHistoryTmpId, fullName, regionId, city, street, home, pay, debt, semiAnnualId, updatedDate)" +
                     " VALUES (");
             stringBuilder.append("'"+ payment.getClientId() +"',");
             stringBuilder.append("'"+ payment.getClientHistoryTmpId()  +"',");
@@ -113,7 +113,8 @@ public class Util {
             stringBuilder.append("'"+ payment.getHome() +"',");
             stringBuilder.append(payment.getPay()+ ",");
             stringBuilder.append(payment.getDebt()+",");
-            stringBuilder.append(payment.getSemiAnnualId());
+            stringBuilder.append(payment.getSemiAnnualId()+",");
+            stringBuilder.append(payment.getUpdatedDate());
             stringBuilder.append(");\n");
         }
         try {

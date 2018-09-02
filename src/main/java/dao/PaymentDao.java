@@ -5,6 +5,8 @@ import dao.mapper.PaymentMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -47,15 +49,26 @@ public class PaymentDao extends Dao<Payment> {
     public boolean insert(Payment payment) {
 
         Objects.requireNonNull(payment);
-        String sql = "INSERT INTO payment(clientId, clientHistoryTmpId, fullName, regionId, city, street, home, pay, debt, semiAnnualId) " +
-                "VALUES (:clientId, :clientHistoryTmpId, :fullName, :regionId, :city, :street, :home, :pay, :debt, :semiAnnualId)";
+        String sql = "INSERT INTO payment(clientId, clientHistoryTmpId, fullName, regionId, city, street, home, pay, debt, semiAnnualId, updatedDate, userId, bankId) " +
+                "VALUES (:clientId, :clientHistoryTmpId, :fullName, :regionId, :city, :street, :home, :pay, :debt, :semiAnnualId, :updatedDate, :userId, :bankId)";
         SqlParameterSource fileParameters = new BeanPropertySqlParameterSource(payment);
         return namedJdbc.update(sql, fileParameters) == 1;
     }
 
-    public boolean insertByLine(String payment) {
+    public Integer insertByLine(String payment) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        Integer result = namedJdbc.update(payment, null, keyHolder);
+        return keyHolder.getKey().intValue();
+    }
+
+    public boolean uptadeBankId(Integer paymentId ,Integer bankId){
         Map namedParameters = new HashMap();
-        return namedJdbc.update(payment,namedParameters) == 1;
+        namedParameters.put("id" , paymentId);
+        namedParameters.put("bankId", bankId);
+        String sql = "UPDATE payment SET bankId = :bankId  WHERE id = :id";
+
+        int updateCount = namedJdbc.update(sql, namedParameters);
+        return updateCount == 1;
     }
 
     @Override

@@ -306,7 +306,13 @@
                                                             <p:fileDownload value="#{portfolioForm.exportSql}"/>
                                                         </p:commandButton>
                                                     </div>
-
+                                                    <div class="col-xl-3 col-sm-3 col-md-3">
+                                                        <p:commandButton value="Կատարել մուծում"
+                                                                         update="visitPlanSearchFormId"
+                                                                         style="width: 100%"
+                                                                         actionListener="#{portfolioForm.pay}">
+                                                        </p:commandButton>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -388,8 +394,22 @@
                     </div>
                 </div>
             </h:form>
-            <div class="col-xl-3 col-sm-3 col-md-3">
-                <h:form enctype="multipart/form-data">
+            <h:form enctype="multipart/form-data">
+                <div class="col-xl-2 col-sm-2 col-md-2">
+                    <p:selectOneMenu id="bankId"
+                                     value="#{portfolioForm.bankId}"
+                                     styleClass="form-control input-c"
+                                     requiredMessage="Պարտադիր դաշտ է">
+                        <f:ajax event="change" render=":clientHistoryForm"/>
+                        <f:selectItems id="banksId"
+                                       itemLabel="#{bank.name}"
+                                       itemValue="#{bank.id}"
+                                       value="#{portfolioForm.cache.banks}"
+                                       var="bank"/>
+                    </p:selectOneMenu>
+                </div>
+                <div class="col-xl-3 col-sm-3 col-md-3">
+
                     <p:fileUpload value="#{portfolioForm.fileUpload}"
                                   allowTypes="/(\.|\/)(sql)$/"
                                   mode="simple" skinSimple="true" label="Ընտրել ֆայլը"
@@ -397,12 +417,14 @@
                     <p:commandButton value="Վերբեռնել" update="@form"
                                      process="@form" ajax="false"
                                      actionListener="#{portfolioForm.importPayment}"/>
-                </h:form>
-            </div>
+
+                </div>
+            </h:form>
             <ui:include src="dialogs/clientHistoryEdit.xhtml" />
             <ui:include src="dialogs/clientEdit.xhtml" />
             <ui:include src="dialogs/visitPlanDialog.xhtml" />
             <ui:include src="dialogs/visitGrafic.xhtml" />
+            <ui:include src="dialogs/pay.xhtml" />
 
         </div>
         <!-- ############ PAGE END-->

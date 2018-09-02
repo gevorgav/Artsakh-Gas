@@ -1,5 +1,6 @@
 package Models;
 
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -18,6 +19,9 @@ public class Payment {
     private Double debt;
     private Double balance;
     private Double pay;
+    private Date updatedDate;
+    private Integer bankId;
+    private Integer userId;
 
     public Payment() {
     }
@@ -47,6 +51,23 @@ public class Payment {
         this.semiAnnualId = semiAnnualId;
         this.debt = debt;
         this.pay = pay;
+    }
+
+    public Payment(Integer id, String clientId, Integer clientHistoryTmpId, String fullName, Integer regionId, String city, String street, String home, Integer semiAnnualId, Double debt, Double pay, Date updatedDate, Integer bankId, Integer userId) {
+        this.id = id;
+        this.clientId = clientId;
+        this.clientHistoryTmpId = clientHistoryTmpId;
+        this.fullName = fullName;
+        this.regionId = regionId;
+        this.city = city;
+        this.street = street;
+        this.home = home;
+        this.semiAnnualId = semiAnnualId;
+        this.debt = debt;
+        this.pay = pay;
+        this.updatedDate = updatedDate;
+        this.bankId = bankId;
+        this.userId = userId;
     }
 
     public Integer getId() {
@@ -143,6 +164,30 @@ public class Payment {
 
     public void setPay(Double pay) {
         this.pay = pay;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
+    public Integer getBankId() {
+        return bankId;
+    }
+
+    public void setBankId(Integer bankId) {
+        this.bankId = bankId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     @Override

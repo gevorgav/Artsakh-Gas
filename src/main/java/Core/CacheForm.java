@@ -68,6 +68,9 @@ public class CacheForm {
     @Autowired
     public VisitPlanDao visitPlanDao;
 
+    @Autowired
+    public BankDao bankDao;
+
     private List<City> cities;
     private List<Region> regions;
     private List<Street> streets;
@@ -87,6 +90,7 @@ public class CacheForm {
     private List<Locksmith> locksmiths;
     private SemiAnnualConfig semiAnnualConfig;
     private List<Month> months;
+    private List<Bank> banks;
     private Map<Integer, List<VisitPlan>> visitPlans = new HashMap<>();
 
     public List<VisitType> getVisitTypes() {
@@ -100,6 +104,17 @@ public class CacheForm {
         }
 
         return visitTypes;
+    }
+
+    public List<Bank> getBanks() {
+        if(this.banks == null){
+            this.banks = bankDao.loadAll();
+        }
+        return banks;
+    }
+
+    public void setBanks(List<Bank> banks) {
+        this.banks = banks;
     }
 
     public List<SemiAnnual> getSemiAnnuals() {

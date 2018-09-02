@@ -1,0 +1,86 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog dynamic="true" header="Մուծման" widgetVar="pay" modal="true" position="top"
+              maximizable="true"
+              height="550" width="80%" closable="true" resizable="false" onShow="showDialog()" onHide="hideDialog()">
+        <p:ajax event="close" listener="#{portfolioForm.cancelPayDialog}" resetValues="true"/>
+        <h:form id="searchFormIdPay" onsubmit="return false;">
+            <div class="row-body">
+                <div class="form-group row">
+                    <div class="col-sm-4 col-md-4">
+                        <p:inputText id="id" maxlength="6"
+                                     value="#{portfolioForm.paymentClientId}" placeholder="Բաժանորդի համար">
+                        </p:inputText>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <p:selectOneMenu id="regionIdPay" value="#{portfolioForm.paymentRegionId}"
+                                         styleClass="form-control input-c" disabled="#{!loginForm.user.isAdmin()}">
+                            <f:selectItem id="regionSelectOneIdPay" itemLabel="Ընտրիր Շրջանը"/>
+                            <f:selectItems id="regionsIdPay"
+                                           itemLabel="#{region.name}"
+                                           itemValue="#{region.id}"
+                                           value="#{portfolioForm.cache.regions}" var="region"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <h:commandLink styleClass="btn btn-fw success"> Գտնել
+                            <f:ajax listener="#{portfolioForm.searchPayment}" event="click"
+                                    execute="@form" render=":payForm"/>
+                        </h:commandLink>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+        <div class="clear"></div>
+        <h:panelGroup layout="block" class="padding" style="max-width: 80%; margin: 0 auto;">
+            <h:form id="payForm">
+                <c:if test="#{not empty portfolioForm.payment}">
+                    <div class="row">
+                        <div class="col-sm-4 col-md-4">
+                            <p:outputLabel for="deptId" value="Պարտք:" class="form-control-label"/>
+                            <p:outputLabel id="deptId" value="#{portfolioForm.payment.debt}"
+                                           class="form-control input-c"/>
+                        </div>
+                        <div class="col-sm-4 col-md-4">
+                            <p:outputLabel for="payId" value="Մուծել:" class="form-control-label"/>
+                            <p:inputNumber id="payId" value="#{portfolioForm.toPay}" symbol=" Դրամ"
+                                           symbolPosition="s"
+                                           decimalSeparator="," thousandSeparator="." class="form-control input-c">
+                                <p:ajax update="payId"/>
+                            </p:inputNumber>
+                        </div>
+                    </div>
+
+                </c:if>
+                <c:if test="#{not empty portfolioForm.paymentRegionId and not empty portfolioForm.paymentClientId and empty portfolioForm.payment}">
+                    <div class="row">
+                        <div class="col-sm-4 col-md-4">
+                            <p:outputLabel for="noDeptId" value="Պարտք:" class="form-control-label"/>
+                            <p:outputLabel id="noDeptId" value="0.0 Դրամ" class="form-control input-c"/>
+                        </div>
+                    </div>
+                </c:if>
+
+
+                <div class="modal-footer">
+                    <h:commandLink value="Չեղարկել" styleClass="btn btn-default" data-dismiss="modal">
+                        <f:ajax listener="#{portfolioForm.cancelPayDialog}" event="click"
+                                execute="@form"/>
+                    </h:commandLink>
+                    <c:if test="#{not empty portfolioForm.payment}">
+                        <h:commandLink value="Պահպանել" styleClass="btn btn-primary">
+                            <f:ajax listener="#{portfolioForm.savePayment}" event="click"
+                                    execute="@form"/>
+                        </h:commandLink>
+                    </c:if>
+                </div>
+            </h:form>
+        </h:panelGroup>
+
+
+    </p:dialog>
+</ui:composition>

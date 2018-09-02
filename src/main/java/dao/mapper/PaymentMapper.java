@@ -24,6 +24,9 @@ public class PaymentMapper implements RowMapper<Payment> {
         payment.setDebt(resultSet.getDouble("debt"));
         payment.setPay(resultSet.getDouble("pay"));
         payment.setBalance(resultSet.getDouble("balance"));
+        payment.setBankId(resultSet.getInt("bankId"));
+        payment.setUpdatedDate(resultSet.getDate("updatedDate"));
+        payment.setUserId(resultSet.getInt("userId"));
         return payment;
     }
 }

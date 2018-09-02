@@ -628,6 +628,16 @@ public class PortfolioForm {
         saveViolationCodes(historyId);
     }
 
+    private Integer bankId;
+
+    public Integer getBankId() {
+        return bankId;
+    }
+
+    public void setBankId(Integer bankId) {
+        this.bankId = bankId;
+    }
+
     public void importPayment(){
         if(this.fileUpload != null) {
             String sd;
@@ -636,7 +646,8 @@ public class PortfolioForm {
                 BufferedReader in = new BufferedReader(new InputStreamReader(fileUpload.getInputstream(),  "UTF-8"));
                 while( (sd = in.readLine()) != null) {
                     String line = new String(sd.getBytes(),"UTF-8");
-                    paymentDao.insertByLine(line);
+                    Integer id = paymentDao.insertByLine(line);
+                    paymentDao.uptadeBankId(id, bankId);
                 }
 
                 this.fileUpload  = null;
@@ -1268,7 +1279,91 @@ public class PortfolioForm {
         return null;
     }
 
-  /* -------------- Visit Plan Form End ----------*/
+    /* --------------------  Pay dialog ----------------------*/
+
+    private Payment payment;
+
+    private Integer paymentRegionId;
+
+    private String paymentClientId;
+
+    private Double toPay;
+
+    public Double getToPay() {
+        return toPay;
+    }
+
+    public void setToPay(Double toPay) {
+        this.toPay = toPay;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
+    public Integer getPaymentRegionId() {
+        return paymentRegionId;
+    }
+
+    public void setPaymentRegionId(Integer paymentRegionId) {
+        this.paymentRegionId = paymentRegionId;
+    }
+
+    public String getPaymentClientId() {
+        return paymentClientId;
+    }
+
+    public void setPaymentClientId(String paymentClientId) {
+        this.paymentClientId = paymentClientId;
+    }
+
+    public void searchPayment(){
+        if (!Objects.isNull(paymentClientId) && !Objects.isNull(paymentRegionId)) {
+            payment = paymentDao.loadLastPayment(paymentClientId, paymentRegionId, cache.getSemiAnnualConfig().getSemiAnnualId());
+        } else {
+            clientHistory = null;
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            FacesMessage facesMessage = new FacesMessage("Incorrect clientID.");
+            facesContext.addMessage(null, facesMessage);
+        }
+
+    }
+
+    public void savePayment(){
+        payment.setUserId(getLoginForm().getUser().getId());
+        payment.setDebt(payment.getDebt() - toPay);
+        payment.setPay(toPay);
+        payment.setSemiAnnualId(cache.getSemiAnnualConfig().getSemiAnnualId());
+        payment.setUpdatedDate(new Date());
+        paymentDao.insert(payment);
+        cancelPayDialog();
+    }
+
+    public void pay(){
+        openPayDialog();
+    }
+
+    public void openPayDialog(){
+        RequestContext.getCurrentInstance().execute("PF('pay').show()");
+    }
+
+    public void cancelPayDialog() {
+        RequestContext.getCurrentInstance().execute("PF('pay').hide()");
+        resetPayment();
+    }
+
+    private void resetPayment() {
+        payment = null;
+        paymentClientId = null;
+        paymentRegionId = null;
+        toPay = null;
+    }
+
+    /* -------------- Visit Plan Form End ----------*/
 
     public StreamedContent getExportSql() {
         insertDataBase();
