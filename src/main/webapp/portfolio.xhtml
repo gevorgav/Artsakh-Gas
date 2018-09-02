@@ -306,17 +306,7 @@
                                                             <p:fileDownload value="#{portfolioForm.exportSql}"/>
                                                         </p:commandButton>
                                                     </div>
-                                                    <div class="col-xl-3 col-sm-3 col-md-3">
-                                                        <h:form enctype="multipart/form-data">
-                                                            <p:fileUpload value="#{portfolioForm.fileUpload}"
-                                                                          allowTypes="/(\.|\/)(sql)$/"
-                                                                          mode="simple" skinSimple="true" label="Ընտրել ֆայլը"
-                                                            />
-                                                            <p:commandButton value="Վերբեռնել" update="@form"
-                                                                             process="@form" ajax="false"
-                                                                             actionListener="#{portfolioForm.importPayment}"/>
-                                                        </h:form>
-                                                    </div>
+
                                                 </div>
                                             </div>
 
@@ -398,7 +388,17 @@
                     </div>
                 </div>
             </h:form>
-
+            <div class="col-xl-3 col-sm-3 col-md-3">
+                <h:form enctype="multipart/form-data">
+                    <p:fileUpload value="#{portfolioForm.fileUpload}"
+                                  allowTypes="/(\.|\/)(sql)$/"
+                                  mode="simple" skinSimple="true" label="Ընտրել ֆայլը"
+                    />
+                    <p:commandButton value="Վերբեռնել" update="@form"
+                                     process="@form" ajax="false"
+                                     actionListener="#{portfolioForm.importPayment}"/>
+                </h:form>
+            </div>
             <ui:include src="dialogs/clientHistoryEdit.xhtml" />
             <ui:include src="dialogs/clientEdit.xhtml" />
             <ui:include src="dialogs/visitPlanDialog.xhtml" />
