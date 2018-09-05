@@ -79,6 +79,13 @@ public class PortfolioForm {
 
     }
 
+    public void initPayDialog() {
+        if (!getLoginForm().getUser().getRole().equals(User.Role.ADMIN)) {
+            this.paymentRegionId = getLoginForm().getUser().getRegionId();
+        }
+
+    }
+
     @Autowired
     public ClientDao clientDao;
 
@@ -1352,6 +1359,7 @@ public class PortfolioForm {
     }
 
     public void pay(){
+        initPayDialog();
         openPayDialog();
     }
 

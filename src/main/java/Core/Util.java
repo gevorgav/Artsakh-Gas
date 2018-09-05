@@ -114,7 +114,7 @@ public class Util {
             stringBuilder.append(payment.getPay()+ ",");
             stringBuilder.append(payment.getDebt()+",");
             stringBuilder.append(payment.getSemiAnnualId()+",");
-            stringBuilder.append(payment.getUpdatedDate());
+            stringBuilder.append("'"+ payment.getUpdatedDate()+"'");
             stringBuilder.append(");\n");
         }
         try {

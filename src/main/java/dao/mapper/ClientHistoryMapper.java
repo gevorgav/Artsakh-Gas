@@ -56,7 +56,9 @@ public class ClientHistoryMapper  implements RowMapper<ClientHistory> {
         clientHistory.setMasterId(rs.getObject("masterId") != null ? rs.getInt("masterId") : null);
         clientHistory.setRegionId(rs.getObject("regionId") != null ? rs.getInt("regionId") : null);
         clientHistory.setUserId(rs.getObject("userId") != null ? rs.getInt("userId") : null);
-        clientHistory.setPaid(rs.getBoolean("isPaid"));
+        if(rs.getMetaData().getColumnCount() > 40){ //TODO
+            clientHistory.setPaid(rs.getObject("debt") != null ? rs.getDouble("debt") <= 0.0 : false);
+        }
         return clientHistory;
     }
 
