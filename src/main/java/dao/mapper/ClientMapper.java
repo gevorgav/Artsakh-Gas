@@ -41,6 +41,7 @@ public class ClientMapper  implements RowMapper<Client> {
         client.setSubSectionId(resultSet.getObject("subSectionId") != null ? resultSet.getInt("subSectionId") : null);
         client.setTypeNumber(resultSet.getObject("typeNumber") != null ? resultSet.getString("typeNumber") : null);
         client.setCompany(resultSet.getBoolean("isCompany"));
+        client.setDeleted(resultSet.getBoolean("isDeleted"));
         client.setLicense(resultSet.getObject("license") != null ? resultSet.getString("license") : null);
         client.setDebt(resultSet.getObject("debt") != null ? resultSet.getDouble("payment.debt") : null);
         client.setPay(resultSet.getObject("pay") != null ? resultSet.getDouble("payment.pay") : null);

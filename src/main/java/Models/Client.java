@@ -51,6 +51,8 @@ public class  Client {
 
     private boolean isCompany;
 
+    private boolean isDeleted;
+
     private String license;
 
     private Double debt;
@@ -261,6 +263,14 @@ public class  Client {
         this.pay = pay;
     }
 
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -270,6 +280,7 @@ public class  Client {
 
         if (isNew != client.isNew) return false;
         if (isCompany != client.isCompany) return false;
+        if (isDeleted != client.isDeleted) return false;
         if (id != null ? !id.equals(client.id) : client.id != null) return false;
         if (firstName != null ? !firstName.equals(client.firstName) : client.firstName != null) return false;
         if (lastName != null ? !lastName.equals(client.lastName) : client.lastName != null) return false;
@@ -321,6 +332,7 @@ public class  Client {
         result = 31 * result + (region != null ? region.hashCode() : 0);
         result = 31 * result + (isNew ? 1 : 0);
         result = 31 * result + (isCompany ? 1 : 0);
+        result = 31 * result + (isDeleted ? 1 : 0);
         result = 31 * result + (license != null ? license.hashCode() : 0);
         result = 31 * result + (debt != null ? debt.hashCode() : 0);
         result = 31 * result + (pay != null ? pay.hashCode() : 0);
@@ -353,6 +365,7 @@ public class  Client {
         client.setLicense(this.license);
         client.setDebt(this.debt);
         client.setPay(this.pay);
+        client.setDeleted(this.isDeleted);
         return client;
     }
 }

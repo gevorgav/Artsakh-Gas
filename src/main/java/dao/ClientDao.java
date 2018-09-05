@@ -41,7 +41,7 @@ public class ClientDao extends Dao<Client>{
                         "WHERE  clientsHistory.id IN (SELECT MAX(clientsHistory.id)\n" +
                         "                                                      FROM clientsHistory\n" +
                         "                                                      GROUP BY clientsHistory.id, clientsHistory.clientId,\n" +
-                        "                                                        clientsHistory.regionId)\n" +
+                        "                                                        clientsHistory.regionId) AND isDeleted = 0\n" +
                         "GROUP BY clients.id, clients.regionId, payment.semiAnnualId";
             }else {
                 sql = "SELECT *\n" +
@@ -58,7 +58,7 @@ public class ClientDao extends Dao<Client>{
                         "WHERE  clients.regionId = " + regionId +" AND clientsHistory.id IN (SELECT MAX(clientsHistory.id)\n" +
                         "                                                      FROM clientsHistory\n" +
                         "                                                      GROUP BY clientsHistory.id, clientsHistory.clientId,\n" +
-                        "                                                        clientsHistory.regionId)\n" +
+                        "                                                        clientsHistory.regionId)  AND isDeleted = 0\n" +
                         "GROUP BY clients.id, clients.regionId, payment.semiAnnualId";
             }
 
@@ -97,11 +97,11 @@ public class ClientDao extends Dao<Client>{
      */
     public boolean insert(Client client) {
         Objects.requireNonNull(client);
-        String sql = "INSERT INTO clients(id, firstName, lastName, middleName, phoneNumber, counterNumber, regionId, cityId, streetId, homeNumber, apartmentNumber, ashtId, grpId, typeId, typeNumber, sectionId, subSectionId, grsId, isCompany, license)\n" +
+        String sql = "INSERT INTO clients(id, firstName, lastName, middleName, phoneNumber, counterNumber, regionId, cityId, streetId, homeNumber, apartmentNumber, ashtId, grpId, typeId, typeNumber, sectionId, subSectionId, grsId, isCompany, license, isDeleted)\n" +
                 "    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         int result = jdbcTemplate.update(sql, client.getId(), client.getFirstName(), client.getLastName(), client.getMiddleName(),
                 client.getPhoneNumber(), client.getCounterNumber(), client.getCityId(), client.getCityId(), client.getStreetId(), client.getHomeNumber(),
-                client.getApartmentNumber(), client.getAshtId(), client.getGrpId(), client.getTypeId(), client.getTypeNumber(), client.getSectionId(), client.getSubSectionId(), client.getGrsId(), client.isCompany(), client.getLicense());
+                client.getApartmentNumber(), client.getAshtId(), client.getGrpId(), client.getTypeId(), client.getTypeNumber(), client.getSectionId(), client.getSubSectionId(), client.getGrsId(), client.isCompany(), client.getLicense(), client.isDeleted());
         return result == 1;
     }
 
@@ -114,12 +114,12 @@ public class ClientDao extends Dao<Client>{
         Objects.requireNonNull(client);
         String sql = "UPDATE clients\n" +
             "SET firstName = ?, lastName = ?, middleName = ?, phoneNumber = ?, counterNumber = ?, regionId = ?, cityId = ?, streetId = ?, homeNumber = ?, apartmentNumber = ?, ashtId = ?, grpId = ?,\n" +
-            "typeId = ?, sectionId = ?, subSectionId = ?, typeNumber = ?, grsId = ?, isCompany = ?, license = ? " +
+            "typeId = ?, sectionId = ?, subSectionId = ?, typeNumber = ?, grsId = ?, isCompany = ?, license = ?, isDeleted = ? " +
             "WHERE id = ? AND regionId = ?";
         int result = jdbcTemplate.update(sql,client.getFirstName(), client.getLastName(), client.getMiddleName(),
             client.getPhoneNumber(), client.getCounterNumber(), client.getCityId(), client.getCityId(), client.getStreetId(), client.getHomeNumber(),
             client.getApartmentNumber(), client.getAshtId(), client.getGrpId(), client.getTypeId(), client.getSectionId(), client.getSubSectionId(),
-            client.getTypeNumber(), client.getGrsId(), client.isCompany(), client.getLicense(), client.getId(), client.getRegionId());
+            client.getTypeNumber(), client.getGrsId(), client.isCompany(), client.getLicense(), client.isDeleted(), client.getId(), client.getRegionId());
         return result == 1;
     }
 
@@ -131,8 +131,10 @@ public class ClientDao extends Dao<Client>{
     public boolean delete(String clientId, Integer regionId){
         Objects.requireNonNull(clientId);
         Objects.requireNonNull(regionId);
-        String sql = "DELETE FROM clients WHERE id = ? AND regionId = ?";
-        int result = jdbcTemplate.update(sql, clientId, regionId);
+        String sql = "UPDATE clients\n" +
+            "SET isDeleted = ? " +
+            "WHERE id = ? AND regionId = ?";
+        int result = jdbcTemplate.update(sql,true, clientId, regionId);
         return result == 1;
     }
 

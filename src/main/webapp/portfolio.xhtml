@@ -375,6 +375,11 @@
                                                                    update="clientDialogId table2" icon=""
                                                                    title="Խմբագրել"/>
                                                 </p:column>
+                                                <p:column>
+                                                    <h:commandLink styleClass="glyphicon glyphicon-trash" immediate="true" onclick="return confirm('Ջնջել');">
+                                                        <f:ajax listener="#{portfolioForm.deleteClient(client)}" event="click" render="table2"/>
+                                                    </h:commandLink>
+                                                </p:column>
 
                                             </p:dataTable>
                                             <div class="col s5 input-field">

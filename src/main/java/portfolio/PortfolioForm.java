@@ -345,6 +345,11 @@ public class PortfolioForm {
         }
     }
 
+    public void deleteClient(Client client) {
+        clientDao.delete(client.getId(), client.getRegionId());
+        this.clients.remove(client);
+    }
+
     public void cancelClientDialog() {
 //        resetClientEditForm();
         closeClientDialog();
@@ -415,6 +420,9 @@ public class PortfolioForm {
 
     public void addNewClient() {
         this.client = new Client();
+        if (!getLoginForm().getUser().getRole().equals(User.Role.ADMIN)) {
+            this.client.setRegionId(getLoginForm().getUser().getRegionId());
+        }
         client.setNew(true);
         showClientEditDialog();
     }
