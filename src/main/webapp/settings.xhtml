@@ -480,13 +480,6 @@
                                                     </c:if>
                                                     <!--SemiAnnualConfig-->
                                                     <c:if test="#{settingsForm.categoryTypeId eq 14}">
-                                                        <c:forEach var="semiAnnualConfig" items="#{settingsForm.cache.semiAnnualConfigs}">
-                                                            <p:commandLink actionListener="#{settingsForm.editSemiAnnualRegion(semiAnnualConfig)}" immediate="true" update=":editFormId">
-                                                                <div class="list-body list-group-item">
-                                                                    <h:outputText value="#{semiAnnualConfig.semiAnnual}"/>
-                                                                </div>
-                                                            </p:commandLink>
-                                                        </c:forEach>
                                                     </c:if>
                                                 </div>
                                             </h:form>
