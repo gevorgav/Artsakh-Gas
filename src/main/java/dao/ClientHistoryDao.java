@@ -65,7 +65,7 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
     /**
      * Method to load client's last clientHistory
      */
-    public ClientHistory loadLastClientHistory(Integer clientId, Integer regionId) {
+    public ClientHistory loadLastClientHistory(String clientId, Integer regionId) {
         Objects.requireNonNull(clientId);
         String sql = "SELECT * FROM clientsHistory WHERE clientId = ? AND regionId = ? ORDER BY id DESC LIMIT 1";
         List<ClientHistory> clientHistoryList = jdbcTemplate.query(sql, new ClientHistoryMapper(), clientId ,regionId);

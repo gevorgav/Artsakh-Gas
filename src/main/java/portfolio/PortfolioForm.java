@@ -38,7 +38,7 @@ public class PortfolioForm {
     private List<Client> filteredClients;
     private Date date9;
     private ClientHistory clientHistory;
-    private Integer clientId;
+    private String clientId;
     private List<String> stamps;
     private List<String> violationActNumber;
     private String[] violationCodes;
@@ -151,11 +151,11 @@ public class PortfolioForm {
         this.clientHistory = clientHistory;
     }
 
-    public Integer getClientId() {
+    public String getClientId() {
         return clientId;
     }
 
-    public void setClientId(Integer clientId) {
+    public void setClientId(String clientId) {
         this.clientId = clientId;
     }
 
@@ -247,13 +247,11 @@ public class PortfolioForm {
     }
 
     public List<Asht> ashtsByRegionId(Integer regionId) {
-        if (ashts == null) {
-            ashts = new ArrayList<>();
-            if (regionId != null) {
-                for (Asht asht : cache.getAshts()) {
-                    if (asht.getRegionId().equals(regionId)) {
-                        ashts.add(asht);
-                    }
+        ashts = new ArrayList<>();
+        if (regionId != null) {
+            for (Asht asht : cache.getAshts()) {
+                if (asht.getRegionId().equals(regionId)) {
+                    ashts.add(asht);
                 }
             }
         }
@@ -479,6 +477,7 @@ public class PortfolioForm {
     public void searchClientHistory() {
         if (!Objects.isNull(clientId) && !Objects.isNull(historyRegionId) && !Objects.isNull(clientHistoryDao.loadLastClientHistory(clientId, historyRegionId))) {
             clientHistory = clientHistoryDao.loadLastClientHistory(clientId, historyRegionId);
+            client = getClients().stream().filter(client1 -> client1.getId().equals(clientId) && client1.getRegionId().equals(historyRegionId)).findFirst().get();
             loadClientViolationCode(clientHistory.getId());
             clientHistory.setRegionId(historyRegionId);
         } else {
@@ -1344,6 +1343,7 @@ public class PortfolioForm {
     public void searchPayment(){
         if (!Objects.isNull(paymentClientId) && !Objects.isNull(paymentRegionId)) {
             payment = paymentDao.loadLastPayment(paymentClientId, paymentRegionId, cache.getSemiAnnualConfig().getSemiAnnualId());
+            client = getClients().stream().filter(client1 -> client1.getId().equals(paymentClientId) && client1.getRegionId().equals(paymentRegionId)).findFirst().get();
         } else {
             clientHistory = null;
             FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -1382,6 +1382,7 @@ public class PortfolioForm {
         paymentClientId = null;
         paymentRegionId = null;
         toPay = null;
+        client = null;
     }
 
     /* -------------- Visit Plan Form End ----------*/

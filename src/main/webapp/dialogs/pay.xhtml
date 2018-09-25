@@ -41,6 +41,14 @@
                 <c:if test="#{not empty portfolioForm.payment}">
                     <div class="row">
                         <div class="col-sm-4 col-md-4">
+                            <p:outputLabel value="Անուն։ ${portfolioForm.client.firstName}"></p:outputLabel>
+                        </div>
+                        <div class="col-sm-4 col-md-4">
+                            <p:outputLabel value="Ազգանուն: ${portfolioForm.client.lastName}"></p:outputLabel>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4 col-md-4">
                             <p:outputLabel for="deptId" value="Պարտք:" class="form-control-label"/>
                             <p:outputLabel id="deptId" value="#{portfolioForm.payment.debt}"
                                            class="form-control input-c"/>
@@ -57,6 +65,14 @@
 
                 </c:if>
                 <c:if test="#{not empty portfolioForm.paymentRegionId and not empty portfolioForm.paymentClientId and empty portfolioForm.payment}">
+                    <div class="row">
+                        <div class="col-sm-4 col-md-4">
+                            <p:outputLabel value="Անուն։ ${portfolioForm.client.firstName}"></p:outputLabel>
+                        </div>
+                        <div class="col-sm-4 col-md-4">
+                            <p:outputLabel value="Ազգանուն: ${portfolioForm.client.lastName}"></p:outputLabel>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-sm-4 col-md-4">
                             <p:outputLabel for="noDeptId" value="Պարտք:" class="form-control-label"/>

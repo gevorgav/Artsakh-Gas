@@ -35,10 +35,17 @@
             </div>
         </h:form>
         <div class="clear"></div>
-
         <h:panelGroup layout="block" class="padding" style="max-width: 80%; margin: 0 auto;">
             <h:form id="clientHistoryForm">
                 <c:if test="#{not empty portfolioForm.clientHistory}">
+                    <div class="row">
+                        <div class="col-sm-4 col-md-4">
+                            <p:outputLabel value="Անուն։ ${portfolioForm.client.firstName}"></p:outputLabel>
+                        </div>
+                        <div class="col-sm-4 col-md-4">
+                            <p:outputLabel value="Ազգանուն: ${portfolioForm.client.lastName}"></p:outputLabel>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-sm-4 col-md-4">
                             <p:outputLabel for="previewDate" value="Նախորդ այցելություն:" class="form-control-label"/>
