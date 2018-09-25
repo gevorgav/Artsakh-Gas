@@ -6,10 +6,7 @@ import Models.Payment;
 import javax.el.ELContext;
 import javax.faces.context.FacesContext;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -106,15 +103,15 @@ public class Util {
                     " VALUES (");
             stringBuilder.append("'"+ payment.getClientId() +"',");
             stringBuilder.append("'"+ payment.getClientHistoryTmpId()  +"',");
-            stringBuilder.append("'"+ payment.getFullName()  +"',");
+            stringBuilder.append("N'"+ payment.getFullName()  +"',");
             stringBuilder.append(payment.getRegionId()+ ",");
-            stringBuilder.append("'"+ payment.getCity() +"',");
-            stringBuilder.append("'"+ payment.getStreet() +"',");
+            stringBuilder.append("N'"+ payment.getCity() +"',");
+            stringBuilder.append("N'"+ payment.getStreet() +"',");
             stringBuilder.append("'"+ payment.getHome() +"',");
             stringBuilder.append(payment.getPay()+ ",");
             stringBuilder.append(payment.getDebt()+",");
             stringBuilder.append(payment.getSemiAnnualId()+",");
-            stringBuilder.append("'"+ payment.getUpdatedDate()+"'");
+            stringBuilder.append(Objects.isNull(payment.getUpdatedDate()) ? "NULL" : "'"+ payment.getUpdatedDate()+"'");
             stringBuilder.append(");\n");
         }
         try {

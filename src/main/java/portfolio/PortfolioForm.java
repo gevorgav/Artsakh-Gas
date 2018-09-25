@@ -591,7 +591,7 @@ public class PortfolioForm {
         Payment lastPayment = paymentDao.loadLastPayment(clientId, regionId, lastSemiAnnualId);
         String city = cityDao.loadById(cityId).getName();
         String street = streetDao.loadById(streetId).getName();
-        paymentDao.insert(new Payment(clientId, clientHistoryTmpId, firstName + " " + lastName + "" + middleName, regionId, city, street, home, semiAnnualId, lastPayment != null ? lastPayment.getDebt() + debt : debt, 0.00));
+        paymentDao.insert(new Payment(clientId, clientHistoryTmpId, firstName + " " + lastName +  (Objects.nonNull(middleName) ? middleName : ""), regionId, city, street, home, semiAnnualId, lastPayment != null ? lastPayment.getDebt() + debt : debt, 0.00));
     }
 
     private Integer defineLastSemiAnnualId(Integer semiAnnualId) {
@@ -657,12 +657,17 @@ public class PortfolioForm {
         if(this.fileUpload != null) {
             String sd;
             try {
-
+                Scanner scanner = new Scanner(new InputStreamReader(fileUpload.getInputstream()));
+                while (scanner.hasNextLine()) {
+                    String line = scanner.nextLine();
+                    System.out.println(line);
+                    // use line here
+                }
                 BufferedReader in = new BufferedReader(new InputStreamReader(fileUpload.getInputstream(),  "UTF-8"));
                 while( (sd = in.readLine()) != null) {
                     String line = new String(sd.getBytes(),"UTF-8");
-                    Integer id = paymentDao.insertByLine(line);
-                    paymentDao.uptadeBankId(id, bankId);
+//                    Integer id = paymentDao.insertByLine(line);
+//                    paymentDao.uptadeBankId(id, bankId);
                 }
 
                 this.fileUpload  = null;
@@ -1385,7 +1390,7 @@ public class PortfolioForm {
         insertDataBase();
         Util.exportDataBase(paymentDao.paymentsForExportBySemiAnnual(cache.getSemiAnnualConfig().getSemiAnnualId()));
         try {
-            exportSql = new DefaultStreamedContent(new FileInputStream("f://payment.sql"),"","downloaded_payment.sql");
+            exportSql = new DefaultStreamedContent(new FileInputStream("f://payment.sql"),"","downloaded_payment.sql", "UTF-8");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

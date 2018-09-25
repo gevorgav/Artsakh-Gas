@@ -57,7 +57,7 @@ public class ClientDao extends Dao<Client>{
                         "                                                                       clients.regionId, payment.semiAnnualId)\n" +
                         "WHERE  clients.regionId = " + regionId +" AND clientsHistory.id IN (SELECT MAX(clientsHistory.id)\n" +
                         "                                                      FROM clientsHistory\n" +
-                        "                                                      GROUP BY clientsHistory.id, clientsHistory.clientId,\n" +
+                        "                                                      GROUP BY clientsHistory.clientId,\n" +
                         "                                                        clientsHistory.regionId)  AND isDeleted = 0\n" +
                         "GROUP BY clients.id, clients.regionId, payment.semiAnnualId";
             }
