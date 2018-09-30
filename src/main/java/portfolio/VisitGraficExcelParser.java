@@ -58,8 +58,8 @@ public class VisitGraficExcelParser {
 		Integer plannedCCompanies = zeroOrNumber(visitPlanDao.sumPlannedCompaniesByRegion(regionId, monthId));
 		Integer visitedClientsCount = zeroOrNumber(clientHistoryDao.getVisitedCountByMonth(regionId, semiAnnualId, monthId % 10, false));
 		Integer visitedCompaniesCount = zeroOrNumber(clientHistoryDao.getVisitedCountByMonth(regionId, semiAnnualId, monthId % 10, true));
-		Float percent = plannedC != 0 ? (visitedClientsCount / plannedC) * 100 : 0f;
-		Float percentCompanies = plannedCCompanies != 0 ? (visitedCompaniesCount / plannedCCompanies) * 100 : 0f;
+		Float percent = plannedC != 0 ? ((float)visitedClientsCount / plannedC) : 0f;
+		Float percentCompanies = plannedCCompanies != 0 ? ((float)visitedCompaniesCount / plannedCCompanies) : 0f;
 		Integer notVisitedClientsCount = plannedC - visitedClientsCount;
 		Integer notVisitedCompaniesCount = plannedCCompanies - visitedCompaniesCount;
 
@@ -71,8 +71,8 @@ public class VisitGraficExcelParser {
 		Integer plannedCSemiCompanies = zeroOrNumber(visitPlanDao.sumPlannedCompaniesByRegionAndSemiAnnual(regionId, semiAnnualId));
 		Integer visitedClientsCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnual(regionId, semiAnnualId, 1, false));
 		Integer visitedCompaniesCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnual(regionId, semiAnnualId, 1, true));
-		Float percentSemi = plannedCSemi != 0 ? (visitedClientsCountSemi / plannedCSemi) * 100 : 0f;
-		Float percentSemiCompanies = plannedCSemiCompanies != 0 ? (visitedCompaniesCountSemi / plannedCSemiCompanies) * 100 : 0f;
+		Float percentSemi = plannedCSemi != 0 ? ((float)visitedClientsCountSemi / plannedCSemi) : 0f;
+		Float percentSemiCompanies = plannedCSemiCompanies != 0 ? ((float)visitedCompaniesCountSemi / plannedCSemiCompanies) : 0f;
 		Integer notVisitedClientsCountSemi = plannedCSemi - visitedClientsCountSemi;
 		Integer notVisitedCompaniesCountSemi = plannedCSemiCompanies - visitedCompaniesCountSemi;
 
@@ -155,8 +155,8 @@ public class VisitGraficExcelParser {
 			plannedCCompanies = zeroOrNumber(visitPlanDao.sumPlannedCompaniesBySection(section.getId(), monthId));
 			visitedClientsCount = zeroOrNumber(clientHistoryDao.getVisitedCountByMonthAndSection(regionId, semiAnnualId, monthId % 10, section.getId(), false));
 			visitedCompaniesCount = zeroOrNumber(clientHistoryDao.getVisitedCountByMonthAndSection(regionId, semiAnnualId, monthId % 10, section.getId(), true));
-			percent = plannedC != 0 ? (visitedClientsCount / plannedC) * 100 : 0f;
-			percentCompanies = plannedCCompanies != 0 ? (visitedCompaniesCount / plannedCCompanies) * 100 : 0f;
+			percent = plannedC != 0 ? ((float)visitedClientsCount / plannedC) : 0f;
+			percentCompanies = plannedCCompanies != 0 ? ((float)visitedCompaniesCount / plannedCCompanies) : 0f;
 			notVisitedClientsCount = plannedC - visitedClientsCount;
 			notVisitedCompaniesCount = plannedCCompanies - visitedCompaniesCount;
 
@@ -168,8 +168,8 @@ public class VisitGraficExcelParser {
 			plannedCSemiCompanies = zeroOrNumber(visitPlanDao.sumPlannedCompaniesBySectionAndSemiAnnual(section.getId(), semiAnnualId));
 			visitedClientsCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnualAndSection(regionId, semiAnnualId, section.getId(), 1, false));
 			visitedCompaniesCountSemi = zeroOrNumber(clientHistoryDao.getVisitedCountBySemiAnnualAndSection(regionId, semiAnnualId, section.getId(), 1, true));
-			percentSemi = plannedCSemi != 0 ? (visitedClientsCountSemi / plannedCSemi) * 100 : 0f;
-			percentSemiCompanies = plannedCSemiCompanies != 0 ? (visitedCompaniesCountSemi / plannedCSemiCompanies) * 100 : 0f;
+			percentSemi = plannedCSemi != 0 ? ((float)visitedClientsCountSemi / plannedCSemi): 0f;
+			percentSemiCompanies = plannedCSemiCompanies != 0 ? ((float)visitedCompaniesCountSemi / plannedCSemiCompanies) : 0f;
 			notVisitedClientsCountSemi = plannedCSemi - visitedClientsCountSemi;
 			notVisitedCompaniesCountSemi = plannedCSemiCompanies - visitedCompaniesCountSemi;
 

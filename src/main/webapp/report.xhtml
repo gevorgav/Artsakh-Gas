@@ -266,7 +266,7 @@
                                             <p:commandButton value="Ջնջել ֆիլտրը" styleClass="dark" actionListener="#{portfolioForm.removeFilter}" oncomplete="PF('reportClientTable').filter()"/>
                                             <div class="row">
                                                 <div class="col-sm-4 col-md-4">
-                                                    <p:selectOneMenu id="semiAnnualId" styleClass="form-control input-c" value="#{portfolioForm.cache.semiAnnualConfig.semiAnnualId}">
+                                                    <p:selectOneMenu id="semiAnnualId" styleClass="form-control input-c" value="#{portfolioForm.currentSemiAnnualId}">
                                                         <f:converter converterId="javax.faces.Integer" />
                                                         <f:selectItems value="#{portfolioForm.cache.semiAnnuals}" var="semiAnnual" itemLabel="#{semiAnnual.name}" itemValue="#{semiAnnual.id}"/>
                                                         <p:ajax event="change" process="@this" oncomplete="PF('reportClientTable').filter()"  />

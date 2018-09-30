@@ -53,6 +53,19 @@ public class PortfolioForm {
 
     private Integer currentSemiAnnualId;
 
+    private Integer semiAnnualIdForPayment;
+
+    public Integer getSemiAnnualIdForPayment(){
+        if(semiAnnualIdForPayment == null) {
+            semiAnnualIdForPayment = cache.getSemiAnnualConfig().getSemiAnnualId();
+        }
+        return semiAnnualIdForPayment;
+    }
+
+    public void setSemiAnnualIdForPayment(Integer currentSemiAnnualId) {
+        this.semiAnnualIdForPayment = currentSemiAnnualId;
+    }
+
     public Integer getMaster() {
         return master;
     }
@@ -338,7 +351,7 @@ public class PortfolioForm {
             }
             if (this.client.isNew()) {
                 clientDao.insert(this.client);
-                ClientHistory clientHistory = new ClientHistory(this.client.getId(), this.client.getRegionId(), getCurrentSemiAnnual().getId());
+                ClientHistory clientHistory = new ClientHistory(this.client.getId(), this.client.getRegionId(), cache.getSemiAnnualConfig().getSemiAnnualId());
                 clientHistoryDao.insertAndReturnId(clientHistory);
                 this.client.setClientHistory(clientHistory);
             } else {
@@ -1111,27 +1124,13 @@ public class PortfolioForm {
 
     public Integer getCurrentSemiAnnualId(){
         if(currentSemiAnnualId == null) {
-          currentSemiAnnualId = getCurrentSemiAnnual().getId();
+          currentSemiAnnualId = cache.getSemiAnnualConfig().getSemiAnnualId();
         }
         return currentSemiAnnualId;
     }
 
     public void setCurrentSemiAnnualId(Integer currentSemiAnnualId) {
         this.currentSemiAnnualId = currentSemiAnnualId;
-    }
-
-    private SemiAnnual getCurrentSemiAnnual(){
-        SemiAnnual currentSemiAnnual = null;
-        List<SemiAnnual> semiAnnuals = cache.getSemiAnnuals();
-        LocalDate currentDate = LocalDate.now();
-        Integer semi = currentDate.getMonthValue() < 7 ? 1 : 2;
-        for (SemiAnnual semiAnnual : semiAnnuals) {
-            if (Objects.equals(semiAnnual.getId() / 10, currentDate.getYear()) && Objects.equals(semiAnnual.getId() % 10, semi)) {
-                currentSemiAnnual =  semiAnnual;
-                break;
-            }
-        }
-        return currentSemiAnnual;
     }
 
   /* -------------- Visit Plan Form Start --------*/

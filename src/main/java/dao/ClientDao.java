@@ -144,12 +144,12 @@ public class ClientDao extends Dao<Client>{
     }
 
     public Integer countOfClientsByRegion(Integer regionId, boolean isCompany) {
-        String sql = "SELECT COUNT(id) FROM clients WHERE regionId = ? AND isCompany = ?";
+        String sql = "SELECT COUNT(id) FROM clients WHERE regionId = ? AND isCompany = ? AND isDeleted = 0";
         return jdbcTemplate.queryForObject(sql, Integer.class, regionId, isCompany);
     }
 
     public Integer countOfClientsBySection(Integer sectionId, boolean isCompany) {
-        String sql = "SELECT COUNT(id) FROM clients WHERE sectionId = ?  AND isCompany = ?";
+        String sql = "SELECT COUNT(id) FROM clients WHERE sectionId = ?  AND isCompany = ? AND isDeleted = 0";
         return jdbcTemplate.queryForObject(sql, Integer.class, sectionId, isCompany);
     }
 }
