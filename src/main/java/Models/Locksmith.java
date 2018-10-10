@@ -13,8 +13,6 @@ public class Locksmith {
 
     private Integer ashtId;
 
-    private Integer subSectionId;
-
     private Integer regionId;
 
     private Integer sectionId;
@@ -22,12 +20,11 @@ public class Locksmith {
     public Locksmith() {
     }
 
-    public Locksmith(Integer id, String firstName, String lastName, Integer ashtId, Integer subSectionId, Integer regionId, Integer sectionId) {
+    public Locksmith(Integer id, String firstName, String lastName, Integer ashtId, Integer regionId, Integer sectionId) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.ashtId = ashtId;
-        this.subSectionId = subSectionId;
         this.regionId = regionId;
         this.sectionId = sectionId;
     }
@@ -64,14 +61,6 @@ public class Locksmith {
         this.ashtId = ashtId;
     }
 
-    public Integer getSubSectionId() {
-        return subSectionId;
-    }
-
-    public void setSubSectionId(Integer subSectionId) {
-        this.subSectionId = subSectionId;
-    }
-
     public Integer getRegionId() {
         return regionId;
     }
@@ -99,8 +88,6 @@ public class Locksmith {
         if (firstName != null ? !firstName.equals(locksmith.firstName) : locksmith.firstName != null) return false;
         if (lastName != null ? !lastName.equals(locksmith.lastName) : locksmith.lastName != null) return false;
         if (ashtId != null ? !ashtId.equals(locksmith.ashtId) : locksmith.ashtId != null) return false;
-        if (subSectionId != null ? !subSectionId.equals(locksmith.subSectionId) : locksmith.subSectionId != null)
-            return false;
         if (regionId != null ? !regionId.equals(locksmith.regionId) : locksmith.regionId != null) return false;
         return sectionId != null ? sectionId.equals(locksmith.sectionId) : locksmith.sectionId == null;
     }
@@ -111,7 +98,6 @@ public class Locksmith {
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         result = 31 * result + (ashtId != null ? ashtId.hashCode() : 0);
-        result = 31 * result + (subSectionId != null ? subSectionId.hashCode() : 0);
         result = 31 * result + (regionId != null ? regionId.hashCode() : 0);
         result = 31 * result + (sectionId != null ? sectionId.hashCode() : 0);
         return result;
@@ -122,7 +108,6 @@ public class Locksmith {
         Locksmith locksmith = new Locksmith();
         locksmith.setId(this.id);
         locksmith.setRegionId(this.regionId);
-        locksmith.setSubSectionId(this.subSectionId);
         locksmith.setAshtId(this.ashtId);
         locksmith.setFirstName(this.firstName);
         locksmith.setLastName(this.lastName);

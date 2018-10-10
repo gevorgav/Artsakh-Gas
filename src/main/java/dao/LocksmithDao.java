@@ -34,16 +34,16 @@ public class LocksmithDao extends Dao<Locksmith>  {
     @Override
     public boolean insert(Locksmith locksmith) {
         Objects.requireNonNull(locksmith);
-        String sql = "INSERT INTO locksmith(firstName, lastName, ashtId, subSectionId, regionId, sectionId) VALUES (?, ?, ?, ?, ?, ?)";
-        int result = jdbcTemplate.update(sql, locksmith.getFirstName(), locksmith.getLastName(), locksmith.getAshtId(), locksmith.getSubSectionId(), locksmith.getRegionId(), locksmith.getSectionId());
+        String sql = "INSERT INTO locksmith(firstName, lastName, ashtId, regionId, sectionId) VALUES (?, ?, ?, ?, ?)";
+        int result = jdbcTemplate.update(sql, locksmith.getFirstName(), locksmith.getLastName(), locksmith.getAshtId(), locksmith.getRegionId(), locksmith.getSectionId());
         return result == 1;
     }
 
     @Override
     public boolean update(Locksmith locksmith) {
         Objects.requireNonNull(locksmith);
-        String sql = "UPDATE locksmith SET firstName = ?, lastName = ?, ashtId = ?, subSectionId = ?, regionId = ?, sectionId = ? WHERE id = ?";
-        int result = jdbcTemplate.update(sql, locksmith.getFirstName(), locksmith.getLastName(), locksmith.getAshtId(), locksmith.getSubSectionId(), locksmith.getRegionId(), locksmith.getSectionId(), locksmith.getId());
+        String sql = "UPDATE locksmith SET firstName = ?, lastName = ?, ashtId = ?, regionId = ?, sectionId = ? WHERE id = ?";
+        int result = jdbcTemplate.update(sql, locksmith.getFirstName(), locksmith.getLastName(), locksmith.getAshtId(), locksmith.getRegionId(), locksmith.getSectionId(), locksmith.getId());
         return result == 1;
     }
 

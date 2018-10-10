@@ -1067,7 +1067,7 @@
                                                                                itemLabel="#{region.name}"
                                                                                itemValue="#{region.id}"
                                                                                value="#{settingsForm.cache.regions}" var="region"/>
-                                                                <p:ajax event="change" process="@this" update="@this locksmithAshtPanelId locksmithSectionId locksmithSubSectionId"
+                                                                <p:ajax event="change" process="@this" update="@this locksmithAshtPanelId locksmithSectionId"
                                                                         listener="#{settingsForm.resetLocksmithAsht}"/>
                                                             </p:selectOneMenu>
                                                             <p:message for="locksmithRegionId" display="text"/>
@@ -1095,23 +1095,8 @@
                                                                                itemValue="#{section.id}"
                                                                                value="#{settingsForm.sectionsByRegionId(settingsForm.editedLocksmith.regionId)}"
                                                                                var="section"/>
-                                                                <p:ajax event="change" process="@this" update="@this locksmithSubSectionId"
-                                                                        listener="#{settingsForm.resetLocksmithSubSection}"/>
                                                             </p:selectOneMenu>
                                                             <p:message for="locksmithSectionId" display="text"/>
-                                                        </div>
-                                                        <div class="col-sm-4 col-md-4">
-                                                            <p:outputLabel for="locksmithSubSectionId" value="Ենթատեղամաս" styleClass="required"/>
-                                                            <p:selectOneMenu id="locksmithSubSectionId" value="#{settingsForm.editedLocksmith.subSectionId}"
-                                                                             styleClass="form-control input-c">
-                                                                <f:selectItem id="locksmithSubSectionSelectOneId" itemLabel="Ընտրիր մեկը"/>
-                                                                <f:selectItems id="locksmithSubSectionsId"
-                                                                               itemLabel="#{subSection.name}"
-                                                                               itemValue="#{subSection.id}"
-                                                                               value="#{settingsForm.subSectionsBySectionId(settingsForm.editedLocksmith.sectionId)}"
-                                                                               var="subSection"/>
-                                                            </p:selectOneMenu>
-                                                            <p:message for="locksmithSubSectionId" display="text"/>
                                                         </div>
                                                     </div>
                                                 </h:panelGroup>

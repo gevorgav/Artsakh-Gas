@@ -1231,8 +1231,8 @@ public class PortfolioForm {
             visitPlans = new ArrayList<>();
             for (Section section : cache.getSections()) {
                 if (section.getRegionId().equals(visitPlanRegionId)) {
-                    for (int i = 6 * (semiAnnualId % 10) - 5; i <= 6 * (semiAnnualId % 10); i++) {
-                        Integer monthId = semiAnnualId * 100 + i;
+                    for (int i = 6 * (semiAnnualId % 10) - 2; i <= 6 * (semiAnnualId % 10) + 3; i++) {
+                        Integer monthId = semiAnnualId * 100 + (i > 12 ? i - 12 : i);
                         VisitPlan loadedVisitPlan = visitPlanByMonthId(monthId, section.getId());
                         if (loadedVisitPlan == null) {
                             visitPlans.add(new VisitPlan(section.getId(), monthId, null, null, semiAnnualId, section, getMonthById(monthId)));

@@ -17,7 +17,6 @@ public class LocksmithMapper  implements RowMapper<Locksmith> {
         locksmith.setFirstName(rs.getString("firstName"));
         locksmith.setLastName(rs.getString("lastName"));
         locksmith.setAshtId(rs.getObject("ashtId") != null ? rs.getInt("ashtId") : null);
-        locksmith.setSubSectionId(rs.getObject("subSectionId") != null ? rs.getInt("subSectionId") : null);
         locksmith.setRegionId(rs.getObject("regionId") != null ? rs.getInt("regionId") : null);
         locksmith.setSectionId(rs.getObject("sectionId") != null ? rs.getInt("sectionId") : null);
         return locksmith;

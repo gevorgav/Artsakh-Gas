@@ -1209,11 +1209,6 @@ public class SettingsForm implements Serializable {
             FacesContext.getCurrentInstance().addMessage("locksmithFormId:locksmithSectionId", facesMessage);
             isValid = false;
         }
-        if(locksmith.getSubSectionId() == null){
-            FacesMessage facesMessage =  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ենթատեղամասը պարտադիր դաշտ է");
-            FacesContext.getCurrentInstance().addMessage("locksmithFormId:locksmithSubSectionId", facesMessage);
-            isValid = false;
-        }
 
         return isValid;
     }
@@ -1247,7 +1242,6 @@ public class SettingsForm implements Serializable {
             editedLocksmith.setAshtId(null);
             ashts = null;
             editedLocksmith.setSectionId(null);
-            resetLocksmithSubSection();
             sections = null;
         }
     }
@@ -1278,13 +1272,6 @@ public class SettingsForm implements Serializable {
             }
         }
         return subSections;
-    }
-
-    public void resetLocksmithSubSection() {
-        if (editedLocksmith != null) {
-            editedLocksmith.setSubSectionId(null);
-            subSections = null;
-        }
     }
 
     public void resetMasterSubSection() {
