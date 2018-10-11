@@ -1,5 +1,7 @@
 package Models;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -154,6 +156,7 @@ public class ClientHistory {
     }
 
     public void setPreviousVisitDate(Date previousVisitDate) {
+        this.nextVisitDate = DateUtils.addMonths(previousVisitDate, 6);
         this.previousVisitDate = previousVisitDate;
     }
 

@@ -30,7 +30,7 @@
 
     <bean id="root" class="Core.Root" scope="singleton" />
 
-    <bean id="fileUpload" class="Core.FileUpload" scope="session"/>
+    <bean id="fileUpload" class="Core.FileUpload" scope="sessioՎարպետn"/>
     <bean id="testForm" class="Beans.TestForm" scope="session"/>
 
     <bean id="authorisationUtil" class="Core.AuthorisationUtil" scope="session"/>
