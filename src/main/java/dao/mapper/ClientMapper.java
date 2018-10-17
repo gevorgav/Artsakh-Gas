@@ -32,7 +32,7 @@ public class ClientMapper  implements RowMapper<Client> {
         client.setCityId(resultSet.getInt("cityId"));
         client.setStreetId(resultSet.getInt("streetId"));
         client.setHomeNumber(resultSet.getObject("homeNumber") != null ? resultSet.getString("homeNumber") : null);
-        client.setApartmentNumber(resultSet.getObject("apartmentNumber") != null ? resultSet.getInt("apartmentNumber") : null);
+        client.setApartmentNumber(resultSet.getObject("apartmentNumber") != null ? resultSet.getString("apartmentNumber") : null);
         client.setAshtId(resultSet.getObject("ashtId") != null ? resultSet.getInt("ashtId") : null);
         client.setGrpId(resultSet.getObject("grpId") != null ? resultSet.getInt("grpId") : null);
         client.setGrsId(resultSet.getObject("grsId") != null ? resultSet.getInt("grsId") : null);

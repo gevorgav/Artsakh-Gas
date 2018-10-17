@@ -425,7 +425,7 @@ public class PortfolioForm {
         }
 
         for(Client client1: getClients()){
-            if(Objects.equals(client1.getId(), client.getId()) && Objects.equals(client1.getRegionId(), client.getRegionId())){
+            if(client.isNew() && Objects.equals(client1.getId(), client.getId()) && Objects.equals(client1.getRegionId(), client.getRegionId()) && Objects.equals(client1.isCompany(), client.isCompany())){
                 FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Տվյալ համարով և շրջանով բաժանորդ արդեն գոյություն ունի");
                 FacesContext.getCurrentInstance().addMessage("clientEditFormId:id", facesMessage);
                 isValid = false;

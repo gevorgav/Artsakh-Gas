@@ -52,7 +52,7 @@
                 <div class="row">
                     <div class="col-sm-4 col-md-4">
                         <p:outputLabel for="regionId" value="Շրջան" styleClass="required"/>
-                        <p:selectOneMenu id="regionId" value="#{portfolioForm.client.regionId}" styleClass="form-control input-c" >
+                        <p:selectOneMenu id="regionId" value="#{portfolioForm.client.regionId}" styleClass="form-control input-c" disabled="#{not portfolioForm.client.isNew()}">
                             <f:selectItem id="regionSelectOneId" itemLabel="Ընտրիր մեկը"/>
                             <f:selectItems id="regionsId"
                                            itemLabel="#{region.name}"
@@ -98,9 +98,9 @@
                     </div>
                     <div class="col-sm-4 col-md-4">
                         <p:outputLabel for="appartmentNumberId" value="Տուն"/>
-                        <p:inputNumber id="appartmentNumberId" maxlength="11" maxValue="9999999999" minValue="0"
+                        <p:inputText id="appartmentNumberId"
                                        value="#{portfolioForm.client.apartmentNumber}">
-                        </p:inputNumber>
+                        </p:inputText>
                     </div>
                 </h:panelGroup>
                 <h:panelGroup class="row" id="location2" layout="block">

@@ -27,7 +27,7 @@ public class  Client {
 
     private String homeNumber;
 
-    private Integer apartmentNumber;
+    private String apartmentNumber;
 
     private Integer ashtId;
 
@@ -134,11 +134,11 @@ public class  Client {
         this.homeNumber = homeNumber;
     }
 
-    public Integer getApartmentNumber() {
+    public String getApartmentNumber() {
         return apartmentNumber;
     }
 
-    public void setApartmentNumber(Integer apartmentNumber) {
+    public void setApartmentNumber(String apartmentNumber) {
         this.apartmentNumber = apartmentNumber;
     }
 

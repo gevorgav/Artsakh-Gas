@@ -156,7 +156,7 @@ public class ClientHistory {
     }
 
     public void setPreviousVisitDate(Date previousVisitDate) {
-        this.nextVisitDate = DateUtils.addMonths(previousVisitDate, 6);
+//        this.nextVisitDate = DateUtils.addMonths(previousVisitDate, 6);
         this.previousVisitDate = previousVisitDate;
     }
 
