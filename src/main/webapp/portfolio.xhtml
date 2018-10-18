@@ -265,14 +265,14 @@
                                             <div class="form-horizontal">
                                                 <div class="form-group row">
                                                     <div class="col-xl-3 col-sm-3 col-md-3">
-                                                        <p:commandButton value="Ավելացնել այցելությունների գրաֆիկ"
+                                                        <p:commandButton value="Ավելացնել այցելությունների գրաֆիկ" rendered="#{!loginForm.user.admin}"
                                                                          update="visitPlanSearchFormId"
                                                                          style="width: 100%"
                                                                          actionListener="#{portfolioForm.initVisitPlan}">
                                                         </p:commandButton>
                                                     </div>
                                                     <div class="col-xl-3 col-sm-3 col-md-3">
-                                                        <p:commandButton value="Ավելացնել այցելություն"
+                                                        <p:commandButton value="Ավելացնել այցելություն" rendered="#{!loginForm.user.admin}"
                                                                          styleClass="w-100"
                                                                          actionListener="#{portfolioForm.initClientHistory}"
                                                                          type="button" onclick="PF('historyDialog').show();">
@@ -280,7 +280,7 @@
                                                         </p:commandButton>
                                                     </div>
                                                     <div class="col-xl-3 col-sm-3 col-md-3">
-                                                        <p:commandButton id="visitGraficButtonId"
+                                                        <p:commandButton id="visitGraficButtonId" rendered="#{!loginForm.user.admin}"
                                                                          value="Ստեղծել այցելությունների գրաֆիկ"
                                                                          styleClass="dark w-100" update="visitGraficDialogId"
                                                                          actionListener="#{portfolioForm.openVisitGraficDialog}">
@@ -306,8 +306,8 @@
                                                             <p:fileDownload value="#{portfolioForm.exportSql}"/>
                                                         </p:commandButton>
                                                     </div>
-                                                    <div class="col-xl-3 col-sm-3 col-md-3">
-                                                        <p:commandButton value="Կատարել մուծում"
+                                                    <div class="col-xl-3 col-sm-3 col-md-3" >
+                                                        <p:commandButton value="Կատարել մուծում" rendered="#{!loginForm.user.admin}"
                                                                          update="searchFormIdPay payForm"
                                                                          style="width: 100%"
                                                                          actionListener="#{portfolioForm.pay}">
@@ -369,13 +369,13 @@
                                                           footerText="" filterMatchMode="contains">
                                                     <h:outputText value="#{client.phoneNumber}"/>
                                                 </p:column>
-                                                <p:column>
+                                                <p:column rendered="#{!loginForm.user.admin}">
                                                     <p:commandLink styleClass="fa fa-pencil-square-o"
                                                                    action="#{portfolioForm.editClient(client)}"
                                                                    update="clientDialogId table2" icon=""
                                                                    title="Խմբագրել"/>
                                                 </p:column>
-                                                <p:column>
+                                                <p:column rendered="#{!loginForm.user.admin}">
                                                     <h:commandLink styleClass="glyphicon glyphicon-trash" immediate="true" onclick="return confirm('Ջնջել');">
                                                         <f:ajax listener="#{portfolioForm.deleteClient(client)}" event="click" render="table2"/>
                                                     </h:commandLink>
@@ -383,7 +383,7 @@
 
                                             </p:dataTable>
                                             <div class="col s5 input-field">
-                                                <p:commandButton value="Ավելացնել" styleClass="dark"
+                                                <p:commandButton value="Ավելացնել" styleClass="dark" rendered="#{!loginForm.user.admin}"
                                                                  action="#{portfolioForm.addNewClient}" process="@this"
                                                                  update="clientDialogId"/>
                                             </div>
@@ -399,7 +399,7 @@
                     </div>
                 </div>
             </h:form>
-            <h:form enctype="multipart/form-data">
+            <h:form enctype="multipart/form-data" rendered="#{loginForm.user.admin}">
                 <div class="col-xl-2 col-sm-2 col-md-2">
                     <p:selectOneMenu id="bankId"
                                      value="#{portfolioForm.bankId}"
