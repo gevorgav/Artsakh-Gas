@@ -290,14 +290,19 @@
                                                          rowKey="#{client.id}"
                                                          paginatorTemplate="{FirstPageLink} {PreviousPageLink} {RowsPerPageDropdown} {NextPageLink} {LastPageLink}"
                                                          rowsPerPageTemplate="10,20,50"
-                                                         style="margin-bottom:0">
+                                                         style="margin-bottom:0"
+                                                         sortBy="#{client.id}"
+                                                         sortOrder="ascending">
 
                                                 <f:facet name="header">
-                                                    <p:commandButton id="toggler" type="button" value="Սյունակներ" style="float:right" />
-                                                    <p:columnToggler datasource="clientReportTableId" trigger="toggler" />
+                                                    <p:commandButton id="toggler" type="button" value="Սյունակներ"
+                                                                     style="float:right"/>
+                                                    <p:columnToggler datasource="clientReportTableId"
+                                                                     trigger="toggler"/>
 
                                                     <h:commandButton id="excel" value="Արտահանում excel">
-                                                        <p:dataExporter type="xlsx" target="clientReportTableId" fileName="clients" />
+                                                        <p:dataExporter type="xlsx" target="clientReportTableId"
+                                                                        fileName="clients"/>
                                                     </h:commandButton>
                                                 </f:facet>
 
