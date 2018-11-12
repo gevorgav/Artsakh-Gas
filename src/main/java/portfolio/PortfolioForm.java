@@ -603,7 +603,7 @@ public class PortfolioForm {
         Payment lastPayment = paymentDao.loadLastPayment(clientId, regionId, lastSemiAnnualId);
         String city = cityDao.loadById(cityId).getName();
         String street = streetDao.loadById(streetId).getName();
-        paymentDao.insert(new Payment(clientId, clientHistoryTmpId, firstName + " " + lastName +  (Objects.nonNull(middleName) ? middleName : ""), regionId, city, street, home, semiAnnualId, lastPayment != null ? lastPayment.getDebt() + debt : debt, 0.00));
+        paymentDao.insert(new Payment(clientId, clientHistoryTmpId, firstName + " " + lastName +  (Objects.nonNull(middleName) ? middleName : ""), regionId, city, street, home, semiAnnualId, lastPayment != null ? debt - lastPayment.getBalance() : debt, 0.00, getLoginForm().getUser().getId(), new Date()));
     }
 
     private Integer defineLastSemiAnnualId(Integer semiAnnualId) {
@@ -677,9 +677,8 @@ public class PortfolioForm {
                 }
                 BufferedReader in = new BufferedReader(new InputStreamReader(fileUpload.getInputstream(),  "UTF-8"));
                 while( (sd = in.readLine()) != null) {
-                    String line = new String(sd.getBytes(),"UTF-8");
-//                    Integer id = paymentDao.insertByLine(line);
-//                    paymentDao.uptadeBankId(id, bankId);
+                    Integer id = paymentDao.insertByLine(sd.toString());
+                    paymentDao.uptadeBankId(id, bankId);
                 }
 
                 this.fileUpload  = null;
@@ -1354,7 +1353,7 @@ public class PortfolioForm {
 
     public void savePayment(){
         payment.setUserId(getLoginForm().getUser().getId());
-        payment.setDebt(payment.getDebt() - toPay);
+        payment.setDebt(payment.getDebt() - payment.getPay());
         payment.setPay(toPay);
         payment.setSemiAnnualId(cache.getSemiAnnualConfig().getSemiAnnualId());
         payment.setUpdatedDate(new Date());
@@ -1388,9 +1387,12 @@ public class PortfolioForm {
 
     public StreamedContent getExportSql() {
         insertDataBase();
-        Util.exportDataBase(paymentDao.paymentsForExportBySemiAnnual(cache.getSemiAnnualConfig().getSemiAnnualId()));
+        Util.exportDataBase(paymentDao.paymentsForExportBySemiAnnual(semiAnnualIdForPayment));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
+        Date now = new Date();
+        String strDate = sdf.format(now);
         try {
-            exportSql = new DefaultStreamedContent(new FileInputStream("f://payment.sql"),"","downloaded_payment.sql", "UTF-8");
+            exportSql = new DefaultStreamedContent(new FileInputStream("f://payment.sql"),"",strDate.toString()+".sql", "UTF-8");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

@@ -40,7 +40,7 @@ public class Payment {
         this.pay = pay;
     }
 
-    public Payment(String clientId, Integer clientHistoryTmpId, String fullName, Integer regionId, String city, String street, String home, Integer semiAnnualId, Double debt, Double pay) {
+    public Payment(String clientId, Integer clientHistoryTmpId, String fullName, Integer regionId, String city, String street, String home, Integer semiAnnualId, Double debt, Double pay, Integer userId, Date updatedDate) {
         this.clientId = clientId;
         this.clientHistoryTmpId = clientHistoryTmpId;
         this.fullName = fullName;
@@ -51,6 +51,8 @@ public class Payment {
         this.semiAnnualId = semiAnnualId;
         this.debt = debt;
         this.pay = pay;
+        this.userId = userId;
+        this.updatedDate = updatedDate;
     }
 
     public Payment(Integer id, String clientId, Integer clientHistoryTmpId, String fullName, Integer regionId, String city, String street, String home, Integer semiAnnualId, Double debt, Double pay, Date updatedDate, Integer bankId, Integer userId) {
