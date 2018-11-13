@@ -1341,11 +1341,11 @@ public class PortfolioForm {
     public void searchPayment(){
         if (!Objects.isNull(paymentClientId) && !Objects.isNull(paymentRegionId)) {
             payment = paymentDao.loadLastPayment(paymentClientId, paymentRegionId, cache.getSemiAnnualConfig().getSemiAnnualId());
-            client = getClients().stream().filter(client1 -> client1.getId().equals(paymentClientId) && client1.getRegionId().equals(paymentRegionId)).findFirst().get();
+            client = getClients().stream().filter(client1 -> client1.getId().equals(paymentClientId) && client1.getRegionId().equals(paymentRegionId)).findFirst().orElse(null);
         } else {
             clientHistory = null;
             FacesContext facesContext = FacesContext.getCurrentInstance();
-            FacesMessage facesMessage = new FacesMessage("Incorrect clientID.");
+            FacesMessage facesMessage = new FacesMessage("Սխալ ԲՀ");
             facesContext.addMessage(null, facesMessage);
         }
 

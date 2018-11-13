@@ -39,46 +39,46 @@
         <h:panelGroup layout="block" class="padding" style="max-width: 80%; margin: 0 auto;">
             <h:form id="payForm">
                 <c:if test="#{not empty portfolioForm.payment}">
-                    <div class="row">
+                    <h:panelGroup class="row" rendered="#{portfolioForm.client != null}" layout="block">
                         <div class="col-sm-4 col-md-4">
                             <p:outputLabel value="Անուն։ ${portfolioForm.client.firstName}"></p:outputLabel>
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <p:outputLabel value="Ազգանուն: ${portfolioForm.client.lastName}"></p:outputLabel>
                         </div>
-                    </div>
-                    <div class="row">
+                    </h:panelGroup>
+                    <h:panelGroup class="row" rendered="#{portfolioForm.client != null}" layout="block">
                         <div class="col-sm-4 col-md-4">
                             <p:outputLabel for="deptId" value="Պարտք:" class="form-control-label"/>
-                            <p:outputLabel id="deptId" value="#{- portfolioForm.payment.balance}"
+                            <p:outputLabel id="deptId" value="#{portfolioForm.payment.balance eq 0 ? 0 : - portfolioForm.payment.balance}"
                                            class="form-control input-c"/>
                         </div>
-                        <div class="col-sm-4 col-md-4">
+                        <h:panelGroup layout="block" class="col-sm-4 col-md-4" rendered="#{!loginForm.user.admin}">
                             <p:outputLabel for="payId" value="Մուծել:" class="form-control-label"/>
                             <p:inputNumber id="payId" value="#{portfolioForm.toPay}" symbol=" Դրամ"
                                            symbolPosition="s"
                                            decimalSeparator="," thousandSeparator="." class="form-control input-c">
                                 <p:ajax update="payId"/>
                             </p:inputNumber>
-                        </div>
-                    </div>
+                        </h:panelGroup>
+                    </h:panelGroup>
 
                 </c:if>
                 <c:if test="#{not empty portfolioForm.paymentRegionId and not empty portfolioForm.paymentClientId and empty portfolioForm.payment}">
-                    <div class="row">
+                    <h:panelGroup class="row" rendered="#{portfolioForm.client != null}" layout="block">
                         <div class="col-sm-4 col-md-4">
                             <p:outputLabel value="Անուն։ ${portfolioForm.client.firstName}"></p:outputLabel>
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <p:outputLabel value="Ազգանուն: ${portfolioForm.client.lastName}"></p:outputLabel>
                         </div>
-                    </div>
-                    <div class="row">
+                    </h:panelGroup>
+                    <h:panelGroup class="row" layout="block" rendered="#{portfolioForm.client != null}">
                         <div class="col-sm-4 col-md-4">
                             <p:outputLabel for="noDeptId" value="Պարտք:" class="form-control-label"/>
                             <p:outputLabel id="noDeptId" value="0.0 Դրամ" class="form-control input-c"/>
                         </div>
-                    </div>
+                    </h:panelGroup>
                 </c:if>
 
 
