@@ -83,7 +83,7 @@
                             <f:selectItems id="streetsId"
                                            itemLabel="#{street.name}"
                                            itemValue="#{street.id}"
-                                           value="#{portfolioForm.streetsByCityId(portfolioForm.client.cityId)}"
+                                           value="#{portfolioForm.streetsByCityId(portfolioForm.client.cityId) }"
                                            var="street"/>
                         </p:selectOneMenu>
                         <p:message for="streetId" display="text"/>
@@ -91,13 +91,13 @@
                 </div>
                 <h:panelGroup class="row" id="location1" layout="block">
                     <div class="col-sm-4 col-md-4">
-                        <p:outputLabel for="homeNumberId" value="Շենք"/>
+                        <p:outputLabel for="homeNumberId" value="Տուն"/>
                         <p:inputText id="homeNumberId"
                                        value="#{portfolioForm.client.homeNumber}">
                         </p:inputText>
                     </div>
                     <div class="col-sm-4 col-md-4">
-                        <p:outputLabel for="appartmentNumberId" value="Տուն"/>
+                        <p:outputLabel for="appartmentNumberId" value="Բնակարան"/>
                         <p:inputText id="appartmentNumberId"
                                        value="#{portfolioForm.client.apartmentNumber}">
                         </p:inputText>

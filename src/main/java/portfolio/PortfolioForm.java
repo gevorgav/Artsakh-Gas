@@ -1623,4 +1623,17 @@ public class PortfolioForm {
     }
   /* -------------- Visit Graphic End -------------*/
 
+
+    public String getStreetNameById(Integer streetId){
+        return  this.getAllStreets().stream().filter(street -> Objects.equals(street.getId(), streetId)).findFirst().orElse(null).getName();
+    }
+
+    private List<Street> allStreets;
+    public List<Street> getAllStreets(){
+        if(Objects.isNull(allStreets)){
+            this.allStreets = this.streetDao.loadAll();
+        }
+        return this.allStreets;
+    }
+
 }

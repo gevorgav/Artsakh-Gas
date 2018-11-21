@@ -328,6 +328,9 @@
                                                 <p:column filterBy="#{client.lastName}" headerText="Ազգանուն" style="width: 10%"  filterMatchMode="contains">
                                                     <h:outputText value="#{client.lastName}" />
                                                 </p:column>
+                                                <p:column filterBy="#{client.lastName}" headerText="Հասցե" style="width: 10%"  filterMatchMode="contains">
+                                                    <h:outputText value="#{portfolioForm.getStreetNameById(client.streetId)} #{client.homeNumber} #{client.apartmentNumber}" />
+                                                </p:column>
                                                 <p:column filterBy="#{client.clientHistory.paid}" style="width: 10%" headerText="Վճարման վիճակ" filterMatchMode="equals">
                                                     <f:facet name="filter">
                                                         <p:selectOneMenu  label="Colors" onchange="PF('reportClientTable').filter()"  panelStyle="width:125px" scrollHeight="150">
