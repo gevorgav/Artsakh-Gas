@@ -1,5 +1,7 @@
 package Models;
 
+import Core.Models.Region;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -22,6 +24,9 @@ public class Payment {
     private Date updatedDate;
     private Integer bankId;
     private Integer userId;
+
+    private Region region;
+    private Bank bank;
 
     public Payment() {
     }
@@ -190,6 +195,22 @@ public class Payment {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public Region getRegion() {
+        return region;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
+    }
+
+    public Bank getBank() {
+        return bank;
+    }
+
+    public void setBank(Bank bank) {
+        this.bank = bank;
     }
 
     @Override

@@ -259,11 +259,13 @@
                                 <div class="box-body">
                                     <h:panelGroup id="yearlyPanelId">
 
-                                        <h:panelGrid columns="4" cellpadding="5">
+                                        <h:panelGrid columns="5" cellpadding="5">
                                             <p:commandButton id="graficButtonId" value="Ստեղծել Գրաֆիկ" styleClass="dark"  oncomplete="PF('graficDialog').show();">
                                             </p:commandButton>
                                             <p:commandButton value="Ավելացնել ֆիլտր" styleClass="dark" action="#{portfolioForm.openFilterDialog}" process="@this" update="filterDialogId"/>
                                             <p:commandButton value="Ջնջել ֆիլտրը" styleClass="dark" actionListener="#{portfolioForm.removeFilter}" oncomplete="PF('reportClientTable').filter()"/>
+                                            <p:commandButton id="paymentReportButtonId" value="Ստեղծել Հաշվետվություն" styleClass="dark"  actionListener="#{portfolioForm.openPaymentReportDialog}" update="paymentReportDialogId">
+                                            </p:commandButton>
                                             <div class="row">
                                                 <div class="col-sm-4 col-md-4">
                                                     <p:selectOneMenu id="semiAnnualId" styleClass="form-control input-c" value="#{portfolioForm.currentSemiAnnualId}">
@@ -383,6 +385,7 @@
 
             <ui:include src="dialogs/filter.xhtml" />
             <ui:include src="dialogs/grafic.xhtml" />
+            <ui:include src="dialogs/paymentReportDialog.xhtml" />
 
         </div>
         <!-- ############ PAGE END-->

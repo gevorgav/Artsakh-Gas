@@ -1,0 +1,85 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog dynamic="true" header="Payment Report" id="paymentReportDialogId" modal="true" onShow="showDialog()" onHide="hideDialog()"
+              resizable="false" widgetVar="paymentReportDialog" width="100%" height="90%" style="max-width: 1200px; z-index: 100">
+        <p:ajax event="close" listener="#{portfolioForm.cancelPaymentReportDialog}" update="paymentReportDialogFormId:resetId" resetValues="true"/>
+        <h:form id="paymentReportDialogFormId">
+            <h:panelGroup id="resetId" layout="block">
+                <div class="row">
+                    <div class="col-sm-4 col-md-4">
+                        <p:outputLabel value="Ընթացիկ օրով"/>
+                        <p:selectBooleanCheckbox value="#{portfolioForm.byCurrentdate}" valueChangeListener="#{portfolioForm.resetPaymentReportDialog}">
+                            <p:ajax event="change"  update="@this paymentReportDialogFormId"/>
+                        </p:selectBooleanCheckbox>
+                    </div>
+                    <h:panelGroup rendered="#{portfolioForm.byCurrentdate}">
+                        <div class="col-sm-4 col-md-4">
+                            <h:outputText value="#{portfolioForm.currentDate}" style="font-weight: bold;">
+                                <f:convertDateTime pattern="dd-MMM-yyyy"/>
+                            </h:outputText>
+                        </div>
+                    </h:panelGroup>
+                </div>
+                <h:panelGroup rendered="#{!portfolioForm.byCurrentdate}">
+                    <div class="row">
+                        <div class="col-sm-4 col-md-4">
+                            <p:outputLabel for="paymentReportSemiAnnualId" value="Կիսամյակ" styleClass="required"/>
+                            <p:selectOneMenu id="paymentReportSemiAnnualId" value="#{portfolioForm.paymentReportSemiAnnualId}"
+                                             styleClass="form-control input-c">
+                                <f:selectItem id="paymentReportSemiANnualSelectOneId" itemLabel="Ընտրիր Կիսամյակը"/>
+                                <f:selectItems id="paymentReportSemiAnnualsId"
+                                               itemLabel="#{semiAnnual.name}"
+                                               itemValue="#{semiAnnual.id}"
+                                               value="#{portfolioForm.cache.semiAnnuals}" var="semiAnnual"/>
+                                <p:ajax event="change" process="@this" update="@this paymentReportMonthId"
+                                        listener="#{portfolioForm.resetPaymentReportMonth}"/>
+                            </p:selectOneMenu>
+                            <p:message for="paymentReportSemiAnnualId"/>
+                        </div>
+                        <div class="col-sm-4 col-md-4">
+                            <p:outputLabel for="paymentReportMonthId" value="Ամիս"/>
+                            <p:selectOneMenu id="paymentReportMonthId" value="#{portfolioForm.paymentReportMonthId}"
+                                             styleClass="form-control input-c">
+                                <f:selectItem id="paymentReportMonthSelectOneId" itemLabel="Ընտրիր Ամիսը"/>
+                                <f:selectItems id="paymentReportMonthsId"
+                                               itemLabel="#{month.name}"
+                                               itemValue="#{month.id}"
+                                               value="#{portfolioForm.getPaymentReportMonths(portfolioForm.paymentReportSemiAnnualId)}"
+                                               var="month"/>
+                            </p:selectOneMenu>
+                        </div>
+                    </div>
+                </h:panelGroup>
+                <div class="row">
+                    <div class="col-sm-4 col-md-4">
+                        <p:commandButton styleClass="btn btn-fw success" value="Գեներացնել" actionListener="#{portfolioForm.generatePaymentReport}" update="paymentReportDialogFormId" />
+                    </div>
+                </div>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{portfolioForm.readyPaymentReport}">
+                <p:dataTable var="payment" value="#{portfolioForm.payments}" expandableRowGroups="true" sortBy="#{payment.region.name}">
+                    <p:headerRow>
+                        <p:column colspan="2">
+                            <h:outputText value="#{payment.region.name}" />
+                        </p:column>
+                    </p:headerRow>
+
+                    <p:column headerText="Բանկ">
+                        <h:outputText value="#{payment.bank != null? payment.bank.name : ''}" />
+                    </p:column>
+                    <p:column headerText="Մուծված">
+                        <h:outputText value="#{payment.pay}" />
+                    </p:column>
+                </p:dataTable>
+            </h:panelGroup>
+            <div class="modal-footer m-t-3">
+                <p:commandButton id="cancelPaymentReportDialogId"  value="Չեղարկել" styleClass="dark" actionListener="#{portfolioForm.cancelPaymentReportDialog}" update="paymentReportDialogFormId:resetId" process="@this">
+                    <p:resetInput target="paymentReportDialogFormId:resetId" />
+                </p:commandButton>
+            </div>
+        </h:form>
+    </p:dialog>
+</ui:composition>

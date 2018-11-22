@@ -3,6 +3,7 @@ package portfolio;
 import Core.CacheForm;
 import Core.Models.City;
 import Core.Models.Month;
+import Core.Models.Region;
 import Core.Util;
 import Models.*;
 import dao.*;
@@ -27,6 +28,7 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -1635,5 +1637,158 @@ public class PortfolioForm {
         }
         return this.allStreets;
     }
+
+  /* -------------- Payment Report Start ---------- */
+
+    private Integer paymentReportSemiAnnualId;
+
+    private Integer paymentReportMonthId;
+
+    private List<Month> paymentReportMonths;
+
+    private boolean isReadyPaymentReport;
+
+    private List<PaymentReport> payments;
+
+    private LocalDate currentDate;
+
+    public boolean isReadyPaymentReport() {
+        return isReadyPaymentReport;
+    }
+
+    public void setReadyPaymentReport(boolean readyPaymentReport) {
+        isReadyPaymentReport = readyPaymentReport;
+    }
+
+    public Integer getPaymentReportSemiAnnualId() {
+        return paymentReportSemiAnnualId;
+    }
+
+    public void setPaymentReportSemiAnnualId(Integer paymentReportSemiAnnualId) {
+        this.paymentReportSemiAnnualId = paymentReportSemiAnnualId;
+    }
+
+    public Integer getPaymentReportMonthId() {
+        return paymentReportMonthId;
+    }
+
+    public void setPaymentReportMonthId(Integer paymentReportMonthId) {
+        this.paymentReportMonthId = paymentReportMonthId;
+    }
+
+    public List<PaymentReport> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<PaymentReport> payments) {
+        this.payments = payments;
+    }
+
+    public List<Month> getPaymentReportMonths(Integer semiAnnualId) {
+        if (paymentReportMonths == null) {
+            paymentReportMonths = new ArrayList<>();
+            if (semiAnnualId != null) {
+                for (Month month : cache.getMonths()) {
+                    if (month.getSemiAnnualId().equals(semiAnnualId)) {
+                        paymentReportMonths.add(month);
+                    }
+                }
+            }
+        }
+        return paymentReportMonths;
+    }
+
+    public void resetPaymentReportMonth() {
+        setPaymentReportMonthId(null);
+        paymentReportMonths = null;
+    }
+
+    public void cancelPaymentReportDialog() {
+        closePaymentReportDialog();
+    }
+
+    public void closePaymentReportDialog() {
+        RequestContext.getCurrentInstance().execute("PF('paymentReportDialog').hide()");
+    }
+
+    public void resetPaymentReportDialog(){
+        paymentReportSemiAnnualId = null;
+        paymentReportMonthId = null;
+        paymentReportMonths = null;
+        isReadyPaymentReport = false;
+    }
+
+    public void openPaymentReportDialog(){
+        resetPaymentReportDialog();
+        RequestContext.getCurrentInstance().execute("PF('paymentReportDialog').show()");
+    }
+
+    public boolean validatePaymentReportDialog(){ // TODO stugel ete @st orichi report@ nor
+        boolean isValid = true;
+        if (!isByCurrentdate && paymentReportSemiAnnualId == null) {
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Կիսամյակը պարտադիր դաշտ է");
+            FacesContext.getCurrentInstance().addMessage("paymentReportDialogFormId:paymentReportSemiAnnualId", facesMessage);
+            isValid = false;
+        }
+        return isValid;
+    }
+
+    public void generatePaymentReport(){
+        if(validatePaymentReportDialog()){
+            payments = new ArrayList<>();
+            if(isByCurrentdate){
+                payments = paymentDao.loadPaymentsByDate();
+            } else {
+                if (paymentReportMonthId == null) {
+                    payments = paymentDao.loadPaymentsBySemiAnnualId(paymentReportSemiAnnualId);
+                } else {
+                    payments = paymentDao.loadPaymentsByMonthId(paymentReportSemiAnnualId, paymentReportMonthId);
+                }
+            }
+            for (PaymentReport payment : payments) {
+                payment.setRegion(getRegionById(payment.getRegionId()));
+                payment.setBank(getBankById(payment.getBankId()));
+            }
+            isReadyPaymentReport = true;
+        }
+    }
+
+    public Region getRegionById(Integer id){
+        for(Region region: cache.getRegions()) {
+            if(Objects.equals(id, region.getId())){
+                return region;
+            }
+        }
+        return null;
+    }
+
+    public Bank getBankById(Integer id){
+        for(Bank bank: cache.getBanks()) {
+            if(Objects.equals(id, bank.getId())){
+                return bank;
+            }
+        }
+        return null;
+    }
+
+    private boolean isByCurrentdate;
+
+    public boolean isByCurrentdate() {
+        return isByCurrentdate;
+    }
+
+    public void setByCurrentdate(boolean byCurrentdate) {
+        isByCurrentdate = byCurrentdate;
+    }
+
+    public Date getCurrentDate() {
+        return new Date();
+    }
+
+    public void setCurrentDate(LocalDate currentDate) {
+        this.currentDate = currentDate;
+    }
+
+    /* -------------- Payment Report Start ---------- */
 
 }

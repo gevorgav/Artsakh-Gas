@@ -1,9 +1,13 @@
 package dao;
 
 import Models.Payment;
+import Models.PaymentReport;
 import dao.mapper.PaymentMapper;
+import dao.mapper.PaymentReportMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -108,5 +112,40 @@ public class PaymentDao extends Dao<Payment> {
 
         int updateCount = namedJdbc.update(sql, namedParameters);
         return updateCount == 1;
+    }
+
+    public List<PaymentReport> loadPaymentsBySemiAnnualId(Integer semiAnnualId) {
+        Objects.requireNonNull(semiAnnualId);
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        Set<Integer> ids;
+        int semi = semiAnnualId % 10;
+        if(semi == 1){
+            ids = new HashSet<>(Arrays.asList(4, 5, 6, 7, 8, 9));
+        } else {
+            ids = new HashSet<>(Arrays.asList(1, 2, 3, 10, 11, 12));
+        }
+        namedParameters.addValue("months", ids);
+        namedParameters.addValue("yearId", semiAnnualId/10);
+        String sql = "SELECT regionId, bankId, SUM(pay) as pay FROM payment WHERE YEAR(updatedDate) = :yearId AND  MONTH(updatedDate) IN (:months) GROUP BY regionId, bankId";
+        List<PaymentReport> paymentList = namedJdbc.query(sql, namedParameters, new PaymentReportMapper());
+        return paymentList;
+    }
+
+    public List<PaymentReport> loadPaymentsByMonthId(Integer semiAnnualId, Integer monthId) {
+        Objects.requireNonNull(semiAnnualId);
+        Objects.requireNonNull(monthId);
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("monthId", monthId%100);
+        namedParameters.addValue("yearId", semiAnnualId/10);
+        String sql = "SELECT regionId, bankId, SUM(pay) as pay FROM payment WHERE YEAR(updatedDate) = :yearId AND  MONTH(updatedDate) = :monthId GROUP BY regionId, bankId";
+        List<PaymentReport> paymentList = namedJdbc.query(sql, namedParameters, new PaymentReportMapper());
+        return paymentList;
+    }
+
+    public List<PaymentReport> loadPaymentsByDate() {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        String sql = "SELECT regionId, bankId, SUM(pay) as pay FROM payment WHERE updatedDate = CURRENT_DATE GROUP BY regionId, bankId";
+        List<PaymentReport> paymentList = namedJdbc.query(sql, namedParameters, new PaymentReportMapper());
+        return paymentList;
     }
 }
