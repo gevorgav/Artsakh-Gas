@@ -131,10 +131,16 @@ public class ClientDao extends Dao<Client>{
     public boolean delete(String clientId, Integer regionId){
         Objects.requireNonNull(clientId);
         Objects.requireNonNull(regionId);
+
+        Map namedParameters = new HashMap();
+        namedParameters.put("isDeleted", true);
+        namedParameters.put("deletedOn", new Date());
+        namedParameters.put("id", clientId);
+        namedParameters.put("regionId", regionId);
         String sql = "UPDATE clients\n" +
-            "SET isDeleted = ? " +
-            "WHERE id = ? AND regionId = ?";
-        int result = jdbcTemplate.update(sql,true, clientId, regionId);
+            "SET isDeleted = :isDeleted, deletedOn = :deletedOn " +
+            "WHERE id = :id AND regionId = :regionId";
+        int result = namedJdbc.update(sql, namedParameters);
         return result == 1;
     }
 

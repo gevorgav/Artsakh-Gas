@@ -13,6 +13,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -144,7 +145,12 @@ public class PaymentDao extends Dao<Payment> {
 
     public List<PaymentReport> loadPaymentsByDate() {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        String sql = "SELECT regionId, bankId, SUM(pay) as pay FROM payment WHERE updatedDate = CURRENT_DATE GROUP BY regionId, bankId";
+        LocalDate date = LocalDate.now();
+        LocalDate currentDate = LocalDate.of(date.getYear(), date.getMonth(), date.getDayOfMonth() - 1);
+        namedParameters.addValue("monthId", currentDate.getMonthValue());
+        namedParameters.addValue("yearId", currentDate.getYear());
+        namedParameters.addValue("dayId", currentDate.getDayOfMonth());
+        String sql = "SELECT regionId, bankId, SUM(pay) as pay FROM payment WHERE YEAR(updatedDate) = :yearId AND  MONTH(updatedDate) = :monthId AND DAY(updatedDate) = :dayId GROUP BY regionId, bankId";
         List<PaymentReport> paymentList = namedJdbc.query(sql, namedParameters, new PaymentReportMapper());
         return paymentList;
     }
