@@ -43,8 +43,8 @@ public class ClientMapper  implements RowMapper<Client> {
         client.setCompany(resultSet.getBoolean("isCompany"));
         client.setDeleted(resultSet.getBoolean("isDeleted"));
         client.setLicense(resultSet.getObject("license") != null ? resultSet.getString("license") : null);
-        client.setDebt(resultSet.getObject("debt") != null ? resultSet.getDouble("payment.debt") : null);
-        client.setPay(resultSet.getObject("pay") != null ? resultSet.getDouble("payment.pay") : null);
+//        client.setDebt(resultSet.getObject("debt") != null ? resultSet.getDouble("payment.debt") : null);
+//        client.setPay(resultSet.getObject("pay") != null ? resultSet.getDouble("payment.pay") : null);
         client.setClientHistory(new ClientHistoryMapper().mapRow(resultSet, i));
         return client;
     }

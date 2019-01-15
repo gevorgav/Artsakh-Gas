@@ -5,12 +5,16 @@ import com.sun.istack.internal.NotNull;
 import dao.mapper.ClientHistoryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.*;
 
 /**
@@ -31,6 +35,15 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
     public List<ClientHistory> loadAll() {
         try {
             String sql = "SELECT * FROM clientsHistory";
+            return jdbcTemplate.query(sql, new ClientHistoryMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return Collections.emptyList();
+        }
+    }
+
+    public List<ClientHistory> loadAllFiltred() {
+        try {
+            String sql = "select * from clientsHistory WHERE id IN (SELECT MAX(id) AS ids FROM clientsHistory group by clientId,regionId);";
             return jdbcTemplate.query(sql, new ClientHistoryMapper());
         } catch (EmptyResultDataAccessException e) {
             return Collections.emptyList();
@@ -91,6 +104,68 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
                 clientHistory.getBacakaJth(), clientHistory.getBacakaJtt(), clientHistory.getBacakaKet(), clientHistory.getBacakaJk(), clientHistory.getBacakaJv(),
                 clientHistory.getJTLog(), clientHistory.getRisk(), clientHistory.getMasterId(), clientHistory.getRegionId(), clientHistory.getSemiAnnualId(), clientHistory.getUserId());
         return result == 1;
+    }
+
+    public int integerToInt(Integer integer){
+        return integer == null ? 0 : integer.intValue();
+    }
+
+    public void insertBatch(final List<ClientHistory> clientHistories){
+
+        String sql = "INSERT INTO clientsHistory(clientId, violationActNumber, visitType, visitDescription, updateDate, previousVisitDate, nextVisitDate, stampNumbers, go1, go2, go3,go4,go5,go6," +
+                " bacakaGo1, bacakaGo2, bacakaGo3,bacakaGo4,bacakaGo5,bacakaGo6, jth, jtt, ket, jah, jk, jv,pakan ,bacakaJth, bacakaJtt, bacakaKet, bacakaJk, bacakaJv, JTLog, risk, masterId, regionId, semiAnnualId, userId)\n" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ClientHistory customer = clientHistories.get(i);
+                ps.setString(1, customer.getClientId());
+                ps.setString(2, customer.getViolationActNumber());
+                ps.setObject(3, customer.getVisitType(), Types.INTEGER);
+                ps.setString(4, customer.getVisitDescription() );
+                ps.setDate(5, (java.sql.Date) customer.getUpdateDate());
+                ps.setDate(6, (java.sql.Date) customer.getPreviousVisitDate());
+                ps.setDate(7, (java.sql.Date) customer.getNextVisitDate());
+                ps.setString(8, customer.getStampNumbers() );
+                ps.setInt(9, integerToInt(customer.getGo1()));
+                ps.setInt(10, integerToInt(customer.getGo2()));
+                ps.setInt(11, integerToInt(customer.getGo3()));
+                ps.setInt(12, integerToInt(customer.getGo4()));
+                ps.setInt(13, integerToInt(customer.getGo5()));
+                ps.setInt(14, integerToInt(customer.getGo6()));
+                ps.setInt(15, integerToInt(customer.getBacakaGo1()));
+                ps.setInt(16, integerToInt(customer.getBacakaGo2()));
+                ps.setInt(17, integerToInt(customer.getBacakaGo3()));
+                ps.setInt(18, integerToInt(customer.getBacakaGo4()));
+                ps.setInt(19, integerToInt(customer.getBacakaGo5()));
+                ps.setInt(20, integerToInt(customer.getBacakaGo6()));
+                ps.setInt(21, integerToInt(customer.getJth()));
+                ps.setInt(22, integerToInt(customer.getJtt()));
+                ps.setInt(23, integerToInt(customer.getKet()));
+                ps.setInt(24, integerToInt(customer.getJah()));
+                ps.setInt(25, integerToInt(customer.getJk()));
+                ps.setInt(26, integerToInt(customer.getJv()));
+                ps.setInt(27, integerToInt(customer.getPakan()));
+                ps.setInt(28, integerToInt(customer.getBacakaJth()));
+                ps.setInt(29, integerToInt(customer.getBacakaJtt()));
+                ps.setInt(30, integerToInt(customer.getBacakaKet()));
+                ps.setInt(31, integerToInt(customer.getBacakaJk()));
+                ps.setInt(32, integerToInt(customer.getBacakaJv()));
+                ps.setString(33, customer.getJTLog());
+                ps.setString(34, customer.getRisk());
+                ps.setObject(35, customer.getMasterId(), Types.INTEGER);
+                ps.setObject(36, customer.getRegionId(),Types.INTEGER);
+                ps.setInt(37, 20182);
+                ps.setObject(38, customer.getUserId(), Types.INTEGER);
+            }
+
+            @Override
+            public int getBatchSize() {
+                return clientHistories.size();
+            }
+        });
     }
 
     public Integer insertAndReturnId(ClientHistory clientHistory) {

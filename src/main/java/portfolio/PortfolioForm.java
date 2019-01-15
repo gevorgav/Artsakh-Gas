@@ -131,9 +131,35 @@ public class PortfolioForm {
     @Autowired
     private VisitPlanDao visitPlanDao;
 
+
+
     public List<Client> getClients() {
+//        List<ClientHistory> all= clientHistoryDao.loadAllFiltred();
+//        List<ClientHistory> list20181 = all.stream().filter(clientHistory1 -> clientHistory1.getSemiAnnualId().equals(20181)).collect(Collectors.toList());
+//        List<ClientHistory> list20182 = all.stream().filter(clientHistory1 -> clientHistory1.getSemiAnnualId().equals(20182)).collect(Collectors.toList());
+//        List<ClientHistory> finalList = new ArrayList<>();
+//        for(ClientHistory clientHistory: list20181){
+//            boolean status = true;
+//            for(ClientHistory clientHistory1: list20182){
+//                if(clientHistory.getClientId().equals(clientHistory1.getClientId()) && clientHistory.getRegionId().equals(clientHistory1.getRegionId())){
+//                    status = false;
+//                }
+//            }
+//            if(status){
+//                clientHistory.setSemiAnnualId(20182);
+//                finalList.add(clientHistory);
+//            }
+//        }
+
+//        for (ClientHistory clientHistory: finalList){
+//            clientHistoryDao.insert(clientHistory);
+//
+//        }
+//clientHistoryDao.insertBatch(finalList);
+        long s = System.currentTimeMillis();
         if (clients == null) {
             this.clients = clientDao.loadAll(getLoginForm().getUser().getRole().equals(User.Role.ADMIN) ? null : getLoginForm().getUser().getRegionId());
+            System.out.println("Client loaded : load time = " + (System.currentTimeMillis() - s));
         }
         return clients;
     }
@@ -979,11 +1005,31 @@ public class PortfolioForm {
         }
     }
 
+    private List<Client> reportClient;
+
+    public List<Client> getReportClient() {
+        if(Objects.isNull(reportClient)){
+            this.reportClient = this.clients;
+        }
+        return reportClient;
+    }
+
+    public void setReportClient(List<Client> reportClient) {
+        this.reportClient = reportClient;
+    }
+
+    private List<Client> allClients;
     public List<Client> filter(List<Client> filteredClients) {
+        if(Objects.isNull(allClients)){
+            allClients = clientDao.loadAllBySemiAnnual(getLoginForm().getUser().getRole().equals(User.Role.ADMIN) ? null : getLoginForm().getUser().getRegionId());
+        }
         List<Client> newFilteredClients = new ArrayList<>();
         List<Client> filteredClientsBySemiAnnual = new ArrayList<>();
         if (filteredClients == null) {
             filteredClients = this.clients;
+        }
+        if(filteredClients.size() == getReportClient().size()){
+            filteredClients = allClients;
         }
         for (Client client : filteredClients) {
             if(Objects.equals(getCurrentSemiAnnualId(), client.getClientHistory().getSemiAnnualId())){
@@ -1030,8 +1076,10 @@ public class PortfolioForm {
 //                }
                 newFilteredClients.add(client);
             }
+            this.reportClient = newFilteredClients;
             return newFilteredClients;
         } else {
+            this.reportClient = filteredClientsBySemiAnnual;
             return filteredClientsBySemiAnnual;
         }
     }

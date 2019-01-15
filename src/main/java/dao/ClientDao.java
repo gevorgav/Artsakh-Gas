@@ -28,39 +28,59 @@ public class ClientDao extends Dao<Client>{
             String sql = null;
             if(Objects.isNull(regionId)){
                 sql = "SELECT *\n" +
-                        "FROM clients\n" +
-                        "  LEFT JOIN clientsHistory ON clients.id = clientsHistory.clientId AND clients.regionId = clientsHistory.regionId\n" +
-                        "  LEFT JOIN payment\n" +
-                        "    ON payment.clientId = clientsHistory.clientId AND payment.semiAnnualId = clientsHistory.semiAnnualId AND\n" +
-                        "       clientsHistory.regionId = payment.regionId AND payment.Id in (SELECT MAX(payment.id)\n" +
-                        "                                                                     FROM payment\n" +
-                        "                                                                       LEFT  join clients on\n" +
-                        "                                                                                            payment.clientId = clients.id\n" +
-                        "                                                                     GROUP BY payment.clientId,\n" +
-                        "                                                                       clients.regionId, payment.semiAnnualId)\n" +
-                        "WHERE  clientsHistory.id IN (SELECT MAX(clientsHistory.id)\n" +
-                        "                                                      FROM clientsHistory\n" +
-                        "                                                      GROUP BY clientsHistory.id, clientsHistory.clientId,\n" +
-                        "                                                        clientsHistory.regionId) AND isDeleted = 0\n" +
-                        "GROUP BY clients.id, clients.regionId, payment.semiAnnualId";
+                        "                        FROM clients \n" +
+                        "                          LEFT JOIN clientsHistory ON clients.id = clientsHistory.clientId AND clients.regionId = clientsHistory.regionId \n" +
+                        "                          \n" +
+                        "                        WHERE  clientsHistory.id IN (SELECT MAX(clientsHistory.id) \n" +
+                        "                                                                              FROM clientsHistory \n" +
+                        "                                                                              GROUP BY clientsHistory.clientId, \n" +
+                        "                                                                                clientsHistory.regionId) AND isDeleted = 0 \n" +
+                        "                        GROUP BY clients.id, clients.regionId";
             }else {
                 sql = "SELECT *\n" +
-                        "FROM clients\n" +
-                        "  LEFT JOIN clientsHistory ON clients.id = clientsHistory.clientId AND clients.regionId = clientsHistory.regionId\n" +
-                        "  LEFT JOIN payment\n" +
-                        "    ON payment.clientId = clientsHistory.clientId AND payment.semiAnnualId = clientsHistory.semiAnnualId AND\n" +
-                        "       clientsHistory.regionId = payment.regionId AND payment.Id in (SELECT MAX(payment.id)\n" +
-                        "                                                                     FROM payment\n" +
-                        "                                                                       LEFT  join clients on\n" +
-                        "                                                                                            payment.clientId = clients.id\n" +
-                        "                                                                     GROUP BY payment.clientId,\n" +
-                        "                                                                       clients.regionId, payment.semiAnnualId)\n" +
-                        "WHERE  clients.regionId = " + regionId +" AND clientsHistory.id IN (SELECT MAX(clientsHistory.id)\n" +
-                        "                                                      FROM clientsHistory\n" +
-                        "                                                      GROUP BY clientsHistory.clientId,\n" +
-                        "                                                        clientsHistory.regionId)  AND isDeleted = 0\n" +
-                        "GROUP BY clients.id, clients.regionId, payment.semiAnnualId";
+                        "                        FROM clients \n" +
+                        "                          LEFT JOIN clientsHistory ON clients.id = clientsHistory.clientId AND clients.regionId = clientsHistory.regionId \n" +
+                        "                          \n" +
+                        "WHERE  clients.regionId = " + regionId +" AND clientsHistory.id IN (SELECT MAX(clientsHistory.id) \n" +
+                        "                                                                              FROM clientsHistory \n" +
+                        "                                                                              GROUP BY clientsHistory.clientId, \n" +
+                        "                                                                                clientsHistory.regionId) AND isDeleted = 0 \n" +
+                        "                        GROUP BY clients.id, clients.regionId";
             }
+
+
+            return jdbcTemplate.query(sql, new ClientMapper(clientHistoryDao));
+        } catch (EmptyResultDataAccessException e) {
+            return Collections.emptyList();
+        }
+    }
+
+
+    public List<Client> loadAllBySemiAnnual(Integer regionId) {
+        try {
+            String sql = null;
+            if(Objects.isNull(regionId)){
+                sql = "SELECT *\n" +
+                        "                        FROM clients \n" +
+                        "                          LEFT JOIN clientsHistory ON clients.id = clientsHistory.clientId AND clients.regionId = clientsHistory.regionId \n" +
+                        "                          \n" +
+                        "                        WHERE  clientsHistory.id IN (SELECT MAX(clientsHistory.id) \n" +
+                        "                                                                              FROM clientsHistory \n" +
+                        "                                                                              GROUP BY clientsHistory.semiAnnualId, clientsHistory.clientId, \n" +
+                        "                                                                                clientsHistory.regionId) AND isDeleted = 0 \n" +
+                        "                        GROUP BY clients.id, clients.regionId, clientsHistory.semiAnnualId";
+            }else {
+                sql = "SELECT *\n" +
+                        "                        FROM clients \n" +
+                        "                          LEFT JOIN clientsHistory ON clients.id = clientsHistory.clientId AND clients.regionId = clientsHistory.regionId \n" +
+                        "                          \n" +
+                        "WHERE  clients.regionId = " + regionId +" AND clientsHistory.id IN (SELECT MAX(clientsHistory.id) \n" +
+                        "                                                                              FROM clientsHistory \n" +
+                        "                                                                              GROUP BY clientsHistory.semiAnnualId,clientsHistory.clientId, \n" +
+                        "                                                                                clientsHistory.regionId) AND isDeleted = 0 \n" +
+                        "                        GROUP BY clients.id, clients.regionId, clientsHistory.semiAnnualId";
+            }
+
 
             return jdbcTemplate.query(sql, new ClientMapper(clientHistoryDao));
         } catch (EmptyResultDataAccessException e) {

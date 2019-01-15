@@ -281,7 +281,7 @@
                                         <h:panelGroup layout="block" class="de-table-block" id="table2">
                                             <p:dataTable var="client"
                                                          id="clientReportTableId"
-                                                         value="#{portfolioForm.clients}"
+                                                         value="#{portfolioForm.reportClient}"
                                                          widgetVar="reportClientTable"
                                                          styleClass="table table-hover b-t de-table"
                                                          emptyMessage="Չկա տվյալններ"
@@ -290,8 +290,8 @@
                                                          rows="20"
                                                          selection="#{portfolioForm.selectedClients}"
                                                          rowKey="#{client.id}"
-                                                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {RowsPerPageDropdown} {NextPageLink} {LastPageLink}"
-                                                         rowsPerPageTemplate="10,20,50"
+                                                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                                         rowsPerPageTemplate="10,20,50,100"
                                                          style="margin-bottom:0"
                                                          sortBy="#{client.id}"
                                                          sortOrder="ascending">
@@ -360,13 +360,13 @@
                                                     <h:outputText value="#{client.clientHistory.risk}"></h:outputText>
                                                 </p:column>
 
-                                                <p:column filterBy="#{client.debt}" style="width: 10%" headerText="Պարտք" filterMatchMode="contains">
-                                                    <h:outputText value="#{client.debt}"></h:outputText>
-                                                </p:column>
+                                                <!--<p:column filterBy="#{client.debt}" style="width: 10%" headerText="Պարտք" filterMatchMode="contains">-->
+                                                    <!--<h:outputText value="#{client.debt}"></h:outputText>-->
+                                                <!--</p:column>-->
 
-                                                <p:column filterBy="#{client.pay}" style="width: 10%" headerText="Մուծած" filterMatchMode="contains">
-                                                    <h:outputText value="#{client.pay}"></h:outputText>
-                                                </p:column>
+                                                <!--<p:column filterBy="#{client.pay}" style="width: 10%" headerText="Մուծած" filterMatchMode="contains">-->
+                                                    <!--<h:outputText value="#{client.pay}"></h:outputText>-->
+                                                <!--</p:column>-->
 
                                             </p:dataTable>
 
