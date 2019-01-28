@@ -259,22 +259,23 @@
                                 <div class="box-body">
                                     <h:panelGroup id="yearlyPanelId">
 
-                                        <h:panelGrid columns="5" cellpadding="5">
+                                        <h:panelGrid columns="4" cellpadding="5">
                                             <p:commandButton id="graficButtonId" value="Ստեղծել Գրաֆիկ" styleClass="dark"  oncomplete="PF('graficDialog').show();">
                                             </p:commandButton>
                                             <p:commandButton value="Ավելացնել ֆիլտր" styleClass="dark" action="#{portfolioForm.openFilterDialog}" process="@this" update="filterDialogId"/>
                                             <p:commandButton value="Ջնջել ֆիլտրը" styleClass="dark" actionListener="#{portfolioForm.removeFilter}" oncomplete="PF('reportClientTable').filter()"/>
-                                            <p:commandButton id="paymentReportButtonId" value="Ստեղծել Հաշվետվություն" styleClass="dark"  actionListener="#{portfolioForm.openPaymentReportDialog}" update="paymentReportDialogId">
+                                            <p:commandButton id="paymentReportButtonId" rendered="#{loginForm.user.admin}" value="Ստեղծել Հաշվետվություն" styleClass="dark"  actionListener="#{portfolioForm.openPaymentReportDialog}" update="paymentReportDialogId">
                                             </p:commandButton>
-                                            <div class="row">
-                                                <div class="col-sm-4 col-md-4">
-                                                    <p:selectOneMenu id="semiAnnualId" styleClass="form-control input-c" value="#{portfolioForm.currentSemiAnnualId}">
-                                                        <f:converter converterId="javax.faces.Integer" />
-                                                        <f:selectItems value="#{portfolioForm.cache.semiAnnuals}" var="semiAnnual" itemLabel="#{semiAnnual.name}" itemValue="#{semiAnnual.id}"/>
-                                                        <p:ajax event="change" process="@this" oncomplete="PF('reportClientTable').filter()"  />
-                                                    </p:selectOneMenu>
-                                                </div>
+
+                                            <div class="col-sm-4 col-md-4">
+                                                <p:selectOneMenu id="semiAnnualId" styleClass="form-control input-c" value="#{portfolioForm.currentSemiAnnualId}">
+                                                    <f:converter converterId="javax.faces.Integer" />
+                                                    <f:selectItems value="#{portfolioForm.cache.semiAnnuals}" var="semiAnnual" itemLabel="#{semiAnnual.name}" itemValue="#{semiAnnual.id}"/>
+                                                    <p:ajax event="change" process="@this" oncomplete="PF('reportClientTable').filter()"  />
+                                                </p:selectOneMenu>
                                             </div>
+                                            <p:commandButton value="Թարմացնել" styleClass="dark" action="#{portfolioForm.resetAllData}" process="@this" update="@this"/>
+                                            <p:commandButton value="Հանել նշվածները" styleClass="dark" action="#{portfolioForm.resetSelectedClients}" process="@this" update="@this"/>
                                         </h:panelGrid>
                                         <div class="clear"></div>
                                         <p:remoteCommand name="onload" oncomplete="PF('reportClientTable').filter()" autoRun="true"/>
@@ -360,13 +361,15 @@
                                                     <h:outputText value="#{client.clientHistory.risk}"></h:outputText>
                                                 </p:column>
 
-                                                <!--<p:column filterBy="#{client.debt}" style="width: 10%" headerText="Պարտք" filterMatchMode="contains">-->
-                                                    <!--<h:outputText value="#{client.debt}"></h:outputText>-->
-                                                <!--</p:column>-->
+                                                    <p:column filterBy="#{client.debt}" style="width: 10%" headerText="Պարտք" filterMatchMode="contains">
+                                                    <h:outputText value="#{client.debt}">
+                                                    </h:outputText>
+                                                </p:column>
 
-                                                <!--<p:column filterBy="#{client.pay}" style="width: 10%" headerText="Մուծած" filterMatchMode="contains">-->
-                                                    <!--<h:outputText value="#{client.pay}"></h:outputText>-->
-                                                <!--</p:column>-->
+                                                <p:column filterBy="#{client.pay}" style="width: 10%" headerText="Մուծած" filterMatchMode="contains">
+                                                    <h:outputText value="#{client.pay}">
+                                                    </h:outputText>
+                                                </p:column>
 
                                             </p:dataTable>
 

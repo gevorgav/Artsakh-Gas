@@ -154,4 +154,13 @@ public class PaymentDao extends Dao<Payment> {
         List<PaymentReport> paymentList = namedJdbc.query(sql, namedParameters, new PaymentReportMapper());
         return paymentList;
     }
+
+    public List<Payment> loadAllLastItems(){
+        try {
+            String sql = "SELECT * FROM payment WHERE id IN (SELECT MAX(id)FROM payment GROUP BY clientId, regionId, semiAnnualId)";
+            return jdbcTemplate.query(sql, new PaymentMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return Collections.emptyList();
+        }
+    }
 }

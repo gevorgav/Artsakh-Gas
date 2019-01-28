@@ -1010,6 +1010,7 @@ public class PortfolioForm {
     public List<Client> getReportClient() {
         if(Objects.isNull(reportClient)){
             this.reportClient = this.clients;
+            initPayment(this.reportClient);
         }
         return reportClient;
     }
@@ -1022,6 +1023,7 @@ public class PortfolioForm {
     public List<Client> filter(List<Client> filteredClients) {
         if(Objects.isNull(allClients)){
             allClients = clientDao.loadAllBySemiAnnual(getLoginForm().getUser().getRole().equals(User.Role.ADMIN) ? null : getLoginForm().getUser().getRegionId());
+            initPayment(allClients);
         }
         List<Client> newFilteredClients = new ArrayList<>();
         List<Client> filteredClientsBySemiAnnual = new ArrayList<>();
@@ -1838,5 +1840,41 @@ public class PortfolioForm {
     }
 
     /* -------------- Payment Report Start ---------- */
+
+
+    public Double getDebt(Client client){
+        return 0.0d;
+    }
+
+    public Double getPay(Client client){
+        return 0.0d;
+    }
+
+    public void initPayment(List<Client> clients) {
+        long s = System.currentTimeMillis();
+        for (Payment payment : paymentDao.loadAll()) {
+            for(Client client: clients){
+                if(Objects.equals(client.getId(), payment.getClientId()) && Objects.equals(client.getRegionId(), payment.getRegionId()) && Objects.equals(client.getClientHistory().getSemiAnnualId(), payment.getSemiAnnualId())){
+                    client.setDebt(payment.getDebt());
+                    client.setPay(payment.getPay());
+                    if(Objects.nonNull(payment.getDebt()) && Objects.nonNull(payment.getPay())){
+                        client.getClientHistory().setPaid(payment.getPay() - payment.getDebt() > 0.00 ? true:false);
+                    }
+                }
+            }
+        }
+        System.out.println("Payment loaded : load time = " + (System.currentTimeMillis() - s));
+    }
+
+    public void resetAllData(){
+        this.allClients = null;
+        this.reportClient = null;
+        RequestContext.getCurrentInstance().update("portfolioForm");
+    }
+
+    public void resetSelectedClients(){
+        selectedClients = new ArrayList<>();
+        RequestContext.getCurrentInstance().update("portfolioForm");
+    }
 
 }
