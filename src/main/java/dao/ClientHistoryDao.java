@@ -78,10 +78,10 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
     /**
      * Method to load client's last clientHistory
      */
-    public ClientHistory loadLastClientHistory(String clientId, Integer regionId) {
+    public ClientHistory loadLastClientHistory(String clientId, Integer regionId, Integer clientIsCompany) {
         Objects.requireNonNull(clientId);
-        String sql = "SELECT * FROM clientsHistory WHERE clientId = ? AND regionId = ? ORDER BY id DESC LIMIT 1";
-        List<ClientHistory> clientHistoryList = jdbcTemplate.query(sql, new ClientHistoryMapper(), clientId ,regionId);
+        String sql = "SELECT * FROM clientsHistory WHERE clientId = ? AND isCompany = ? AND regionId = ? ORDER BY id DESC LIMIT 1";
+        List<ClientHistory> clientHistoryList = jdbcTemplate.query(sql, new ClientHistoryMapper(), clientId, clientIsCompany ,regionId);
         if (clientHistoryList.size() < 1) {
             return null;
         }
@@ -172,9 +172,9 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
         Objects.requireNonNull(clientHistory);
         clientHistory.setUpdateDate(new Date());
         String sql = "INSERT INTO clientsHistory(clientId, violationActNumber, visitType, visitDescription, updateDate, previousVisitDate, nextVisitDate, stampNumbers, go1, go2, go3,go4,go5,go6," +
-                " bacakaGo1, bacakaGo2, bacakaGo3,bacakaGo4,bacakaGo5,bacakaGo6, jth, jtt, ket, jah, jk, jv,pakan ,bacakaJth, bacakaJtt, bacakaKet, bacakaJk, bacakaJv, JTLog, risk, masterId, regionId, semiAnnualId, userId)\n" +
+                " bacakaGo1, bacakaGo2, bacakaGo3,bacakaGo4,bacakaGo5,bacakaGo6, jth, jtt, ket, jah, jk, jv,pakan ,bacakaJth, bacakaJtt, bacakaKet, bacakaJk, bacakaJv, JTLog, risk, masterId, regionId, semiAnnualId, userId, isCompany)\n" +
                 "VALUES (:clientId, :violationActNumber, :visitType, :visitDescription, :updateDate, :previousVisitDate, :nextVisitDate, :stampNumbers, :go1, :go2, :go3,:go4,:go5,:go6, :bacakaGo1," +
-                ":bacakaGo2, :bacakaGo3,:bacakaGo4,:bacakaGo5,:bacakaGo6, :jth, :jtt, :ket, :jah, :jk, :jv,:pakan ,:bacakaJth, :bacakaJtt, :bacakaKet, :bacakaJk, :bacakaJv,:JTLog, :risk, :masterId, :regionId, :semiAnnualId, :userId)";
+                ":bacakaGo2, :bacakaGo3,:bacakaGo4,:bacakaGo5,:bacakaGo6, :jth, :jtt, :ket, :jah, :jk, :jv,:pakan ,:bacakaJth, :bacakaJtt, :bacakaKet, :bacakaJk, :bacakaJv,:JTLog, :risk, :masterId, :regionId, :semiAnnualId, :userId, :isCompany)";
         SqlParameterSource fileParameters = new BeanPropertySqlParameterSource(clientHistory);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int result = namedJdbc.update(sql, fileParameters, keyHolder);
@@ -224,6 +224,7 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
         namedParameters.put("masterId", clientHistory.getMasterId());
         namedParameters.put("regionId", clientHistory.getRegionId());
         namedParameters.put("userId", clientHistory.getUserId());
+        namedParameters.put("isCompany", clientHistory.getIsCompany());
 
         String sql = "UPDATE clientsHistory SET violationActNumber = :violationActNumber, updateDate = :updateDate," +
                 " previousVisitDate = :previousVisitDate, nextVisitDate = :nextVisitDate , " +
@@ -232,7 +233,7 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
                 "bacakaGo6 = :bacakaGo6, jth = :jth, jtt = :jtt, ket = :ket, jah = :jah, jk = :jk, jv = :jv,pakan = :pakan ," +
                 "bacakaJth = :bacakaJth, bacakaJtt = :bacakaJtt, bacakaKet = :bacakaKet, bacakaJk = :bacakaJk," +
                 "bacakaJv = :bacakaJv, JTLog = :JTLog, risk = :risk, masterId = :masterId\n, semiAnnualId = :semiAnnualId, userId = :userId " +
-                "WHERE id = :id AND regionId = :regionId";
+                "WHERE id = :id AND regionId = :regionId AND isCompany = :isCompany";
 
         int updateCount = namedJdbc.update(sql, namedParameters);
         return updateCount == 1;
@@ -323,72 +324,136 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
         return updateCount > 0;
     }
 
-    public boolean moveHistoryToSemiAnnualForAllRegions(@NotNull Integer semiAnnualId){
+    public boolean moveHistoryToSemiAnnualForAllRegions(@NotNull Integer semiAnnualId){ //TODO GA
         Map namedParameters = new HashMap();
         namedParameters.put("semiAnnualId", semiAnnualId);
-        String query = "INSERT INTO clientsHistory (clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, semiAnnualId)\n" +
-                "  SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId\n" +
-                "  FROM clientsHistory\n" +
-                "  WHERE id IN (SELECT MAX(id)\n" +
-                "               FROM (SELECT *\n" +
+        String query = "INSERT INTO clientsHistory (clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, semiAnnualId, isCompany)\n" +
+                "   SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId, isCompany\n" +
+                "   FROM clientsHistory\n" +
+                "   WHERE id IN (SELECT MAX(id)\n" +
+                "              FROM (SELECT *\n" +
                 "                     FROM clientsHistory\n" +
-                "                     WHERE regionId = 1) s\n" +
+                "                    WHERE regionId = 1 AND isCompany = 1) s\n" +
                 "               GROUP BY s.clientId)\n" +
                 "   UNION ALL\n" +
-                "   SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId\n" +
+                "   SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId, isCompany\n" +
                 "   FROM clientsHistory\n" +
                 "   WHERE id IN (SELECT MAX(id)\n" +
                 "                FROM (SELECT *\n" +
                 "                      FROM clientsHistory\n" +
-                "                      WHERE regionId = 2) s\n" +
+                "                      WHERE regionId = 1 AND isCompany = 0) s\n" +
                 "                GROUP BY s.clientId)\n" +
                 "   UNION ALL\n" +
-                "   SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId\n" +
+                "   SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId, isCompany\n" +
+                "   FROM clientsHistory\n" +
+                "   WHERE id IN (SELECT MAX(id)\n" +
+                "               FROM (SELECT *\n" +
+                "                     FROM clientsHistory\n" +
+                "                     WHERE regionId = 2 AND isCompany = 1) s\n" +
+                "               GROUP BY s.clientId)\n" +
+                "   UNION ALL\n" +
+                "   SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId, isCompany\n" +
                 "   FROM clientsHistory\n" +
                 "   WHERE id IN (SELECT MAX(id)\n" +
                 "                FROM (SELECT *\n" +
                 "                      FROM clientsHistory\n" +
-                "                      WHERE regionId = 3) s\n" +
+                "                      WHERE regionId = 2 AND isCompany = 0) s\n" +
                 "                GROUP BY s.clientId)\n" +
                 "   UNION ALL\n" +
-                "   SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId\n" +
+                "   SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId, isCompany\n" +
                 "   FROM clientsHistory\n" +
                 "   WHERE id IN (SELECT MAX(id)\n" +
                 "                FROM (SELECT *\n" +
                 "                      FROM clientsHistory\n" +
-                "                      WHERE regionId = 4) s\n" +
+                "                      WHERE regionId = 3 AND isCompany = 1) s\n" +
                 "                GROUP BY s.clientId)\n" +
                 "   UNION ALL\n" +
-                "   SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId\n" +
+                "   SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId, isCompany\n" +
                 "   FROM clientsHistory\n" +
                 "   WHERE id IN (SELECT MAX(id)\n" +
                 "                FROM (SELECT *\n" +
                 "                      FROM clientsHistory\n" +
-                "                      WHERE regionId = 5) s\n" +
+                "                      WHERE regionId = 3 AND isCompany = 0) s\n" +
                 "                GROUP BY s.clientId)\n" +
                 "   UNION ALL\n" +
-                "   SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId\n" +
+                "   SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId, isCompany\n" +
                 "   FROM clientsHistory\n" +
                 "   WHERE id IN (SELECT MAX(id)\n" +
                 "                FROM (SELECT *\n" +
                 "                      FROM clientsHistory\n" +
-                "                      WHERE regionId = 6) s\n" +
+                "                      WHERE regionId = 4 AND isCompany = 1) s\n" +
                 "                GROUP BY s.clientId)\n" +
                 "   UNION ALL\n" +
-                "   SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId\n" +
+                "   SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId, isCompany\n" +
                 "   FROM clientsHistory\n" +
                 "   WHERE id IN (SELECT MAX(id)\n" +
                 "                FROM (SELECT *\n" +
                 "                      FROM clientsHistory\n" +
-                "                      WHERE regionId = 7) s\n" +
+                "                      WHERE regionId = 4 AND isCompany = 0) s\n" +
                 "                GROUP BY s.clientId)\n" +
                 "   UNION ALL\n" +
-                "   SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId\n" +
+                "   SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId, isCompany\n" +
                 "   FROM clientsHistory\n" +
                 "   WHERE id IN (SELECT MAX(id)\n" +
                 "                FROM (SELECT *\n" +
                 "                      FROM clientsHistory\n" +
-                "                      WHERE regionId = 8) s\n" +
+                "                      WHERE regionId = 5 AND isCompany = 1) s\n" +
+                "                GROUP BY s.clientId)\n" +
+                "   UNION ALL\n" +
+                "   SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId, isCompany\n" +
+                "   FROM clientsHistory\n" +
+                "   WHERE id IN (SELECT MAX(id)\n" +
+                "                FROM (SELECT *\n" +
+                "                      FROM clientsHistory\n" +
+                "                      WHERE regionId = 5 AND isCompany = 0) s\n" +
+                "                GROUP BY s.clientId)\n" +
+                "   UNION ALL\n" +
+                "   SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId, isCompany\n" +
+                "   FROM clientsHistory\n" +
+                "   WHERE id IN (SELECT MAX(id)\n" +
+                "                FROM (SELECT *\n" +
+                "                      FROM clientsHistory\n" +
+                "                      WHERE regionId = 6 AND isCompany = 1) s\n" +
+                "                GROUP BY s.clientId)\n" +
+                "   UNION ALL\n" +
+                "   SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId, isCompany\n" +
+                "   FROM clientsHistory\n" +
+                "   WHERE id IN (SELECT MAX(id)\n" +
+                "                FROM (SELECT *\n" +
+                "                      FROM clientsHistory\n" +
+                "                      WHERE regionId = 6 AND isCompany = 0) s\n" +
+                "                GROUP BY s.clientId)\n" +
+                "   UNION ALL\n" +
+                "   SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId, isCompany\n" +
+                "   FROM clientsHistory\n" +
+                "   WHERE id IN (SELECT MAX(id)\n" +
+                "                FROM (SELECT *\n" +
+                "                      FROM clientsHistory\n" +
+                "                     WHERE regionId = 7 AND isCompany = 1) s\n" +
+                "                GROUP BY s.clientId)\n" +
+                "   UNION ALL\n" +
+                "   SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId, isCompany\n" +
+                "   FROM clientsHistory\n" +
+                "   WHERE id IN (SELECT MAX(id)\n" +
+                "                FROM (SELECT *\n" +
+                "                      FROM clientsHistory\n" +
+                "                      WHERE regionId = 7 AND isCompany = 0) s\n" +
+                "                GROUP BY s.clientId)\n" +
+                "   UNION ALL\n" +
+                "   SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId, isCompany\n" +
+                "   FROM clientsHistory\n" +
+                "   WHERE id IN (SELECT MAX(id)\n" +
+                "                FROM (SELECT *\n" +
+                "                      FROM clientsHistory\n" +
+                "                      WHERE regionId = 8 AND isCompany = 1) s\n" +
+                "                GROUP BY s.clientId)\n" +
+                "   UNION ALL\n" +
+                "   SELECT clientId, violationActNumber, updateDate, previousVisitDate, nextVisitDate, stampNumbers, risk, pakan, jah, bacakaJth, jth, bacakaJtt, jtt, bacakaJv, jv, bacakaJk, jk, bacakaKet, ket, bacakaGo4, go4, bacakaGo3, go3, bacakaGo2, go2, bacakaGo1, go1, go5, bacakaGo5, go6, bacakaGo6, JTLog, masterId, visitDescription, regionId, userId, :semiAnnualId, isCompany\n" +
+                "   FROM clientsHistory\n" +
+                "   WHERE id IN (SELECT MAX(id)\n" +
+                "                FROM (SELECT *\n" +
+                "                      FROM clientsHistory\n" +
+                "                      WHERE regionId = 8 AND isCompany = 0) s\n" +
                 "                GROUP BY s.clientId);";
         int updateCount = namedJdbc.update(query, namedParameters);
         return updateCount > 0;

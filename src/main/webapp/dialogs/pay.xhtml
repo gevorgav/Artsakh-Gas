@@ -11,12 +11,16 @@
         <h:form id="searchFormIdPay" onsubmit="return false;">
             <div class="row-body">
                 <div class="form-group row">
-                    <div class="col-sm-4 col-md-4">
+                    <div class="col-sm-3 col-md-3">
                         <p:inputText id="id" maxlength="6"
                                      value="#{portfolioForm.paymentClientId}" placeholder="Բաժանորդի համար">
                         </p:inputText>
                     </div>
-                    <div class="col-sm-4 col-md-4">
+                    <div class="col-sm-2 col-md-2">
+                        <p:outputLabel class="form-control-label" for="clientIdIsCompanyID" value="Հիմնարկ: " />
+                        <p:selectBooleanCheckbox value="#{portfolioForm.paymentIsCompany}" id="clientIdIsCompanyID"/>
+                    </div>
+                    <div class="col-sm-3 col-md-3">
                         <p:selectOneMenu id="regionIdPay" value="#{portfolioForm.paymentRegionId}"
                                          styleClass="form-control input-c" disabled="#{!loginForm.user.isAdmin()}">
                             <f:selectItem id="regionSelectOneIdPay" itemLabel="Ընտրիր Շրջանը"/>

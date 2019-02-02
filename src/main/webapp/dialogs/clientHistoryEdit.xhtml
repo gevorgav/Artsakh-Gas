@@ -11,12 +11,16 @@
         <h:form id="searchFormId" onsubmit="return false;">
             <div class="row-body">
                 <div class="form-group row">
-                    <div class="col-sm-4 col-md-4">
+                    <div class="col-sm-3 col-md-3">
                         <p:inputText id="id" maxlength="6"
                                      value="#{portfolioForm.clientId}" placeholder="Բաժանորդի համար">
                         </p:inputText>
                     </div>
-                    <div class="col-sm-4 col-md-4">
+                    <div class="col-sm-2 col-md-2">
+                        <p:outputLabel class="form-control-label" for="clientIdIsCompanyID" value="Հիմնարկ: " />
+                        <p:selectBooleanCheckbox value="#{portfolioForm.clientIsCompany}" id="clientIdIsCompanyID"/>
+                    </div>
+                    <div class="col-sm-3 col-md-3">
                         <p:selectOneMenu id="regionId" value="#{portfolioForm.historyRegionId}" styleClass="form-control input-c" disabled="#{!loginForm.user.isAdmin()}">
                             <f:selectItem id="regionSelectOneId" itemLabel="Ընտրիր Շրջանը"/>
                             <f:selectItems id="regionsId"
@@ -115,7 +119,7 @@
                                     <p:outputLabel for="visitDescriptionId" value="Նկարագրություն"/>
                                     <p:inputTextarea rows="4" cols="50" counter="display" maxlength="500"
                                                      id="visitDescriptionId"
-                                                     counterTemplate="Մնացած {0} նիշ"
+                                                     counterTemplate="Մնաց {0} նիշ"
                                                      value="#{portfolioForm.clientHistory.visitDescription}"/>
                                     <h:outputText id="display"/>
                                 </div>

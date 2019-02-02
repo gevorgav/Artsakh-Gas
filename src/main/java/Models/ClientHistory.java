@@ -90,6 +90,8 @@ public class ClientHistory {
 
     private Integer userId;
 
+    private Boolean isCompany;
+
     public ClientHistory() {
     }
 
@@ -424,6 +426,14 @@ public class ClientHistory {
         this.userId = userId;
     }
 
+    public Boolean getIsCompany() {
+        return isCompany;
+    }
+
+    public void setIsCompany(Boolean isCompany) {
+        this.isCompany = isCompany;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -464,12 +474,13 @@ public class ClientHistory {
                 Objects.equals(jah, that.jah) &&
                 Objects.equals(pakan, that.pakan) &&
                 Objects.equals(risk, that.risk) &&
-                Objects.equals(masterId, that.masterId);
+                Objects.equals(masterId, that.masterId) &&
+                Objects.equals(isCompany, that.isCompany);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, clientId, violationActNumber, visitType, visitDescription, updateDate, previousVisitDate, nextVisitDate, stampNumbers, go1, bacakaGo1, go2, bacakaGo2, go3, bacakaGo3, go4, bacakaGo4, go5, bacakaGo5, go6, bacakaGo6, jth, bacakaJth, jtt, bacakaJtt, ket, bacakaKet, jk, bacakaJk, jv, bacakaJv, jah, pakan, risk, masterId, isPaid);
+        return Objects.hash(id, clientId, violationActNumber, visitType, visitDescription, updateDate, previousVisitDate, nextVisitDate, stampNumbers, go1, bacakaGo1, go2, bacakaGo2, go3, bacakaGo3, go4, bacakaGo4, go5, bacakaGo5, go6, bacakaGo6, jth, bacakaJth, jtt, bacakaJtt, ket, bacakaKet, jk, bacakaJk, jv, bacakaJv, jah, pakan, risk, masterId, isPaid, isCompany);
     }
 }

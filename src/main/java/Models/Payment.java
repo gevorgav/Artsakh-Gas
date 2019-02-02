@@ -24,6 +24,7 @@ public class Payment {
     private Date updatedDate;
     private Integer bankId;
     private Integer userId;
+    private Boolean isCompany;
 
     private Region region;
     private Bank bank;
@@ -75,6 +76,14 @@ public class Payment {
         this.updatedDate = updatedDate;
         this.bankId = bankId;
         this.userId = userId;
+    }
+
+    public Boolean getCompany() {
+        return isCompany;
+    }
+
+    public void setCompany(Boolean company) {
+        isCompany = company;
     }
 
     public Integer getId() {
@@ -229,12 +238,13 @@ public class Payment {
                 Objects.equals(semiAnnualId, payment.semiAnnualId) &&
                 Objects.equals(debt, payment.debt) &&
                 Objects.equals(balance, payment.balance) &&
-                Objects.equals(pay, payment.pay);
+                Objects.equals(pay, payment.pay) &&
+                Objects.equals(isCompany, payment.isCompany);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, clientId, clientHistoryTmpId, fullName, regionId, city, street, home, semiAnnualId, debt, balance, pay);
+        return Objects.hash(id, clientId, clientHistoryTmpId, fullName, regionId, city, street, home, semiAnnualId, debt, balance, pay, isCompany);
     }
 }

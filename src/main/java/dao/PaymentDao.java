@@ -38,7 +38,7 @@ public class PaymentDao extends Dao<Payment> {
                 "FROM payment\n" +
                 "WHERE id IN (SELECT MAX(id)\n" +
                 "             FROM payment\n" +
-                "             WHERE semiAnnualId = ? " +
+                "             WHERE semiAnnualId = ? AND isCompany = 0" +
                 "             GROUP BY regionId + clientId) AND  debt - pay > 0.0;";
         return jdbcTemplate.query(sql, new PaymentMapper(), semiAnnualId);
     }
@@ -54,8 +54,8 @@ public class PaymentDao extends Dao<Payment> {
     public boolean insert(Payment payment) {
 
         Objects.requireNonNull(payment);
-        String sql = "INSERT INTO payment(clientId, clientHistoryTmpId, fullName, regionId, city, street, home, pay, debt, semiAnnualId, updatedDate, userId, bankId) " +
-                "VALUES (:clientId, :clientHistoryTmpId, :fullName, :regionId, :city, :street, :home, :pay, :debt, :semiAnnualId, :updatedDate, :userId, :bankId)";
+        String sql = "INSERT INTO payment(clientId, clientHistoryTmpId, fullName, regionId, city, street, home, pay, debt, semiAnnualId, updatedDate, userId, bankId, isCompany) " +
+                "VALUES (:clientId, :clientHistoryTmpId, :fullName, :regionId, :city, :street, :home, :pay, :debt, :semiAnnualId, :updatedDate, :userId, :bankId, :isCompany)";
         SqlParameterSource fileParameters = new BeanPropertySqlParameterSource(payment);
         return namedJdbc.update(sql, fileParameters) == 1;
     }
@@ -86,10 +86,10 @@ public class PaymentDao extends Dao<Payment> {
         return false;
     }
 
-    public Payment loadLastPayment(String clientId, Integer regionId, Integer semiAnnualId) {
+    public Payment loadLastPayment(String clientId, Integer regionId, Integer semiAnnualId, Integer isCompany) {
         Objects.requireNonNull(clientId);
-        String sql = "SELECT * FROM payment WHERE clientId = ? AND regionId = ? AND semiAnnualId = ? ORDER BY id DESC LIMIT 1";
-        List<Payment> paymentList = jdbcTemplate.query(sql, new PaymentMapper(), clientId , regionId, semiAnnualId);
+        String sql = "SELECT * FROM payment WHERE clientId = ? AND regionId = ? AND isCompany = ? AND semiAnnualId = ? ORDER BY id DESC LIMIT 1";
+        List<Payment> paymentList = jdbcTemplate.query(sql, new PaymentMapper(), clientId , regionId, isCompany, semiAnnualId);
         if (paymentList.size() < 1) {
             return null;
         }
