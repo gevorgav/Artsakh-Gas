@@ -1127,6 +1127,20 @@ public class PortfolioForm {
         return url;
     }
 
+	public String getFile3UploadUrl() {
+		Properties prop = new Properties();
+		String url = "";
+		try {
+			InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties");
+			prop.load(input);
+			url = prop.getProperty("file3UploadUrl");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return url;
+	}
+
     public String getTemaplateUrl() {
         Properties prop = new Properties();
         String url = "";
@@ -1149,6 +1163,20 @@ public class PortfolioForm {
             InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties");
             prop.load(input);
             url = prop.getProperty("template2Url");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+    public String getTemaplate3Url() {
+        Properties prop = new Properties();
+        String url = "";
+        try {
+            InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties");
+            prop.load(input);
+            url = prop.getProperty("template3Url");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -1658,11 +1686,11 @@ public class PortfolioForm {
 
     public void openVisitGraficDialog(){
         resetVisitGraficDialogForm();
-        if (!getLoginForm().getUser().getRole().equals(User.Role.ADMIN)) {
-            setVisitGraficRegionId(getLoginForm().getUser().getRegionId());
-        } else {
+//        if (!getLoginForm().getUser().getRole().equals(User.Role.ADMIN)) {
+//            setVisitGraficRegionId(getLoginForm().getUser().getRegionId());
+//        } else {
             visitGraficRegionId = null;
-        }
+//        }
         RequestContext.getCurrentInstance().execute("PF('visitGraficDialog').show()");
     }
 
@@ -1678,8 +1706,12 @@ public class PortfolioForm {
             return null;
         }
         VisitGraficExcelParser visitGraficExcelParser = new VisitGraficExcelParser(this);
-        visitGraficExcelParser.exportVisitGrafic();
-        InputStream stream = new FileInputStream(getFile2UploadUrl());
+        if(visitGraficRegionId == null) {
+            visitGraficExcelParser.exportVisitGraficAllRegions();
+        } else {
+            visitGraficExcelParser.exportVisitGrafic();
+        }
+        InputStream stream = new FileInputStream(visitGraficRegionId == null ? getFile3UploadUrl() : getFile2UploadUrl());
         file = new DefaultStreamedContent(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8", "downloaded_boromir.xlsx");
         return file;
     }
@@ -1692,9 +1724,9 @@ public class PortfolioForm {
         if (visitGraficMonthId == null) {
             isValid = false;
         }
-        if (visitGraficRegionId == null) {
-            isValid = false;
-        }
+//        if (visitGraficRegionId == null) {
+//            isValid = false;
+//        }
         return isValid;
     }
   /* -------------- Visit Graphic End -------------*/
