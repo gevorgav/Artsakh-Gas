@@ -217,6 +217,17 @@
                     </div>
                 </div>
             </div>-->
+            <script type="text/javascript">
+                //<![CDATA[
+                function start() {
+                    PF('statusDialog').show();
+                }
+
+                function stop() {
+                    PF('statusDialog').hide();
+                }
+                //]]>
+            </script>
 
             <h:form id="portfolioForm" prependId="false">
                 <p:ajaxStatus id="ajaxShadowId">
@@ -308,8 +319,11 @@
                                                                            var="semiAnnual"/>
                                                         </p:selectOneMenu>
                                                     </div>
+                                                    <p:dialog modal="true" widgetVar="statusDialog" header="Կատարվում է տվյալների արտահանում" draggable="false" closable="false" resizable="false">
+                                                        <img src="assets/images/ajaxloadingbar.gif" style="width: 100%;"/>
+                                                    </p:dialog>
                                                     <div class="col-xl-3 col-sm-3 col-md-3">
-                                                        <p:commandButton value="Արտահանում" styleClass="dark w-100" ajax="false" rendered="#{loginForm.user.admin}">
+                                                        <p:commandButton value="Արտահանում" styleClass="dark w-100" onclick="PrimeFaces.monitorDownload(start, stop);" ajax="false" rendered="#{loginForm.user.admin}">
                                                             <p:fileDownload value="#{portfolioForm.exportSql}"/>
                                                         </p:commandButton>
                                                     </div>

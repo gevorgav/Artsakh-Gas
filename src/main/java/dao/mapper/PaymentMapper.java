@@ -27,7 +27,7 @@ public class PaymentMapper implements RowMapper<Payment> {
         payment.setBankId(resultSet.getInt("bankId"));
         payment.setUpdatedDate(resultSet.getDate("updatedDate"));
         payment.setUserId(resultSet.getInt("userId"));
-//        payment.setCompany((resultSet.getObject("isCompany") != null &&  resultSet.getInt("isCompany") == 1) ? true : false);
+        payment.setCompany((resultSet.getObject("isCompany") != null &&  resultSet.getInt("isCompany") == 1) ? true : false);
         return payment;
     }
 }

@@ -21,9 +21,23 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -707,29 +721,83 @@ public class PortfolioForm {
 
     public void importPayment(){
         if(this.fileUpload != null) {
-            String sd;
             try {
-                Scanner scanner = new Scanner(new InputStreamReader(fileUpload.getInputstream()));
-                while (scanner.hasNextLine()) {
-                    String line = scanner.nextLine();
-                    System.out.println(line);
-                    // use line here
-                }
-                BufferedReader in = new BufferedReader(new InputStreamReader(fileUpload.getInputstream(),  "UTF-8"));
-                while( (sd = in.readLine()) != null) {
-                    Integer id = paymentDao.insertByLine(sd.toString());
-                    paymentDao.uptadeBankId(id, bankId);
+
+                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+                Document doc = dBuilder.parse(fileUpload.getInputstream());
+
+                //optional, but recommended
+                //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+                doc.getDocumentElement().normalize();
+
+                System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+
+                NodeList nList = doc.getElementsByTagName("Payment");
+
+                System.out.println("----------------------------");
+                List<Payment> payments = new ArrayList<>();
+
+                for (int temp = 0; temp < nList.getLength(); temp++) {
+
+                    Node nNode = nList.item(temp);
+                    System.out.println("\nCurrent Element :" + nNode.getNodeName());
+
+                    if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                        Element eElement = (Element) nNode;
+                        SimpleDateFormat formatter6=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                        Payment payment = new Payment();
+                        payment.setClientId(eElement.getElementsByTagName("ClientId").item(0).getTextContent());
+                        payment.setClientHistoryTmpId(Integer.valueOf(eElement.getElementsByTagName("ClientHistoryTmpId").item(0).getTextContent()));
+                        payment.setFullName(eElement.getElementsByTagName("FullName").item(0).getTextContent());
+                        payment.setCompany(Boolean.valueOf(eElement.getElementsByTagName("IsComapany").item(0).getTextContent()));
+                        payment.setRegionId(Integer.valueOf(eElement.getElementsByTagName("RegionId").item(0).getTextContent()));
+                        payment.setCity(eElement.getElementsByTagName("City").item(0).getTextContent());
+                        payment.setStreet(eElement.getElementsByTagName("Street").item(0).getTextContent());
+                        payment.setHome(eElement.getElementsByTagName("Home").item(0).getTextContent());
+                        payment.setPay(Double.valueOf(eElement.getElementsByTagName("Pay").item(0).getTextContent()));
+                        payment.setDebt(Double.valueOf(eElement.getElementsByTagName("Debt").item(0).getTextContent()));
+                        //payment.setBalance(Double.valueOf(eElement.getElementsByTagName("Balance").item(0).getTextContent()));
+                        payment.setSemiAnnualId(Integer.valueOf(eElement.getElementsByTagName("SemiAnnualId").item(0).getTextContent()));
+                        payment.setUpdatedDate(formatter6.parse(eElement.getElementsByTagName("UpdatedDate").item(0).getTextContent()));
+                        payment.setBankId(bankId);
+
+                        payments.add(payment);
+                    }
                 }
 
-                this.fileUpload  = null;
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+                for(Payment payment : payments){
+                    paymentDao.insert(payment);
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
             }
+//            String sd;
+//            try {
+//                Scanner scanner = new Scanner(new InputStreamReader(fileUpload.getInputstream()));
+//                while (scanner.hasNextLine()) {
+//                    String line = scanner.nextLine();
+//                    System.out.println(line);
+//                    // use line here
+//                }
+//                BufferedReader in = new BufferedReader(new InputStreamReader(fileUpload.getInputstream(),  "UTF-8"));
+//                while( (sd = in.readLine()) != null) {
+//                    Integer id = paymentDao.insertByLine(sd.toString());
+//                    paymentDao.uptadeBankId(id, bankId);
+//                }
+//
+//                this.fileUpload  = null;
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
 
     }
+
 
     private UploadedFile fileUpload;
 
@@ -1106,6 +1174,20 @@ public class PortfolioForm {
             InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties");
             prop.load(input);
             url = prop.getProperty("fileUploadUrl");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+    public String getXmlExportPath() {
+        Properties prop = new Properties();
+        String url = "";
+        try {
+            InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties");
+            prop.load(input);
+            url = prop.getProperty("xmlExportPath");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -1490,34 +1572,114 @@ public class PortfolioForm {
     /* -------------- Visit Plan Form End ----------*/
 
     public StreamedContent getExportSql() {
-        insertDataBase();
-        Util.exportDataBase(paymentDao.paymentsForExportBySemiAnnual(semiAnnualIdForPayment));
+        exportSql = null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
         Date now = new Date();
         String strDate = sdf.format(now);
         try {
-            exportSql = new DefaultStreamedContent(new FileInputStream("f://payment.sql"),"",strDate.toString()+".sql", "UTF-8");
+
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+            // root elements
+            Document doc = docBuilder.newDocument();
+            Element rootElement = doc.createElement("Payments");
+            doc.appendChild(rootElement);
+            SimpleDateFormat sdfXml = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            for (Payment payment: paymentDao.paymentsForExportBySemiAnnual(semiAnnualIdForPayment)){
+                Element paymentElemet = doc.createElement("Payment");
+                rootElement.appendChild(paymentElemet);
+
+                Element clientId = doc.createElement("ClientId");
+                clientId.appendChild(doc.createTextNode(payment.getClientId()));
+                paymentElemet.appendChild(clientId);
+
+                Element clientHistoryTmpId = doc.createElement("ClientHistoryTmpId");
+                clientHistoryTmpId.appendChild(doc.createTextNode(String.valueOf(payment.getClientHistoryTmpId())));
+                paymentElemet.appendChild(clientHistoryTmpId);
+
+                Element fullName = doc.createElement("FullName");
+                fullName.appendChild(doc.createTextNode(payment.getFullName()));
+                paymentElemet.appendChild(fullName);
+
+                Element isComapany = doc.createElement("IsComapany");
+                isComapany.appendChild(doc.createTextNode(payment.getCompany().toString()));
+                paymentElemet.appendChild(isComapany);
+
+                Element regionId = doc.createElement("RegionId");
+                regionId.appendChild(doc.createTextNode(String.valueOf(payment.getRegionId())));
+                paymentElemet.appendChild(regionId);
+
+                Element city = doc.createElement("City");
+                city.appendChild(doc.createTextNode(payment.getCity()));
+                paymentElemet.appendChild(city);
+
+                Element street = doc.createElement("Street");
+                street.appendChild(doc.createTextNode(Objects.nonNull(payment.getStreet()) ? payment.getStreet() : ""));
+                paymentElemet.appendChild(street);
+
+                Element home = doc.createElement("Home");
+                home.appendChild(doc.createTextNode(Objects.nonNull(payment.getHome()) ? payment.getHome() : ""));
+                paymentElemet.appendChild(home);
+
+                Element pay = doc.createElement("Pay");
+                pay.appendChild(doc.createTextNode(String.valueOf(payment.getPay())));
+                paymentElemet.appendChild(pay);
+
+                Element dept = doc.createElement("Dept");
+                dept.appendChild(doc.createTextNode(String.valueOf(payment.getDebt())));
+                paymentElemet.appendChild(dept);
+
+                Element balance = doc.createElement("Balance");
+                balance.appendChild(doc.createTextNode(String.valueOf(payment.getBalance())));
+                paymentElemet.appendChild(balance);
+
+                Element semiAnnualId = doc.createElement("SemiAnnualId");
+                semiAnnualId.appendChild(doc.createTextNode(String.valueOf(payment.getSemiAnnualId())));
+                paymentElemet.appendChild(semiAnnualId);
+
+                Element updatedDate = doc.createElement("UpdatedDate");
+                updatedDate.appendChild(doc.createTextNode(Objects.nonNull(payment.getUpdatedDate()) ?  sdfXml.format(payment.getUpdatedDate()) : ""));
+                paymentElemet.appendChild(updatedDate);
+            }
+            long s = System.currentTimeMillis();
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(new File(getXmlExportPath()));
+
+            transformer.transform(source, result);
+            System.out.println(System.currentTimeMillis() - s);
+            exportSql = new DefaultStreamedContent(new FileInputStream(getXmlExportPath()),"",strDate.toString()+".xml", "UTF-8");
+            System.out.println("File saved!");
+
+        } catch (ParserConfigurationException | TransformerException pce) {
+            pce.printStackTrace();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
         return exportSql;
     }
 
     public void insertDataBase(){
         List<String> list = new ArrayList<String>();
-        try {
-            File file = new File("f://payment.sql");
-            FileReader fileReader = new FileReader(file);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            StringBuffer stringBuffer = new StringBuffer();
+            try {
+                File file = new File("f://payment.sql");
+                FileReader fileReader = new FileReader(file);
+                BufferedReader bufferedReader = new BufferedReader(fileReader);
+                StringBuffer stringBuffer = new StringBuffer();
 
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
 //                stringBuffer.append(line);
-                list.add(line);
+                    list.add(line);
 //                stringBuffer.append("\n");
-            }
-            fileReader.close();
+                }
+                fileReader.close();
             System.out.println("Contents of file:");
             System.out.println(stringBuffer.toString());
         } catch (IOException e) {
@@ -1733,7 +1895,13 @@ public class PortfolioForm {
 
 
     public String getStreetNameById(Integer streetId){
-        return  this.getAllStreets().stream().filter(street -> Objects.equals(street.getId(), streetId)).findFirst().orElse(null).getName();
+        try {
+           return this.getAllStreets().stream().filter(street -> Objects.equals(street.getId(), streetId)).findFirst().orElse(null).getName();
+        }catch (NullPointerException e) {
+            System.out.println(streetId);
+        }
+
+        return "";
     }
 
     private List<Street> allStreets;
@@ -1931,6 +2099,51 @@ public class PortfolioForm {
     public void resetSelectedClients(){
         selectedClients = new ArrayList<>();
         RequestContext.getCurrentInstance().update("portfolioForm");
+    }
+
+
+    public void parseXML(InputStream inputstream) {
+        try {
+
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(inputstream);
+
+            //optional, but recommended
+            //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+            doc.getDocumentElement().normalize();
+
+            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+
+            NodeList nList = doc.getElementsByTagName("Payment");
+
+            System.out.println("----------------------------");
+
+            for (int temp = 0; temp < nList.getLength(); temp++) {
+
+                Node nNode = nList.item(temp);
+
+                System.out.println("\nCurrent Element :" + nNode.getNodeName());
+
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                    Element eElement = (Element) nNode;
+                    SimpleDateFormat formatter6=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    formatter6.parse(eElement.getElementsByTagName("UpdatedDate").item(0).getTextContent());
+                    System.out.println("Staff id : " + eElement.getAttribute("id"));
+                    System.out.println("First Name : " + eElement.getElementsByTagName("firstname").item(0).getTextContent());
+                    System.out.println("Last Name : " + eElement.getElementsByTagName("lastname").item(0).getTextContent());
+                    System.out.println("Nick Name : " + eElement.getElementsByTagName("nickname").item(0).getTextContent());
+                    System.out.println("Salary : " + eElement.getElementsByTagName("salary").item(0).getTextContent());
+
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 
 }

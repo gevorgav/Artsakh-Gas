@@ -38,7 +38,7 @@ public class PaymentDao extends Dao<Payment> {
                 "FROM payment\n" +
                 "WHERE id IN (SELECT MAX(id)\n" +
                 "             FROM payment\n" +
-                "             WHERE semiAnnualId = ? AND isCompany = 0" +
+                "             WHERE semiAnnualId = ?" +
                 "             GROUP BY regionId + clientId) AND  debt - pay > 0.0;";
         return jdbcTemplate.query(sql, new PaymentMapper(), semiAnnualId);
     }
@@ -55,7 +55,7 @@ public class PaymentDao extends Dao<Payment> {
 
         Objects.requireNonNull(payment);
         String sql = "INSERT INTO payment(clientId, clientHistoryTmpId, fullName, regionId, city, street, home, pay, debt, semiAnnualId, updatedDate, userId, bankId, isCompany) " +
-                "VALUES (:clientId, :clientHistoryTmpId, :fullName, :regionId, :city, :street, :home, :pay, :debt, :semiAnnualId, :updatedDate, :userId, :bankId, :isCompany)";
+                "VALUES (:clientId, :clientHistoryTmpId, :fullName, :regionId, :city, :street, :home, :pay, :debt, :semiAnnualId, :updatedDate, :userId, :bankId, :company)";
         SqlParameterSource fileParameters = new BeanPropertySqlParameterSource(payment);
         return namedJdbc.update(sql, fileParameters) == 1;
     }

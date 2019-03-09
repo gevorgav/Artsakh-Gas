@@ -1,8 +1,10 @@
 package login;
 
 import Core.Root;
+import Core.Util;
 import dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import portfolio.PortfolioForm;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -20,6 +22,7 @@ public class LoginForm {
     private List<User> users;
     @Autowired
     private UserDao userDao;
+    private PortfolioForm portfolioForm;
 
     public Root getRoot() {
         return root;
@@ -53,6 +56,7 @@ public class LoginForm {
             for (User us : this.getUsers()) {
                 if (Objects.equals(us.getUsername(), user.getUsername()) && Objects.equals(us.getPassword(), user.getPassword())) {
                     this.setUser(us);
+                    Util.getBean("portfolioForm", PortfolioForm.class).resetAllData();
                     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
                     try {
                         FacesContext.getCurrentInstance().getExternalContext().redirect(request.getContextPath() + "/portfolio.xhtml");
@@ -74,5 +78,13 @@ public class LoginForm {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setPortfolioForm(PortfolioForm portfolioForm) {
+        this.portfolioForm = portfolioForm;
+    }
+
+    public PortfolioForm getPortfolioForm() {
+        return portfolioForm;
     }
 }
