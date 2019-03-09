@@ -163,4 +163,21 @@ public class PaymentDao extends Dao<Payment> {
             return Collections.emptyList();
         }
     }
+
+    public List<PaymentReport> loaddebtsBySemiAnnualId(Integer semiAnnualId) {
+        Objects.requireNonNull(semiAnnualId);
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        Set<Integer> ids;
+        int semi = semiAnnualId % 10;
+        if(semi == 1){
+            ids = new HashSet<>(Arrays.asList(4, 5, 6, 7, 8, 9));
+        } else {
+            ids = new HashSet<>(Arrays.asList(1, 2, 3, 10, 11, 12));
+        }
+        namedParameters.addValue("months", ids);
+        namedParameters.addValue("yearId", semiAnnualId/10);
+        String sql = "select regionId, SUM(balance) from payment WHERE  YEAR(updatedDate) = :yearId AND  MONTH(updatedDate) IN (:months) AND id IN (select max(id) from payment GROUP BY regionId, clientId) GROUP BY regionId";
+        List<PaymentReport> paymentList = namedJdbc.query(sql, namedParameters, new PaymentReportMapper());
+        return paymentList;
+    }
 }

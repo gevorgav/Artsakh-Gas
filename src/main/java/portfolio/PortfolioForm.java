@@ -1141,6 +1141,9 @@ public class PortfolioForm {
                 if (this.filter.getSubSectionId() != null && !Objects.equals(client.getSubSectionId(), this.filter.getSubSectionId())) {
                     continue;
                 }
+                if (this.filter.isCounterNumber() && (Objects.isNull(client.getCounterNumber()) || client.getCounterNumber().trim().isEmpty())) {
+                    continue;
+                }
 //                if(this.filter.getViolationCodes() != null && this.filter.getViolationCodes().length != 0){
 //                    List<ViolationCode> violationCodes = cache.getViolationCodesByClientHistory(client.getClientHistory().getId());
 //                    boolean isExpected = false;

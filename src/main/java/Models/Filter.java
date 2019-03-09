@@ -23,6 +23,8 @@ public class Filter {
 
     private String[] violationCodes;
 
+    private boolean counterNumber;
+
     public Integer getRegionId() {
         return regionId;
     }
@@ -87,6 +89,14 @@ public class Filter {
         this.violationCodes = violationCodes;
     }
 
+    public boolean isCounterNumber() {
+        return counterNumber;
+    }
+
+    public void setCounterNumber(boolean counterNumber) {
+        this.counterNumber = counterNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -94,6 +104,7 @@ public class Filter {
 
         Filter filter = (Filter) o;
 
+        if (counterNumber != filter.counterNumber) return false;
         if (regionId != null ? !regionId.equals(filter.regionId) : filter.regionId != null) return false;
         if (cityId != null ? !cityId.equals(filter.cityId) : filter.cityId != null) return false;
         if (streetId != null ? !streetId.equals(filter.streetId) : filter.streetId != null) return false;
@@ -116,6 +127,7 @@ public class Filter {
         result = 31 * result + (sectionId != null ? sectionId.hashCode() : 0);
         result = 31 * result + (subSectionId != null ? subSectionId.hashCode() : 0);
         result = 31 * result + Arrays.hashCode(violationCodes);
+        result = 31 * result + (counterNumber ? 1 : 0);
         return result;
     }
 
@@ -130,6 +142,7 @@ public class Filter {
         filter.setStreetId(this.streetId);
         filter.setSubSectionId(this.subSectionId);
         filter.setViolationCodes(this.violationCodes);
+        filter.setCounterNumber(this.counterNumber);
         return filter;
     }
 }

@@ -3,7 +3,7 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui">
-    <p:dialog dynamic="true" header="Payment Report" id="paymentReportDialogId" modal="true" onShow="showDialog()" onHide="hideDialog()"
+    <p:dialog dynamic="true" header="Ֆինանսական հաշվետվություն" id="paymentReportDialogId" modal="true" onShow="showDialog()" onHide="hideDialog()"
               resizable="false" widgetVar="paymentReportDialog" width="100%" height="90%" style="max-width: 1200px; z-index: 100">
         <p:ajax event="close" listener="#{portfolioForm.cancelPaymentReportDialog}" update="paymentReportDialogFormId:resetId" resetValues="true"/>
         <h:form id="paymentReportDialogFormId">

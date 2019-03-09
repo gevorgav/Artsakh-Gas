@@ -255,7 +255,7 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
         String sql = "SELECT COUNT(DISTINCT clientId) \n" +
             "FROM clientsHistory \n" +
             "LEFT JOIN clients ON clients.id = clientsHistory.clientId \n" +
-            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND MONTH(previousVisitDate) = ? AND clients.sectionId = ? AND visitType = 1 AND isCompany = ? AND clients.isDeleted = 0";
+            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND MONTH(previousVisitDate) = ? AND clients.sectionId = ? AND visitType = 1 AND clients.isCompany = ? AND clients.isDeleted = 0";
         return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, month, sectionId, isCompany);
     }
 
@@ -263,12 +263,12 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
         String sql = "SELECT COUNT(DISTINCT clientId)\n" +
             "FROM clientsHistory\n" +
             "LEFT JOIN clients ON clients.id = clientsHistory.clientId\n" +
-            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND clients.sectionId = ? AND visitType = ? AND isCompany = ? AND isDeleted = 0";
+            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND clients.sectionId = ? AND clientsHistory.visitType = ? AND clients.isCompany = ? AND clients.isDeleted = 0";
         return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, sectionId, visitType, isCompany);
     }
 
     public Integer getVisitedCountBySemiAnnual(Integer regionId, Integer semiAnnualId, Integer visitType, boolean isCompany) {
-        String sql = "SELECT COUNT(DISTINCT clientId) FROM clientsHistory LEFT JOIN clients ON clientsHistory.clientId = clients.id WHERE semiAnnualId = ? AND clients.regionId = ? AND visitType = ? AND isCompany = ? AND isDeleted = 0";
+        String sql = "SELECT COUNT(DISTINCT clientId) FROM clientsHistory LEFT JOIN clients ON clientsHistory.clientId = clients.id WHERE semiAnnualId = ? AND clients.regionId = ? AND visitType = ? AND clients.isCompany = ? AND isDeleted = 0";
         return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, visitType, isCompany);
     }
 
@@ -277,7 +277,7 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
             "FROM violationClientHistory\n" +
             "LEFT JOIN clientsHistory ON clientsHistory.id = violationClientHistory.clientHistoryId\n" +
             "LEFT JOIN clients ON clients.id = clientsHistory.clientId\n" +
-            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND MONTH(previousVisitDate) = ? AND clients.sectionId = ? AND isCompany = ? AND isDeleted = 0";
+            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND MONTH(previousVisitDate) = ? AND clients.sectionId = ? AND clients.isCompany = ? AND isDeleted = 0";
         return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, month, sectionId, isCompany);
     }
 
@@ -287,7 +287,7 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
             "FROM violationClientHistory\n" +
             "LEFT JOIN clientsHistory ON clientsHistory.id = violationClientHistory.clientHistoryId\n" +
             "LEFT JOIN clients ON clientsHistory.clientId = clients.id\n" +
-            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND MONTH(previousVisitDate) = ? AND isCompany = ? AND clients.isDeleted = 0";
+            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND MONTH(previousVisitDate) = ? AND clients.isCompany = ? AND clients.isDeleted = 0";
         return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, month, isCompany);
     }
 
@@ -296,7 +296,7 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
             "FROM violationClientHistory\n" +
             "LEFT JOIN clientsHistory ON clientsHistory.id = violationClientHistory.clientHistoryId\n" +
             "LEFT JOIN clients ON clients.id = clientsHistory.clientId\n" +
-            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND clients.sectionId = ? AND isCompany = ? AND isDeleted = 0";
+            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND clients.sectionId = ? AND clients.isCompany = ? AND isDeleted = 0";
         return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, sectionId, isCompany);
     }
 
@@ -305,7 +305,7 @@ public class ClientHistoryDao extends Dao<ClientHistory> {
             "FROM violationClientHistory\n" +
             "LEFT JOIN clientsHistory ON clientsHistory.id = violationClientHistory.clientHistoryId\n" +
             "LEFT JOIN clients ON clientsHistory.clientId = clients.id\n" +
-            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND isCompany = ? AND clients.regionId = ? AND clients.isDeleted = 0";
+            "WHERE clientsHistory.semiAnnualId = ? AND clientsHistory.regionId = ? AND clients.isCompany = ? AND clients.regionId = ? AND clients.isDeleted = 0";
         return jdbcTemplate.queryForObject(sql, Integer.class, semiAnnualId, regionId, isCompany, regionId);
     }
 
