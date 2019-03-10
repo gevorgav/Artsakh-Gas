@@ -3,7 +3,10 @@ package hotel;
 import Core.CacheForm;
 import Core.Models.City;
 import Core.Models.Region;
+import Core.Util;
 import Models.*;
+import dao.PaymentDao;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
@@ -43,6 +46,9 @@ public class SettingsForm implements Serializable {
     private Integer categoryTypeId;
 
     private CacheForm cache;
+
+    @Autowired
+    private PaymentDao paymentDao;
 
     public Integer getCategoryTypeId() {
         return categoryTypeId;
@@ -149,10 +155,17 @@ public class SettingsForm implements Serializable {
             if (this.cache.clientHistoryDao.moveHistoryToSemiAnnualForAllRegions(this.editedSemiAnnualConfig.getSemiAnnualId())){
                 this.cache.setSemiAnnualConfig(null);
                 saveCurrentSemiAnnual(this.editedSemiAnnualConfig.getSemiAnnualId());
+                movePaymentToSemiAnnual();
             }
 
         }
 
+    }
+
+    private void movePaymentToSemiAnnual() {
+        List<Payment> payments = paymentDao.paymentsForExportBySemiAnnual(Util.defineLastSemiAnnualId(this.cache.getSemiAnnualConfig().getSemiAnnualId()));
+        payments.forEach(o -> {o.setSemiAnnualId(this.cache.getSemiAnnualConfig().getSemiAnnualId());});
+        paymentDao.insertBatch(payments);
     }
 
     private void saveCurrentSemiAnnual(Integer semiAnnualId) {

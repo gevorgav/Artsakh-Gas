@@ -61,6 +61,22 @@ public class Payment {
         this.updatedDate = updatedDate;
     }
 
+    public Payment(String clientId, Integer clientHistoryTmpId, String fullName, Integer regionId, String city, String street, String home, Integer semiAnnualId, Double debt, Double pay, Integer userId, Date updatedDate, Boolean isCompany) {
+        this.clientId = clientId;
+        this.clientHistoryTmpId = clientHistoryTmpId;
+        this.fullName = fullName;
+        this.regionId = regionId;
+        this.city = city;
+        this.street = street;
+        this.home = home;
+        this.semiAnnualId = semiAnnualId;
+        this.debt = debt;
+        this.pay = pay;
+        this.userId = userId;
+        this.updatedDate = updatedDate;
+        this.isCompany = isCompany;
+    }
+
     public Payment(Integer id, String clientId, Integer clientHistoryTmpId, String fullName, Integer regionId, String city, String street, String home, Integer semiAnnualId, Double debt, Double pay, Date updatedDate, Integer bankId, Integer userId) {
         this.id = id;
         this.clientId = clientId;

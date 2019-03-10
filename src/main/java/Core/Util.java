@@ -129,4 +129,14 @@ public class Util {
 
     }
 
+    public static Integer defineLastSemiAnnualId(Integer semiAnnualId) {
+        if (semiAnnualId%10 == 2){
+            return semiAnnualId - 1;
+        }else if (semiAnnualId%10 == 1){
+            Integer lastYear = semiAnnualId/10 - 1;
+            return lastYear * 10 + 2;
+        }
+        return null;
+    }
+
 }

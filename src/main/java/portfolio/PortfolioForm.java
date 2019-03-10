@@ -4,7 +4,6 @@ import Core.CacheForm;
 import Core.Models.City;
 import Core.Models.Month;
 import Core.Models.Region;
-import Core.Util;
 import Models.*;
 import dao.*;
 import login.LoginForm;
@@ -21,7 +20,6 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -42,7 +40,6 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -624,7 +621,7 @@ public class PortfolioForm {
         Client client = updateClientHistory();
         if (clientHistory.getVisitType() == 1) {
             Integer clientHistoryTmpId = saveClientHistoryTemp(historyId);
-            Double debt = initDept();
+            Double debt = initDebt();
             savePayment(clientHistoryTmpId, client.getId(), client.getFirstName(), client.getLastName(), client.getMiddleName(), client.getRegionId(), client.getCityId(), client.getStreetId(), client.getHomeNumber(), clientHistory.getSemiAnnualId(), debt, client.isCompany());
             client.setDebt(debt);
         }
@@ -632,7 +629,7 @@ public class PortfolioForm {
         cancelHistoryDialog();
     }
 
-    private Double initDept() {
+    private Double initDebt() {
         Integer deviceCount = getClientHistoryDeviceCount();
         for (PriceList priceList : cache.getPriceLists()) {
             if (priceList.getFormula().contains("=") && !priceList.getFormula().contains("<=")) {
@@ -656,7 +653,7 @@ public class PortfolioForm {
         Payment lastPayment = paymentDao.loadLastPayment(clientId, regionId, lastSemiAnnualId, isCompany?1:0);
         String city = cityDao.loadById(cityId).getName();
         String street = streetDao.loadById(streetId).getName();
-        paymentDao.insert(new Payment(clientId, clientHistoryTmpId, firstName + " " + lastName +  (Objects.nonNull(middleName) ? middleName : ""), regionId, city, street, home, semiAnnualId, lastPayment != null ? debt - lastPayment.getBalance() : debt, 0.00, getLoginForm().getUser().getId(), new Date()));
+        paymentDao.insert(new Payment(clientId, clientHistoryTmpId, firstName + " " + lastName +  (Objects.nonNull(middleName) ? middleName : ""), regionId, city, street, home, semiAnnualId, lastPayment != null ? debt - lastPayment.getBalance() : debt, 0.00, getLoginForm().getUser().getId(), new Date(), paymentIsCompany));
     }
 
     private Integer defineLastSemiAnnualId(Integer semiAnnualId) {
@@ -1630,9 +1627,9 @@ public class PortfolioForm {
                 pay.appendChild(doc.createTextNode(String.valueOf(payment.getPay())));
                 paymentElemet.appendChild(pay);
 
-                Element dept = doc.createElement("Dept");
-                dept.appendChild(doc.createTextNode(String.valueOf(payment.getDebt())));
-                paymentElemet.appendChild(dept);
+                Element debt = doc.createElement("Debt");
+                debt.appendChild(doc.createTextNode(String.valueOf(payment.getDebt())));
+                paymentElemet.appendChild(debt);
 
                 Element balance = doc.createElement("Balance");
                 balance.appendChild(doc.createTextNode(String.valueOf(payment.getBalance())));

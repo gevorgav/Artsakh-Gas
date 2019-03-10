@@ -5,6 +5,7 @@ import Models.PaymentReport;
 import dao.mapper.PaymentMapper;
 import dao.mapper.PaymentReportMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -13,6 +14,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -58,6 +61,36 @@ public class PaymentDao extends Dao<Payment> {
                 "VALUES (:clientId, :clientHistoryTmpId, :fullName, :regionId, :city, :street, :home, :pay, :debt, :semiAnnualId, :updatedDate, :userId, :bankId, :company)";
         SqlParameterSource fileParameters = new BeanPropertySqlParameterSource(payment);
         return namedJdbc.update(sql, fileParameters) == 1;
+    }
+
+    public void insertBatch(List<Payment> payments) {
+        String sql = "INSERT INTO payment(clientId, clientHistoryTmpId, fullName, regionId, city, street, home, pay, debt, semiAnnualId, updatedDate, userId, bankId, isCompany) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        int[] updateCounts = jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ps.setString(1, payments.get(i).getClientId());
+                ps.setInt(2, payments.get(i).getClientHistoryTmpId());
+                ps.setString(3, payments.get(i).getFullName());
+                ps.setInt(4, payments.get(i).getRegionId());
+                ps.setString(5, payments.get(i).getCity());
+                ps.setString(6, payments.get(i).getStreet());
+                ps.setString(7, payments.get(i).getHome());
+                ps.setDouble(8, payments.get(i).getPay());
+                ps.setDouble(9, payments.get(i).getDebt());
+                ps.setInt(10, payments.get(i).getSemiAnnualId());
+                ps.setDate(11, Objects.nonNull(payments.get(i).getUpdatedDate()) ? new java.sql.Date(payments.get(i).getUpdatedDate().getTime()) : null);
+                ps.setInt(12, payments.get(i).getUserId());
+                ps.setInt(13, payments.get(i).getBankId());
+                ps.setInt(14, payments.get(i).getCompany() ? 1:0);
+            }
+
+            @Override
+            public int getBatchSize() {
+                return payments.size();
+            }
+        });
+
     }
 
     public Integer insertByLine(String payment) {
