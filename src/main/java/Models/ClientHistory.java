@@ -99,10 +99,11 @@ public class ClientHistory {
         this.clientId = clientId;
     }
 
-    public ClientHistory(String clientId, Integer regionId, Integer semiAnnualId) {
+    public ClientHistory(String clientId, Integer regionId, Integer semiAnnualId, boolean isCompany) {
         this.clientId = clientId;
         this.regionId = regionId;
         this.semiAnnualId = semiAnnualId;
+        this.isCompany = isCompany;
     }
 
     public Integer getId() {

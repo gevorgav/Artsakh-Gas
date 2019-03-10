@@ -34,8 +34,8 @@ public class ClientDao extends Dao<Client>{
                         "                        WHERE  clientsHistory.id IN (SELECT MAX(clientsHistory.id) \n" +
                         "                                                                              FROM clientsHistory \n" +
                         "                                                                              GROUP BY clientsHistory.clientId, \n" +
-                        "                                                                                clientsHistory.regionId) AND isDeleted = 0 \n" +
-                        "                        GROUP BY clients.id, clients.regionId";
+                        "                                                                                clientsHistory.regionId, clientsHistory.isCompany) AND isDeleted = 0 \n" +
+                        "                        GROUP BY clients.id, clients.regionId, clients.isCompany";
             }else {
                 sql = "SELECT *\n" +
                         "                        FROM clients \n" +
@@ -44,8 +44,8 @@ public class ClientDao extends Dao<Client>{
                         "WHERE  clients.regionId = " + regionId +" AND clientsHistory.id IN (SELECT MAX(clientsHistory.id) \n" +
                         "                                                                              FROM clientsHistory \n" +
                         "                                                                              GROUP BY clientsHistory.clientId, \n" +
-                        "                                                                                clientsHistory.regionId) AND isDeleted = 0 \n" +
-                        "                        GROUP BY clients.id, clients.regionId";
+                        "                                                                                clientsHistory.regionId, clientsHistory.isCompany) AND isDeleted = 0 \n" +
+                        "                        GROUP BY clients.id, clients.regionId, clients.isCompany";
             }
 
 
@@ -67,8 +67,8 @@ public class ClientDao extends Dao<Client>{
                         "                        WHERE  clientsHistory.id IN (SELECT MAX(clientsHistory.id) \n" +
                         "                                                                              FROM clientsHistory \n" +
                         "                                                                              GROUP BY clientsHistory.semiAnnualId, clientsHistory.clientId, \n" +
-                        "                                                                                clientsHistory.regionId) AND isDeleted = 0 \n" +
-                        "                        GROUP BY clients.id, clients.regionId, clientsHistory.semiAnnualId";
+                        "                                                                                clientsHistory.regionId, clientsHistory.isCompany) AND isDeleted = 0 \n" +
+                        "                        GROUP BY clients.id, clients.regionId, clientsHistory.semiAnnualId, clients.isCompany";
             }else {
                 sql = "SELECT *\n" +
                         "                        FROM clients \n" +
@@ -77,8 +77,8 @@ public class ClientDao extends Dao<Client>{
                         "WHERE  clients.regionId = " + regionId +" AND clientsHistory.id IN (SELECT MAX(clientsHistory.id) \n" +
                         "                                                                              FROM clientsHistory \n" +
                         "                                                                              GROUP BY clientsHistory.semiAnnualId,clientsHistory.clientId, \n" +
-                        "                                                                                clientsHistory.regionId) AND isDeleted = 0 \n" +
-                        "                        GROUP BY clients.id, clients.regionId, clientsHistory.semiAnnualId";
+                        "                                                                                clientsHistory.regionId, clientsHistory.isCompany) AND isDeleted = 0 \n" +
+                        "                        GROUP BY clients.id, clients.regionId, clientsHistory.semiAnnualId, clients.isCompany";
             }
 
 
@@ -135,11 +135,11 @@ public class ClientDao extends Dao<Client>{
         String sql = "UPDATE clients\n" +
             "SET firstName = ?, lastName = ?, middleName = ?, phoneNumber = ?, counterNumber = ?, regionId = ?, cityId = ?, streetId = ?, homeNumber = ?, apartmentNumber = ?, ashtId = ?, grpId = ?,\n" +
             "typeId = ?, sectionId = ?, subSectionId = ?, typeNumber = ?, grsId = ?, isCompany = ?, license = ?, isDeleted = ? " +
-            "WHERE id = ? AND regionId = ?";
+            "WHERE id = ? AND regionId = ? AND isCompany = ?";
         int result = jdbcTemplate.update(sql,client.getFirstName(), client.getLastName(), client.getMiddleName(),
             client.getPhoneNumber(), client.getCounterNumber(), client.getCityId(), client.getCityId(), client.getStreetId(), client.getHomeNumber(),
             client.getApartmentNumber(), client.getAshtId(), client.getGrpId(), client.getTypeId(), client.getSectionId(), client.getSubSectionId(),
-            client.getTypeNumber(), client.getGrsId(), client.isCompany(), client.getLicense(), client.isDeleted(), client.getId(), client.getRegionId());
+            client.getTypeNumber(), client.getGrsId(), client.isCompany(), client.getLicense(), client.isDeleted(), client.getId(), client.getRegionId(), client.isCompany());
         return result == 1;
     }
 
@@ -148,7 +148,7 @@ public class ClientDao extends Dao<Client>{
      * @param clientId Id of Client to be deleted
      * @return true if client is deleted
      */
-    public boolean delete(String clientId, Integer regionId){
+    public boolean delete(String clientId, Integer regionId, boolean isCompany){
         Objects.requireNonNull(clientId);
         Objects.requireNonNull(regionId);
 
@@ -157,9 +157,10 @@ public class ClientDao extends Dao<Client>{
         namedParameters.put("deletedOn", new Date());
         namedParameters.put("id", clientId);
         namedParameters.put("regionId", regionId);
+        namedParameters.put("isCompany", isCompany ? 1 : 0);
         String sql = "UPDATE clients\n" +
             "SET isDeleted = :isDeleted, deletedOn = :deletedOn " +
-            "WHERE id = :id AND regionId = :regionId";
+            "WHERE id = :id AND regionId = :regionId AND isCompany = :isCompany";
         int result = namedJdbc.update(sql, namedParameters);
         return result == 1;
     }

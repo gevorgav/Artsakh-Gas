@@ -77,7 +77,7 @@
                     </h:panelGroup>
                     <h:panelGroup class="col-sm-4 col-md-4" id="streetPanelId">
                         <p:outputLabel for="streetId" value="Գյուղ/Փողոց" styleClass="required"/>
-                        <p:selectOneMenu id="streetId" value="#{portfolioForm.client.streetId}"
+                        <p:selectOneMenu id="streetId" value="#{portfolioForm.client.streetId}" filter="true"  filterMatchMode="startsWith"
                                          styleClass="form-control input-c">
                             <f:selectItem id="streetSelectOneId" itemLabel="Ընտրիր մեկը"/>
                             <f:selectItems id="streetsId"
