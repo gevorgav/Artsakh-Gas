@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 @Repository
 public class CityDao extends Dao<City>{
-
+    
     public List<City> loadAll() {
         try {
             String sql = "SELECT * FROM city;";

@@ -734,36 +734,61 @@ public class PortfolioForm {
 
                 System.out.println("----------------------------");
                 List<Payment> payments = new ArrayList<>();
+                if(Objects.equals(bankId, 6)){
+                    for (int temp = 0; temp < nList.getLength(); temp++) {
 
-                for (int temp = 0; temp < nList.getLength(); temp++) {
+                        Node nNode = nList.item(temp);
+                        System.out.println("\nCurrent Element :" + nNode.getNodeName());
 
-                    Node nNode = nList.item(temp);
-                    System.out.println("\nCurrent Element :" + nNode.getNodeName());
+                        if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 
-                    if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                            Element eElement = (Element) nNode;
+                            SimpleDateFormat formatter6=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            String clientId = eElement.getElementsByTagName("ClientId").item(0).getTextContent();
+                            Integer regionId = Integer.valueOf(eElement.getElementsByTagName("RegionId").item(0).getTextContent());
+                            Integer semiAnnualId = Integer.valueOf(eElement.getElementsByTagName("SemiAnnualId").item(0).getTextContent());
+                            Boolean isComapany = Boolean.valueOf(eElement.getElementsByTagName("IsComapany").item(0).getTextContent());
+                            Payment payment = paymentDao.loadLastPayment(clientId, regionId, semiAnnualId, isComapany ? 1:0);
+                            if(Objects.nonNull(payment)){
+                                payment.setPay(payment.getPay() + Double.valueOf(eElement.getElementsByTagName("Pay").item(0).getTextContent()));
+                                payment.setUpdatedDate(formatter6.parse(eElement.getElementsByTagName("UpdatedDate").item(0).getTextContent()));
+                                payment.setBankId(bankId);
+                                payments.add(payment);
+                            }
+                        }
+                    }
+                }else {
+                    for (int temp = 0; temp < nList.getLength(); temp++) {
 
-                        Element eElement = (Element) nNode;
-                        SimpleDateFormat formatter6=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        Node nNode = nList.item(temp);
+                        System.out.println("\nCurrent Element :" + nNode.getNodeName());
 
-                        Payment payment = new Payment();
-                        payment.setClientId(eElement.getElementsByTagName("ClientId").item(0).getTextContent());
-                        payment.setClientHistoryTmpId(Integer.valueOf(eElement.getElementsByTagName("ClientHistoryTmpId").item(0).getTextContent()));
-                        payment.setFullName(eElement.getElementsByTagName("FullName").item(0).getTextContent());
-                        payment.setCompany(Boolean.valueOf(eElement.getElementsByTagName("IsComapany").item(0).getTextContent()));
-                        payment.setRegionId(Integer.valueOf(eElement.getElementsByTagName("RegionId").item(0).getTextContent()));
-                        payment.setCity(eElement.getElementsByTagName("City").item(0).getTextContent());
-                        payment.setStreet(eElement.getElementsByTagName("Street").item(0).getTextContent());
-                        payment.setHome(eElement.getElementsByTagName("Home").item(0).getTextContent());
-                        payment.setPay(Double.valueOf(eElement.getElementsByTagName("Pay").item(0).getTextContent()));
-                        payment.setDebt(Double.valueOf(eElement.getElementsByTagName("Debt").item(0).getTextContent()));
-                        //payment.setBalance(Double.valueOf(eElement.getElementsByTagName("Balance").item(0).getTextContent()));
-                        payment.setSemiAnnualId(Integer.valueOf(eElement.getElementsByTagName("SemiAnnualId").item(0).getTextContent()));
-                        payment.setUpdatedDate(formatter6.parse(eElement.getElementsByTagName("UpdatedDate").item(0).getTextContent()));
-                        payment.setBankId(bankId);
+                        if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 
-                        payments.add(payment);
+                            Element eElement = (Element) nNode;
+                            SimpleDateFormat formatter6=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                            Payment payment = new Payment();
+                            payment.setClientId(eElement.getElementsByTagName("ClientId").item(0).getTextContent());
+                            payment.setClientHistoryTmpId(Integer.valueOf(eElement.getElementsByTagName("ClientHistoryTmpId").item(0).getTextContent()));
+                            payment.setFullName(eElement.getElementsByTagName("FullName").item(0).getTextContent());
+                            payment.setCompany(Boolean.valueOf(eElement.getElementsByTagName("IsComapany").item(0).getTextContent()));
+                            payment.setRegionId(Integer.valueOf(eElement.getElementsByTagName("RegionId").item(0).getTextContent()));
+                            payment.setCity(eElement.getElementsByTagName("City").item(0).getTextContent());
+                            payment.setStreet(eElement.getElementsByTagName("Street").item(0).getTextContent());
+                            payment.setHome(eElement.getElementsByTagName("Home").item(0).getTextContent());
+                            payment.setPay(Double.valueOf(eElement.getElementsByTagName("Pay").item(0).getTextContent()));
+                            payment.setDebt(Double.valueOf(eElement.getElementsByTagName("Debt").item(0).getTextContent()));
+                            //payment.setBalance(Double.valueOf(eElement.getElementsByTagName("Balance").item(0).getTextContent()));
+                            payment.setSemiAnnualId(Integer.valueOf(eElement.getElementsByTagName("SemiAnnualId").item(0).getTextContent()));
+                            payment.setUpdatedDate(formatter6.parse(eElement.getElementsByTagName("UpdatedDate").item(0).getTextContent()));
+                            payment.setBankId(bankId);
+
+                            payments.add(payment);
+                        }
                     }
                 }
+
 
                 for(Payment payment : payments){
                     paymentDao.insert(payment);
