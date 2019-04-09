@@ -120,7 +120,7 @@ public class ClientDao extends Dao<Client>{
         String sql = "INSERT INTO clients(id, firstName, lastName, middleName, phoneNumber, counterNumber, regionId, cityId, streetId, homeNumber, apartmentNumber, ashtId, grpId, typeId, typeNumber, sectionId, subSectionId, grsId, isCompany, license, isDeleted)\n" +
                 "    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         int result = jdbcTemplate.update(sql, client.getId(), client.getFirstName(), client.getLastName(), client.getMiddleName(),
-                client.getPhoneNumber(), client.getCounterNumber(), client.getCityId(), client.getCityId(), client.getStreetId(), client.getHomeNumber(),
+                client.getPhoneNumber(), client.getCounterNumber(), client.getRegionId(), client.getCityId(), client.getStreetId(), client.getHomeNumber(),
                 client.getApartmentNumber(), client.getAshtId(), client.getGrpId(), client.getTypeId(), client.getTypeNumber(), client.getSectionId(), client.getSubSectionId(), client.getGrsId(), client.isCompany(), client.getLicense(), client.isDeleted());
         return result == 1;
     }
@@ -137,7 +137,7 @@ public class ClientDao extends Dao<Client>{
             "typeId = ?, sectionId = ?, subSectionId = ?, typeNumber = ?, grsId = ?, isCompany = ?, license = ?, isDeleted = ? " +
             "WHERE id = ? AND regionId = ? AND isCompany = ?";
         int result = jdbcTemplate.update(sql,client.getFirstName(), client.getLastName(), client.getMiddleName(),
-            client.getPhoneNumber(), client.getCounterNumber(), client.getCityId(), client.getCityId(), client.getStreetId(), client.getHomeNumber(),
+            client.getPhoneNumber(), client.getCounterNumber(), client.getRegionId(), client.getCityId(), client.getStreetId(), client.getHomeNumber(),
             client.getApartmentNumber(), client.getAshtId(), client.getGrpId(), client.getTypeId(), client.getSectionId(), client.getSubSectionId(),
             client.getTypeNumber(), client.getGrsId(), client.isCompany(), client.getLicense(), client.isDeleted(), client.getId(), client.getRegionId(), client.isCompany());
         return result == 1;
