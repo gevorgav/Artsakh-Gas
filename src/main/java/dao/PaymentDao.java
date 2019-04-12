@@ -154,9 +154,9 @@ public class PaymentDao extends Dao<Payment> {
         Set<Integer> ids;
         int semi = semiAnnualId % 10;
         if(semi == 1){
-            ids = new HashSet<>(Arrays.asList(1, 2, 3, 4, 5, 6));
+            ids = new HashSet<>(Arrays.asList(1, 2, 3, 10, 11, 12));
         } else {
-            ids = new HashSet<>(Arrays.asList(7, 8, 9, 10, 11, 12));
+            ids = new HashSet<>(Arrays.asList(4, 5, 6, 7, 8, 9));
         }
         namedParameters.addValue("months", ids);
         namedParameters.addValue("yearId", semiAnnualId/10);
@@ -203,9 +203,9 @@ public class PaymentDao extends Dao<Payment> {
         Set<Integer> ids;
         int semi = semiAnnualId % 10;
         if(semi == 1){
-            ids = new HashSet<>(Arrays.asList(1, 2, 3, 4, 5, 6));
+            ids = new HashSet<>(Arrays.asList(1, 2, 3, 10, 11, 12));
         } else {
-            ids = new HashSet<>(Arrays.asList(7, 8, 9, 10, 11, 12));
+            ids = new HashSet<>(Arrays.asList(4, 5, 6, 7, 8, 9));
         }
         namedParameters.addValue("months", ids);
         namedParameters.addValue("yearId", semiAnnualId/10);
