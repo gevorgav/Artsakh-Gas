@@ -911,7 +911,7 @@ public class PortfolioForm {
                 row = sheet.getRow(i * 2 + 5);
                 row.getCell(1).setCellValue(nullToEmptyString(client.getId(), false));
                 row.getCell(2).setCellValue((Objects.nonNull(getStreetMap().get(client.getStreetId())) ? getStreetMap().get(client.getStreetId()).getName() : "") + " " + nullToEmptyString(client.getHomeNumber(), false) + " " + nullToEmptyString(client.getApartmentNumber(), false));
-                row.getCell(3).setCellValue(client.getLastName() + " " + client.getFirstName() + " " + (Objects.isNull(client.getMiddleName()) ? "" : client.getMiddleName()));
+                row.getCell(3).setCellValue(client.getLastName() + " " + client.getFirstName() + " " + (Objects.isNull(client.getMiddleName()) ? " " : client.getMiddleName()));
                 row.getCell(4).setCellValue(client.getPhoneNumber());
                 row.getCell(5).setCellValue(client.getClientHistory().getJTLog());
                 row.getCell(6).setCellValue(nullToEmptyString(client.getClientHistory().getGo1(), false));
