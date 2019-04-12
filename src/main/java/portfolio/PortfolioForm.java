@@ -649,22 +649,22 @@ public class PortfolioForm {
 
     private void savePayment(Integer clientHistoryTmpId, String clientId, String firstName, String lastName, String
             middleName, Integer regionId, Integer cityId, Integer streetId, String home, Integer semiAnnualId, Double debt, boolean isCompany) {
-        Integer lastSemiAnnualId = defineLastSemiAnnualId(semiAnnualId);
-        Payment lastPayment = paymentDao.loadLastPayment(clientId, regionId, lastSemiAnnualId, isCompany?1:0);
+//        Integer lastSemiAnnualId = defineLastSemiAnnualId(semiAnnualId);
+        Payment lastPayment = paymentDao.loadLastPayment(clientId, regionId, semiAnnualId, isCompany?1:0);
         String city = cityDao.loadById(cityId).getName();
         String street = streetDao.loadById(streetId).getName();
         paymentDao.insert(new Payment(clientId, clientHistoryTmpId, firstName + " " + lastName +  (Objects.nonNull(middleName) ? middleName : ""), regionId, city, street, home, semiAnnualId, lastPayment != null ? debt - lastPayment.getBalance() : debt, 0.00, getLoginForm().getUser().getId(), new Date(), paymentIsCompany));
     }
 
-    private Integer defineLastSemiAnnualId(Integer semiAnnualId) {
-        if (semiAnnualId%10 == 2){
-            return semiAnnualId - 1;
-        }else if (semiAnnualId%10 == 1){
-            Integer lastYear = semiAnnualId/10 - 1;
-            return lastYear * 10 + 2;
-        }
-        return null;
-    }
+//    private Integer defineLastSemiAnnualId(Integer semiAnnualId) {
+//        if (semiAnnualId%10 == 2){
+//            return semiAnnualId - 1;
+//        }else if (semiAnnualId%10 == 1){
+//            Integer lastYear = semiAnnualId/10 - 1;
+//            return lastYear * 10 + 2;
+//        }
+//        return null;
+//    }
 
     private Integer saveClientHistoryTemp(Integer historyId) {
         return clientHistoryTmpDao.insertAndReturnId(new ClientHistoryTmp(clientHistory, historyId));
@@ -1429,8 +1429,8 @@ public class PortfolioForm {
             visitPlans = new ArrayList<>();
             for (Section section : cache.getSections()) {
                 if (section.getRegionId().equals(visitPlanRegionId)) {
-                    for (int i = 6 * (semiAnnualId % 10) - 2; i <= 6 * (semiAnnualId % 10) + 3; i++) {
-                        Integer monthId = semiAnnualId * 100 + (i > 12 ? i - 12 : i);
+                    for (int i = 6 * (semiAnnualId % 10 - 1); i <= 6 * (semiAnnualId % 10); i++) {
+                        Integer monthId = semiAnnualId * 100 + i;
                         VisitPlan loadedVisitPlan = visitPlanByMonthId(monthId, section.getId());
                         if (loadedVisitPlan == null) {
                             visitPlans.add(new VisitPlan(section.getId(), monthId, null, null, semiAnnualId, section, getMonthById(monthId)));
