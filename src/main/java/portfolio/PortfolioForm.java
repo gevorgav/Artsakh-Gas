@@ -746,7 +746,7 @@ public class PortfolioForm {
                             String clientId = eElement.getElementsByTagName("ClientId").item(0).getTextContent();
                             Integer regionId = Integer.valueOf(eElement.getElementsByTagName("RegionId").item(0).getTextContent());
                             Integer semiAnnualId = Integer.valueOf(eElement.getElementsByTagName("SemiAnnualId").item(0).getTextContent());
-                            Boolean isComapany = Boolean.valueOf(eElement.getElementsByTagName("IsComapany").item(0).getTextContent());
+                            Boolean isComapany = Boolean.valueOf(eElement.getElementsByTagName("IsCompany").item(0).getTextContent());
                             Payment payment = paymentDao.loadLastPayment(clientId, regionId, semiAnnualId, isComapany ? 1:0);
                             if(Objects.nonNull(payment)){
                                 payment.setPay(payment.getPay() + Double.valueOf(eElement.getElementsByTagName("Pay").item(0).getTextContent()));
@@ -771,7 +771,7 @@ public class PortfolioForm {
                             payment.setClientId(eElement.getElementsByTagName("ClientId").item(0).getTextContent());
                             payment.setClientHistoryTmpId(Integer.valueOf(eElement.getElementsByTagName("ClientHistoryTmpId").item(0).getTextContent()));
                             payment.setFullName(eElement.getElementsByTagName("FullName").item(0).getTextContent());
-                            payment.setCompany(Boolean.valueOf(eElement.getElementsByTagName("IsComapany").item(0).getTextContent()));
+                            payment.setCompany(Boolean.valueOf(eElement.getElementsByTagName("IsCompany").item(0).getTextContent()));
                             payment.setRegionId(Integer.valueOf(eElement.getElementsByTagName("RegionId").item(0).getTextContent()));
                             payment.setCity(eElement.getElementsByTagName("City").item(0).getTextContent());
                             payment.setStreet(eElement.getElementsByTagName("Street").item(0).getTextContent());
@@ -1627,7 +1627,7 @@ public class PortfolioForm {
                 fullName.appendChild(doc.createTextNode(payment.getFullName()));
                 paymentElemet.appendChild(fullName);
 
-                Element isComapany = doc.createElement("IsComapany");
+                Element isComapany = doc.createElement("IsCompany");
                 isComapany.appendChild(doc.createTextNode(payment.getCompany().toString()));
                 paymentElemet.appendChild(isComapany);
 
