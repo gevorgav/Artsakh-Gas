@@ -734,7 +734,7 @@ public class PortfolioForm {
 
                 System.out.println("----------------------------");
                 List<Payment> payments = new ArrayList<>();
-                if(Objects.equals(bankId, 6)){
+                if (Objects.equals(bankId, 6) || Objects.equals(bankId, 2)|| Objects.equals(bankId, 1) || Objects.equals(bankId, 5)) {
                     for (int temp = 0; temp < nList.getLength(); temp++) {
 
                         Node nNode = nList.item(temp);
@@ -742,13 +742,13 @@ public class PortfolioForm {
 
                         if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                             Element eElement = (Element) nNode;
-                            SimpleDateFormat formatter6=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            SimpleDateFormat formatter6 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                             String clientId = eElement.getElementsByTagName("ClientId").item(0).getTextContent();
                             Integer regionId = Integer.valueOf(eElement.getElementsByTagName("RegionId").item(0).getTextContent());
                             Integer semiAnnualId = Integer.valueOf(eElement.getElementsByTagName("SemiAnnualId").item(0).getTextContent());
                             Boolean isComapany = Boolean.valueOf(eElement.getElementsByTagName("IsCompany").item(0).getTextContent());
-                            Payment payment = paymentDao.loadLastPayment(clientId, regionId, semiAnnualId, isComapany ? 1:0);
-                            if(Objects.nonNull(payment)){
+                            Payment payment = paymentDao.loadLastPayment(clientId, regionId, semiAnnualId, isComapany ? 1 : 0);
+                            if (Objects.nonNull(payment)) {
                                 payment.setPay(payment.getPay() + Double.valueOf(eElement.getElementsByTagName("Pay").item(0).getTextContent()));
                                 payment.setUpdatedDate(formatter6.parse(eElement.getElementsByTagName("UpdatedDate").item(0).getTextContent()));
                                 payment.setBankId(bankId);
@@ -756,7 +756,7 @@ public class PortfolioForm {
                             }
                         }
                     }
-                }else {
+                } else {
                     for (int temp = 0; temp < nList.getLength(); temp++) {
 
                         Node nNode = nList.item(temp);
@@ -765,7 +765,7 @@ public class PortfolioForm {
                         if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 
                             Element eElement = (Element) nNode;
-                            SimpleDateFormat formatter6=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            SimpleDateFormat formatter6 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
                             Payment payment = new Payment();
                             payment.setClientId(eElement.getElementsByTagName("ClientId").item(0).getTextContent());

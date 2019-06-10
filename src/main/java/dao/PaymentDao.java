@@ -42,7 +42,7 @@ public class PaymentDao extends Dao<Payment> {
                 "WHERE id IN (SELECT MAX(id)\n" +
                 "             FROM payment\n" +
                 "             WHERE semiAnnualId = ?" +
-                "             GROUP BY regionId + clientId) AND  debt - pay > 0.0;";
+                "             GROUP BY regionId , clientId, isCompany) AND  debt - pay > 0.0;";
         return jdbcTemplate.query(sql, new PaymentMapper(), semiAnnualId);
     }
 

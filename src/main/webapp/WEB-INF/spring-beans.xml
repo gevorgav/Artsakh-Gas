@@ -19,9 +19,9 @@
     <!-- dataSource configuration -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://91.217.9.247:3306/arshak90_5544"/>
-        <property name="username" value="arshak90_5544" />
-        <property name="password" value="passwordforgaz" />
+        <property name="url" value="jdbc:mysql://localhost:3306/artsakhgas30102018"/>
+        <property name="username" value="root" />
+        <property name="password" value="" />
     </bean>
 
     <bean id="cache" class="Core.CacheForm" scope="singleton" />
