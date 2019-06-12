@@ -2106,7 +2106,7 @@ public class PortfolioForm {
                     client.setDebt(payment.getDebt());
                     client.setPay(payment.getPay());
                     if(Objects.nonNull(payment.getDebt()) && Objects.nonNull(payment.getPay())){
-                        client.getClientHistory().setPaid(payment.getPay() - payment.getDebt() > 0.00 ? true:false);
+                        client.getClientHistory().setPaid(payment.getPay() - payment.getDebt() >= 0.00 ? true:false);
                     }
                 }
             }
