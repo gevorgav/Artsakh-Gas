@@ -622,7 +622,8 @@ public class PortfolioForm {
         if (clientHistory.getVisitType() == 1) {
             Integer clientHistoryTmpId = saveClientHistoryTemp(historyId);
             Double debt = initDebt();
-            savePayment(clientHistoryTmpId, client.getId(), client.getFirstName(), client.getLastName(), client.getMiddleName(), client.getRegionId(), client.getCityId(), client.getStreetId(), client.getHomeNumber(), clientHistory.getSemiAnnualId(), debt, client.isCompany());
+            String home = client.getHomeNumber() + (client.getApartmentNumber().isEmpty() ? ""  : "/" + client.getApartmentNumber());
+            savePayment(clientHistoryTmpId, client.getId(), client.getFirstName(), client.getLastName(), client.getMiddleName(), client.getRegionId(), client.getCityId(), client.getStreetId(), home, clientHistory.getSemiAnnualId(), debt, client.isCompany());
             client.setDebt(debt);
         }
         saveViolationCodes(historyId);
@@ -649,8 +650,8 @@ public class PortfolioForm {
 
     private void savePayment(Integer clientHistoryTmpId, String clientId, String firstName, String lastName, String
             middleName, Integer regionId, Integer cityId, Integer streetId, String home, Integer semiAnnualId, Double debt, boolean isCompany) {
-        Integer lastSemiAnnualId = defineLastSemiAnnualId(semiAnnualId);
-        Payment lastPayment = paymentDao.loadLastPayment(clientId, regionId, lastSemiAnnualId, isCompany?1:0);
+        Payment lastPayment = paymentDao.loadLastPayment(clientId, regionId, semiAnnualId, isCompany?1:0);
+        lastPayment = Objects.nonNull(lastPayment) ? lastPayment : paymentDao.loadLastPayment(clientId, regionId, defineLastSemiAnnualId(semiAnnualId), isCompany?1:0);
         String city = cityDao.loadById(cityId).getName();
         String street = streetDao.loadById(streetId).getName();
         paymentDao.insert(new Payment(clientId, clientHistoryTmpId, firstName + " " + lastName +  (Objects.nonNull(middleName) ? " " + middleName : ""), regionId, city, street, home, semiAnnualId, lastPayment != null ? debt - lastPayment.getBalance() : debt, 0.00, getLoginForm().getUser().getId(), new Date(), paymentIsCompany));
@@ -749,8 +750,8 @@ public class PortfolioForm {
                             Boolean isComapany = Boolean.valueOf(eElement.getElementsByTagName("IsCompany").item(0).getTextContent());
                             Payment payment = paymentDao.loadLastPayment(clientId, regionId, semiAnnualId, isComapany ? 1 : 0);
                             if (Objects.nonNull(payment)) {
-                                payment.setPay(payment.getPay() + Double.valueOf(eElement.getElementsByTagName("Pay").item(0).getTextContent()));
                                 payment.setUpdatedDate(formatter6.parse(eElement.getElementsByTagName("UpdatedDate").item(0).getTextContent()));
+                                payment.setPay(payment.getPay() + Double.valueOf(eElement.getElementsByTagName("Pay").item(0).getTextContent()));
                                 payment.setBankId(bankId);
                                 payments.add(payment);
                             }
@@ -1129,7 +1130,7 @@ public class PortfolioForm {
         List<Client> newFilteredClients = new ArrayList<>();
         List<Client> filteredClientsBySemiAnnual = new ArrayList<>();
         if (filteredClients == null) {
-            filteredClients = this.clients;
+            filteredClients = this.allClients;
         }
         if(filteredClients.size() == getReportClient().size()){
             filteredClients = allClients;

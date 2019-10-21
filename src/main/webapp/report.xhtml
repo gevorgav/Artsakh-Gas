@@ -271,7 +271,7 @@
                                                 <p:selectOneMenu id="semiAnnualId" styleClass="form-control input-c" value="#{portfolioForm.currentSemiAnnualId}">
                                                     <f:converter converterId="javax.faces.Integer" />
                                                     <f:selectItems value="#{portfolioForm.cache.semiAnnuals}" var="semiAnnual" itemLabel="#{semiAnnual.name}" itemValue="#{semiAnnual.id}"/>
-                                                    <p:ajax event="change" process="@this" oncomplete="PF('reportClientTable').filter()"  />
+                                                    <p:ajax event="change" process="@this" update="clientReportTableId" oncomplete="PF('reportClientTable').filter()"  />
                                                 </p:selectOneMenu>
                                             </div>
                                             <p:commandButton value="Թարմացնել" styleClass="dark" action="#{portfolioForm.resetAllData}" process="@this" update="@this"/>
@@ -331,7 +331,7 @@
                                                 <p:column filterBy="#{client.lastName}" headerText="Ազգանուն" style="width: 10%"  filterMatchMode="contains">
                                                     <h:outputText value="#{client.lastName}" />
                                                 </p:column>
-                                                <p:column filterBy="#{client.lastName}" headerText="Հասցե" style="width: 10%"  filterMatchMode="contains">
+                                                <p:column filterBy="#{portfolioForm.getStreetNameById(client.streetId)} #{client.homeNumber} #{client.apartmentNumber}" headerText="Հասցե" style="width: 10%"  filterMatchMode="contains">
                                                     <h:outputText value="#{portfolioForm.getStreetNameById(client.streetId)} #{client.homeNumber} #{client.apartmentNumber}" />
                                                 </p:column>
                                                 <p:column filterBy="#{client.clientHistory.paid}" style="width: 10%" headerText="Վճարման վիճակ" filterMatchMode="equals">
@@ -368,6 +368,10 @@
 
                                                 <p:column filterBy="#{client.pay}" style="width: 10%" headerText="Մուծած" filterMatchMode="contains">
                                                     <h:outputText value="#{client.pay}">
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column filterBy="#{client.clientHistory.semiAnnualId}" style="width: 10%" headerText="Կիսամյակ" filterMatchMode="contains">
+                                                    <h:outputText value="#{client.clientHistory.semiAnnualId}">
                                                     </h:outputText>
                                                 </p:column>
 

@@ -76,8 +76,8 @@ public class PaymentDao extends Dao<Payment> {
                 ps.setString(5, payments.get(i).getCity());
                 ps.setString(6, payments.get(i).getStreet());
                 ps.setString(7, payments.get(i).getHome());
-                ps.setDouble(8, payments.get(i).getPay());
-                ps.setDouble(9, payments.get(i).getDebt());
+                ps.setDouble(8, 0d);
+                ps.setDouble(9, Math.abs(payments.get(i).getBalance()));
                 ps.setInt(10, payments.get(i).getSemiAnnualId());
                 ps.setDate(11, Objects.nonNull(payments.get(i).getUpdatedDate()) ? new java.sql.Date(payments.get(i).getUpdatedDate().getTime()) : null);
                 ps.setInt(12, payments.get(i).getUserId());
