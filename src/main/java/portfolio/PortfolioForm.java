@@ -873,6 +873,7 @@ public class PortfolioForm {
 
     private StreamedContent file;
     private StreamedContent exportSql;
+    private StreamedContent exportForArtsakhPost;
 
     public StreamedContent getFile() throws IOException, InvalidFormatException {
         if (getSelectedClients().isEmpty() || getSelectedClients().size() > 15) {
@@ -1688,6 +1689,100 @@ public class PortfolioForm {
         }
 
         return exportSql;
+    }
+
+    public StreamedContent getExportForArtsakhPost() {
+        exportForArtsakhPost = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
+        Date now = new Date();
+        String strDate = sdf.format(now);
+        try {
+
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+            // root elements
+            Document doc = docBuilder.newDocument();
+            Element rootElement = doc.createElement("Payments");
+            doc.appendChild(rootElement);
+            SimpleDateFormat sdfXml = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            for (Payment payment: paymentDao.paymentsForExportBySemiAnnual(semiAnnualIdForPayment)){
+                Element paymentElemet = doc.createElement("Payment");
+                rootElement.appendChild(paymentElemet);
+
+                Element clientId = doc.createElement("ClientId");
+                clientId.appendChild(doc.createTextNode(payment.getClientId()));
+                paymentElemet.appendChild(clientId);
+
+                Element clientHistoryTmpId = doc.createElement("ClientHistoryTmpId");
+                clientHistoryTmpId.appendChild(doc.createTextNode(String.valueOf(payment.getClientHistoryTmpId())));
+                paymentElemet.appendChild(clientHistoryTmpId);
+
+                Element fullName = doc.createElement("FullName");
+                fullName.appendChild(doc.createTextNode(payment.getFullName()));
+                paymentElemet.appendChild(fullName);
+
+                Element isComapany = doc.createElement("IsCompany");
+                isComapany.appendChild(doc.createTextNode(payment.getCompany().toString()));
+                paymentElemet.appendChild(isComapany);
+
+                Element regionId = doc.createElement("RegionId");
+                regionId.appendChild(doc.createTextNode(String.valueOf(payment.getRegionId())));
+                paymentElemet.appendChild(regionId);
+
+                Element city = doc.createElement("City");
+                city.appendChild(doc.createTextNode(payment.getCity()));
+                paymentElemet.appendChild(city);
+
+                Element street = doc.createElement("Street");
+                street.appendChild(doc.createTextNode(Objects.nonNull(payment.getStreet()) ? payment.getStreet() : ""));
+                paymentElemet.appendChild(street);
+
+                Element home = doc.createElement("Home");
+                home.appendChild(doc.createTextNode(Objects.nonNull(payment.getHome()) ? payment.getHome() : ""));
+                paymentElemet.appendChild(home);
+
+                Element pay = doc.createElement("Pay");
+                pay.appendChild(doc.createTextNode(String.valueOf(payment.getPay())));
+                paymentElemet.appendChild(pay);
+
+                Element debt = doc.createElement("Debt");
+                debt.appendChild(doc.createTextNode(String.valueOf(payment.getDebt())));
+                paymentElemet.appendChild(debt);
+
+                Element balance = doc.createElement("Balance");
+                balance.appendChild(doc.createTextNode(String.valueOf(payment.getBalance())));
+                paymentElemet.appendChild(balance);
+
+                Element semiAnnualId = doc.createElement("SemiAnnualId");
+                semiAnnualId.appendChild(doc.createTextNode(String.valueOf(payment.getSemiAnnualId())));
+                paymentElemet.appendChild(semiAnnualId);
+
+                Element updatedDate = doc.createElement("UpdatedDate");
+                updatedDate.appendChild(doc.createTextNode(Objects.nonNull(payment.getUpdatedDate()) ?  sdfXml.format(payment.getUpdatedDate()) : ""));
+                paymentElemet.appendChild(updatedDate);
+            }
+            long s = System.currentTimeMillis();
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(new File(getXmlExportPath()));
+
+            transformer.transform(source, result);
+            System.out.println(System.currentTimeMillis() - s);
+            exportForArtsakhPost = new DefaultStreamedContent(new FileInputStream(getXmlExportPath()),"",strDate.toString()+".xml", "UTF-8");
+            System.out.println("File saved!");
+
+        } catch (ParserConfigurationException | TransformerException pce) {
+            pce.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return exportForArtsakhPost;
     }
 
     public void insertDataBase(){

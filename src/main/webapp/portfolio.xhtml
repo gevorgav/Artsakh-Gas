@@ -326,6 +326,9 @@
                                                         <p:commandButton value="Արտահանում" styleClass="dark w-100" onclick="PrimeFaces.monitorDownload(start, stop);" ajax="false" rendered="#{loginForm.user.admin}">
                                                             <p:fileDownload value="#{portfolioForm.exportSql}"/>
                                                         </p:commandButton>
+                                                        <p:commandButton value="Արտահանում Արցախփոստի համար" styleClass="dark w-100" onclick="PrimeFaces.monitorDownload(start, stop);" ajax="false" rendered="#{loginForm.user.admin}">
+                                                            <p:fileDownload value="#{portfolioForm.exportSql}"/>
+                                                        </p:commandButton>
                                                     </div>
                                                 </div>
                                             </div>

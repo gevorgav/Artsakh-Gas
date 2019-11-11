@@ -46,6 +46,18 @@ public class PaymentDao extends Dao<Payment> {
         return jdbcTemplate.query(sql, new PaymentMapper(), semiAnnualId);
     }
 
+    public List<Payment> paymentsForExportBySemiAnnualForArtsakhPost(Integer semiAnnualId){
+        Objects.requireNonNull(semiAnnualId);
+        String sql = "SELECT\n" +
+                "  *\n" +
+                "FROM payment\n" +
+                "WHERE id IN (SELECT MAX(id)\n" +
+                "             FROM payment\n" +
+                "             WHERE semiAnnualId = ?" +
+                "             GROUP BY regionId , clientId, isCompany);";
+        return jdbcTemplate.query(sql, new PaymentMapper(), semiAnnualId);
+    }
+
     @Override
     public Payment loadById(Integer id) {
         Objects.requireNonNull(id);
